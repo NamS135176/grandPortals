@@ -1,0 +1,70 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type User @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+  id: ID! @primaryKey
+  email: String
+  name: String
+  name_kana: String
+  delete_flag: Boolean!
+  last_login_date: AWSDateTime!
+}
+
+type CS @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+  email: String! @primaryKey
+  delete_flag: Boolean!
+  last_login_date: AWSDateTime!
+}
+
+type UserTempResetPassword @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+  id: ID! @primaryKey
+  email: String!
+  delete_flag: Boolean!
+  createdAt: AWSDateTime! @index(name: "byCreatedAt")
+  ttl: AWSTimestamp
+}
+
+
+type Bukken @model 
+@auth(rules: [
+  { allow: groups, groups: ["Admins"] },
+  { allow: owner, identityClaim: "user_id" }
+]) {
+  id: ID! @primaryKey
+  s_object_id: String
+  bukken_no: String @index(name: "GSI-bukkenNo")
+  user_id: ID! @index(name: "GSI-userId")
+  address: String
+  bukken_kind: String!
+  floor_plan: String
+  shinchiku_date: AWSDateTime
+  remarks: String
+  delete_flag: Int!
+  otherObjects: [OtherObject] @hasMany
+  documents: [Document] @hasMany
+}
+
+type OtherObject @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+  id: ID! @primaryKey
+  buken: Bukken @belongsTo
+  bukken_no: String!
+  object_kind: String!
+  room_id: ID @index(name: "GSI-roomId")
+  field_kind: String!
+  field_list: String!
+  delete_flag: Int!
+  object_kind_updatedAt: String! @index(name: "byObjectKindAndUpdatedAt")
+}
+
+type Document @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+  id: ID! @primaryKey
+  buken: Bukken @belongsTo
+  other_object_id: ID @index(name: "GSI-otherObjectId")
+  object_kind: String!
+  orignal_file_name: String!
+  s3_file_name: String!
+  overview: String!
+  delete_flag: Int!
+  object_kind_createdAt: String! @index(name: "byObjectKindAndCreatedAt")
+}

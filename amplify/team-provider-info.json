@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-grandsportal-dev-133710-authRole",
+      "UnauthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-dev-133710-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-dev-133710-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-grandsportal-dev-133710-deployment",
+      "UnauthRoleName": "amplify-grandsportal-dev-133710-unauthRole",
+      "StackName": "amplify-grandsportal-dev-133710",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:147662606770:stack/amplify-grandsportal-dev-133710/0e6500b0-0664-11ed-a011-0a86c322541f",
+      "AmplifyAppId": "d212lsvodfwjyx"
+    },
+    "categories": {
+      "auth": {
+        "grandsportal6db2a71e": {}
+      }
+    }
+  }
+}

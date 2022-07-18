@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+.env*
+.next
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -41,7 +44,6 @@ amplify/backend/.temp
 build/
 dist/
 node_modules/
-node_modules/.bin/
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
@@ -52,5 +54,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-.env*
-.next
