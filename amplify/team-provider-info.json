@@ -15,7 +15,8 @@
     "categories": {
       "auth": {
         "grandsportal6db2a71e": {},
-        "true": {}
+        "true": {},
+        "userPoolGroups": {}
       },
       "function": {
         "grandsportal6db2a71ePostConfirmation": {
