@@ -2,16 +2,17 @@ import { API } from "aws-amplify";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { listBukkens, queryBukkensByUserId } from "../graphql/queries";
 import { useAuth } from "./use-auth";
+import { useMounted } from "./use-mounted";
 
 export const useBukkenList = () => {
   const { user } = useAuth();
-
+  const isMounted = useMounted();
   const [bukkenList, setBukkenList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-        console.log("useBukkenList... ", {user});
+      console.log("useBukkenList... ", { user });
       setLoading(true);
 
       //load list bukken
@@ -28,8 +29,8 @@ export const useBukkenList = () => {
       setLoading(false);
     }
 
-    loadData();
-  }, []);
+    if (isMounted) loadData();
+  }, [isMounted]);
 
   return { bukkenList, loading };
 };

@@ -22,8 +22,6 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const BukkenList = () => {
-	const isMounted = useMounted();
-	// const [bukken, setBukken] = useState([]);
 	const { bukkenList: bukken, loading } = useBukkenList();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -31,26 +29,6 @@ const BukkenList = () => {
 	useEffect(() => {
 		gtm.push({ event: 'page_view' });
 	}, []);
-
-	// const getbukken = useCallback(async () => {
-	// 	try {
-	// 		const data = await bukkenApi.getBukken();
-
-	// 		if (isMounted()) {
-	// 			setBukken(data);
-	// 		}
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, [isMounted]);
-
-	// useEffect(
-	// 	() => {
-	// 		getbukken();
-	// 	},
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// 	[]
-	// );
 
 	const handlePageChange = (event, newPage) => {
 		setPage(newPage);

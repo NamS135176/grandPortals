@@ -79,16 +79,16 @@ export const BukkenListTable = (props) => {
 					<TableBody>
 						{sortedBukken.map((buk) => {
 							return (
-								<TableRow hover key={buk.id}>
+								<TableRow hover key={buk.bukken_no}>
 									<TableCell align="right">
-										<NextLink href={`/bukken/${buk.id}`} passHref>
+										<NextLink href={`/bukken/${buk.bukken_no}`} passHref>
 											<IconButton component="a">
 												<ArrowRightIcon fontSize="small" />
 											</IconButton>
 										</NextLink>
 									</TableCell>
 									<TableCell>
-										<NextLink href={`/bukken/${buk.id}`} passHref>
+										<NextLink href={`/bukken/${buk.bukken_no}`} passHref>
 											<Link color="inherit" variant="subtitle2">
 												<Box
 													sx={{
