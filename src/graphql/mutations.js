@@ -180,6 +180,21 @@ export const createBukken = /* GraphQL */ `
         }
         nextToken
       }
+      histories {
+        items {
+          id
+          user_id
+          other_object_id
+          object_kind
+          remarks
+          overview
+          delete_flag
+          createdAt
+          updatedAt
+          bukkenHistoriesId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -232,6 +247,21 @@ export const updateBukken = /* GraphQL */ `
           createdAt
           updatedAt
           bukkenDocumentsId
+        }
+        nextToken
+      }
+      histories {
+        items {
+          id
+          user_id
+          other_object_id
+          object_kind
+          remarks
+          overview
+          delete_flag
+          createdAt
+          updatedAt
+          bukkenHistoriesId
         }
         nextToken
       }
@@ -290,6 +320,21 @@ export const deleteBukken = /* GraphQL */ `
         }
         nextToken
       }
+      histories {
+        items {
+          id
+          user_id
+          other_object_id
+          object_kind
+          remarks
+          overview
+          delete_flag
+          createdAt
+          updatedAt
+          bukkenHistoriesId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -317,6 +362,9 @@ export const createOtherObject = /* GraphQL */ `
           nextToken
         }
         documents {
+          nextToken
+        }
+        histories {
           nextToken
         }
         createdAt
@@ -360,6 +408,9 @@ export const updateOtherObject = /* GraphQL */ `
         documents {
           nextToken
         }
+        histories {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -399,6 +450,9 @@ export const deleteOtherObject = /* GraphQL */ `
           nextToken
         }
         documents {
+          nextToken
+        }
+        histories {
           nextToken
         }
         createdAt
@@ -442,6 +496,9 @@ export const createDocument = /* GraphQL */ `
         documents {
           nextToken
         }
+        histories {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -481,6 +538,9 @@ export const updateDocument = /* GraphQL */ `
           nextToken
         }
         documents {
+          nextToken
+        }
+        histories {
           nextToken
         }
         createdAt
@@ -524,6 +584,9 @@ export const deleteDocument = /* GraphQL */ `
         documents {
           nextToken
         }
+        histories {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -538,6 +601,132 @@ export const deleteDocument = /* GraphQL */ `
       createdAt
       updatedAt
       bukkenDocumentsId
+    }
+  }
+`;
+export const createHistory = /* GraphQL */ `
+  mutation CreateHistory(
+    $input: CreateHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    createHistory(input: $input, condition: $condition) {
+      id
+      buken {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user_id
+      other_object_id
+      object_kind
+      remarks
+      overview
+      delete_flag
+      createdAt
+      updatedAt
+      bukkenHistoriesId
+    }
+  }
+`;
+export const updateHistory = /* GraphQL */ `
+  mutation UpdateHistory(
+    $input: UpdateHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    updateHistory(input: $input, condition: $condition) {
+      id
+      buken {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user_id
+      other_object_id
+      object_kind
+      remarks
+      overview
+      delete_flag
+      createdAt
+      updatedAt
+      bukkenHistoriesId
+    }
+  }
+`;
+export const deleteHistory = /* GraphQL */ `
+  mutation DeleteHistory(
+    $input: DeleteHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    deleteHistory(input: $input, condition: $condition) {
+      id
+      buken {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user_id
+      other_object_id
+      object_kind
+      remarks
+      overview
+      delete_flag
+      createdAt
+      updatedAt
+      bukkenHistoriesId
     }
   }
 `;

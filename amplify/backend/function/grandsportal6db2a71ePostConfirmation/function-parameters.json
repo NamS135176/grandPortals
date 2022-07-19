@@ -1,0 +1,18 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "grandsportal6db2a71e",
+  "functionName": "grandsportal6db2a71ePostConfirmation",
+  "resourceName": "grandsportal6db2a71ePostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/snapshot/repo/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "triggerEventPath": "PostConfirmation.event.json",
+  "roleName": "grandsportal6db2a71ePostConfirmation",
+  "skipEdit": true,
+  "GROUP": "agentGrands",
+  "enableCors": false
+}

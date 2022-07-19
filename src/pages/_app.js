@@ -24,6 +24,10 @@ import { createTheme } from '../theme';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import '../i18n';
 
+import moment from 'moment'
+import 'moment/locale/ja'  // without this line it didn't work
+moment.locale('ja')
+
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
 Router.events.on('routeChangeComplete', nProgress.done);
@@ -63,6 +67,7 @@ const App = (props) => {
 											<Toaster position="top-center" />
 											<AuthConsumer>
 												{(auth) =>
+												    
 													!auth.isInitialized ? (
 														<SplashScreen />
 													) : (

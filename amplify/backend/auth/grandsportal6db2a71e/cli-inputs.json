@@ -38,7 +38,11 @@
     "usernameAttributes": [
       "email"
     ],
-    "triggers": {},
+    "triggers": {
+      "PostConfirmation": [
+        "add-to-group"
+      ]
+    },
     "userPoolGroupList": [
       "agentGrands",
       "agentNormal",
@@ -60,14 +64,27 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "grandsportal6db2a71ePostConfirmation",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": [],
+    "permissions": [
+      "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
+    ],
     "userPoolGroups": true,
     "adminQueries": false,
     "hostedUI": false,
-    "authProviders": []
+    "authProviders": [],
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"grandsportal6db2a71ePostConfirmation\"\n  }\n]"
   }
 }

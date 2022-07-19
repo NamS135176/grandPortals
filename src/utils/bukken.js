@@ -11,3 +11,7 @@ export function getBukkenType(bukken) {
         default: return "-"
     }
 }
+
+export function getBukkenS3FileName(bukken, fileName) {
+    return `bukkenInfos/${bukken.bukken_no}/documents/${fileName}`
+}

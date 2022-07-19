@@ -9,11 +9,20 @@
       "UnauthRoleName": "amplify-grandsportal-dev-133710-unauthRole",
       "StackName": "amplify-grandsportal-dev-133710",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:147662606770:stack/amplify-grandsportal-dev-133710/0e6500b0-0664-11ed-a011-0a86c322541f",
-      "AmplifyAppId": "d212lsvodfwjyx"
+      "AmplifyAppId": "d212lsvodfwjyx",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-grandsportal-dev-133710-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
-        "grandsportal6db2a71e": {}
+        "grandsportal6db2a71e": {},
+        "true": {}
+      },
+      "function": {
+        "grandsportal6db2a71ePostConfirmation": {
+          "GROUP": "agentGrands",
+          "deploymentBucketName": "amplify-grandsportal-dev-133710-deployment",
+          "s3Key": "amplify-builds/grandsportal6db2a71ePostConfirmation-364e5662342f4b705351-build.zip"
+        }
       }
     }
   }
