@@ -11,8 +11,8 @@ export const AmplifyLogin = (props) => {
   const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: 'anhndt+1@vn-sis.com',
+      password: '12345678',
       submit: null
     },
     validationSchema: Yup.object({

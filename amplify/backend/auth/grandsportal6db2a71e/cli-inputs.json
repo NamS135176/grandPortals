@@ -1,8 +1,6 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "grandsportal6db2a71e_identitypool_6db2a71e",
-    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "grands6db2a71e",
     "userPoolName": "grandsportal6db2a71e_userpool_6db2a71e",
     "autoVerifiedAttributes": [
@@ -35,15 +33,16 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "6db2a71e",
     "resourceName": "grandsportal6db2a71e",
-    "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
+    "authSelections": "userPoolOnly",
+    "useDefault": "manual",
     "usernameAttributes": [
       "email"
     ],
     "triggers": {},
     "userPoolGroupList": [
-      "Admins",
-      "Users"
+      "agentGrands",
+      "agentNormal",
+      "support"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -65,6 +64,10 @@
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "userPoolGroups": true,
+    "adminQueries": false,
+    "hostedUI": false,
+    "authProviders": []
   }
 }

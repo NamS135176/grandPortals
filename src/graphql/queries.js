@@ -137,6 +137,7 @@ export const getBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -152,6 +153,7 @@ export const getBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -167,7 +169,6 @@ export const getBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -205,7 +206,6 @@ export const listBukkens = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -234,9 +234,9 @@ export const getOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -279,9 +279,9 @@ export const listOtherObjects = /* GraphQL */ `
           delete_flag
           createdAt
           updatedAt
-          owner
         }
         bukken_no
+        user_id
         object_kind
         room_id
         field_kind
@@ -319,8 +319,8 @@ export const getDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
@@ -364,8 +364,301 @@ export const listDocuments = /* GraphQL */ `
           delete_flag
           createdAt
           updatedAt
-          owner
         }
+        user_id
+        other_object_id
+        object_kind
+        orignal_file_name
+        s3_file_name
+        overview
+        delete_flag
+        object_kind_createdAt
+        createdAt
+        updatedAt
+        bukkenDocumentsId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryUserTempResetPasswordByCreatedAt = /* GraphQL */ `
+  query QueryUserTempResetPasswordByCreatedAt(
+    $createdAt: AWSDateTime!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserTempResetPasswordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryUserTempResetPasswordByCreatedAt(
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        delete_flag
+        createdAt
+        ttl
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryBukkensByBukkenNo = /* GraphQL */ `
+  query QueryBukkensByBukkenNo(
+    $bukken_no: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryBukkensByBukkenNo(
+      bukken_no: $bukken_no
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryBukkensByUserId = /* GraphQL */ `
+  query QueryBukkensByUserId(
+    $user_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryBukkensByUserId(
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryOtherObjectByRoomId = /* GraphQL */ `
+  query QueryOtherObjectByRoomId(
+    $room_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectByRoomId(
+      room_id: $room_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        bukken_no
+        user_id
+        object_kind
+        room_id
+        field_kind
+        field_list
+        delete_flag
+        object_kind_updatedAt
+        createdAt
+        updatedAt
+        bukkenOtherObjectsId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
+  query QueryOtherObjectByObjectKindAndUpdatedAt(
+    $object_kind_updatedAt: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectByObjectKindAndUpdatedAt(
+      object_kind_updatedAt: $object_kind_updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        bukken_no
+        user_id
+        object_kind
+        room_id
+        field_kind
+        field_list
+        delete_flag
+        object_kind_updatedAt
+        createdAt
+        updatedAt
+        bukkenOtherObjectsId
+      }
+      nextToken
+    }
+  }
+`;
+export const querDocumentByOtherObjectId = /* GraphQL */ `
+  query QuerDocumentByOtherObjectId(
+    $other_object_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDocumentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    querDocumentByOtherObjectId(
+      other_object_id: $other_object_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        user_id
+        other_object_id
+        object_kind
+        orignal_file_name
+        s3_file_name
+        overview
+        delete_flag
+        object_kind_createdAt
+        createdAt
+        updatedAt
+        bukkenDocumentsId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
+  query QueryDocumentByObjectKindAndCreatedAt(
+    $object_kind_createdAt: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDocumentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryDocumentByObjectKindAndCreatedAt(
+      object_kind_createdAt: $object_kind_createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        user_id
         other_object_id
         object_kind
         orignal_file_name

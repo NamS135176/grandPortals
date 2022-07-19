@@ -1,6 +1,5 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type User @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
   id: ID! @primaryKey
@@ -21,7 +20,7 @@ type UserTempResetPassword @model @auth(rules: [{ allow: groups, groups: ["Admin
   id: ID! @primaryKey
   email: String!
   delete_flag: Boolean!
-  createdAt: AWSDateTime! @index(name: "byCreatedAt")
+  createdAt: AWSDateTime! @index(name: "byCreatedAt", queryField: "queryUserTempResetPasswordByCreatedAt")
   ttl: AWSTimestamp
 }
 
@@ -29,12 +28,12 @@ type UserTempResetPassword @model @auth(rules: [{ allow: groups, groups: ["Admin
 type Bukken @model 
 @auth(rules: [
   { allow: groups, groups: ["Admins"] },
-  { allow: owner, identityClaim: "user_id" }
+  { allow: owner, ownerField: "user_id" }
 ]) {
   id: ID! @primaryKey
   s_object_id: String
-  bukken_no: String @index(name: "GSI-bukkenNo")
-  user_id: ID! @index(name: "GSI-userId")
+  bukken_no: String @index(name: "GSI-bukkenNo", queryField: "queryBukkensByBukkenNo")
+  user_id: ID! @index(name: "GSI-userId", queryField: "queryBukkensByUserId")
   address: String
   bukken_kind: String!
   floor_plan: String
@@ -45,26 +44,36 @@ type Bukken @model
   documents: [Document] @hasMany
 }
 
-type OtherObject @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+type OtherObject @model 
+@auth(rules: [
+  { allow: groups, groups: ["Admins"] },
+  { allow: owner, ownerField: "user_id" }
+]) {
   id: ID! @primaryKey
   buken: Bukken @belongsTo
   bukken_no: String!
+  user_id: ID!
   object_kind: String!
-  room_id: ID @index(name: "GSI-roomId")
+  room_id: ID @index(name: "GSI-roomId", queryField: "queryOtherObjectByRoomId")
   field_kind: String!
   field_list: String!
   delete_flag: Int!
-  object_kind_updatedAt: String! @index(name: "byObjectKindAndUpdatedAt")
+  object_kind_updatedAt: String! @index(name: "byObjectKindAndUpdatedAt", queryField: "queryOtherObjectByObjectKindAndUpdatedAt")
 }
 
-type Document @model @auth(rules: [{ allow: groups, groups: ["Admins", "Users"] }]) {
+type Document @model 
+@auth(rules: [
+  { allow: groups, groups: ["Admins"] },
+  { allow: owner, ownerField: "user_id" }
+]) {
   id: ID! @primaryKey
   buken: Bukken @belongsTo
-  other_object_id: ID @index(name: "GSI-otherObjectId")
+  user_id: ID!
+  other_object_id: ID @index(name: "GSI-otherObjectId", queryField: "querDocumentByOtherObjectId")
   object_kind: String!
   orignal_file_name: String!
   s3_file_name: String!
   overview: String!
   delete_flag: Int!
-  object_kind_createdAt: String! @index(name: "byObjectKindAndCreatedAt")
+  object_kind_createdAt: String! @index(name: "byObjectKindAndCreatedAt", queryField: "queryDocumentByObjectKindAndCreatedAt")
 }

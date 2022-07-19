@@ -17,6 +17,8 @@ import {
 import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
 import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
+import { getBukkenType } from '../../utils/bukken';
+import moment from 'moment';
 
 const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
@@ -79,14 +81,14 @@ export const BukkenListTable = (props) => {
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
-										<NextLink href="/bukken/1" passHref>
+										<NextLink href={`/bukken/${buk.id}`} passHref>
 											<IconButton component="a">
 												<ArrowRightIcon fontSize="small" />
 											</IconButton>
 										</NextLink>
 									</TableCell>
 									<TableCell>
-										<NextLink href="/bukken/1" passHref>
+										<NextLink href={`/bukken/${buk.id}`} passHref>
 											<Link color="inherit" variant="subtitle2">
 												<Box
 													sx={{
@@ -101,7 +103,7 @@ export const BukkenListTable = (props) => {
 														}}
 													>
 														<Typography variant="subtitle2">
-															{buk.id}
+															{buk.bukken_no}
 														</Typography>
 													</Box>
 													{buk.image ? (
@@ -139,11 +141,11 @@ export const BukkenListTable = (props) => {
 											</Link>
 										</NextLink>
 									</TableCell>
-									<TableCell>{buk.type}</TableCell>
-									<TableCell>{buk.plan}</TableCell>
+									<TableCell>{getBukkenType(buk)}</TableCell>
+									<TableCell>{buk.floor_plan}</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
-											{buk.registeredAt}
+											{moment(buk.createdAt).format("YYYY/MM/DD HH:mm")}
 										</Typography>
 									</TableCell>
 								</TableRow>

@@ -150,6 +150,7 @@ export const createBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -165,6 +166,7 @@ export const createBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -180,7 +182,6 @@ export const createBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -204,6 +205,7 @@ export const updateBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -219,6 +221,7 @@ export const updateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -234,7 +237,6 @@ export const updateBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -258,6 +260,7 @@ export const deleteBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -273,6 +276,7 @@ export const deleteBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -288,7 +292,6 @@ export const deleteBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -318,9 +321,9 @@ export const createOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -359,9 +362,9 @@ export const updateOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -400,9 +403,9 @@ export const deleteOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -441,8 +444,8 @@ export const createDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
@@ -482,8 +485,8 @@ export const updateDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
@@ -523,8 +526,8 @@ export const deleteDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name

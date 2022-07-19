@@ -16,7 +16,7 @@ export const AuthGuard = (props) => {
 
       if (!auth.isAuthenticated) {
         router.push({
-          pathname: '/authentication/login',
+          pathname: '/login',
           query: { returnUrl: router.asPath }
         }).catch(console.error);
       } else {

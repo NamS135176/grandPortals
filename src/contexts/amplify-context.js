@@ -1,13 +1,13 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Auth from '@aws-amplify/auth';
-import { amplifyConfig } from '../config';
+// import Auth from '@aws-amplify/auth';
+import Amplify, { Auth } from 'aws-amplify';
 
-Auth.configure({
-  userPoolId: amplifyConfig.aws_user_pools_id,
-  userPoolWebClientId: amplifyConfig.aws_user_pools_web_client_id,
-  region: amplifyConfig.aws_cognito_region
-});
+// import { amplifyConfig } from '../config';
+import awsExports from "../aws-exports";
+import { cognitoGroupAgentGrands } from '../config';
+
+Amplify.configure(awsExports);
 
 var ActionType;
 (function (ActionType) {
@@ -73,6 +73,8 @@ export const AuthProvider = (props) => {
     const initialize = async () => {
       try {
         const user = await Auth.currentAuthenticatedUser();
+        console.log("AuthProvider... ", { user })
+        const groups = user.signInUserSession.idToken.payload['cognito:groups']
 
         // Here you should extract the complete user profile to make it
         // available in your entire app.
@@ -83,7 +85,8 @@ export const AuthProvider = (props) => {
           payload: {
             isAuthenticated: true,
             user: {
-              id: user.sub,
+              id: user.username,
+              group: groups?.length > 0 ? groups[0] : cognitoGroupAgentGrands,
               avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
               email: user.attributes.email,
               name: 'Anika Visser',

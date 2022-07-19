@@ -15,13 +15,16 @@ import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
 import { BukkenListTable } from '../../components/bukken/bukken-list-table';
 import { useMounted } from '../../hooks/use-mounted';
 import { gtm } from '../../lib/gtm';
+import { useBukkenList } from '../../hooks/use-bukken-list';
+import { AuthGuard } from '../../components/authentication/auth-guard';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const BukkenList = () => {
 	const isMounted = useMounted();
-	const [bukken, setBukken] = useState([]);
+	// const [bukken, setBukken] = useState([]);
+	const { bukkenList: bukken, loading } = useBukkenList();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -29,25 +32,25 @@ const BukkenList = () => {
 		gtm.push({ event: 'page_view' });
 	}, []);
 
-	const getbukken = useCallback(async () => {
-		try {
-			const data = await bukkenApi.getBukken();
+	// const getbukken = useCallback(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getBukken();
 
-			if (isMounted()) {
-				setBukken(data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}, [isMounted]);
+	// 		if (isMounted()) {
+	// 			setBukken(data);
+	// 		}
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, [isMounted]);
 
-	useEffect(
-		() => {
-			getbukken();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
-	);
+	// useEffect(
+	// 	() => {
+	// 		getbukken();
+	// 	},
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// 	[]
+	// );
 
 	const handlePageChange = (event, newPage) => {
 		setPage(newPage);
@@ -114,6 +117,10 @@ const BukkenList = () => {
 		</>
 	);
 };
-BukkenList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+BukkenList.getLayout = (page) => (
+  <AuthGuard>
+    <DashboardLayout>{page}</DashboardLayout>
+  </AuthGuard>
+);
 
 export default BukkenList;

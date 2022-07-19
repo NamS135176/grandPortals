@@ -1,10 +1,14 @@
 [
   {
-    "groupName": "Admins",
+    "groupName": "agentGrands",
     "precedence": 1
   },
   {
-    "groupName": "Users",
+    "groupName": "agentNormal",
     "precedence": 2
+  },
+  {
+    "groupName": "support",
+    "precedence": 3
   }
 ]

@@ -113,8 +113,8 @@ export const onDeleteUserTempResetPassword = /* GraphQL */ `
   }
 `;
 export const onCreateBukken = /* GraphQL */ `
-  subscription OnCreateBukken($owner: String) {
-    onCreateBukken(owner: $owner) {
+  subscription OnCreateBukken($user_id: String) {
+    onCreateBukken(user_id: $user_id) {
       id
       s_object_id
       bukken_no
@@ -129,6 +129,7 @@ export const onCreateBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -144,6 +145,7 @@ export const onCreateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -159,13 +161,12 @@ export const onCreateBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onUpdateBukken = /* GraphQL */ `
-  subscription OnUpdateBukken($owner: String) {
-    onUpdateBukken(owner: $owner) {
+  subscription OnUpdateBukken($user_id: String) {
+    onUpdateBukken(user_id: $user_id) {
       id
       s_object_id
       bukken_no
@@ -180,6 +181,7 @@ export const onUpdateBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -195,6 +197,7 @@ export const onUpdateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -210,13 +213,12 @@ export const onUpdateBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onDeleteBukken = /* GraphQL */ `
-  subscription OnDeleteBukken($owner: String) {
-    onDeleteBukken(owner: $owner) {
+  subscription OnDeleteBukken($user_id: String) {
+    onDeleteBukken(user_id: $user_id) {
       id
       s_object_id
       bukken_no
@@ -231,6 +233,7 @@ export const onDeleteBukken = /* GraphQL */ `
         items {
           id
           bukken_no
+          user_id
           object_kind
           room_id
           field_kind
@@ -246,6 +249,7 @@ export const onDeleteBukken = /* GraphQL */ `
       documents {
         items {
           id
+          user_id
           other_object_id
           object_kind
           orignal_file_name
@@ -261,13 +265,12 @@ export const onDeleteBukken = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onCreateOtherObject = /* GraphQL */ `
-  subscription OnCreateOtherObject {
-    onCreateOtherObject {
+  subscription OnCreateOtherObject($user_id: String) {
+    onCreateOtherObject(user_id: $user_id) {
       id
       buken {
         id
@@ -288,9 +291,9 @@ export const onCreateOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -304,8 +307,8 @@ export const onCreateOtherObject = /* GraphQL */ `
   }
 `;
 export const onUpdateOtherObject = /* GraphQL */ `
-  subscription OnUpdateOtherObject {
-    onUpdateOtherObject {
+  subscription OnUpdateOtherObject($user_id: String) {
+    onUpdateOtherObject(user_id: $user_id) {
       id
       buken {
         id
@@ -326,9 +329,9 @@ export const onUpdateOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -342,8 +345,8 @@ export const onUpdateOtherObject = /* GraphQL */ `
   }
 `;
 export const onDeleteOtherObject = /* GraphQL */ `
-  subscription OnDeleteOtherObject {
-    onDeleteOtherObject {
+  subscription OnDeleteOtherObject($user_id: String) {
+    onDeleteOtherObject(user_id: $user_id) {
       id
       buken {
         id
@@ -364,9 +367,9 @@ export const onDeleteOtherObject = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       bukken_no
+      user_id
       object_kind
       room_id
       field_kind
@@ -380,8 +383,8 @@ export const onDeleteOtherObject = /* GraphQL */ `
   }
 `;
 export const onCreateDocument = /* GraphQL */ `
-  subscription OnCreateDocument {
-    onCreateDocument {
+  subscription OnCreateDocument($user_id: String) {
+    onCreateDocument(user_id: $user_id) {
       id
       buken {
         id
@@ -402,8 +405,8 @@ export const onCreateDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
@@ -418,8 +421,8 @@ export const onCreateDocument = /* GraphQL */ `
   }
 `;
 export const onUpdateDocument = /* GraphQL */ `
-  subscription OnUpdateDocument {
-    onUpdateDocument {
+  subscription OnUpdateDocument($user_id: String) {
+    onUpdateDocument(user_id: $user_id) {
       id
       buken {
         id
@@ -440,8 +443,8 @@ export const onUpdateDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
@@ -456,8 +459,8 @@ export const onUpdateDocument = /* GraphQL */ `
   }
 `;
 export const onDeleteDocument = /* GraphQL */ `
-  subscription OnDeleteDocument {
-    onDeleteDocument {
+  subscription OnDeleteDocument($user_id: String) {
+    onDeleteDocument(user_id: $user_id) {
       id
       buken {
         id
@@ -478,8 +481,8 @@ export const onDeleteDocument = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
+      user_id
       other_object_id
       object_kind
       orignal_file_name
