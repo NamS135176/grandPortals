@@ -58,7 +58,7 @@ export const AmplifyLogin = (props) => {
         error={Boolean(formik.touched.email && formik.errors.email)}
         fullWidth
         helperText={formik.touched.email && formik.errors.email}
-        label="Email Address"
+        label="メールアドレス ※ "
         margin="normal"
         name="email"
         onBlur={formik.handleBlur}
@@ -70,7 +70,7 @@ export const AmplifyLogin = (props) => {
         error={Boolean(formik.touched.password && formik.errors.password)}
         fullWidth
         helperText={formik.touched.password && formik.errors.password}
-        label="Password"
+        label="パスワード ※ "
         margin="normal"
         name="password"
         onBlur={formik.handleBlur}
@@ -93,21 +93,8 @@ export const AmplifyLogin = (props) => {
           type="submit"
           variant="contained"
         >
-          Log In
+          ログイン
         </Button>
-      </Box>
-      <Box sx={{ mt: 3 }}>
-        <Alert severity="info">
-          <div>
-            You can use
-            {' '}
-            <b>demo@devias.io</b>
-            {' '}
-            and password
-            {' '}
-            <b>Password123!</b>
-          </div>
-        </Alert>
       </Box>
     </form>
   );
