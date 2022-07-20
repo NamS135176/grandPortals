@@ -11,7 +11,7 @@ export const AmplifyLogin = (props) => {
   const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: 'anhndt+1@vn-sis.com',
+      email: 'anhndt@vn-sis.com',
       password: '12345678',
       submit: null
     },
