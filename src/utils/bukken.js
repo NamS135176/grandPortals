@@ -16,7 +16,9 @@ export function getBukkenType(bukken) {
 }
 
 export function getBukkenS3FileName(bukken, fileName) {
-    return `${bukken.user_id}/${bukken.bukken_no}/${bukken.object_kind}/${fileName}`;
+    return `${bukken.user_id}/${bukken.bukken_no}/${
+        bukken.object_kind ?? "0"
+    }/${fileName}`;
 }
 
 export function getObjectKind(object_kind) {

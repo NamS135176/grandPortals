@@ -7,6 +7,12 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string"
         }
     },
+    "api": {
+        "grandsportal": {
+            "GraphQLAPIIdOutput": "string",
+            "GraphQLAPIEndpointOutput": "string"
+        }
+    },
     "hosting": {
         "S3AndCloudFront": {
             "Region": "string",
@@ -17,6 +23,12 @@ export type AmplifyDependentResourcesAttributes = {
             "CloudFrontDomainName": "string",
             "CloudFrontSecureURL": "string",
             "CloudFrontOriginAccessIdentity": "string"
+        }
+    },
+    "storage": {
+        "grandsPortal": {
+            "BucketName": "string",
+            "Region": "string"
         }
     }
 }

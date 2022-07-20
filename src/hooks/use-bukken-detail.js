@@ -58,50 +58,52 @@ export const useBukkenDetail = (bukkenNo) => {
         [documents]
     );
 
-    useEffect(() => {
-        async function loadData() {
-            setLoading(true);
+    async function loadData() {
+        setLoading(true);
 
-            //load bukken detail
-            const response = await API.graphql({
-                query: queryBukkensByBukkenNo,
-                variables: {
-                    bukken_no: bukkenNo,
-                },
-            });
-            const {items} = response.data.queryBukkensByBukkenNo;
-            if (items?.length > 0) {
-                setBukken(items[0]);
-            }
-            //end load list bukken
-
-            //load history list
-            const resHistory = await API.graphql({
-                query: listHistories,
-                // variables: {
-                //     bukken_no: bukkenNo,
-                // },
-            });
-            const histories = resHistory.data.listHistories.items;
-            if (histories?.length > 0) {
-                setHistories(histories);
-            }
-            //end load history list
-
-            //load document list
-            const resDocument = await API.graphql({
-                query: listDocuments,
-                // variables: {
-                //     bukken_no: bukkenNo,
-                // },
-            });
-            const documents = resDocument.data.listDocuments.items;
-            if (documents?.length > 0) {
-                setDocuments(documents);
-            }
-            //end load document list
-            setLoading(false);
+        //load bukken detail
+        const response = await API.graphql({
+            query: queryBukkensByBukkenNo,
+            variables: {
+                bukken_no: bukkenNo,
+            },
+        });
+        const {items} = response.data.queryBukkensByBukkenNo;
+        if (items?.length > 0) {
+            setBukken(items[0]);
         }
+        //end load list bukken
+
+        //load history list
+        const resHistory = await API.graphql({
+            query: listHistories,
+            // variables: {
+            //     bukken_no: bukkenNo,
+            // },
+        });
+        const histories = resHistory.data.listHistories.items;
+        if (histories?.length > 0) {
+            setHistories(histories);
+        }
+        //end load history list
+
+        //load document list
+        const resDocument = await API.graphql({
+            query: listDocuments,
+            // variables: {
+            //     bukken_no: bukkenNo,
+            // },
+        });
+        const documents = resDocument.data.listDocuments.items;
+        if (documents?.length > 0) {
+            setDocuments(documents);
+        }
+        //end load document list
+        setLoading(false);
+    }
+
+    useEffect(() => {
+
 
         if (isMounted && bukkenNo) loadData();
     }, [isMounted, bukkenNo]);
@@ -113,5 +115,6 @@ export const useBukkenDetail = (bukkenNo) => {
         deleteHistory,
         deleteDocument,
         loading,
+        loadData
     };
 };

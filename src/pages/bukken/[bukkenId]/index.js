@@ -38,8 +38,10 @@ const BukkenDetails = () => {
         histories: bukkenHistory,
         documents: bukkenDocs,
         deleteDocument, 
-        deleteHistory
+        deleteHistory,
+        loadData
     } = useBukkenDetail(bukkenId);
+    const [docList, setDoclist] =useState(bukkenDocs)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
@@ -241,6 +243,7 @@ const BukkenDetails = () => {
                                     open={openDocumentDialog}
                                     mode="edit"
                                     bukken={bukken}
+                                    loadData={loadData}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
@@ -251,6 +254,7 @@ const BukkenDetails = () => {
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                deleteDocument={deleteDocument}
                             />
                             <Divider
                                 sx={{
@@ -290,6 +294,7 @@ const BukkenDetails = () => {
                                 }
                                 rowsPerPage={rowsPerPageHistory}
                                 page={page}
+                                deleteHistory={deleteHistory}
                             />
                         </CardContent>
                         <CardActions>
