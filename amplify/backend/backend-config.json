@@ -76,14 +76,14 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "AWS_IAM"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authgrandsPortal"
+            }
           },
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authgrandsPortal"
-              }
+              "authenticationType": "AWS_IAM"
             }
           ]
         }

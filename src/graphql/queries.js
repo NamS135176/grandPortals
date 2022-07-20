@@ -120,33 +120,6 @@ export const listUserTempResetPasswords = /* GraphQL */ `
     }
   }
 `;
-export const queryUserTempResetPasswordByCreatedAt = /* GraphQL */ `
-  query QueryUserTempResetPasswordByCreatedAt(
-    $createdAt: AWSDateTime!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserTempResetPasswordFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryUserTempResetPasswordByCreatedAt(
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        email
-        delete_flag
-        createdAt
-        ttl
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getBukken = /* GraphQL */ `
   query GetBukken($id: ID!) {
     getBukken(id: $id) {
@@ -231,92 +204,6 @@ export const listBukkens = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        s_object_id
-        bukken_no
-        user_id
-        address
-        bukken_kind
-        floor_plan
-        shinchiku_date
-        remarks
-        delete_flag
-        otherObjects {
-          nextToken
-        }
-        documents {
-          nextToken
-        }
-        histories {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const queryBukkensByBukkenNo = /* GraphQL */ `
-  query QueryBukkensByBukkenNo(
-    $bukken_no: String!
-    $user_id: ModelIDKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelBukkenFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryBukkensByBukkenNo(
-      bukken_no: $bukken_no
-      user_id: $user_id
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        s_object_id
-        bukken_no
-        user_id
-        address
-        bukken_kind
-        floor_plan
-        shinchiku_date
-        remarks
-        delete_flag
-        otherObjects {
-          nextToken
-        }
-        documents {
-          nextToken
-        }
-        histories {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const queryBukkensByUserId = /* GraphQL */ `
-  query QueryBukkensByUserId(
-    $user_id: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBukkenFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryBukkensByUserId(
-      user_id: $user_id
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         id
@@ -430,6 +317,295 @@ export const listOtherObjects = /* GraphQL */ `
         createdAt
         updatedAt
         bukkenOtherObjectsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getDocument = /* GraphQL */ `
+  query GetDocument($id: ID!) {
+    getDocument(id: $id) {
+      id
+      bukken_id
+      buken {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user_id
+      other_object_id
+      object_kind
+      orignal_file_name
+      s3_file_name
+      overview
+      delete_flag
+      object_kind_createdAt
+      createdAt
+      updatedAt
+      bukkenDocumentsId
+    }
+  }
+`;
+export const listDocuments = /* GraphQL */ `
+  query ListDocuments(
+    $id: ID
+    $filter: ModelDocumentFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listDocuments(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        bukken_id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        user_id
+        other_object_id
+        object_kind
+        orignal_file_name
+        s3_file_name
+        overview
+        delete_flag
+        object_kind_createdAt
+        createdAt
+        updatedAt
+        bukkenDocumentsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getHistory = /* GraphQL */ `
+  query GetHistory($id: ID!) {
+    getHistory(id: $id) {
+      id
+      bukken_id
+      buken {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user_id
+      other_object_id
+      object_kind
+      remarks
+      overview
+      delete_flag
+      createdAt
+      updatedAt
+      bukkenHistoriesId
+    }
+  }
+`;
+export const listHistories = /* GraphQL */ `
+  query ListHistories(
+    $id: ID
+    $filter: ModelHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listHistories(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        bukken_id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        user_id
+        other_object_id
+        object_kind
+        remarks
+        overview
+        delete_flag
+        createdAt
+        updatedAt
+        bukkenHistoriesId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryUserTempResetPasswordByCreatedAt = /* GraphQL */ `
+  query QueryUserTempResetPasswordByCreatedAt(
+    $createdAt: AWSDateTime!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserTempResetPasswordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryUserTempResetPasswordByCreatedAt(
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        delete_flag
+        createdAt
+        ttl
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryBukkensByBukkenNo = /* GraphQL */ `
+  query QueryBukkensByBukkenNo(
+    $bukken_no: String!
+    $user_id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryBukkensByBukkenNo(
+      bukken_no: $bukken_no
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryBukkensByUserId = /* GraphQL */ `
+  query QueryBukkensByUserId(
+    $user_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryBukkensByUserId(
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -579,96 +755,6 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
     }
   }
 `;
-export const getDocument = /* GraphQL */ `
-  query GetDocument($id: ID!) {
-    getDocument(id: $id) {
-      id
-      bukken_id
-      buken {
-        id
-        s_object_id
-        bukken_no
-        user_id
-        address
-        bukken_kind
-        floor_plan
-        shinchiku_date
-        remarks
-        delete_flag
-        otherObjects {
-          nextToken
-        }
-        documents {
-          nextToken
-        }
-        histories {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user_id
-      other_object_id
-      object_kind
-      orignal_file_name
-      s3_file_name
-      overview
-      delete_flag
-      object_kind_createdAt
-      createdAt
-      updatedAt
-      bukkenDocumentsId
-    }
-  }
-`;
-export const listDocuments = /* GraphQL */ `
-  query ListDocuments(
-    $id: ID
-    $filter: ModelDocumentFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listDocuments(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        bukken_id
-        buken {
-          id
-          s_object_id
-          bukken_no
-          user_id
-          address
-          bukken_kind
-          floor_plan
-          shinchiku_date
-          remarks
-          delete_flag
-          createdAt
-          updatedAt
-        }
-        user_id
-        other_object_id
-        object_kind
-        orignal_file_name
-        s3_file_name
-        overview
-        delete_flag
-        object_kind_createdAt
-        createdAt
-        updatedAt
-        bukkenDocumentsId
-      }
-      nextToken
-    }
-  }
-`;
 export const queryDocumentByBukkenId = /* GraphQL */ `
   query QueryDocumentByBukkenId(
     $bukken_id: ID!
@@ -810,92 +896,6 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
         createdAt
         updatedAt
         bukkenDocumentsId
-      }
-      nextToken
-    }
-  }
-`;
-export const getHistory = /* GraphQL */ `
-  query GetHistory($id: ID!) {
-    getHistory(id: $id) {
-      id
-      bukken_id
-      buken {
-        id
-        s_object_id
-        bukken_no
-        user_id
-        address
-        bukken_kind
-        floor_plan
-        shinchiku_date
-        remarks
-        delete_flag
-        otherObjects {
-          nextToken
-        }
-        documents {
-          nextToken
-        }
-        histories {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user_id
-      other_object_id
-      object_kind
-      remarks
-      overview
-      delete_flag
-      createdAt
-      updatedAt
-      bukkenHistoriesId
-    }
-  }
-`;
-export const listHistories = /* GraphQL */ `
-  query ListHistories(
-    $id: ID
-    $filter: ModelHistoryFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listHistories(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        bukken_id
-        buken {
-          id
-          s_object_id
-          bukken_no
-          user_id
-          address
-          bukken_kind
-          floor_plan
-          shinchiku_date
-          remarks
-          delete_flag
-          createdAt
-          updatedAt
-        }
-        user_id
-        other_object_id
-        object_kind
-        remarks
-        overview
-        delete_flag
-        createdAt
-        updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }
