@@ -12,7 +12,6 @@ import {
 	Tabs,
 	TextField,
 	Typography,
-	Button,
 } from '@mui/material';
 import { customerApi } from '../../../__fake-api__/customer-api';
 import { AuthGuard } from '../../../components/authentication/auth-guard';
