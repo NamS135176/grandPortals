@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "grandsportal",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authgrandsPortal",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

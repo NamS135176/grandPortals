@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-grandsportal-dev-112323-authRole",
+      "UnauthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-dev-112323-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-dev-112323-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-grandsportal-dev-112323-deployment",
+      "UnauthRoleName": "amplify-grandsportal-dev-112323-unauthRole",
+      "StackName": "amplify-grandsportal-dev-112323",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:147662606770:stack/amplify-grandsportal-dev-112323/bc3fc5a0-07e3-11ed-8136-0e041c456f93",
+      "AmplifyAppId": "d3i7r774ih5bz6",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-grandsportal-dev-112323-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "grandsPortal": {}
+      },
+      "function": {
+        "grandsPortalPostConfirmation": {
+          "GROUP": "agentGrands",
+          "deploymentBucketName": "amplify-grandsportal-dev-112323-deployment",
+          "s3Key": "amplify-builds/grandsPortalPostConfirmation-4d43414249736a674b62-build.zip"
+        }
+      }
+    }
+  }
+}
