@@ -14,7 +14,8 @@
     },
     "categories": {
       "auth": {
-        "grandsPortal": {}
+        "grandsPortal": {},
+        "userPoolGroups": {}
       },
       "function": {
         "grandsPortalPostConfirmation": {
