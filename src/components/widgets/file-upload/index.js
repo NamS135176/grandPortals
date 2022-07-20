@@ -62,7 +62,7 @@ export const FileUpload = ({accept, onChange}) => {
                 >
                     <img
                         alt="file upload"
-                        src="/static/file-upload/file-upload.png"
+                        src="/images/file-upload/file-upload.png"
                     />
                     <Typography variant="subtitle2">
                         {file?.name ?? "ファイル選択"}

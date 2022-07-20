@@ -31,7 +31,7 @@ const files = [
     mimeType: 'image/png',
     name: 'example-project1.jpg',
     size: 1024 * 1024 * 3,
-    url: '/static/mock-images/projects/project_4.png'
+    url: '/images/mock-images/projects/project_4.png'
   },
   {
     id: '5e8dd0784431995a30eb2586',
@@ -45,7 +45,7 @@ const files = [
     mimeType: 'image/png',
     name: 'example-project2.jpg',
     size: 1024 * 1024 * 2,
-    url: '/static/mock-images/projects/project_1.png'
+    url: '/images/mock-images/projects/project_1.png'
   }
 ];
 

@@ -12,14 +12,14 @@ import { gtm } from '../lib/gtm';
 const productsData = [
   {
     id: '97375399bf10f57d0f0f7fd9',
-    image: '/static/mock-images/products/product_1.png',
+    image: '/images/mock-images/products/product_1.png',
     name: 'Healthcare Erbology',
     price: 23.99,
     quantity: 1
   },
   {
     id: 'ece4069546ff025047b97735',
-    image: '/static/mock-images/products/product_2.png',
+    image: '/images/mock-images/products/product_2.png',
     name: 'Makeup Lancome Rouge',
     price: 95.00,
     quantity: 1

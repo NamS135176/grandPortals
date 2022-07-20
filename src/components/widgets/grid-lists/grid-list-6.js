@@ -4,21 +4,21 @@ import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizo
 const connections = [
   {
     id: '5e887ac47eed253091be10cb',
-    avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+    avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
     commonConnections: 10,
     name: 'Carson Darrin',
     status: 'Rejected'
   },
   {
     id: '5e887b209c28ac3dd97f6db5',
-    avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+    avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
     commonConnections: 8,
     name: 'Fran Perez',
     status: 'pending'
   },
   {
     id: '5e86805e2bafd54f66cc95c3',
-    avatar: '/static/mock-images/avatars/avatar-miron_vitold.png',
+    avatar: '/images/mock-images/avatars/avatar-miron_vitold.png',
     commonConnections: 5,
     name: 'Miron Vitold',
     status: 'Not connected'

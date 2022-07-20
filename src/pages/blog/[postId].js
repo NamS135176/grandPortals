@@ -16,7 +16,7 @@ import { gtm } from '../../lib/gtm';
 const comments = [
   {
     id: 'd0ab3d02ef737fa6b007e35d',
-    authorAvatar: '/static/mock-images/avatars/avatar-alcides_antonio.png',
+    authorAvatar: '/images/mock-images/avatars/avatar-alcides_antonio.png',
     authorName: 'Alcides Antonio',
     authorRole: 'Product Designer',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -26,7 +26,7 @@ const comments = [
   },
   {
     id: '3ac1e17289e38a84108efdf3',
-    authorAvatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+    authorAvatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
     authorName: 'Jie Yan Song',
     authorRole: 'Web Developer',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',

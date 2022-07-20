@@ -22,7 +22,7 @@ const products = [
     id: '5eff2512c6f8737d08325676',
     conversionRate: 93,
     currency: '$',
-    image: '/static/mock-images/products/product_1.png',
+    image: '/images/mock-images/products/product_1.png',
     name: 'Healthcare Erbology',
     profit: 53500,
     sales: 13153
@@ -31,7 +31,7 @@ const products = [
     id: '5eff2516247f9a6fcca9f151',
     conversionRate: 76,
     currency: '$',
-    image: '/static/mock-images/products/product_2.png',
+    image: '/images/mock-images/products/product_2.png',
     name: 'Makeup Lancome Rouge',
     profit: 45763,
     sales: 10300
@@ -48,7 +48,7 @@ const products = [
     id: '5eff251e297fd17f0dc18a8b',
     conversionRate: 46,
     currency: '$',
-    image: '/static/mock-images/products/product_4.png',
+    image: '/images/mock-images/products/product_4.png',
     name: 'Skincare Necessaire',
     profit: 20400,
     sales: 1203
@@ -57,7 +57,7 @@ const products = [
     id: '5eff2524ef813f061b3ea39f',
     conversionRate: 41,
     currency: '$',
-    image: '/static/mock-images/products/product_5.png',
+    image: '/images/mock-images/products/product_5.png',
     name: 'Skincare Soja CO',
     profit: 15200,
     sales: 254

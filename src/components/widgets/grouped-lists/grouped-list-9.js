@@ -7,7 +7,7 @@ const reviews = [
   {
     id: '5f0366cd843161f193ebadd4',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+      avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
       name: 'Marcus Finn'
     },
     comment: 'Great company, providing an awesome & easy to use product.',
@@ -17,7 +17,7 @@ const reviews = [
   {
     id: 'to33twsyjphcfj55y3t07261',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-miron_vitold.png',
+      avatar: '/images/mock-images/avatars/avatar-miron_vitold.png',
       name: 'Miron Vitold'
     },
     comment: 'Not the best people managers, poor management skills, poor career development programs. Communication from corporate & leadership isn\'t always clear and is sometime one-sided. Low pay compared to FANG.',
@@ -27,7 +27,7 @@ const reviews = [
   {
     id: '6z9dwxjzkqbmxuluxx2681jd',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+      avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
       name: 'Carson Darrin'
     },
     comment: 'I have been working with this company full-time. Great for the work life balance. Cons, decentralized decision making process across the organization.',

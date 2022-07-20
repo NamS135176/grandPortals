@@ -85,7 +85,7 @@ export const BlogNewsletter = () => {
           >
             <img
               alt=""
-              src={`/static/blog/blog_${theme.palette.mode}.svg`}
+              src={`/images/blog/blog_${theme.palette.mode}.svg`}
             />
           </Box>
         </Grid>

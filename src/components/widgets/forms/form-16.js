@@ -49,7 +49,7 @@ export const Form16 = () => (
             </div>
             <img
               alt="Amplify"
-              src="/static/icons/amplify.svg"
+              src="/images/icons/amplify.svg"
               style={{
                 maxWidth: '53.62px',
                 width: '100%'

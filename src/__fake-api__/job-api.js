@@ -31,7 +31,7 @@ class JobApi {
             title: 'Senior Golang Backend Engineer'
           }
         ],
-        logo: '/static/mock-images/jobs/company-logo_1.svg',
+        logo: '/images/mock-images/jobs/company-logo_1.svg',
         name: 'Augmastic Inc.',
         shortDescription: 'Building technologies and ideas that move us as the leaders in Augmented Reality'
       },
@@ -51,7 +51,7 @@ class JobApi {
             title: 'Remote React / React Native Developer'
           }
         ],
-        logo: '/static/mock-images/jobs/company-logo_2.svg',
+        logo: '/images/mock-images/jobs/company-logo_2.svg',
         name: 'Cryptomania SRL',
         shortDescription: 'Monitor and optimize your content for long-term audience loyalty'
       },
@@ -71,7 +71,7 @@ class JobApi {
             title: 'Senior Backend Engineer'
           }
         ],
-        logo: '/static/mock-images/jobs/company-logo_3.svg',
+        logo: '/images/mock-images/jobs/company-logo_3.svg',
         name: 'Talkster Inc.',
         shortDescription: 'Discover innovative companies and the people behind them'
       },
@@ -91,7 +91,7 @@ class JobApi {
             title: 'Mid Frontend Developer'
           }
         ],
-        logo: '/static/mock-images/jobs/company-logo_4.svg',
+        logo: '/images/mock-images/jobs/company-logo_4.svg',
         name: 'Devias IO SRL',
         shortDescription: 'Impact-ready developer tools and templates'
       }
@@ -108,7 +108,7 @@ class JobApi {
           action: 'new_job',
           addedJob: 'Remote React / React Native Developer',
           author: 'Jie Yang Song',
-          avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+          avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
           date: subDays(subHours(subMinutes(subSeconds(now, 3), 7), 5), 81).getTime()
         },
         {
@@ -116,7 +116,7 @@ class JobApi {
           action: 'new_job',
           addedJob: 'Senior Golang Backend Engineer',
           author: 'Anika Visser',
-          avatar: '/static/mock-images/avatars/avatar-iulia_albu.png',
+          avatar: '/images/mock-images/avatars/avatar-iulia_albu.png',
           date: subDays(subHours(subMinutes(subSeconds(now, 3), 7), 5), 82).getTime()
         },
         {
@@ -124,14 +124,14 @@ class JobApi {
           action: 'new_team_member',
           addedMember: 'Omar Darboe',
           author: 'Jie Yang Song',
-          avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+          avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
           date: subDays(subHours(subMinutes(subSeconds(now, 3), 7), 5), 83).getTime()
         },
         {
           id: '53b48b76b01ed00bddee2038',
           action: 'created',
           author: 'Jie Yang Song',
-          avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+          avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
           createdCompany: 'Augmastic Inc',
           date: subDays(subHours(subMinutes(subSeconds(now, 3), 7), 5), 84).getTime()
         }
@@ -162,30 +162,30 @@ Our mission emphasizes seeking and hiring diverse voices, including those who ar
       founders: [
         {
           id: '5e8883f7ed1486d665d8be1e',
-          avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+          avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
           name: 'Jie Yang Song',
           role: 'CEO & Co-founder'
         },
         {
           id: '5e887b209c28ac3dd97f6db5',
-          avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+          avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
           name: 'Fran Perez',
           role: 'CTO & Co-founder'
         },
         {
           id: 'd058d861d43bbb36fb73b0bc',
-          avatar: '/static/mock-images/avatars/avatar-omar_darboe.png',
+          avatar: '/images/mock-images/avatars/avatar-omar_darboe.png',
           name: 'Omar Darboe',
           role: 'CFO'
         }
       ],
       images: [
-        '/static/mock-images/jobs/company_gallery_1.jpg',
-        '/static/mock-images/jobs/company_gallery_2.jpg',
-        '/static/mock-images/jobs/company_gallery_3.jpg',
-        '/static/mock-images/jobs/company_gallery_4.jpg',
-        '/static/mock-images/jobs/company_gallery_5.jpg',
-        '/static/mock-images/jobs/company_gallery_6.jpg'
+        '/images/mock-images/jobs/company_gallery_1.jpg',
+        '/images/mock-images/jobs/company_gallery_2.jpg',
+        '/images/mock-images/jobs/company_gallery_3.jpg',
+        '/images/mock-images/jobs/company_gallery_4.jpg',
+        '/images/mock-images/jobs/company_gallery_5.jpg',
+        '/images/mock-images/jobs/company_gallery_6.jpg'
       ],
       isVerified: true,
       jobs: [
@@ -210,25 +210,25 @@ Our mission emphasizes seeking and hiring diverse voices, including those who ar
         }
       ],
       locations: ['New York City', 'Milano', 'Moscow'],
-      logo: '/static/mock-images/jobs/company-logo_1.svg',
+      logo: '/images/mock-images/jobs/company-logo_1.svg',
       members: [
         {
           id: '5e8883f7ed1486d665d8be1e',
-          avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+          avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
           name: 'Jie Yang Song',
           role: 'CEO & Co-founder',
           skillSet: ['JavaScript', 'React', 'Go']
         },
         {
           id: '5e887b209c28ac3dd97f6db5',
-          avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+          avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
           name: 'Fran Perez',
           role: 'CTO & Co-founder',
           skillSet: ['C', 'C++', 'Java']
         },
         {
           id: 'd058d861d43bbb36fb73b0bc',
-          avatar: '/static/mock_images/avatars/avatar-omar_darboe.png',
+          avatar: '/images/mock_images/avatars/avatar-omar_darboe.png',
           name: 'Omar Darboe',
           role: 'CFO',
           skillSet: ['Go', 'Python']
@@ -239,7 +239,7 @@ Our mission emphasizes seeking and hiring diverse voices, including those who ar
         {
           id: 'ab8ed24cd579605c386e1275',
           author: 'Anika Visser',
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           createdAt: subDays(subHours(subMinutes(subSeconds(now, 4), 9), 4), 80).getTime(),
           description: 'I have been working with this company full-time. Great for the work life balance. Cons, decentralized decision making process across the organization.',
           rating: 3.8,

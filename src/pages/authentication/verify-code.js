@@ -11,10 +11,10 @@ import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
 
 const platformIcons = {
-  Amplify: '/static/icons/amplify.svg',
-  Auth0: '/static/icons/auth0.svg',
-  Firebase: '/static/icons/firebase.svg',
-  JWT: '/static/icons/jwt.svg'
+  Amplify: '/images/icons/amplify.svg',
+  Auth0: '/images/icons/auth0.svg',
+  Firebase: '/images/icons/firebase.svg',
+  JWT: '/images/icons/jwt.svg'
 };
 
 const VerifyCode = () => {

@@ -78,7 +78,7 @@ export const FirebaseLogin = (props) => {
         <Box
           alt="Google"
           component="img"
-          src="/static/icons/google.svg"
+          src="/images/icons/google.svg"
           sx={{ mr: 1 }}
         />
         Google

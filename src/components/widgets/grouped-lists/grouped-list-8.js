@@ -18,19 +18,19 @@ import {
 const members = [
   {
     id: '5e887a62195cc5aef7e8ca5d',
-    avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+    avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
     job: 'Front End Developer',
     name: 'Marcus Finn'
   },
   {
     id: '5e887ac47eed253091be10cb',
-    avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+    avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
     job: 'UX Designer',
     name: 'Carson Darrin'
   },
   {
     id: '5e887b7602bdbc4dbb234b27',
-    avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+    avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
     job: 'Copyright',
     name: 'Jie Yan Song'
   }

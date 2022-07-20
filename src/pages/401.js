@@ -57,7 +57,7 @@ const AuthorizationRequired = () => {
             <Box
               alt="Under development"
               component="img"
-              src={`/static/error/error401_${theme.palette.mode}.svg`}
+              src={`/images/error/error401_${theme.palette.mode}.svg`}
               sx={{
                 height: 'auto',
                 maxWidth: '100%',

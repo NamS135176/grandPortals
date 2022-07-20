@@ -55,7 +55,7 @@ export const CompanyAssets = (props) => {
                       ? (
                         <img
                           alt=""
-                          src="/static/document_text.svg"
+                          src="/images/document_text.svg"
                           width="40px"
                           height="50px"
                         />
@@ -63,7 +63,7 @@ export const CompanyAssets = (props) => {
                       : (
                         <img
                           alt=""
-                          src="/static/photograph.svg"
+                          src="/images/photograph.svg"
                           width="50px"
                           height="45px"
                         />

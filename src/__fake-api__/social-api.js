@@ -6,10 +6,10 @@ class SocialApi {
   getProfile() {
     const profile = {
       id: '5e86809283e28b96d2d38537',
-      avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+      avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
       bio: 'Product Designer',
       connectedStatus: 'not_connected',
-      cover: '/static/mock-images/social/cover_1.jpg',
+      cover: '/images/mock-images/social/cover_1.jpg',
       currentCity: 'Bucharest',
       currentJobCompany: 'Devias IO',
       currentJobTitle: 'Product Designer',
@@ -29,28 +29,28 @@ class SocialApi {
     const connections = [
       {
         id: '5e887ac47eed253091be10cb',
-        avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+        avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
         commonConnections: 10,
         name: 'Carson Darrin',
         status: 'rejected'
       },
       {
         id: '5e887b209c28ac3dd97f6db5',
-        avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+        avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
         commonConnections: 8,
         name: 'Fran Perez',
         status: 'pending'
       },
       {
         id: '5e86805e2bafd54f66cc95c3',
-        avatar: '/static/mock-images/avatars/avatar-miron_vitold.png',
+        avatar: '/images/mock-images/avatars/avatar-miron_vitold.png',
         commonConnections: 5,
         name: 'Miron Vitold',
         status: 'not_connected'
       },
       {
         id: '5e887a1fbefd7938eea9c981',
-        avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+        avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
         commonConnections: 1,
         name: 'Penjani Inyene',
         status: 'connected'
@@ -66,7 +66,7 @@ class SocialApi {
         id: '5e887faca2b7a1ddce01221a',
         author: {
           id: '5e86809283e28b96d2d38537',
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           name: 'Anika Visser'
         },
         comments: [
@@ -74,7 +74,7 @@ class SocialApi {
             id: '5e887fc17162ba254da30771',
             author: {
               id: '5e887b7602bdbc4dbb234b27',
-              avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+              avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
               name: 'Jie Yan Song'
             },
             createdAt: subHours(now, 3).getTime(),
@@ -84,7 +84,7 @@ class SocialApi {
             id: '5e887fc759bebe8d5d54a2e5',
             author: {
               id: '5e887a1fbefd7938eea9c981',
-              avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+              avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
               name: 'Penjani Inyene'
             },
             createdAt: subHours(now, 2).getTime(),
@@ -94,14 +94,14 @@ class SocialApi {
         createdAt: subHours(now, 4).getTime(),
         isLiked: true,
         likes: 24,
-        media: '/static/mock-images/social/post_1.png',
+        media: '/images/mock-images/social/post_1.png',
         message: 'Just made this overview screen for a project, what-cha thinkin?'
       },
       {
         id: '5e887faf03e78a5359765636',
         author: {
           id: '5e86809283e28b96d2d38537',
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           name: 'Anika Visser'
         },
         comments: [
@@ -109,7 +109,7 @@ class SocialApi {
             id: '5e887fde4992eca63b9e9ef5',
             author: {
               id: '5e8877da9a65442b11551975',
-              avatar: '/static/mock-images/avatars/avatar-iulia_albu.png',
+              avatar: '/images/mock-images/avatars/avatar-iulia_albu.png',
               name: 'Iulia Albu'
             },
             createdAt: subHours(now, 3).getTime(),
@@ -119,7 +119,7 @@ class SocialApi {
             id: '5e887feb11b7add1ebfcca78',
             author: {
               id: '5e887b209c28ac3dd97f6db5',
-              avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+              avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
               name: 'Fran Perez'
             },
             createdAt: subHours(now, 2).getTime(),
@@ -142,7 +142,7 @@ class SocialApi {
         id: '5e887fa38598b6fe61667757',
         author: {
           id: '5e88792be2d4cfb4bf0971d9',
-          avatar: '/static/mock-images/avatars/avatar-siegbert_gottfried.png',
+          avatar: '/images/mock-images/avatars/avatar-siegbert_gottfried.png',
           name: 'Siegbert Gottfried'
         },
         comments: [
@@ -150,7 +150,7 @@ class SocialApi {
             id: '5e887fb6c648772b52f860a8',
             author: {
               id: '5e8680e60cba5019c5ca6fda',
-              avatar: '/static/mock-images/avatars/avatar-nasimiyu_danai.png',
+              avatar: '/images/mock-images/avatars/avatar-nasimiyu_danai.png',
               name: 'Nasimiyu Danai'
             },
             createdAt: subHours(now, 3).getTime(),
@@ -166,7 +166,7 @@ class SocialApi {
         id: '5e887faca2b7a1ddce01221a',
         author: {
           id: '5e86809283e28b96d2d38537',
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           name: 'Anika Visser'
         },
         comments: [
@@ -174,7 +174,7 @@ class SocialApi {
             id: '5e887fc17162ba254da30771',
             author: {
               id: '5e887b7602bdbc4dbb234b27',
-              avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+              avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
               name: 'Jie Yan Song'
             },
             createdAt: subHours(now, 3).getTime(),
@@ -184,7 +184,7 @@ class SocialApi {
             id: '5e887fc759bebe8d5d54a2e5',
             author: {
               id: '5e887a1fbefd7938eea9c981',
-              avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+              avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
               name: 'Penjani Inyene'
             },
             createdAt: subHours(now, 2).getTime(),
@@ -194,14 +194,14 @@ class SocialApi {
         createdAt: subHours(now, 4).getTime(),
         isLiked: true,
         likes: 24,
-        media: '/static/mock-images/social/post_1.png',
+        media: '/images/mock-images/social/post_1.png',
         message: 'Just made this overview screen for a project, what-cha thinkin?'
       },
       {
         id: '5e887faf03e78a5359765636',
         author: {
           id: '5e86809283e28b96d2d38537',
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           name: 'Anika Visser'
         },
         comments: [
@@ -209,7 +209,7 @@ class SocialApi {
             id: '5e887fde4992eca63b9e9ef5',
             author: {
               id: '5e8877da9a65442b11551975',
-              avatar: '/static/mock-images/avatars/avatar-iulia_albu.png',
+              avatar: '/images/mock-images/avatars/avatar-iulia_albu.png',
               name: 'Iulia Albu'
             },
             createdAt: subHours(now, 3).getTime(),
@@ -219,7 +219,7 @@ class SocialApi {
             id: '5e887feb11b7add1ebfcca78',
             author: {
               id: '5e887b209c28ac3dd97f6db5',
-              avatar: '/static/mock-images/avatars/avatar-fran_perez.png',
+              avatar: '/images/mock-images/avatars/avatar-fran_perez.png',
               name: 'Fran Perez'
             },
             createdAt: subHours(now, 2).getTime(),
