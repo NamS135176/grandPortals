@@ -27,7 +27,7 @@ const projects = [
   {
     id: '5eff24e675e7b3cba23e4be7',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+      avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
       name: 'Jie Yan Song'
     },
     budget: 12500,
@@ -39,7 +39,7 @@ const projects = [
   {
     id: '5eff24e98e2c9107e95cb827',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-omar_darboe.png',
+      avatar: '/images/mock-images/avatars/avatar-omar_darboe.png',
       name: 'Omar Darobe'
     },
     budget: 15750,
@@ -51,7 +51,7 @@ const projects = [
   {
     id: '5eff24f0d97353e3576d3c26',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-siegbert_gottfried.png',
+      avatar: '/images/mock-images/avatars/avatar-siegbert_gottfried.png',
       name: 'Siegbert Gottfried'
     },
     budget: 15750,
@@ -63,7 +63,7 @@ const projects = [
   {
     id: '5eff24f737bc6b191dd9bf58',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-iulia_albu.png',
+      avatar: '/images/mock-images/avatars/avatar-iulia_albu.png',
       name: 'Iulia Albu'
     },
     budget: 12500,
@@ -75,7 +75,7 @@ const projects = [
   {
     id: '5eff24fb29fc5e37bdab3b2d',
     author: {
-      avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+      avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
       name: 'Carson Darrin'
     },
     budget: 15750,
@@ -87,12 +87,12 @@ const projects = [
 ];
 
 const technologyMap = {
-  'html-css': '/static/icons/html.svg',
-  'react-js': '/static/icons/react-js.svg',
-  'vue-js': '/static/icons/vue-js.svg',
-  angular: '/static/icons/angular.svg',
-  figma: '/static/icons/figma.svg',
-  sketch: '/static/icons/sketch.svg'
+  'html-css': '/images/icons/html.svg',
+  'react-js': '/images/icons/react-js.svg',
+  'vue-js': '/images/icons/vue-js.svg',
+  angular: '/images/icons/angular.svg',
+  figma: '/images/icons/figma.svg',
+  sketch: '/images/icons/sketch.svg'
 };
 
 export const Table2 = () => (

@@ -24,11 +24,11 @@ const tasks = [
     deadline: addDays(addHours(now, 1), 1).getTime(),
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+        avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
         name: 'Marcus Finn'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+        avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
         name: 'Carson Darrin'
       }
     ],
@@ -39,15 +39,15 @@ const tasks = [
     deadline: addDays(addHours(now, 1), 2).getTime(),
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+        avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
         name: 'Penjani Inyene'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         name: 'Anika Visser'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-nasimiyu_danai.png',
+        avatar: '/images/mock-images/avatars/avatar-nasimiyu_danai.png',
         name: 'Nasimiyu Danai'
       }
     ],
@@ -58,7 +58,7 @@ const tasks = [
     deadline: now.getTime(),
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-miron_vitold.png',
+        avatar: '/images/mock-images/avatars/avatar-miron_vitold.png',
         name: 'Miron Vitold'
       }
     ],
@@ -69,11 +69,11 @@ const tasks = [
     deadline: null,
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+        avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
         name: 'Marcus Finn'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-siegbert_gottfried.png',
+        avatar: '/images/mock-images/avatars/avatar-siegbert_gottfried.png',
         name: 'Siegbert Gottfried'
       }
     ],
@@ -84,15 +84,15 @@ const tasks = [
     deadline: null,
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+        avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
         name: 'Jie Yan Song'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+        avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
         name: 'Marcus Finn'
       },
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         name: 'Anika Visser'
       }
     ],
@@ -103,7 +103,7 @@ const tasks = [
     deadline: null,
     members: [
       {
-        avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+        avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
         name: 'Penjani Inyene'
       }
     ],

@@ -11,7 +11,7 @@ export const KanbanCommentAdd = (props) => {
   // To get the user from the authContext, you can use
   // `const { user } = useAuth();`
   const user = {
-    avatar: '/static/mock-images/avatars/avatar-anika_visser.png'
+    avatar: '/images/mock-images/avatars/avatar-anika_visser.png'
   };
   const [message, setMessage] = useState('');
 

@@ -22,7 +22,7 @@ export const DetailList7 = () => (
   >
     <Card>
       <CardHeader
-        avatar={<Avatar src="/static/mock-images/avatars/avatar-omar_darobe.png" />}
+        avatar={<Avatar src="/images/mock-images/avatars/avatar-omar_darobe.png" />}
         disableTypography
         subheader={(
           <Link

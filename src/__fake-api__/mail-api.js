@@ -90,21 +90,21 @@ const emails = [
       {
         id: '945d887e97f480359d3f591f',
         type: 'image',
-        url: '/static/mock-images/mail/attachment_1.jpg',
+        url: '/images/mock-images/mail/attachment_1.jpg',
         name: 'working-sketch.jpg',
         size: '128.5Kb'
       },
       {
         id: '09223c93e60f815fdce487af',
         type: 'file',
-        url: '/static/mock-images/mail/attachment_2.pdf',
+        url: '/images/mock-images/mail/attachment_2.pdf',
         name: 'summer-customers.pdf',
         size: '782.3Kb'
       },
       {
         id: '165adb24c7b6a2e9aebba766',
         type: 'image',
-        url: '/static/mock-images/mail/attachment_3.jpg',
+        url: '/images/mock-images/mail/attachment_3.jpg',
         name: 'desktop-coffee.jpg',
         size: '568.2Kb'
       }
@@ -112,7 +112,7 @@ const emails = [
     createdAt: now.getTime(),
     folder: 'inbox',
     from: {
-      avatar: '/static/mock-images/avatars/avatar-marcus_finn.png',
+      avatar: '/images/mock-images/avatars/avatar-marcus_finn.png',
       email: 'marcus.finn@devias.io',
       name: 'Marcus Finn'
     },
@@ -135,7 +135,7 @@ Marcus Finn
     subject: 'Website redesign. Interested in collaboration',
     to: [
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         email: 'anika.visser@devias.io',
         name: 'Anika Visser'
       }
@@ -146,7 +146,7 @@ Marcus Finn
     createdAt: now.getTime(),
     folder: 'spam',
     from: {
-      avatar: '/static/mock-images/avatars/avatar-miron_vitold.png',
+      avatar: '/images/mock-images/avatars/avatar-miron_vitold.png',
       email: 'miron.vitold@devias.io',
       name: 'Miron Vitold'
     },
@@ -160,7 +160,7 @@ Hey, nice projects! I really liked the one in react. What's your quote on kinda 
     subject: 'Amazing work',
     to: [
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         email: 'anika.visser@devias.io',
         name: 'Anika Visser'
       }
@@ -171,7 +171,7 @@ Hey, nice projects! I really liked the one in react. What's your quote on kinda 
     createdAt: now.getTime(),
     folder: 'inbox',
     from: {
-      avatar: '/static/mock-images/avatars/avatar-penjani_inyene.png',
+      avatar: '/images/mock-images/avatars/avatar-penjani_inyene.png',
       email: 'penjani.inyene@devias.io',
       name: 'Penjani Inyene'
     },
@@ -185,7 +185,7 @@ Dear Anika, Your flight is coming up soon. Please don’t forget to check in for
     subject: 'Flight reminder',
     to: [
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         email: 'anika.visser@devias.io',
         name: 'Anika Visser'
       }
@@ -196,7 +196,7 @@ Dear Anika, Your flight is coming up soon. Please don’t forget to check in for
     createdAt: now.getTime(),
     folder: 'trash',
     from: {
-      avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',
+      avatar: '/images/mock-images/avatars/avatar-carson_darrin.png',
       email: 'carson.darrin@devias.io',
       name: 'Carson Darrin'
     },
@@ -210,7 +210,7 @@ My market leading client has another fantastic opportunity for an experienced So
     subject: 'Possible candidates for the position',
     to: [
       {
-        avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+        avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
         email: 'anika.visser@devias.io',
         name: 'Anika Visser'
       }

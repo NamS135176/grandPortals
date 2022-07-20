@@ -57,7 +57,7 @@ const ServerError = () => {
             <Box
               alt="Under development"
               component="img"
-              src={`/static/error/error500_${theme.palette.mode}.svg`}
+              src={`/images/error/error500_${theme.palette.mode}.svg`}
               sx={{
                 height: 'auto',
                 maxWidth: '100%',

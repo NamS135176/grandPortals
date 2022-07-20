@@ -5,12 +5,12 @@
     "serviceName": "AppSync",
     "gqlSchemaPath": "/Users/anhndt/Workspace/SIS/Outsoure/gradsportal/grands-portal/amplify/backend/api/grandsportal/schema.graphql",
     "defaultAuthType": {
-      "mode": "AWS_IAM"
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authgrandsPortal"
     },
     "additionalAuthTypes": [
       {
-        "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authgrandsPortal"
+        "mode": "AWS_IAM"
       }
     ],
     "conflictResolution": {}

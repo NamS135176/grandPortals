@@ -100,7 +100,7 @@ const Pricing = () => {
                 >
                   <img
                     alt="Pricing hero"
-                    src={`/static/pricing/pricing_${theme.palette.mode}.svg`}
+                    src={`/images/pricing/pricing_${theme.palette.mode}.svg`}
                   />
                 </Box>
               </Grid>
@@ -130,7 +130,7 @@ const Pricing = () => {
                   'Chat support',
                   'Email alerts'
                 ]}
-                image="/static/pricing/plan1.svg"
+                image="/images/pricing/plan1.svg"
                 name="Startup"
                 price="0"
                 sx={{
@@ -155,7 +155,7 @@ const Pricing = () => {
                   'Data history',
                   'Unlimited users'
                 ]}
-                image="/static/pricing/plan2.svg"
+                image="/images/pricing/plan2.svg"
                 name="Standard"
                 popular
                 price="4.99"
@@ -182,7 +182,7 @@ const Pricing = () => {
                   'Public API access',
                   'Send and sign unlimited contracts'
                 ]}
-                image="/static/pricing/plan3.svg"
+                image="/images/pricing/plan3.svg"
                 name="Business"
                 price="29.99"
                 sx={{

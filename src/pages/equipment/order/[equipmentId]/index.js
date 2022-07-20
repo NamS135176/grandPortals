@@ -175,7 +175,7 @@ const EquipmentOrderDetails = () => {
 							</Box>
 							<Box
 								sx={{
-									backgroundImage: `url(/static/mock-images/covers/cover_1.jpg)`,
+									backgroundImage: `url(/images/mock-images/covers/cover_1.jpg)`,
 									backgroundPosition: 'center',
 									backgroundSize: 'cover',
 									borderRadius: 1,

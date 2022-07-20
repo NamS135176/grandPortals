@@ -2,15 +2,15 @@ import { Box, ListItemIcon, ListItemText, MenuItem, Paper, Typography } from '@m
 
 const languageOptions = [
   {
-    icon: '/static/icons/uk_flag.svg',
+    icon: '/images/icons/uk_flag.svg',
     label: 'English'
   },
   {
-    icon: '/static/icons/de_flag.svg',
+    icon: '/images/icons/de_flag.svg',
     label: 'German'
   },
   {
-    icon: '/static/icons/es_flag.svg',
+    icon: '/images/icons/es_flag.svg',
     label: 'Spanish'
   }
 ];

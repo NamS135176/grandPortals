@@ -26,7 +26,7 @@ const data = [
   {
     id: '5e8883f1b51cc1956a5a1ec0',
     author: 'Jie Yang Song',
-    avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+    avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
     createdAt: subHours(now, 2).getTime(),
     job: 'Remote React / React Native Developer',
     read: true,
@@ -35,7 +35,7 @@ const data = [
   {
     id: 'bfb21a370c017acc416757c7',
     author: 'Jie Yang Song',
-    avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+    avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
     createdAt: subHours(now, 2).getTime(),
     job: 'Senior Golang Backend Engineer',
     read: false,
@@ -51,7 +51,7 @@ const data = [
   {
     id: '5e8883fca0e8612044248ecf',
     author: 'Jie Yang Song',
-    avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+    avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
     company: 'Augmastic Inc',
     createdAt: subHours(now, 2).getTime(),
     read: false,

@@ -46,6 +46,7 @@ export const AddDocumentDialog = (props) => {
             const s3FileName = getBukkenS3FileName(bukken, originFileName);
             await Storage.put(s3FileName, file, {
                 level: "public",
+                // acl: 'public-read',
                 contentType: file.type,
             });
 

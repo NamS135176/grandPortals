@@ -140,7 +140,7 @@ export const AccountTeamSettings = () => (
               >
                 <Avatar
                   alt="Cao Yu"
-                  src="/static/mock-images/avatars/avatar-cao-yu.png"
+                  src="/images/mock-images/avatars/avatar-cao-yu.png"
                   sx={{
                     height: 40,
                     width: 40,

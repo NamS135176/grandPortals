@@ -20,7 +20,7 @@ import { gtm } from '../../lib/gtm';
 import { fileToBase64 } from '../../utils/file-to-base64';
 
 const BlogPostCreate = () => {
-  const [cover, setCover] = useState('/static/mock-images/covers/cover_4.jpeg');
+  const [cover, setCover] = useState('/images/mock-images/covers/cover_4.jpeg');
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });

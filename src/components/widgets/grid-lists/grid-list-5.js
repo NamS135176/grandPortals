@@ -24,24 +24,24 @@ const posts = [
     id: '5e887faca2b7a1ddce01221a',
     author: {
       id: '5e86809283e28b96d2d38537',
-      avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+      avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
       name: 'Anika Visser'
     },
     createdAt: subHours(now, 4).getTime(),
     likes: 24,
-    media: '/static/mock-images/social/post_1.png',
+    media: '/images/mock-images/social/post_1.png',
     message: 'Hey guys! What\'s your favorite framework?'
   },
   {
     id: '5e887faf03e78a5359765636',
     author: {
       id: '5e86809283e28b96d2d38537',
-      avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+      avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
       name: 'Anika Visser'
     },
     createdAt: subHours(now, 7).getTime(),
     likes: 65,
-    media: '/static/mock-images/social/post_2.jpg',
+    media: '/images/mock-images/social/post_2.jpg',
     message: 'Just made this overview screen for a project, what-cha thinkin?'
   }
 ];

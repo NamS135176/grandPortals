@@ -32,7 +32,7 @@ export const HomeTestimonials = (props) => (
       }}
     >
       <Avatar
-        src="/static/home/olivier.png"
+        src="/images/home/olivier.png"
         sx={{ mr: 2 }}
         variant="rounded"
       />

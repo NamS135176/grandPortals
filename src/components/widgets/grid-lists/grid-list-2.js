@@ -24,7 +24,7 @@ const projects = [
     id: '5e8dcef8f95685ce21f16f3d',
     author: {
       id: '5e887b7602bdbc4dbb234b27',
-      avatar: '/static/mock-images/avatars/avatar-jie_yan_song.png',
+      avatar: '/images/mock-images/avatars/avatar-jie_yan_song.png',
       name: 'Jie Yan Song'
     },
     budget: 6125.00,
@@ -33,7 +33,7 @@ const projects = [
     isLiked: true,
     likes: 7,
     location: 'Europe',
-    image: '/static/mock-images/projects/project_1.png',
+    image: '/images/mock-images/projects/project_1.png',
     rating: 5,
     membersCount: 2,
     title: 'Mella Full Screen Slider',
@@ -44,7 +44,7 @@ const projects = [
     id: '5e8dcf076c50b9d8e756a5a2',
     author: {
       id: '5e887d0b3d090c1b8f162003',
-      avatar: '/static/mock-images/avatars/avatar-omar_darboe.png',
+      avatar: '/images/mock-images/avatars/avatar-omar_darboe.png',
       name: 'Omar Darobe'
     },
     budget: 4205.00,
@@ -53,7 +53,7 @@ const projects = [
     isLiked: true,
     likes: 12,
     location: 'Europe',
-    image: '/static/mock-images/projects/project_2.png',
+    image: '/images/mock-images/projects/project_2.png',
     rating: 4.5,
     membersCount: 3,
     title: 'Overview Design',
@@ -64,7 +64,7 @@ const projects = [
     id: '5e8dcf105a6732b3ed82cf7a',
     author: {
       id: '5e88792be2d4cfb4bf0971d9',
-      avatar: '/static/mock-images/avatars/avatar-siegbert_gottfried.png',
+      avatar: '/images/mock-images/avatars/avatar-siegbert_gottfried.png',
       name: 'Siegbert Gottfried'
     },
     budget: 2394.00,
@@ -73,7 +73,7 @@ const projects = [
     isLiked: true,
     likes: 18,
     location: 'Europe',
-    image: '/static/mock-images/projects/project_3.png',
+    image: '/images/mock-images/projects/project_3.png',
     rating: 4.7,
     membersCount: 8,
     title: 'Ten80 Web Design',

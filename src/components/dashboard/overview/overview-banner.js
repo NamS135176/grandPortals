@@ -31,7 +31,7 @@ export const OverviewBanner = (props) => {
       >
         <img
           alt=""
-          src="/static/banner-illustration.png"
+          src="/images/banner-illustration.png"
         />
       </Box>
       <div>

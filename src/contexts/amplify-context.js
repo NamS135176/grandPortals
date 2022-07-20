@@ -87,7 +87,7 @@ export const AuthProvider = (props) => {
             user: {
               id: user.username,
               group: groups?.length > 0 ? groups[0] : cognitoGroupAgentGrands,
-              avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+              avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
               email: user.attributes.email,
               name: 'Anika Visser',
               plan: 'Premium'
@@ -121,7 +121,7 @@ export const AuthProvider = (props) => {
       payload: {
         user: {
           id: user.attributes.sub,
-          avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+          avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
           email: user.attributes.email,
           name: 'Anika Visser',
           plan: 'Premium'
