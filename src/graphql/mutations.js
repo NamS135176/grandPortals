@@ -13,6 +13,7 @@ export const createUser = /* GraphQL */ `
       name_kana
       delete_flag
       last_login_date
+      sort
       createdAt
       updatedAt
     }
@@ -30,6 +31,7 @@ export const updateUser = /* GraphQL */ `
       name_kana
       delete_flag
       last_login_date
+      sort
       createdAt
       updatedAt
     }
@@ -47,6 +49,7 @@ export const deleteUser = /* GraphQL */ `
       name_kana
       delete_flag
       last_login_date
+      sort
       createdAt
       updatedAt
     }
@@ -158,6 +161,7 @@ export const createBukken = /* GraphQL */ `
           field_list
           delete_flag
           object_kind_updatedAt
+          sort
           createdAt
           updatedAt
           bukkenOtherObjectsId
@@ -176,6 +180,7 @@ export const createBukken = /* GraphQL */ `
           overview
           delete_flag
           object_kind_createdAt
+          sort
           createdAt
           updatedAt
           bukkenDocumentsId
@@ -192,12 +197,14 @@ export const createBukken = /* GraphQL */ `
           remarks
           overview
           delete_flag
+          sort
           createdAt
           updatedAt
           bukkenHistoriesId
         }
         nextToken
       }
+      sort
       createdAt
       updatedAt
     }
@@ -231,6 +238,7 @@ export const updateBukken = /* GraphQL */ `
           field_list
           delete_flag
           object_kind_updatedAt
+          sort
           createdAt
           updatedAt
           bukkenOtherObjectsId
@@ -249,6 +257,7 @@ export const updateBukken = /* GraphQL */ `
           overview
           delete_flag
           object_kind_createdAt
+          sort
           createdAt
           updatedAt
           bukkenDocumentsId
@@ -265,12 +274,14 @@ export const updateBukken = /* GraphQL */ `
           remarks
           overview
           delete_flag
+          sort
           createdAt
           updatedAt
           bukkenHistoriesId
         }
         nextToken
       }
+      sort
       createdAt
       updatedAt
     }
@@ -304,6 +315,7 @@ export const deleteBukken = /* GraphQL */ `
           field_list
           delete_flag
           object_kind_updatedAt
+          sort
           createdAt
           updatedAt
           bukkenOtherObjectsId
@@ -322,6 +334,7 @@ export const deleteBukken = /* GraphQL */ `
           overview
           delete_flag
           object_kind_createdAt
+          sort
           createdAt
           updatedAt
           bukkenDocumentsId
@@ -338,12 +351,14 @@ export const deleteBukken = /* GraphQL */ `
           remarks
           overview
           delete_flag
+          sort
           createdAt
           updatedAt
           bukkenHistoriesId
         }
         nextToken
       }
+      sort
       createdAt
       updatedAt
     }
@@ -377,6 +392,7 @@ export const createOtherObject = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -388,6 +404,7 @@ export const createOtherObject = /* GraphQL */ `
       field_list
       delete_flag
       object_kind_updatedAt
+      sort
       createdAt
       updatedAt
       bukkenOtherObjectsId
@@ -422,6 +439,7 @@ export const updateOtherObject = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -433,6 +451,7 @@ export const updateOtherObject = /* GraphQL */ `
       field_list
       delete_flag
       object_kind_updatedAt
+      sort
       createdAt
       updatedAt
       bukkenOtherObjectsId
@@ -467,6 +486,7 @@ export const deleteOtherObject = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -478,6 +498,7 @@ export const deleteOtherObject = /* GraphQL */ `
       field_list
       delete_flag
       object_kind_updatedAt
+      sort
       createdAt
       updatedAt
       bukkenOtherObjectsId
@@ -512,6 +533,7 @@ export const createDocument = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -523,6 +545,7 @@ export const createDocument = /* GraphQL */ `
       overview
       delete_flag
       object_kind_createdAt
+      sort
       createdAt
       updatedAt
       bukkenDocumentsId
@@ -557,6 +580,7 @@ export const updateDocument = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -568,6 +592,7 @@ export const updateDocument = /* GraphQL */ `
       overview
       delete_flag
       object_kind_createdAt
+      sort
       createdAt
       updatedAt
       bukkenDocumentsId
@@ -602,6 +627,7 @@ export const deleteDocument = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -613,6 +639,7 @@ export const deleteDocument = /* GraphQL */ `
       overview
       delete_flag
       object_kind_createdAt
+      sort
       createdAt
       updatedAt
       bukkenDocumentsId
@@ -647,6 +674,7 @@ export const createHistory = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -656,6 +684,7 @@ export const createHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
       createdAt
       updatedAt
       bukkenHistoriesId
@@ -690,6 +719,7 @@ export const updateHistory = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -699,6 +729,7 @@ export const updateHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
       createdAt
       updatedAt
       bukkenHistoriesId
@@ -733,6 +764,7 @@ export const deleteHistory = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -742,6 +774,7 @@ export const deleteHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
       createdAt
       updatedAt
       bukkenHistoriesId

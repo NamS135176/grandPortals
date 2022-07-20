@@ -10,6 +10,7 @@ export const getUser = /* GraphQL */ `
       name_kana
       delete_flag
       last_login_date
+      sort
       createdAt
       updatedAt
     }
@@ -37,6 +38,7 @@ export const listUsers = /* GraphQL */ `
         name_kana
         delete_flag
         last_login_date
+        sort
         createdAt
         updatedAt
       }
@@ -145,6 +147,7 @@ export const getBukken = /* GraphQL */ `
           field_list
           delete_flag
           object_kind_updatedAt
+          sort
           createdAt
           updatedAt
           bukkenOtherObjectsId
@@ -163,6 +166,7 @@ export const getBukken = /* GraphQL */ `
           overview
           delete_flag
           object_kind_createdAt
+          sort
           createdAt
           updatedAt
           bukkenDocumentsId
@@ -179,12 +183,14 @@ export const getBukken = /* GraphQL */ `
           remarks
           overview
           delete_flag
+          sort
           createdAt
           updatedAt
           bukkenHistoriesId
         }
         nextToken
       }
+      sort
       createdAt
       updatedAt
     }
@@ -225,6 +231,7 @@ export const listBukkens = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -257,6 +264,7 @@ export const getOtherObject = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -268,6 +276,7 @@ export const getOtherObject = /* GraphQL */ `
       field_list
       delete_flag
       object_kind_updatedAt
+      sort
       createdAt
       updatedAt
       bukkenOtherObjectsId
@@ -303,6 +312,7 @@ export const listOtherObjects = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -314,6 +324,7 @@ export const listOtherObjects = /* GraphQL */ `
         field_list
         delete_flag
         object_kind_updatedAt
+        sort
         createdAt
         updatedAt
         bukkenOtherObjectsId
@@ -347,6 +358,7 @@ export const getDocument = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -358,6 +370,7 @@ export const getDocument = /* GraphQL */ `
       overview
       delete_flag
       object_kind_createdAt
+      sort
       createdAt
       updatedAt
       bukkenDocumentsId
@@ -393,6 +406,7 @@ export const listDocuments = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -404,6 +418,7 @@ export const listDocuments = /* GraphQL */ `
         overview
         delete_flag
         object_kind_createdAt
+        sort
         createdAt
         updatedAt
         bukkenDocumentsId
@@ -437,6 +452,7 @@ export const getHistory = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -446,6 +462,7 @@ export const getHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
       createdAt
       updatedAt
       bukkenHistoriesId
@@ -481,6 +498,7 @@ export const listHistories = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -490,9 +508,42 @@ export const listHistories = /* GraphQL */ `
         remarks
         overview
         delete_flag
+        sort
         createdAt
         updatedAt
         bukkenHistoriesId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryUserBySort = /* GraphQL */ `
+  query QueryUserBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryUserBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        name
+        name_kana
+        delete_flag
+        last_login_date
+        sort
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -562,6 +613,7 @@ export const queryBukkensByBukkenNo = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
         createdAt
         updatedAt
       }
@@ -604,6 +656,52 @@ export const queryBukkensByUserId = /* GraphQL */ `
         histories {
           nextToken
         }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryBukkenBySort = /* GraphQL */ `
+  query QueryBukkenBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryBukkenBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects {
+          nextToken
+        }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        sort
         createdAt
         updatedAt
       }
@@ -640,6 +738,7 @@ export const queryOtherObjectByBukkenId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -651,6 +750,7 @@ export const queryOtherObjectByBukkenId = /* GraphQL */ `
         field_list
         delete_flag
         object_kind_updatedAt
+        sort
         createdAt
         updatedAt
         bukkenOtherObjectsId
@@ -688,6 +788,7 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -699,6 +800,7 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
         field_list
         delete_flag
         object_kind_updatedAt
+        sort
         createdAt
         updatedAt
         bukkenOtherObjectsId
@@ -736,6 +838,7 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -747,6 +850,59 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
         field_list
         delete_flag
         object_kind_updatedAt
+        sort
+        createdAt
+        updatedAt
+        bukkenOtherObjectsId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryOtherObjectBySort = /* GraphQL */ `
+  query QueryOtherObjectBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
+        bukken_no
+        user_id
+        object_kind
+        room_id
+        field_kind
+        field_list
+        delete_flag
+        object_kind_updatedAt
+        sort
         createdAt
         updatedAt
         bukkenOtherObjectsId
@@ -784,6 +940,7 @@ export const queryDocumentByBukkenId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -795,6 +952,7 @@ export const queryDocumentByBukkenId = /* GraphQL */ `
         overview
         delete_flag
         object_kind_createdAt
+        sort
         createdAt
         updatedAt
         bukkenDocumentsId
@@ -832,6 +990,7 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -843,6 +1002,7 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
         overview
         delete_flag
         object_kind_createdAt
+        sort
         createdAt
         updatedAt
         bukkenDocumentsId
@@ -882,6 +1042,7 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -893,6 +1054,59 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
         overview
         delete_flag
         object_kind_createdAt
+        sort
+        createdAt
+        updatedAt
+        bukkenDocumentsId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryDocumentObjectBySort = /* GraphQL */ `
+  query QueryDocumentObjectBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelDocumentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryDocumentObjectBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        other_object_id
+        object_kind
+        orignal_file_name
+        s3_file_name
+        overview
+        delete_flag
+        object_kind_createdAt
+        sort
         createdAt
         updatedAt
         bukkenDocumentsId
@@ -930,6 +1144,7 @@ export const queryHistoryByBukkenId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -939,6 +1154,7 @@ export const queryHistoryByBukkenId = /* GraphQL */ `
         remarks
         overview
         delete_flag
+        sort
         createdAt
         updatedAt
         bukkenHistoriesId
@@ -976,6 +1192,7 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -985,6 +1202,57 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
         remarks
         overview
         delete_flag
+        sort
+        createdAt
+        updatedAt
+        bukkenHistoriesId
+      }
+      nextToken
+    }
+  }
+`;
+export const queryHistoryObjectBySort = /* GraphQL */ `
+  query QueryHistoryObjectBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryHistoryObjectBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        buken {
+          id
+          s_object_id
+          bukken_no
+          user_id
+          address
+          bukken_kind
+          floor_plan
+          shinchiku_date
+          remarks
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        other_object_id
+        object_kind
+        remarks
+        overview
+        delete_flag
+        sort
         createdAt
         updatedAt
         bukkenHistoriesId
@@ -1024,6 +1292,7 @@ export const querHistoryCreatedAt = /* GraphQL */ `
           shinchiku_date
           remarks
           delete_flag
+          sort
           createdAt
           updatedAt
         }
@@ -1033,6 +1302,7 @@ export const querHistoryCreatedAt = /* GraphQL */ `
         remarks
         overview
         delete_flag
+        sort
         createdAt
         updatedAt
         bukkenHistoriesId
