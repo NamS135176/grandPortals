@@ -127,7 +127,7 @@ type Document
     object_kind_createdAt: String!
         @index(
             name: "byObjectKindAndCreatedAt"
-            sortKeyFields: ["other_object_id", "bukken_id"]
+            sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "queryDocumentByObjectKindAndCreatedAt"
         )
 }
@@ -157,7 +157,7 @@ type History
     createdAt: AWSDateTime!
         @index(
             name: "byCreatedAt"
-            sortKeyFields: ["other_object_id", "bukken_id"]
+            sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "querHistoryCreatedAt"
         )
 }

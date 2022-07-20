@@ -251,6 +251,7 @@ const BukkenDetails = () => {
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                deleteDocument={deleteDocument}
                             />
                             <Divider
                                 sx={{
@@ -290,6 +291,7 @@ const BukkenDetails = () => {
                                 }
                                 rowsPerPage={rowsPerPageHistory}
                                 page={page}
+                                deleteHistory={deleteHistory}
                             />
                         </CardContent>
                         <CardActions>

@@ -768,7 +768,7 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
 export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
   query QueryDocumentByObjectKindAndCreatedAt(
     $object_kind_createdAt: String!
-    $other_object_idBukken_id: ModelDocumentByObjectKindAndCreatedAtCompositeKeyConditionInput
+    $object_kindBukken_id: ModelDocumentByObjectKindAndCreatedAtCompositeKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelDocumentFilterInput
     $limit: Int
@@ -776,7 +776,7 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
   ) {
     queryDocumentByObjectKindAndCreatedAt(
       object_kind_createdAt: $object_kind_createdAt
-      other_object_idBukken_id: $other_object_idBukken_id
+      object_kindBukken_id: $object_kindBukken_id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -996,7 +996,7 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
 export const querHistoryCreatedAt = /* GraphQL */ `
   query QuerHistoryCreatedAt(
     $createdAt: AWSDateTime!
-    $other_object_idBukken_id: ModelHistoryByCreatedAtCompositeKeyConditionInput
+    $object_kindBukken_id: ModelHistoryByCreatedAtCompositeKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelHistoryFilterInput
     $limit: Int
@@ -1004,7 +1004,7 @@ export const querHistoryCreatedAt = /* GraphQL */ `
   ) {
     querHistoryCreatedAt(
       createdAt: $createdAt
-      other_object_idBukken_id: $other_object_idBukken_id
+      object_kindBukken_id: $object_kindBukken_id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

@@ -37,21 +37,21 @@ export const AddDocumentDialog = (props) => {
 
     const handleSubmit = async () => {
         const {overview, file} = form;
-        console.log("handleSubmit... ", {overview, file});
+        console.log("handleSubmit... ", {overview, file, bukken});
         if (!file || !overview) return;
         setLoading(true);
         try {
             //upload file
             const originFileName = `${file.name.replace(/ |　/g, "")}`;
-            // const s3FileName = getBukkenS3FileName(bukken, originFileName);
-            // await Storage.put(s3FileName, file, {
-            //     level: "public",
-            //     contentType: file.type,
-            // });
+            const s3FileName = getBukkenS3FileName(bukken, originFileName);
+            await Storage.put(s3FileName, file, {
+                level: "public",
+                contentType: file.type,
+            });
 
             //fake
             // const originFileName = "test.pdf";
-            const s3FileName = getBukkenS3FileName(bukken, originFileName);
+            // const s3FileName = getBukkenS3FileName(bukken, originFileName);
 
             //create document
             const object_kind = "0";
@@ -65,7 +65,7 @@ export const AddDocumentDialog = (props) => {
                         object_kind,
                         object_kind_createdAt: `${object_kind}#${moment()
                             .utc()
-                            .format("YYYY-MM-DDTHH:mm:ss")}`,
+                            .format("YYYYMMDDTHHmmss")}`,
                         orignal_file_name: originFileName,
                         s3_file_name: s3FileName,
                         overview,

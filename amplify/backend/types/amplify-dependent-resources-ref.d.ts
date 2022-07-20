@@ -25,7 +25,6 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "api": {
         "grandsportal": {
-            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
@@ -40,6 +39,12 @@ export type AmplifyDependentResourcesAttributes = {
             "CloudFrontDomainName": "string",
             "CloudFrontSecureURL": "string",
             "CloudFrontOriginAccessIdentity": "string"
+        }
+    },
+    "storage": {
+        "grandsPortal": {
+            "BucketName": "string",
+            "Region": "string"
         }
     }
 }
