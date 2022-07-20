@@ -136,6 +136,7 @@ export const getBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -153,6 +154,7 @@ export const getBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -170,6 +172,7 @@ export const getBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -233,6 +236,7 @@ export const getOtherObject = /* GraphQL */ `
   query GetOtherObject($id: ID!) {
     getOtherObject(id: $id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -287,6 +291,7 @@ export const listOtherObjects = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -321,6 +326,7 @@ export const getDocument = /* GraphQL */ `
   query GetDocument($id: ID!) {
     getDocument(id: $id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -375,6 +381,7 @@ export const listDocuments = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -409,6 +416,7 @@ export const getHistory = /* GraphQL */ `
   query GetHistory($id: ID!) {
     getHistory(id: $id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -461,6 +469,7 @@ export const listHistories = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -619,6 +628,7 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -666,6 +676,7 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -713,6 +724,7 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -762,6 +774,7 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -809,6 +822,7 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id
@@ -856,6 +870,7 @@ export const querHistoryCreatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        bukken_id
         buken {
           id
           s_object_id

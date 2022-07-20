@@ -13,8 +13,14 @@ import {
 import {X as XIcon} from "../../icons/x";
 import {FileUpload} from "../widgets/file-upload";
 import {getBukkenS3FileName} from "../../utils/bukken";
+import {createDocument} from "../../graphql/mutations";
+import moment from "moment";
+import {useAuth} from "../../hooks/use-auth";
+import {API, Storage} from "aws-amplify";
 
 export const AddDocumentDialog = (props) => {
+    const {user} = useAuth();
+
     const {onClose, open, mode = "edit", bukken, ...other} = props;
     const [form, setForm] = useState({
         overview: "",
@@ -32,19 +38,45 @@ export const AddDocumentDialog = (props) => {
     const handleSubmit = async () => {
         const {overview, file} = form;
         console.log("handleSubmit... ", {overview, file});
-        if (!file || overview) return;
+        if (!file || !overview) return;
         setLoading(true);
         try {
             //upload file
             const originFileName = `${file.name.replace(/ |　/g, "")}`;
+            // const s3FileName = getBukkenS3FileName(bukken, originFileName);
+            // await Storage.put(s3FileName, file, {
+            //     level: "public",
+            //     contentType: file.type,
+            // });
+
+            //fake
+            // const originFileName = "test.pdf";
             const s3FileName = getBukkenS3FileName(bukken, originFileName);
-            await Storage.put(s3FileName, file, {
-                level: "public",
-                contentType: file.type,
+
+            //create document
+            const object_kind = "0";
+            const response = await API.graphql({
+                query: createDocument,
+                variables: {
+                    input: {
+                        user_id: user.id,
+                        bukken_id: bukken.id,
+                        delete_flag: 0,
+                        object_kind,
+                        object_kind_createdAt: `${object_kind}#${moment()
+                            .utc()
+                            .format("YYYY-MM-DDTHH:mm:ss")}`,
+                        orignal_file_name: originFileName,
+                        s3_file_name: s3FileName,
+                        overview,
+                        //   other_object_id
+                    },
+                },
             });
-            //create
-            s3FileName;
-        } catch (e) {}
+            console.log("response ", response);
+        } catch (e) {
+            throw e;
+        }
         setLoading(false);
         onClose();
     };
@@ -93,7 +125,7 @@ export const AddDocumentDialog = (props) => {
                 <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    disabled={!form.overview || !form.file}
+                    disabled={!form.overview || !form.file || loading}
                 >
                     {mode === "reference" ? "詳細を参照" : "追加"}
                 </Button>

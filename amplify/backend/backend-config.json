@@ -82,7 +82,13 @@
       ]
     }
   },
-  "storage": {},
+  "storage": {
+    "grandsPortal": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  },
   "function": {
     "grandsportal6db2a71ePostConfirmation": {
       "build": true,

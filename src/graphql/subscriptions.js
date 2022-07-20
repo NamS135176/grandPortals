@@ -128,6 +128,7 @@ export const onCreateBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -145,6 +146,7 @@ export const onCreateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -162,6 +164,7 @@ export const onCreateBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -195,6 +198,7 @@ export const onUpdateBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -212,6 +216,7 @@ export const onUpdateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -229,6 +234,7 @@ export const onUpdateBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -262,6 +268,7 @@ export const onDeleteBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -279,6 +286,7 @@ export const onDeleteBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -296,6 +304,7 @@ export const onDeleteBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -317,6 +326,7 @@ export const onCreateOtherObject = /* GraphQL */ `
   subscription OnCreateOtherObject($user_id: String) {
     onCreateOtherObject(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -358,6 +368,7 @@ export const onUpdateOtherObject = /* GraphQL */ `
   subscription OnUpdateOtherObject($user_id: String) {
     onUpdateOtherObject(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -399,6 +410,7 @@ export const onDeleteOtherObject = /* GraphQL */ `
   subscription OnDeleteOtherObject($user_id: String) {
     onDeleteOtherObject(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -440,6 +452,7 @@ export const onCreateDocument = /* GraphQL */ `
   subscription OnCreateDocument($user_id: String) {
     onCreateDocument(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -481,6 +494,7 @@ export const onUpdateDocument = /* GraphQL */ `
   subscription OnUpdateDocument($user_id: String) {
     onUpdateDocument(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -522,6 +536,7 @@ export const onDeleteDocument = /* GraphQL */ `
   subscription OnDeleteDocument($user_id: String) {
     onDeleteDocument(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -563,6 +578,7 @@ export const onCreateHistory = /* GraphQL */ `
   subscription OnCreateHistory($user_id: String) {
     onCreateHistory(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -602,6 +618,7 @@ export const onUpdateHistory = /* GraphQL */ `
   subscription OnUpdateHistory($user_id: String) {
     onUpdateHistory(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -641,6 +658,7 @@ export const onDeleteHistory = /* GraphQL */ `
   subscription OnDeleteHistory($user_id: String) {
     onDeleteHistory(user_id: $user_id) {
       id
+      bukken_id
       buken {
         id
         s_object_id

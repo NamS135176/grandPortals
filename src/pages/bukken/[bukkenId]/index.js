@@ -25,7 +25,7 @@ import {useRouter} from "next/router";
 import {useBukkenDetail} from "../../../hooks/use-bukken-detail";
 import {getBukkenType} from "../../../utils/bukken";
 import moment from "moment";
-import { AddDocumentDialog } from "../../../components/bukken/AddDocumentDialog";
+import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -33,11 +33,13 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 const BukkenDetails = () => {
     const router = useRouter();
     const {bukkenId} = router.query;
-    const {bukken} = useBukkenDetail(bukkenId);
-
-    const isMounted = useMounted();
-    const [bukkenDocs, setBukkenDocs] = useState([]);
-    const [bukkenHistory, setBukkenHistory] = useState([]);
+    const {
+        bukken,
+        histories: bukkenHistory,
+        documents: bukkenDocs,
+        deleteDocument, 
+        deleteHistory
+    } = useBukkenDetail(bukkenId);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
@@ -49,7 +51,6 @@ const BukkenDetails = () => {
     });
 
     useEffect(() => {
-        console.log("BukkenDetails... useEffect(bukken)", {bukken});
         if (!bukken) return;
         setForm({
             bukken_kind: getBukkenType(bukken),
@@ -78,46 +79,13 @@ const BukkenDetails = () => {
         setOpenHistoryDialog(false);
     };
 
-    const [openDocumentDialog, setOpenDocumentDialog] = useState(true)
+    const [openDocumentDialog, setOpenDocumentDialog] = useState(false);
     const handleOpenDocumentDialog = () => {
         setOpenDocumentDialog(true);
     };
     const handleCloseDocumentDialog = () => {
         setOpenDocumentDialog(false);
     };
-
-    const getRelatedDocs = useCallback(async () => {
-        try {
-            const data = await bukkenApi.getRelatedDocs();
-
-            if (isMounted()) {
-                setBukkenDocs(data);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }, [isMounted]);
-
-    const getHistory = useCallback(async () => {
-        try {
-            const data = await bukkenApi.getHistory();
-
-            if (isMounted()) {
-                setBukkenHistory(data);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }, [isMounted]);
-
-    useEffect(
-        () => {
-            getRelatedDocs();
-            getHistory();
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
@@ -264,17 +232,19 @@ const BukkenDetails = () => {
                                 </Typography>
                                 <Button
                                     variant="contained"
-                                    onClick={handleOpenHistoryDialog}
+                                    onClick={handleOpenDocumentDialog}
                                 >
                                     資料追加
                                 </Button>
-                                <HistoryDialog
-                                    onClose={handleCloseHistoryDialog}
-                                    open={openHistoryDialog}
+                                <AddDocumentDialog
+                                    onClose={handleCloseDocumentDialog}
+                                    open={openDocumentDialog}
                                     mode="edit"
+                                    bukken={bukken}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
+                                bukken={bukken}
                                 bukkenDocs={paginatedBukkenDocs}
                                 bukkenDocsCount={bukkenDocs.length}
                                 onPageChange={handlePageChange}
@@ -299,17 +269,19 @@ const BukkenDetails = () => {
                                 <Typography variant="h6">最新履歴</Typography>
                                 <Button
                                     variant="contained"
-                                    onClick={handleOpenDocumentDialog}
+                                    onClick={handleOpenHistoryDialog}
                                 >
                                     履歴追加
                                 </Button>
-                                <AddDocumentDialog
-                                    onClose={handleCloseDocumentDialog}
-                                    open={openDocumentDialog}
+                                <HistoryDialog
+                                    onClose={handleCloseHistoryDialog}
+                                    open={openHistoryDialog}
                                     mode="edit"
+                                    bukken={bukken}
                                 />
                             </Box>
                             <BukkenHistoryListTable
+                                bukken={bukken}
                                 bukkenHistory={paginatedBukkenHistory}
                                 bukkenHistoryCount={bukkenHistory.length}
                                 onPageChange={handlePageHistoryChange}

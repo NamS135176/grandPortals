@@ -17,6 +17,7 @@ import {
 import { Download as DownloadIcon } from '../../icons/download';
 import { Trash as TrashIcon } from '../../icons/trash';
 import { Scrollbar } from '../scrollbar';
+import moment from 'moment';
 
 const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
@@ -35,12 +36,14 @@ const applySort = (bukken, sortDir) =>
 
 export const BukkenRelatedDocsListTable = (props) => {
 	const {
+		bukken,
 		bukkenDocs,
 		bukkenDocsCount,
 		onPageChange,
 		onRowsPerPageChange,
 		page,
 		rowsPerPage,
+		deleteDocument,
 		...other
 	} = props;
 	const [sort, setSort] = useState('desc');
@@ -77,52 +80,66 @@ export const BukkenRelatedDocsListTable = (props) => {
 					<TableBody>
 						{sortedBukkenDocs.map((buk) => {
 							return (
-								<TableRow hover key={buk.id}>
-									<TableCell align="right">
-										<NextLink href="/bukken/1" passHref>
-											<IconButton component="a">
-												<DownloadIcon fontSize="small" />
-											</IconButton>
-										</NextLink>
-									</TableCell>
-									<TableCell>
-										<NextLink href="/bukken/1" passHref>
-											<Link color="inherit" variant="subtitle2">
-												<Box
-													sx={{
-														alignItems: 'center',
-														display: 'flex',
-													}}
-												>
-													<Box
-														sx={{
-															cursor: 'pointer',
-															mr: 2,
-														}}
-													>
-														<Typography variant="subtitle2">
-															{buk.name}
-														</Typography>
-													</Box>
-												</Box>
-											</Link>
-										</NextLink>
-									</TableCell>
-									<TableCell>{buk.overview}</TableCell>
-									<TableCell>
-										<Typography color="success.main" variant="subtitle2">
-											{buk.registeredAt}
-										</Typography>
-									</TableCell>
-									<TableCell align="left">
-										<NextLink href="/bukken/1" passHref>
-											<IconButton component="a" color="error">
-												<TrashIcon fontSize="small" />
-											</IconButton>
-										</NextLink>
-									</TableCell>
-								</TableRow>
-							);
+                                <TableRow hover key={buk.id}>
+                                    <TableCell align="right">
+                                        <NextLink
+                                            href={`/bukken/${bukken.bukken_no}`}
+                                            passHref
+                                        >
+                                            <IconButton component="a">
+                                                <DownloadIcon fontSize="small" />
+                                            </IconButton>
+                                        </NextLink>
+                                    </TableCell>
+                                    <TableCell>
+                                        <NextLink
+                                            href={`/bukken/${bukken.bukken_no}`}
+                                            passHref
+                                        >
+                                            <Link
+                                                color="inherit"
+                                                variant="subtitle2"
+                                            >
+                                                <Box
+                                                    sx={{
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                    }}
+                                                >
+                                                    <Box
+                                                        sx={{
+                                                            cursor: "pointer",
+                                                            mr: 2,
+                                                        }}
+                                                    >
+                                                        <Typography variant="subtitle2">
+                                                            {
+                                                                buk.orignal_file_name
+                                                            }
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Link>
+                                        </NextLink>
+                                    </TableCell>
+                                    <TableCell>{buk.overview}</TableCell>
+                                    <TableCell>
+                                        <Typography
+                                            color="success.main"
+                                            variant="subtitle2"
+                                        >
+                                            {moment(buk.createdAt).format(
+                                                "YYYY/MM/DD HH:mm"
+                                            )}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <IconButton component="a" color="error" onClick={() => deleteDocument(buk)}>
+                                            <TrashIcon fontSize="small" />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            );
 						})}
 					</TableBody>
 				</Table>
@@ -147,4 +164,5 @@ BukkenRelatedDocsListTable.propTypes = {
 	onRowsPerPageChange: PropTypes.func,
 	page: PropTypes.number.isRequired,
 	rowsPerPage: PropTypes.number.isRequired,
+	deleteDocument: PropTypes.func.isRequired,
 };

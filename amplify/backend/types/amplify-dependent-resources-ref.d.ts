@@ -14,6 +14,12 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string"
         }
     },
+    "storage": {
+        "grandsPortal": {
+            "BucketName": "string",
+            "Region": "string"
+        }
+    },
     "function": {
         "grandsportal6db2a71ePostConfirmation": {
             "Name": "string",

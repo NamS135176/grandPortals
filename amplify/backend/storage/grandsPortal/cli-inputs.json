@@ -1,0 +1,14 @@
+{
+  "resourceName": "grandsPortal",
+  "policyUUID": "090348eb",
+  "bucketName": "grandsportal",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

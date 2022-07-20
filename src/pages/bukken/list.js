@@ -22,7 +22,7 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const BukkenList = () => {
-	const { bukkenList: bukken, loading } = useBukkenList();
+	const { bukkenList: bukken } = useBukkenList();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 

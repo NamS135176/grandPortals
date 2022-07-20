@@ -1,96 +1,163 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
-type User @model @auth(rules: [{ allow: groups, groups: ["support", "agentNormal",  "agentGrands"] }]) {
-  id: ID! @primaryKey
-  email: String
-  name: String
-  name_kana: String
-  delete_flag: Boolean!
-  last_login_date: AWSDateTime!
+type User
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    email: String
+    name: String
+    name_kana: String
+    delete_flag: Boolean!
+    last_login_date: AWSDateTime!
 }
 
-type CS @model @auth(rules: [{ allow: groups, groups: ["support", "agentNormal",  "agentGrands"] }]) {
-  email: String! @primaryKey
-  delete_flag: Boolean!
-  last_login_date: AWSDateTime!
+type CS
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+        ]
+    ) {
+    email: String! @primaryKey
+    delete_flag: Boolean!
+    last_login_date: AWSDateTime!
 }
 
-type UserTempResetPassword @model @auth(rules: [{ allow: groups, groups: ["support", "agentNormal",  "agentGrands"] }]) {
-  id: ID! @primaryKey
-  email: String!
-  delete_flag: Boolean!
-  createdAt: AWSDateTime! @index(name: "byCreatedAt", queryField: "queryUserTempResetPasswordByCreatedAt")
-  ttl: AWSTimestamp
+type UserTempResetPassword
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    email: String!
+    delete_flag: Boolean!
+    createdAt: AWSDateTime!
+        @index(
+            name: "byCreatedAt"
+            queryField: "queryUserTempResetPasswordByCreatedAt"
+        )
+    ttl: AWSTimestamp
 }
 
-
-type Bukken @model 
-@auth(rules: [
-  { allow: groups, groups: ["support"] },
-  { allow: owner, ownerField: "user_id" }
-]) {
-  id: ID! @primaryKey
-  s_object_id: String
-  bukken_no: String @index(name: "GSI-bukkenNo", sortKeyFields: "user_id", queryField: "queryBukkensByBukkenNo")
-  user_id: ID! @index(name: "GSI-userId", queryField: "queryBukkensByUserId")
-  address: String
-  bukken_kind: String!
-  floor_plan: String
-  shinchiku_date: AWSDateTime
-  remarks: String
-  delete_flag: Int!
-  otherObjects: [OtherObject] @hasMany
-  documents: [Document] @hasMany
-  histories: [History] @hasMany
+type Bukken
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+        ]
+    ) {
+    id: ID! @primaryKey
+    s_object_id: String
+    bukken_no: String
+        @index(
+            name: "GSI-bukkenNo"
+            sortKeyFields: "user_id"
+            queryField: "queryBukkensByBukkenNo"
+        )
+    user_id: ID! @index(name: "GSI-userId", queryField: "queryBukkensByUserId")
+    address: String
+    bukken_kind: String!
+    floor_plan: String
+    shinchiku_date: AWSDateTime
+    remarks: String
+    delete_flag: Int!
+    otherObjects: [OtherObject] @hasMany
+    documents: [Document] @hasMany
+    histories: [History] @hasMany
 }
 
-type OtherObject @model 
-@auth(rules: [
-  { allow: groups, groups: ["support"] },
-  { allow: owner, ownerField: "user_id" }
-]) {
-  id: ID! @primaryKey
-  buken: Bukken @belongsTo
-  bukken_no: String!
-  user_id: ID!
-  object_kind: String!
-  room_id: ID @index(name: "GSI-roomId", queryField: "queryOtherObjectByRoomId")
-  field_kind: String!
-  field_list: String!
-  delete_flag: Int!
-  object_kind_updatedAt: String! @index(name: "byObjectKindAndUpdatedAt", queryField: "queryOtherObjectByObjectKindAndUpdatedAt")
+type OtherObject
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+        ]
+    ) {
+    id: ID! @primaryKey
+    bukken_id: ID!
+        @index(name: "GSI-bukkenId", queryField: "queryOtherObjectByBukkenId")
+    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    bukken_no: String!
+    user_id: ID!
+    object_kind: String!
+    room_id: ID
+        @index(name: "GSI-roomId", queryField: "queryOtherObjectByRoomId")
+    field_kind: String!
+    field_list: String!
+    delete_flag: Int!
+    object_kind_updatedAt: String!
+        @index(
+            name: "byObjectKindAndUpdatedAt"
+            queryField: "queryOtherObjectByObjectKindAndUpdatedAt"
+        )
 }
 
-type Document @model 
-@auth(rules: [
-  { allow: groups, groups: ["support"] },
-  { allow: owner, ownerField: "user_id" }
-]) {
-  id: ID! @primaryKey
-  buken: Bukken @belongsTo
-  user_id: ID!
-  other_object_id: ID @index(name: "GSI-otherObjectId", queryField: "querDocumentByOtherObjectId")
-  object_kind: String!
-  orignal_file_name: String!
-  s3_file_name: String!
-  overview: String!
-  delete_flag: Int!
-  object_kind_createdAt: String! @index(name: "byObjectKindAndCreatedAt", sortKeyFields: ["other_object_id"], queryField: "queryDocumentByObjectKindAndCreatedAt")
+type Document
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+        ]
+    ) {
+    id: ID! @primaryKey
+    bukken_id: ID!
+        @index(name: "GSI-bukkenId", queryField: "queryDocumentByBukkenId")
+    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    user_id: ID!
+    other_object_id: ID
+        @index(
+            name: "GSI-otherObjectId"
+            queryField: "querDocumentByOtherObjectId"
+        )
+    object_kind: String!
+    orignal_file_name: String!
+    s3_file_name: String!
+    overview: String!
+    delete_flag: Int!
+    object_kind_createdAt: String!
+        @index(
+            name: "byObjectKindAndCreatedAt"
+            sortKeyFields: ["other_object_id", "bukken_id"]
+            queryField: "queryDocumentByObjectKindAndCreatedAt"
+        )
 }
 
-type History @model 
-@auth(rules: [
-  { allow: groups, groups: ["support"] },
-  { allow: owner, ownerField: "user_id" }
-]) {
-  id: ID! @primaryKey
-  buken: Bukken @belongsTo
-  user_id: ID!
-  other_object_id: ID @index(name: "GSI-otherObjectId", queryField: "querHistoryByOtherObjectId")
-  object_kind: String!
-  remarks: String!
-  overview: String!
-  delete_flag: Int!
-  createdAt: AWSDateTime! @index(name: "byCreatedAt", sortKeyFields: ["other_object_id"], queryField: "querHistoryCreatedAt")
+type History
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+        ]
+    ) {
+    id: ID! @primaryKey
+    bukken_id: ID!
+        @index(name: "GSI-bukkenId", queryField: "queryHistoryByBukkenId")
+    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    user_id: ID!
+    other_object_id: ID
+        @index(
+            name: "GSI-otherObjectId"
+            queryField: "querHistoryByOtherObjectId"
+        )
+    object_kind: String!
+    remarks: String!
+    overview: String!
+    delete_flag: Int!
+    createdAt: AWSDateTime!
+        @index(
+            name: "byCreatedAt"
+            sortKeyFields: ["other_object_id", "bukken_id"]
+            queryField: "querHistoryCreatedAt"
+        )
 }

@@ -149,6 +149,7 @@ export const createBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -166,6 +167,7 @@ export const createBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -183,6 +185,7 @@ export const createBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -219,6 +222,7 @@ export const updateBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -236,6 +240,7 @@ export const updateBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -253,6 +258,7 @@ export const updateBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -289,6 +295,7 @@ export const deleteBukken = /* GraphQL */ `
       otherObjects {
         items {
           id
+          bukken_id
           bukken_no
           user_id
           object_kind
@@ -306,6 +313,7 @@ export const deleteBukken = /* GraphQL */ `
       documents {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -323,6 +331,7 @@ export const deleteBukken = /* GraphQL */ `
       histories {
         items {
           id
+          bukken_id
           user_id
           other_object_id
           object_kind
@@ -347,6 +356,7 @@ export const createOtherObject = /* GraphQL */ `
   ) {
     createOtherObject(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -391,6 +401,7 @@ export const updateOtherObject = /* GraphQL */ `
   ) {
     updateOtherObject(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -435,6 +446,7 @@ export const deleteOtherObject = /* GraphQL */ `
   ) {
     deleteOtherObject(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -479,6 +491,7 @@ export const createDocument = /* GraphQL */ `
   ) {
     createDocument(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -523,6 +536,7 @@ export const updateDocument = /* GraphQL */ `
   ) {
     updateDocument(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -567,6 +581,7 @@ export const deleteDocument = /* GraphQL */ `
   ) {
     deleteDocument(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -611,6 +626,7 @@ export const createHistory = /* GraphQL */ `
   ) {
     createHistory(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -653,6 +669,7 @@ export const updateHistory = /* GraphQL */ `
   ) {
     updateHistory(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id
@@ -695,6 +712,7 @@ export const deleteHistory = /* GraphQL */ `
   ) {
     deleteHistory(input: $input, condition: $condition) {
       id
+      bukken_id
       buken {
         id
         s_object_id

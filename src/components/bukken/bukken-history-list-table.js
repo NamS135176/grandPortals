@@ -17,6 +17,7 @@ import {
 import { Trash as TrashIcon } from '../../icons/trash';
 import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
 import { Scrollbar } from '../scrollbar';
+import moment from 'moment';
 
 const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
@@ -35,12 +36,14 @@ const applySort = (bukken, sortDir) =>
 
 export const BukkenHistoryListTable = (props) => {
 	const {
+		bukken,
 		bukkenHistory,
 		bukkenHistoryCount,
 		onPageChange,
 		onRowsPerPageChange,
 		page,
 		rowsPerPage,
+		deleteHistory,
 		...other
 	} = props;
 	const [sort, setSort] = useState('desc');
@@ -78,14 +81,14 @@ export const BukkenHistoryListTable = (props) => {
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
-										<NextLink href="/bukken/1" passHref>
+										<NextLink href={`/bukken/${bukken.bukken_no}`} passHref>
 											<IconButton component="a">
 												<ArrowRightIcon fontSize="small" />
 											</IconButton>
 										</NextLink>
 									</TableCell>
 									<TableCell>
-										<NextLink href="/bukken/1" passHref>
+										<NextLink href={`/bukken/${bukken.bukken_no}`} passHref>
 											<Link color="inherit" variant="subtitle2">
 												<Box
 													sx={{
@@ -109,15 +112,13 @@ export const BukkenHistoryListTable = (props) => {
 									</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
-											{buk.registeredAt}
+											{moment(buk.createdAt).format("YYYY/MM/DD HH:mm")}
 										</Typography>
 									</TableCell>
 									<TableCell align="left">
-										<NextLink href="/bukken/1" passHref>
-											<IconButton component="a" color="error">
-												<TrashIcon fontSize="small" />
-											</IconButton>
-										</NextLink>
+										<IconButton component="a" color="error" onClick={() => deleteHistory(buk)}>
+											<TrashIcon fontSize="small" />
+										</IconButton>
 									</TableCell>
 								</TableRow>
 							);
@@ -145,4 +146,5 @@ BukkenHistoryListTable.propTypes = {
 	onRowsPerPageChange: PropTypes.func,
 	page: PropTypes.number.isRequired,
 	rowsPerPage: PropTypes.number.isRequired,
+	deleteHistory: PropTypes.func.isRequired,
 };
