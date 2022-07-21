@@ -180,7 +180,7 @@ export const useBukkenDetail = (bukkenNo) => {
                             input: {
                                 id: otherObjectId,
                                 bukken_id: bukken.id,
-                                bukkenOtherObjectsId: bukken.id,
+                                // bukkenOtherObjectsId: bukken.id,
                                 bukken_no: bukken.bukken_no,
                                 user_id: bukken.user_id,
                                 object_kind: OtherObjectKind.Bukken,
