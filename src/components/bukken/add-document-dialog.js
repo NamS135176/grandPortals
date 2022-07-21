@@ -68,6 +68,7 @@ export const AddDocumentDialog = (props) => {
                         id: docId,
                         user_id: bukken.user_id,
                         bukken_id: bukken.id,
+                        bukkenDocumentsId: bukken.id,//generate by @belongTo
                         delete_flag: 0,
                         object_kind,
                         object_kind_createdAt: `${object_kind}#${moment()
