@@ -43,3 +43,16 @@ export function getObjectKind(object_kind) {
             return "-";
     }
 }
+
+/**
+ *
+ * @param {Buken} bukken
+ * @returns ex: /a7fff7a8-e72e-465c-9073-88114ad2b216/000001/thumnail.jpeg
+ */
+export function getBukenCoverImageS3Path(bukken) {
+    return `/${bukken.user_id}/${bukken.id}/thumnail.jpeg`;
+}
+
+export function getBukenCoverImage(bukken) {
+    return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}${getBukenCoverImageS3Path(bukken)}`;
+}

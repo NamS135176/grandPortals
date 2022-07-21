@@ -14,6 +14,8 @@ type User
     name_kana: String
     delete_flag: Boolean!
     last_login_date: AWSDateTime!
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryUserBySort")
+    createdAt: AWSDateTime!
 }
 
 type CS
@@ -72,6 +74,8 @@ type Bukken
     otherObjects: [OtherObject] @hasMany
     documents: [Document] @hasMany
     histories: [History] @hasMany
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryBukkenBySort")
+    createdAt: AWSDateTime!
 }
 
 type OtherObject
@@ -99,6 +103,8 @@ type OtherObject
             name: "byObjectKindAndUpdatedAt"
             queryField: "queryOtherObjectByObjectKindAndUpdatedAt"
         )
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryOtherObjectBySort")
+    createdAt: AWSDateTime!
 }
 
 type Document
@@ -130,6 +136,8 @@ type Document
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "queryDocumentByObjectKindAndCreatedAt"
         )
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryDocumentObjectBySort")
+    createdAt: AWSDateTime!
 }
 
 type History
@@ -154,6 +162,7 @@ type History
     remarks: String!
     overview: String!
     delete_flag: Int!
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryHistoryObjectBySort")
     createdAt: AWSDateTime!
         @index(
             name: "byCreatedAt"
