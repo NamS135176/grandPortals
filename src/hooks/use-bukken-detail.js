@@ -11,6 +11,7 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {
     getBukenCoverImageS3Path,
+    getBukkenCoverImageUrl,
     getOtherObjectS3FileName,
     getUrlPath,
     OtherObjectFieldKind,
@@ -152,17 +153,9 @@ export const useBukkenDetail = (bukkenNo) => {
         if (items?.length > 0) {
             const otherObject = items[0];
             setBukenOtherObject(otherObject);
-            try {
-                //parse field_list to get cover image with thumnail key
-                const fieldList = otherObject.field_list
-                    ? JSON.parse(otherObject.field_list)
-                    : null;
-                if (fieldList && fieldList["thumnail"]) {
-                    setCoverImageUrl(fieldList["thumnail"]);
-                }
-            } catch (e) {
-                console.log(e)
-                throw e;
+            const coverImageUrl = getBukkenCoverImageUrl(otherObject);
+            if (coverImageUrl) {
+                setCoverImageUrl(coverImageUrl);
             }
         }
     }, []);
@@ -180,15 +173,12 @@ export const useBukkenDetail = (bukkenNo) => {
                             input: {
                                 id: otherObjectId,
                                 bukken_id: bukken.id,
-                                // bukkenOtherObjectsId: bukken.id,
                                 bukken_no: bukken.bukken_no,
                                 user_id: bukken.user_id,
                                 object_kind: OtherObjectKind.Bukken,
                                 field_kind:
                                     OtherObjectFieldKind.ReadyMadeProduct, //dont use that one
-                                field_list: {
-                                    // thumnail: ""
-                                },
+                                field_list: {},
                                 delete_flag: 0,
                                 sort: 1, //always 1
                                 object_kind_updatedAt: `${
@@ -226,7 +216,7 @@ export const useBukkenDetail = (bukkenNo) => {
 
                 setCoverImageUrl(urlPath);
 
-                console.log({tmpBukkenOtherObject})
+                console.log({tmpBukkenOtherObject});
 
                 //update other object for update field_list
                 const fieldList = tmpBukkenOtherObject.field_list
