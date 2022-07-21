@@ -17,6 +17,7 @@ import {createDocument} from "../../graphql/mutations";
 import moment from "moment";
 import {useAuth} from "../../hooks/use-auth";
 import {API, Storage} from "aws-amplify";
+import {getNextDocumentId} from "../../utils/id-generator";
 
 export const AddDocumentDialog = (props) => {
     const {user} = useAuth();
@@ -43,10 +44,13 @@ export const AddDocumentDialog = (props) => {
         try {
             //upload file
             const originFileName = `${file.name.replace(/ |　/g, "")}`;
-            const s3FileName = getBukkenS3FileName(bukken, originFileName);
+            const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
+            const s3FileName = getBukkenS3FileName(
+                bukken,
+                `${s3FileNamePrefix}_${originFileName}`
+            );
             await Storage.put(s3FileName, file, {
                 level: "public",
-                // acl: 'public-read',
                 contentType: file.type,
             });
 
@@ -55,12 +59,14 @@ export const AddDocumentDialog = (props) => {
             // const s3FileName = getBukkenS3FileName(bukken, originFileName);
 
             //create document
+            const docId = await getNextDocumentId();
             const object_kind = "0";
             const response = await API.graphql({
                 query: createDocument,
                 variables: {
                     input: {
-                        user_id: user.id,
+                        id: docId,
+                        user_id: bukken.user_id,
                         bukken_id: bukken.id,
                         delete_flag: 0,
                         object_kind,
@@ -70,15 +76,14 @@ export const AddDocumentDialog = (props) => {
                         orignal_file_name: originFileName,
                         s3_file_name: s3FileName,
                         overview,
+                        sort: 1, //always 1
                         //   other_object_id
                     },
                 },
             });
             console.log("response ", response);
-            loadData()
-        } catch (e) {
-            throw e;
-        }
+            loadData();
+        } catch (e) {}
         setLoading(false);
         onClose();
     };
@@ -118,7 +123,7 @@ export const AddDocumentDialog = (props) => {
                         value={form.outline}
                     />
                     <FileUpload
-                        accept="*.*"
+                        accept="*.pdf"
                         onChange={(file) => setForm({...form, file})}
                     />
                 </form>

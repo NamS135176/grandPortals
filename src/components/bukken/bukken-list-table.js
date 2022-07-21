@@ -15,7 +15,6 @@ import {
 	Typography,
 } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
-import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
 import { getBukenCoverImage, getBukkenType } from '../../utils/bukken';
 import moment from 'moment';
@@ -106,37 +105,21 @@ export const BukkenListTable = (props) => {
 															{buk.bukken_no}
 														</Typography>
 													</Box>
-													{/* {buk.image ? ( */}
-														<Box
-															sx={{
-																alignItems: 'center',
-																backgroundColor: 'background.default',
-																backgroundImage: `url(${getBukenCoverImage(buk)})`,
-																backgroundPosition: 'center',
-																backgroundSize: 'cover',
-																borderRadius: 1,
-																display: 'flex',
-																height: 80,
-																justifyContent: 'center',
-																overflow: 'hidden',
-																width: 80,
-															}}
-														/>
-													{/* ) : (
-														<Box
-															sx={{
-																alignItems: 'center',
-																backgroundColor: 'background.default',
-																borderRadius: 1,
-																display: 'flex',
-																height: 80,
-																justifyContent: 'center',
-																width: 80,
-															}}
-														>
-															<ImageIcon fontSize="small" />
-														</Box>
-													)} */}
+													<Box
+														sx={{
+															alignItems: 'center',
+															backgroundColor: 'background.default',
+															backgroundImage: `url(${getBukenCoverImage(buk)})`,
+															backgroundPosition: 'center',
+															backgroundSize: 'cover',
+															borderRadius: 1,
+															display: 'flex',
+															height: 80,
+															justifyContent: 'center',
+															overflow: 'hidden',
+															width: 80,
+														}}
+													/>
 												</Box>
 											</Link>
 										</NextLink>

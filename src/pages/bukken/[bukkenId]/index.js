@@ -23,7 +23,7 @@ import {ArrowRight as ArrowRightIcon} from "../../../icons/arrow-right";
 import {HistoryDialog} from "../../../components/history/history-dialog";
 import {useRouter} from "next/router";
 import {useBukkenDetail} from "../../../hooks/use-bukken-detail";
-import {getBukkenType} from "../../../utils/bukken";
+import {getBukenCoverImage, getBukkenType} from "../../../utils/bukken";
 import moment from "moment";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
 
@@ -39,7 +39,6 @@ const BukkenDetails = () => {
         documents: bukkenDocs,
         deleteDocument, 
         deleteHistory,
-        loadData,
         reloadDocument,
         reloadHistory
     } = useBukkenDetail(bukkenId);
@@ -166,7 +165,7 @@ const BukkenDetails = () => {
                             </Grid>
                             <Box
                                 sx={{
-                                    backgroundImage: `url(/images/mock-images/covers/cover_1.jpg)`,
+                                    backgroundImage: `url(${getBukenCoverImage(bukken)})`,
                                     backgroundPosition: "center",
                                     backgroundSize: "cover",
                                     borderRadius: 1,

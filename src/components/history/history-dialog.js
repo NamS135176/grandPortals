@@ -16,11 +16,12 @@ import {useAuth} from "../../hooks/use-auth";
 import {createHistory} from "../../graphql/mutations";
 import moment from "moment";
 import {API} from "aws-amplify";
+import {getNextHistoryId} from "../../utils/id-generator";
 
 export const HistoryDialog = (props) => {
     const {user} = useAuth();
 
-    const {onClose, open, mode = "edit", bukken,loadData, ...other} = props;
+    const {onClose, open, mode = "edit", bukken, loadData, ...other} = props;
     const [form, setForm] = useState({
         date: new Date(),
         overview: "XXXの修繕",
@@ -46,12 +47,14 @@ export const HistoryDialog = (props) => {
         if (!date || !overview || !remarks) return;
         setLoading(true);
         try {
+            const historyId = await getNextHistoryId();
             const object_kind = "0";
             const response = await API.graphql({
                 query: createHistory,
                 variables: {
                     input: {
-                        user_id: user.id,
+                        id: historyId,
+                        user_id: bukken.user_id,
                         bukken_id: bukken.id,
                         delete_flag: 0,
                         object_kind,
@@ -65,9 +68,9 @@ export const HistoryDialog = (props) => {
                 },
             });
             console.log("response ", response);
-            loadData()
+            loadData();
         } catch (e) {
-            throw e;
+            
         }
         setLoading(false);
         onClose();

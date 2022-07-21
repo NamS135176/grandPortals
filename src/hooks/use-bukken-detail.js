@@ -1,4 +1,4 @@
-import {API} from "aws-amplify";
+import {API, Storage} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
 import {
     listBukkens,
@@ -7,7 +7,6 @@ import {
     queryBukkensByBukkenNo,
 } from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {useAuth} from "./use-auth";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 
@@ -21,7 +20,7 @@ export const useBukkenDetail = (bukkenNo) => {
     const deleteHistory = useCallback(
         async (history) => {
             try {
-                const response = await API.graphql({
+                await API.graphql({
                     query: mutations.deleteHistory,
                     variables: {
                         input: {
@@ -33,7 +32,9 @@ export const useBukkenDetail = (bukkenNo) => {
                     histories
                 );
                 setHistories(newHistories);
-            } catch (e) {}
+            } catch (e) {
+                console.error(e);
+            }
         },
         [histories]
     );
@@ -41,7 +42,8 @@ export const useBukkenDetail = (bukkenNo) => {
     const deleteDocument = useCallback(
         async (document) => {
             try {
-                const response = await API.graphql({
+                const {s3_file_name} = document;
+                await API.graphql({
                     query: mutations.deleteDocument,
                     variables: {
                         input: {
@@ -53,43 +55,54 @@ export const useBukkenDetail = (bukkenNo) => {
                     documents
                 );
                 setDocuments(newDocuments);
-            } catch (e) {}
+
+                //delete s3 also
+                await Storage.remove(s3_file_name, {level: "public"});
+            } catch (e) {
+                console.error(e);
+            }
         },
         [documents]
     );
 
-    async function reloadDocument() {
-        setLoading(true)
-        const resDocument = await API.graphql({
-            query: listDocuments,
-            // variables: {
-            //     bukken_no: bukkenNo,
-            // },
-        });
-        const documents = resDocument.data.listDocuments.items;
-        if (documents?.length > 0) {
-            setDocuments(documents);
-        }
-        //end load document list
-        setLoading(false);
-    }
+    const reloadDocument = useCallback(
+        async (updateLoading = true) => {
+            if (updateLoading) setLoading(true);
+            const resDocument = await API.graphql({
+                query: listDocuments,
+                // variables: {
+                //     bukken_no: bukkenNo,
+                // },
+            });
+            const documents = resDocument.data.listDocuments.items;
+            if (documents?.length > 0) {
+                setDocuments(documents);
+            }
+            //end load document list
+            if (updateLoading) setLoading(false);
+        },
+        [bukkenNo]
+    );
 
-    async function reloadHistory() {
-        setLoading(true)
-        const resHistory = await API.graphql({
-            query: listHistories,
-            // variables: {
-            //     bukken_no: bukkenNo,
-            // },
-        });
-        const histories = resHistory.data.listHistories.items;
-        if (histories?.length > 0) {
-            setHistories(histories);
-        }
-        setLoading(false);
-    }
+    const reloadHistory = useCallback(
+        async (updateLoading = true) => {
+            if (updateLoading) setLoading(true);
+            const resHistory = await API.graphql({
+                query: listHistories,
+                // variables: {
+                //     bukken_no: bukkenNo,
+                // },
+            });
+            const histories = resHistory.data.listHistories.items;
+            if (histories?.length > 0) {
+                setHistories(histories);
+            }
+            if (updateLoading) setLoading(false);
+        },
+        [bukkenNo]
+    );
 
-    async function loadData() {
+    const loadData = useCallback(async () => {
         setLoading(true);
 
         //load bukken detail
@@ -105,37 +118,14 @@ export const useBukkenDetail = (bukkenNo) => {
         }
         //end load list bukken
 
-        //load history list
-        const resHistory = await API.graphql({
-            query: listHistories,
-            // variables: {
-            //     bukken_no: bukkenNo,
-            // },
-        });
-        const histories = resHistory.data.listHistories.items;
-        if (histories?.length > 0) {
-            setHistories(histories);
-        }
-        //end load history list
+        reloadHistory(false);
 
-        //load document list
-        const resDocument = await API.graphql({
-            query: listDocuments,
-            // variables: {
-            //     bukken_no: bukkenNo,
-            // },
-        });
-        const documents = resDocument.data.listDocuments.items;
-        if (documents?.length > 0) {
-            setDocuments(documents);
-        }
-        //end load document list
+        reloadDocument(false);
+
         setLoading(false);
-    }
+    }, [bukkenNo]);
 
     useEffect(() => {
-
-
         if (isMounted && bukkenNo) loadData();
     }, [isMounted, bukkenNo]);
 
@@ -148,6 +138,6 @@ export const useBukkenDetail = (bukkenNo) => {
         loading,
         loadData,
         reloadDocument,
-        reloadHistory
+        reloadHistory,
     };
 };

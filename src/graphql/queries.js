@@ -1063,8 +1063,8 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const queryDocumentObjectBySort = /* GraphQL */ `
-  query QueryDocumentObjectBySort(
+export const queryDocumentBySort = /* GraphQL */ `
+  query QueryDocumentBySort(
     $sort: Int!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -1072,7 +1072,7 @@ export const queryDocumentObjectBySort = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    queryDocumentObjectBySort(
+    queryDocumentBySort(
       sort: $sort
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -1211,8 +1211,8 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
     }
   }
 `;
-export const queryHistoryObjectBySort = /* GraphQL */ `
-  query QueryHistoryObjectBySort(
+export const queryHistoryBySort = /* GraphQL */ `
+  query QueryHistoryBySort(
     $sort: Int!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -1220,7 +1220,7 @@ export const queryHistoryObjectBySort = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    queryHistoryObjectBySort(
+    queryHistoryBySort(
       sort: $sort
       createdAt: $createdAt
       sortDirection: $sortDirection

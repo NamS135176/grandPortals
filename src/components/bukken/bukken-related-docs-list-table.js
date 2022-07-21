@@ -18,6 +18,7 @@ import { Download as DownloadIcon } from '../../icons/download';
 import { Trash as TrashIcon } from '../../icons/trash';
 import { Scrollbar } from '../scrollbar';
 import moment from 'moment';
+import { getDocumentUrlPath } from '../../utils/bukken';
 
 const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
@@ -83,12 +84,14 @@ export const BukkenRelatedDocsListTable = (props) => {
                                 <TableRow hover key={buk.id}>
                                     <TableCell align="right">
                                         <NextLink
-                                            href={`/bukken/${bukken.bukken_no}`}
+                                            href={getDocumentUrlPath(buk)}
                                             passHref
                                         >
-                                            <IconButton component="a">
-                                                <DownloadIcon fontSize="small" />
-                                            </IconButton>
+											<a href={getDocumentUrlPath(buk)} target={"_blank"}>
+												<IconButton component="a">
+													<DownloadIcon fontSize="small" />
+												</IconButton>
+											</a>
                                         </NextLink>
                                     </TableCell>
                                     <TableCell>

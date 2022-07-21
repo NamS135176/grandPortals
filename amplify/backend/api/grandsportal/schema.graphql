@@ -136,7 +136,7 @@ type Document
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "queryDocumentByObjectKindAndCreatedAt"
         )
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryDocumentObjectBySort")
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryDocumentBySort")
     createdAt: AWSDateTime!
 }
 
@@ -162,7 +162,7 @@ type History
     remarks: String!
     overview: String!
     delete_flag: Int!
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryHistoryObjectBySort")
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryHistoryBySort")
     createdAt: AWSDateTime!
         @index(
             name: "byCreatedAt"

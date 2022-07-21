@@ -1,4 +1,20 @@
 export type AmplifyDependentResourcesAttributes = {
+    "auth": {
+        "userPoolGroups": {
+            "agentGrandsGroupRole": "string",
+            "agentNormalGroupRole": "string",
+            "supportGroupRole": "string"
+        },
+        "grandsPortal": {
+            "IdentityPoolId": "string",
+            "IdentityPoolName": "string",
+            "UserPoolId": "string",
+            "UserPoolArn": "string",
+            "UserPoolName": "string",
+            "AppClientIDWeb": "string",
+            "AppClientID": "string"
+        }
+    },
     "function": {
         "grandsPortalPostConfirmation": {
             "Name": "string",
