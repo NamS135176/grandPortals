@@ -71,9 +71,9 @@ type Bukken
     shinchiku_date: AWSDateTime
     remarks: String
     delete_flag: Int!
-    otherObjects: [OtherObject] @hasMany
-    documents: [Document] @hasMany
-    histories: [History] @hasMany
+    otherObjects: [OtherObject] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
+    documents: [Document] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
+    histories: [History] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryBukkenBySort")
     createdAt: AWSDateTime!
 }
@@ -87,7 +87,7 @@ type OtherObject
         ]
     ) {
     id: ID! @primaryKey
-    bukken_id: ID!
+    bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryOtherObjectByBukkenId")
     buken: Bukken @belongsTo(fields: ["bukken_id"])
     bukken_no: String!
@@ -116,7 +116,7 @@ type Document
         ]
     ) {
     id: ID! @primaryKey
-    bukken_id: ID!
+    bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryDocumentByBukkenId")
     buken: Bukken @belongsTo(fields: ["bukken_id"])
     user_id: ID!
@@ -149,7 +149,7 @@ type History
         ]
     ) {
     id: ID! @primaryKey
-    bukken_id: ID!
+    bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryHistoryByBukkenId")
     buken: Bukken @belongsTo(fields: ["bukken_id"])
     user_id: ID!

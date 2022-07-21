@@ -150,7 +150,6 @@ export const getBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenOtherObjectsId
         }
         nextToken
       }
@@ -169,7 +168,6 @@ export const getBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenDocumentsId
         }
         nextToken
       }
@@ -186,7 +184,6 @@ export const getBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenHistoriesId
         }
         nextToken
       }
@@ -279,7 +276,6 @@ export const getOtherObject = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenOtherObjectsId
     }
   }
 `;
@@ -327,7 +323,6 @@ export const listOtherObjects = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenOtherObjectsId
       }
       nextToken
     }
@@ -373,7 +368,6 @@ export const getDocument = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenDocumentsId
     }
   }
 `;
@@ -421,7 +415,6 @@ export const listDocuments = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenDocumentsId
       }
       nextToken
     }
@@ -465,7 +458,6 @@ export const getHistory = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenHistoriesId
     }
   }
 `;
@@ -511,7 +503,6 @@ export const listHistories = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }
@@ -753,7 +744,6 @@ export const queryOtherObjectByBukkenId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenOtherObjectsId
       }
       nextToken
     }
@@ -803,7 +793,6 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenOtherObjectsId
       }
       nextToken
     }
@@ -853,7 +842,6 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenOtherObjectsId
       }
       nextToken
     }
@@ -905,7 +893,6 @@ export const queryOtherObjectBySort = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenOtherObjectsId
       }
       nextToken
     }
@@ -955,7 +942,6 @@ export const queryDocumentByBukkenId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenDocumentsId
       }
       nextToken
     }
@@ -1005,7 +991,6 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenDocumentsId
       }
       nextToken
     }
@@ -1057,7 +1042,6 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenDocumentsId
       }
       nextToken
     }
@@ -1109,7 +1093,6 @@ export const queryDocumentBySort = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenDocumentsId
       }
       nextToken
     }
@@ -1157,7 +1140,6 @@ export const queryHistoryByBukkenId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }
@@ -1205,7 +1187,6 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }
@@ -1255,7 +1236,6 @@ export const queryHistoryBySort = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }
@@ -1305,7 +1285,6 @@ export const querHistoryCreatedAt = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        bukkenHistoriesId
       }
       nextToken
     }

@@ -164,7 +164,6 @@ export const createBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenOtherObjectsId
         }
         nextToken
       }
@@ -183,7 +182,6 @@ export const createBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenDocumentsId
         }
         nextToken
       }
@@ -200,7 +198,6 @@ export const createBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenHistoriesId
         }
         nextToken
       }
@@ -241,7 +238,6 @@ export const updateBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenOtherObjectsId
         }
         nextToken
       }
@@ -260,7 +256,6 @@ export const updateBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenDocumentsId
         }
         nextToken
       }
@@ -277,7 +272,6 @@ export const updateBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenHistoriesId
         }
         nextToken
       }
@@ -318,7 +312,6 @@ export const deleteBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenOtherObjectsId
         }
         nextToken
       }
@@ -337,7 +330,6 @@ export const deleteBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenDocumentsId
         }
         nextToken
       }
@@ -354,7 +346,6 @@ export const deleteBukken = /* GraphQL */ `
           sort
           createdAt
           updatedAt
-          bukkenHistoriesId
         }
         nextToken
       }
@@ -407,7 +398,6 @@ export const createOtherObject = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenOtherObjectsId
     }
   }
 `;
@@ -454,7 +444,6 @@ export const updateOtherObject = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenOtherObjectsId
     }
   }
 `;
@@ -501,7 +490,6 @@ export const deleteOtherObject = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenOtherObjectsId
     }
   }
 `;
@@ -548,7 +536,6 @@ export const createDocument = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenDocumentsId
     }
   }
 `;
@@ -595,7 +582,6 @@ export const updateDocument = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenDocumentsId
     }
   }
 `;
@@ -642,7 +628,6 @@ export const deleteDocument = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenDocumentsId
     }
   }
 `;
@@ -687,7 +672,6 @@ export const createHistory = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenHistoriesId
     }
   }
 `;
@@ -732,7 +716,6 @@ export const updateHistory = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenHistoriesId
     }
   }
 `;
@@ -777,7 +760,6 @@ export const deleteHistory = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      bukkenHistoriesId
     }
   }
 `;
