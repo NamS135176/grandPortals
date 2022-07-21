@@ -17,7 +17,7 @@ import {
 import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
 import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
-import { getBukkenType } from '../../utils/bukken';
+import { getBukenCoverImage, getBukkenType } from '../../utils/bukken';
 import moment from 'moment';
 
 const applySort = (bukken, sortDir) =>
@@ -106,12 +106,12 @@ export const BukkenListTable = (props) => {
 															{buk.bukken_no}
 														</Typography>
 													</Box>
-													{buk.image ? (
+													{/* {buk.image ? ( */}
 														<Box
 															sx={{
 																alignItems: 'center',
 																backgroundColor: 'background.default',
-																backgroundImage: `url(${buk.image})`,
+																backgroundImage: `url(${getBukenCoverImage(buk)})`,
 																backgroundPosition: 'center',
 																backgroundSize: 'cover',
 																borderRadius: 1,
@@ -122,7 +122,7 @@ export const BukkenListTable = (props) => {
 																width: 80,
 															}}
 														/>
-													) : (
+													{/* ) : (
 														<Box
 															sx={{
 																alignItems: 'center',
@@ -136,7 +136,7 @@ export const BukkenListTable = (props) => {
 														>
 															<ImageIcon fontSize="small" />
 														</Box>
-													)}
+													)} */}
 												</Box>
 											</Link>
 										</NextLink>
