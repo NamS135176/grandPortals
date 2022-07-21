@@ -72,7 +72,7 @@ export const AddDocumentDialog = (props) => {
                         object_kind,
                         object_kind_createdAt: `${object_kind}#${moment()
                             .utc()
-                            .format("YYYYMMDDTHHmmss")}`,
+                            .format("YYYYMMDDTHHmmss")}`,////0#20221201T102309
                         orignal_file_name: originFileName,
                         s3_file_name: s3FileName,
                         overview,
@@ -123,7 +123,7 @@ export const AddDocumentDialog = (props) => {
                         value={form.outline}
                     />
                     <FileUpload
-                        accept="*.pdf"
+                        accept=".pdf"
                         onChange={(file) => setForm({...form, file})}
                     />
                 </form>

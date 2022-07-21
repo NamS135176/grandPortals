@@ -30,9 +30,9 @@ export async function getNextDocumentId() {
         variables,
     });
     const items = response.data.queryDocumentBySort.items;
-    const bukken = items?.length > 0 ? items[0] : null;
-    const bukkenIdNumber = bukken ? parseInt(bukken.id) : 0;
-    return padLeadingZeros(bukkenIdNumber + 1);
+    const data = items?.length > 0 ? items[0] : null;
+    const idNumber = data ? parseInt(data.id) : 0;
+    return padLeadingZeros(idNumber + 1);
 }
 
 export async function getNextHistoryId() {
@@ -41,8 +41,18 @@ export async function getNextHistoryId() {
         variables,
     });
     const items = response.data.queryHistoryBySort.items;
-    const bukken = items?.length > 0 ? items[0] : null;
-    const bukkenIdNumber = bukken ? parseInt(bukken.id) : 0;
-    return padLeadingZeros(bukkenIdNumber + 1);
+    const data = items?.length > 0 ? items[0] : null;
+    const idNumber = data ? parseInt(data.id) : 0;
+    return padLeadingZeros(idNumber + 1);
 }
 
+export async function getNextOtherObjectId() {
+    const response = await API.graphql({
+        query: queries.queryOtherObjectBySort,
+        variables,
+    });
+    const items = response.data.queryOtherObjectBySort.items;
+    const data = items?.length > 0 ? items[0] : null;
+    const idNumber = data ? parseInt(data.id) : 0;
+    return padLeadingZeros(idNumber + 1);
+}

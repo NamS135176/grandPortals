@@ -76,7 +76,6 @@ export const HistoryDialog = (props) => {
         onClose();
     };
 
-    console.log("historydialog... ", form);
     return (
         <Dialog
             fullWidth

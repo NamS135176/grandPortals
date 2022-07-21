@@ -12,11 +12,9 @@ import {
     Typography,
     TextField,
 } from "@mui/material";
-import {bukkenApi} from "../../../__fake-api__/bukken-api";
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
 import {BukkenHistoryListTable} from "../../../components/bukken/bukken-history-list-table";
-import {useMounted} from "../../../hooks/use-mounted";
 import {gtm} from "../../../lib/gtm";
 import {ManagementList} from "../../../components/management-menu";
 import {ArrowRight as ArrowRightIcon} from "../../../icons/arrow-right";
@@ -26,6 +24,7 @@ import {useBukkenDetail} from "../../../hooks/use-bukken-detail";
 import {getBukenCoverImage, getBukkenType} from "../../../utils/bukken";
 import moment from "moment";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
+import {FileUpload} from "../../../components/widgets/file-upload";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -37,12 +36,14 @@ const BukkenDetails = () => {
         bukken,
         histories: bukkenHistory,
         documents: bukkenDocs,
-        deleteDocument, 
+        coverImageUrl,
+        deleteDocument,
         deleteHistory,
         reloadDocument,
-        reloadHistory
+        reloadHistory,
+        uploadBukenCover,
     } = useBukkenDetail(bukkenId);
-    const [docList, setDoclist] =useState(bukkenDocs)
+    const [docList, setDoclist] = useState(bukkenDocs);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
@@ -163,16 +164,26 @@ const BukkenDetails = () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            <Box
-                                sx={{
-                                    backgroundImage: `url(${getBukenCoverImage(bukken)})`,
-                                    backgroundPosition: "center",
-                                    backgroundSize: "cover",
-                                    borderRadius: 1,
-                                    height: 450,
-                                    mt: 3,
-                                }}
-                            />
+                            <FileUpload
+                                accept={"image/*"}
+                                onChange={uploadBukenCover}
+                            >
+                                <Box
+                                    sx={{
+                                        backgroundImage: `url(${coverImageUrl})`,
+                                        backgroundColor: "#D0D0D0",
+                                        backgroundPosition: "center",
+                                        backgroundSize: "cover",
+                                        borderRadius: 1,
+                                        height: 450,
+                                        width: "100%",
+                                        mt: 3,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                ></Box>
+                            </FileUpload>
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <TextField
