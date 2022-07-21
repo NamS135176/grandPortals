@@ -75,7 +75,7 @@ export const AddDocumentDialog = (props) => {
                 },
             });
             console.log("response ", response);
-            // loadData()
+            loadData()
         } catch (e) {
             throw e;
         }

@@ -39,7 +39,9 @@ const BukkenDetails = () => {
         documents: bukkenDocs,
         deleteDocument, 
         deleteHistory,
-        loadData
+        loadData,
+        reloadDocument,
+        reloadHistory
     } = useBukkenDetail(bukkenId);
     const [docList, setDoclist] =useState(bukkenDocs)
     const [page, setPage] = useState(0);
@@ -243,7 +245,7 @@ const BukkenDetails = () => {
                                     open={openDocumentDialog}
                                     mode="edit"
                                     bukken={bukken}
-                                    loadData={loadData}
+                                    loadData={reloadDocument}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
@@ -282,6 +284,7 @@ const BukkenDetails = () => {
                                     open={openHistoryDialog}
                                     mode="edit"
                                     bukken={bukken}
+                                    loadData={reloadHistory}
                                 />
                             </Box>
                             <BukkenHistoryListTable

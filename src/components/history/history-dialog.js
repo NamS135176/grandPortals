@@ -20,7 +20,7 @@ import {API} from "aws-amplify";
 export const HistoryDialog = (props) => {
     const {user} = useAuth();
 
-    const {onClose, open, mode = "edit", bukken, ...other} = props;
+    const {onClose, open, mode = "edit", bukken,loadData, ...other} = props;
     const [form, setForm] = useState({
         date: new Date(),
         overview: "XXXの修繕",
@@ -65,6 +65,7 @@ export const HistoryDialog = (props) => {
                 },
             });
             console.log("response ", response);
+            loadData()
         } catch (e) {
             throw e;
         }

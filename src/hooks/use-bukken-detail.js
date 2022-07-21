@@ -58,6 +58,37 @@ export const useBukkenDetail = (bukkenNo) => {
         [documents]
     );
 
+    async function reloadDocument() {
+        setLoading(true)
+        const resDocument = await API.graphql({
+            query: listDocuments,
+            // variables: {
+            //     bukken_no: bukkenNo,
+            // },
+        });
+        const documents = resDocument.data.listDocuments.items;
+        if (documents?.length > 0) {
+            setDocuments(documents);
+        }
+        //end load document list
+        setLoading(false);
+    }
+
+    async function reloadHistory() {
+        setLoading(true)
+        const resHistory = await API.graphql({
+            query: listHistories,
+            // variables: {
+            //     bukken_no: bukkenNo,
+            // },
+        });
+        const histories = resHistory.data.listHistories.items;
+        if (histories?.length > 0) {
+            setHistories(histories);
+        }
+        setLoading(false);
+    }
+
     async function loadData() {
         setLoading(true);
 
@@ -115,6 +146,8 @@ export const useBukkenDetail = (bukkenNo) => {
         deleteHistory,
         deleteDocument,
         loading,
-        loadData
+        loadData,
+        reloadDocument,
+        reloadHistory
     };
 };
