@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {Box, Typography} from "@mui/material";
-import PropTypes from 'prop-types';
 
-export const FileUpload = ({accept, onChange, children}) => {
+export const FileUpload = ({accept, onChange, children, prefix = "image"}) => {
     const stopDefaults = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -20,14 +19,12 @@ export const FileUpload = ({accept, onChange, children}) => {
     };
 
     const handleChange = (event) => {
-        console.log("handleChange... ", event);
         if (event.target.files[0]) {
             handleUploadFile(event.target.files[0]);
         }
     };
 
     const handleUploadFile = (file) => {
-        console.log("handleUploadFile... ", file);
         onChange(file);
         setFile(file);
     };
@@ -38,12 +35,12 @@ export const FileUpload = ({accept, onChange, children}) => {
                 onChange={handleChange}
                 accept={accept}
                 style={{display: "none"}}
-                id="file-upload"
+                id={`file-upload-${prefix}`}
                 type="file"
             />
 
             <label
-                htmlFor="file-upload"
+                htmlFor={`file-upload-${prefix}`}
                 {...dragEvents}
                 style={{
                     cursor: "pointer",

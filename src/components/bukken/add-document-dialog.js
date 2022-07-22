@@ -54,10 +54,6 @@ export const AddDocumentDialog = (props) => {
                 contentType: file.type,
             });
 
-            //fake
-            // const originFileName = "test.pdf";
-            // const s3FileName = getBukkenS3FileName(bukken, originFileName);
-
             //create document
             const docId = await getNextDocumentId();
             const object_kind = "0";
@@ -82,7 +78,7 @@ export const AddDocumentDialog = (props) => {
                 },
             });
             console.log("response ", response);
-            loadData();
+            loadData(bukken);
         } catch (e) {}
         setLoading(false);
         onClose();
@@ -125,6 +121,7 @@ export const AddDocumentDialog = (props) => {
                     <FileUpload
                         accept=".pdf"
                         onChange={(file) => setForm({...form, file})}
+                        prefix="document"
                     />
                 </form>
             </DialogContent>

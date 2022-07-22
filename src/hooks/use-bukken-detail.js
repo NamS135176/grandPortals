@@ -5,6 +5,8 @@ import {
     listHistories,
     queryBukkensByBukkenNo,
     queryOtherObjectByBukkenId,
+    queryDocumentByBukkenId,
+    queryHistoryByBukkenId,
 } from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
@@ -19,6 +21,7 @@ import {
 } from "../utils/bukken";
 import moment from "moment";
 import {getNextDocumentId, getNextOtherObjectId} from "../utils/id-generator";
+import { resizeImage } from "../utils/image";
 
 export const useBukkenDetail = (bukkenNo) => {
     const isMounted = useMounted();
@@ -77,41 +80,75 @@ export const useBukkenDetail = (bukkenNo) => {
         [documents]
     );
 
-    const reloadDocument = useCallback(
-        async (updateLoading = true) => {
-            if (updateLoading) setLoading(true);
-            const resDocument = await API.graphql({
-                query: listDocuments,
-                // variables: {
-                //     bukken_no: bukkenNo,
-                // },
+    const getListDocument = useCallback(
+        async (bukken, list = [], nextToken = null) => {
+            if (!bukken) return;
+            const res = await API.graphql({
+                query: queryDocumentByBukkenId,
+                variables: {
+                    bukken_id: bukken.id,
+                    nextToken,
+                },
             });
-            const documents = resDocument.data.listDocuments.items;
+            const items = res.data.queryDocumentByBukkenId.items;
+            if (items?.length > 0) {
+                list = list.concat(items);
+            }
+            const nxtToken = res.data.queryDocumentByBukkenId.nextToken;
+            if (nxtToken) {
+                await getListDocument(bukken, list, nxtToken); //load util nextToken is null
+            }
+            return list;
+        },
+        []
+    );
+
+    const getListHistory = useCallback(
+        async (bukken, list = [], nextToken = null) => {
+            if (!bukken) return;
+            const res = await API.graphql({
+                query: queryHistoryByBukkenId,
+                variables: {
+                    bukken_id: bukken.id,
+                    nextToken,
+                },
+            });
+            const items = res.data.queryHistoryByBukkenId.items;
+            if (items?.length > 0) {
+                list = list.concat(items);
+            }
+            const nxtToken = res.data.queryHistoryByBukkenId.nextToken;
+            if (nxtToken) {
+                await getListHistory(bukken, list, nxtToken); //load util nextToken is null
+            }
+            return list;
+        },
+        []
+    );
+
+    const reloadDocument = useCallback(
+        async (bukken, updateLoading = true) => {
+            if (updateLoading) setLoading(true);
+            const documents = await getListDocument(bukken);
             if (documents?.length > 0) {
                 setDocuments(documents);
             }
-            //end load document list
             if (updateLoading) setLoading(false);
         },
-        [bukkenNo]
+        []
     );
 
     const reloadHistory = useCallback(
-        async (updateLoading = true) => {
+        async (bukken, updateLoading = true) => {
             if (updateLoading) setLoading(true);
-            const resHistory = await API.graphql({
-                query: listHistories,
-                // variables: {
-                //     bukken_no: bukkenNo,
-                // },
-            });
-            const histories = resHistory.data.listHistories.items;
+            const histories = await getListHistory(bukken);
+            console.log("reloadHistory.... ", { histories })
             if (histories?.length > 0) {
                 setHistories(histories);
             }
             if (updateLoading) setLoading(false);
         },
-        [bukkenNo]
+        []
     );
 
     const loadData = useCallback(async () => {
@@ -129,9 +166,9 @@ export const useBukkenDetail = (bukkenNo) => {
         setBukken(bukken);
         //end load list bukken
 
-        reloadHistory(false);
+        reloadHistory(bukken, false);
 
-        reloadDocument(false);
+        reloadDocument(bukken, false);
 
         getBukenOtherObject(bukken);
 
@@ -189,7 +226,6 @@ export const useBukkenDetail = (bukkenNo) => {
                             },
                         },
                     });
-                    console.log({resOtherObject});
                     tmpBukkenOtherObject =
                         resOtherObject.data.createOtherObject;
                 }
@@ -201,18 +237,15 @@ export const useBukkenDetail = (bukkenNo) => {
                     `${s3FileNamePrefix}_${originFileName}`
                 );
 
+                //resize image first
+                file = await resizeImage(file, 1280, 85);
+
                 // const s3FileName = getOtherObjectS3FileName(bukken);
                 const res = await Storage.put(s3FileName, file, {
                     level: "public",
                     contentType: file.type,
                 });
                 const urlPath = getUrlPath(s3FileName);
-
-                console.log("uploadBukenCover...", {
-                    res,
-                    s3FileName,
-                    urlPath,
-                });
 
                 setCoverImageUrl(urlPath);
 
@@ -245,13 +278,6 @@ export const useBukkenDetail = (bukkenNo) => {
     useEffect(() => {
         if (isMounted && bukkenNo) loadData();
     }, [isMounted, bukkenNo]);
-
-    console.log("useBukkenDetail... ", {
-        bukken,
-        coverImageUrl,
-        histories,
-        documents,
-    });
 
     return {
         bukken,

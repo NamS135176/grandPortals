@@ -21,7 +21,7 @@ import {ArrowRight as ArrowRightIcon} from "../../../icons/arrow-right";
 import {HistoryDialog} from "../../../components/history/history-dialog";
 import {useRouter} from "next/router";
 import {useBukkenDetail} from "../../../hooks/use-bukken-detail";
-import {getBukenCoverImage, getBukkenType} from "../../../utils/bukken";
+import {getBukkenType} from "../../../utils/bukken";
 import moment from "moment";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
 import {FileUpload} from "../../../components/widgets/file-upload";
@@ -43,15 +43,14 @@ const BukkenDetails = () => {
         reloadHistory,
         uploadBukenCover,
     } = useBukkenDetail(bukkenId);
-    const [docList, setDoclist] = useState(bukkenDocs);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
     const [form, setForm] = useState({
-        bukken_kind: "自宅",
-        floor_plan: "2LDK",
-        shinchiku_date: "築10年",
-        remarks: "テキストサンプルテキストサンプルテキストサンプル",
+        bukken_kind: "",
+        floor_plan: "",
+        shinchiku_date: "",
+        remarks: "",
     });
 
     useEffect(() => {
@@ -164,26 +163,40 @@ const BukkenDetails = () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            <FileUpload
-                                accept={"image/*"}
-                                onChange={uploadBukenCover}
+                            <Box
+                                sx={{
+                                    alignItems: "center",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
                             >
-                                <Box
-                                    sx={{
-                                        backgroundImage: `url(${coverImageUrl})`,
-                                        backgroundColor: "#D0D0D0",
-                                        backgroundPosition: "center",
-                                        backgroundSize: "cover",
-                                        borderRadius: 1,
-                                        height: 450,
-                                        width: "100%",
-                                        mt: 3,
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                ></Box>
-                            </FileUpload>
+                                <Typography variant="h6"></Typography>
+                                <Button variant="contained" component="label">
+                                    画像追加
+                                    <FileUpload
+                                        accept={"image/*"}
+                                        onChange={uploadBukenCover}
+                                        prefix="image"
+                                    >
+                                        <></>
+                                    </FileUpload>
+                                </Button>
+                            </Box>
+                            <Box
+                                sx={{
+                                    backgroundImage: `url(${coverImageUrl})`,
+                                    backgroundColor: "#D0D0D0",
+                                    backgroundPosition: "center",
+                                    backgroundSize: "cover",
+                                    borderRadius: 1,
+                                    height: 450,
+                                    width: "100%",
+                                    mt: 3,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            ></Box>
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <TextField
