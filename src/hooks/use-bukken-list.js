@@ -1,43 +1,53 @@
-import { API } from "aws-amplify";
-import { useEffect, useState } from "react";
-import { queryBukkensByUserIdWithCoverImage } from "../graphql/custom-queries";
-import { useAuth } from "./use-auth";
-import { useMounted } from "./use-mounted";
-import * as R from 'ramda'
-import { getBukkenCoverImageUrlByBukken } from "../utils/bukken";
+import {API} from "aws-amplify";
+import {useCallback, useEffect, useState} from "react";
+import {queryBukkensByUserIdWithCoverImage} from "../graphql/custom-queries";
+import {useAuth} from "./use-auth";
+import {useMounted} from "./use-mounted";
+import * as R from "ramda";
+import {getBukkenCoverImageUrlByBukken} from "../utils/bukken";
 
 export const useBukkenList = () => {
-  const { user } = useAuth();
-  const isMounted = useMounted();
-  const [bukkenList, setBukkenList] = useState([]);
-  const [loading, setLoading] = useState(false);
+    const {user} = useAuth();
+    const isMounted = useMounted();
+    const [bukkenList, setBukkenList] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadData() {
-      console.log("useBukkenList... ", { user });
-      setLoading(true);
-
-      //load list bukken
-
-      const response = await API.graphql({
-        query: queryBukkensByUserIdWithCoverImage,
-        variables: {
-          user_id: user.id,
-        },
-      });
-      var bukkenList = response.data.queryBukkensByUserId.items
-      if (!R.isNil(bukkenList) && !R.isEmpty(bukkenList)) {
-        bukkenList.forEach(buk => {
-          buk.image = getBukkenCoverImageUrlByBukken(buk)
+    const getListBukken = useCallback(async (list = [], nextToken = null) => {
+        const response = await API.graphql({
+            query: queryBukkensByUserIdWithCoverImage,
+            variables: {
+                user_id: user.id,
+                nextToken,
+            },
         });
-      }
-      setBukkenList(bukkenList);
-      //end load list bukken
-      setLoading(false);
-    }
+        var bukkenList = response.data.queryBukkensByUserId.items;
+        if (!R.isNil(bukkenList) && !R.isEmpty(bukkenList)) {
+            bukkenList.forEach((buk) => {
+                buk.image = getBukkenCoverImageUrlByBukken(buk);
+            });
+        }
+        list = list.concat(bukkenList);
+        if (response.data.queryBukkensByUserId.nextToken) {
+            await getListBukken(
+                list,
+                response.data.queryBukkensByUserId.nextToken
+            );
+        }
+        return list;
+    }, []);
 
-    if (isMounted) loadData();
-  }, [isMounted]);
+    useEffect(() => {
+        async function loadData() {
+            setLoading(true);
 
-  return { bukkenList, loading };
+            const bukkenList = await getListBukken();
+            setBukkenList(bukkenList);
+            //end load list bukken
+            setLoading(false);
+        }
+
+        if (isMounted) loadData();
+    }, [isMounted]);
+
+    return {bukkenList, loading};
 };
