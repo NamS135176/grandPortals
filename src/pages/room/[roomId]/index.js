@@ -21,6 +21,8 @@ import { useMounted } from '../../../hooks/use-mounted';
 import { gtm } from '../../../lib/gtm';
 import { ManagementList } from '../../../components/management-menu';
 import { ArrowLeft as ArrowLeftIcon } from '../../../icons/arrow-left';
+import { useRouter } from 'next/router';
+import { useBukkenDetail } from '../../../hooks/use-bukken-detail';
 import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
 import { HistoryDialog } from '../../../components/history/history-dialog';
 
@@ -28,97 +30,184 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const RoomDetails = () => {
-	const isMounted = useMounted();
-	const [bukkenDocs, setBukkenDocs] = useState([]);
-	const [bukkenHistory, setBukkenHistory] = useState([]);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
-	const [form, setForm] = useState({
-		type: '和室',
-		name: '部屋A',
-		area: '６畳',
-		height: '240cm',
-		note: 'テキストサンプルテキストサンプルテキストサンプル',
-	});
 
-	// dialog
-	const [openDialog, setOpenDialog] = useState(false);
-	const handleOpenDialog = () => {
-		setOpenDialog(true);
-	};
-	const handleCloseDialog = () => {
-		setOpenDialog(false);
-	};
-	// ./dialog
+	const router = useRouter();
+    const {bukkenId} = router.query;
+    const {
+        bukken,
+        histories: bukkenHistory,
+        documents: bukkenDocs,
+        coverImageUrl,
+        deleteDocument,
+        deleteHistory,
+        reloadDocument,
+        reloadHistory,
+        uploadBukenCover,
+    } = useBukkenDetail(bukkenId);
+    const [docList, setDoclist] = useState(bukkenDocs);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
+    const [form, setForm] = useState({
+        bukken_kind: "自宅",
+        floor_plan: "2LDK",
+        shinchiku_date: "築10年",
+        remarks: "テキストサンプルテキストサンプルテキストサンプル",
+    });
 
-	useEffect(() => {
-		gtm.push({ event: 'page_view' });
-	}, []);
+    useEffect(() => {
+        if (!bukken) return;
+        setForm({
+            bukken_kind: getBukkenType(bukken),
+            floor_plan: bukken.floor_plan,
+            shinchiku_date: moment().subtract(375, "days").fromNow(),
+            remarks: bukken.remarks,
+        });
+    }, [bukken]);
 
-	const handleChange = (event) => {
-		setForm({
-			...form,
-			[event.target.name]: event.target.value,
-		});
-	};
+    useEffect(() => {
+        gtm.push({event: "page_view"});
+    }, []);
 
-	const getRelatedDocs = useCallback(async () => {
-		try {
-			const data = await bukkenApi.getRelatedDocs();
+    const handleChange = (event) => {
+        setForm({
+            ...form,
+            [event.target.name]: event.target.value,
+        });
+    };
 
-			if (isMounted()) {
-				setBukkenDocs(data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}, [isMounted]);
+    const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
+    const handleOpenHistoryDialog = () => {
+        setOpenHistoryDialog(true);
+    };
+    const handleCloseHistoryDialog = () => {
+        setOpenHistoryDialog(false);
+    };
 
-	const getHistory = useCallback(async () => {
-		try {
-			const data = await bukkenApi.getHistory();
+    const [openDocumentDialog, setOpenDocumentDialog] = useState(false);
+    const handleOpenDocumentDialog = () => {
+        setOpenDocumentDialog(true);
+    };
+    const handleCloseDocumentDialog = () => {
+        setOpenDocumentDialog(false);
+    };
 
-			if (isMounted()) {
-				setBukkenHistory(data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}, [isMounted]);
+    const handlePageChange = (event, newPage) => {
+        setPage(newPage);
+    };
 
-	useEffect(
-		() => {
-			getRelatedDocs();
-			getHistory();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
-	);
+    const handlePageHistoryChange = (event, newPage) => {
+        setPage(newPage);
+    };
 
-	const handlePageChange = (event, newPage) => {
-		setPage(newPage);
-	};
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+    };
 
-	const handlePageHistoryChange = (event, newPage) => {
-		setPage(newPage);
-	};
+    const handleRowsPerPageHistoryChange = (event) => {
+        setRowsPerPageHistory(parseInt(event.target.value, 10));
+    };
 
-	const handleRowsPerPageChange = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-	};
+    // Usually query is done on backend with indexing solutions
+    const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
+    const paginatedBukkenHistory = applyPagination(
+        bukkenHistory,
+        page,
+        rowsPerPage
+    );
 
-	const handleRowsPerPageHistoryChange = (event) => {
-		setRowsPerPageHistory(parseInt(event.target.value, 10));
-	};
 
-	// Usually query is done on backend with indexing solutions
-	const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
-	const paginatedBukkenHistory = applyPagination(
-		bukkenHistory,
-		page,
-		rowsPerPage
-	);
+	// const isMounted = useMounted();
+	// const [bukkenDocs, setBukkenDocs] = useState([]);
+	// const [bukkenHistory, setBukkenHistory] = useState([]);
+	// const [page, setPage] = useState(0);
+	// const [rowsPerPage, setRowsPerPage] = useState(5);
+	// const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
+	// const [form, setForm] = useState({
+	// 	type: '和室',
+	// 	name: '部屋A',
+	// 	area: '６畳',
+	// 	height: '240cm',
+	// 	note: 'テキストサンプルテキストサンプルテキストサンプル',
+	// });
+
+	// // dialog
+	// const [openDialog, setOpenDialog] = useState(false);
+	// const handleOpenDialog = () => {
+	// 	setOpenDialog(true);
+	// };
+	// const handleCloseDialog = () => {
+	// 	setOpenDialog(false);
+	// };
+	// // ./dialog
+
+	// useEffect(() => {
+	// 	gtm.push({ event: 'page_view' });
+	// }, []);
+
+	// const handleChange = (event) => {
+	// 	setForm({
+	// 		...form,
+	// 		[event.target.name]: event.target.value,
+	// 	});
+	// };
+
+	// const getRelatedDocs = useCallback(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getRelatedDocs();
+
+	// 		if (isMounted()) {
+	// 			setBukkenDocs(data);
+	// 		}
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, [isMounted]);
+
+	// const getHistory = useCallback(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getHistory();
+
+	// 		if (isMounted()) {
+	// 			setBukkenHistory(data);
+	// 		}
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, [isMounted]);
+
+	// useEffect(
+	// 	() => {
+	// 		getRelatedDocs();
+	// 		getHistory();
+	// 	},
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// 	[]
+	// );
+
+	// const handlePageChange = (event, newPage) => {
+	// 	setPage(newPage);
+	// };
+
+	// const handlePageHistoryChange = (event, newPage) => {
+	// 	setPage(newPage);
+	// };
+
+	// const handleRowsPerPageChange = (event) => {
+	// 	setRowsPerPage(parseInt(event.target.value, 10));
+	// };
+
+	// const handleRowsPerPageHistoryChange = (event) => {
+	// 	setRowsPerPageHistory(parseInt(event.target.value, 10));
+	// };
+
+	// // Usually query is done on backend with indexing solutions
+	// const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
+	// const paginatedBukkenHistory = applyPagination(
+	// 	bukkenHistory,
+	// 	page,
+	// 	rowsPerPage
+	// );
 
 	return (
 		<>
@@ -212,8 +301,8 @@ const RoomDetails = () => {
 										label="種別"
 										name="type"
 										required
-										value={form.type}
-										onChange={handleChange}
+										// value={form.type}
+										// onChange={handleChange}
 									/>
 								</Grid>
 								<Grid item md={8} xs={12}>
@@ -222,8 +311,8 @@ const RoomDetails = () => {
 										label="名称"
 										name="name"
 										required
-										value={form.name}
-										onChange={handleChange}
+										// value={form.name}
+										// onChange={handleChange}
 									/>
 								</Grid>
 								<Grid item md={8} xs={12}>
@@ -232,8 +321,8 @@ const RoomDetails = () => {
 										label="面積"
 										name="area"
 										required
-										value={form.area}
-										onChange={handleChange}
+										// value={form.area}
+										// onChange={handleChange}
 									/>
 								</Grid>
 								<Grid item md={8} xs={12}>
@@ -242,8 +331,8 @@ const RoomDetails = () => {
 										label="天井高"
 										name="height"
 										required
-										value={form.height}
-										onChange={handleChange}
+										// value={form.height}
+										// onChange={handleChange}
 									/>
 								</Grid>
 								<Grid item md={8} xs={12}>
@@ -253,8 +342,8 @@ const RoomDetails = () => {
 										minRows={4}
 										label="備考"
 										name="note"
-										value={form.note}
-										onChange={handleChange}
+										// value={form.note}
+										// onChange={handleChange}
 									/>
 								</Grid>
 							</Grid>
@@ -275,14 +364,14 @@ const RoomDetails = () => {
 								<Typography variant="h6">関連資料一覧</Typography>
 								<Button variant="contained">資料追加</Button>
 							</Box>
-							<BukkenRelatedDocsListTable
+							{/* <BukkenRelatedDocsListTable
 								bukkenDocs={paginatedBukkenDocs}
 								bukkenDocsCount={bukkenDocs.length}
 								onPageChange={handlePageChange}
 								onRowsPerPageChange={handleRowsPerPageChange}
 								rowsPerPage={rowsPerPage}
 								page={page}
-							/>
+							/> */}
 							<Divider
 								sx={{
 									mb: 3,
@@ -298,23 +387,23 @@ const RoomDetails = () => {
 								}}
 							>
 								<Typography variant="h6">最新履歴</Typography>
-								<Button variant="contained" onClick={handleOpenDialog}>
+								<Button variant="contained">
 									履歴追加
 								</Button>
-								<HistoryDialog
+								{/* <HistoryDialog
 									onClose={handleCloseDialog}
 									open={openDialog}
 									mode="edit"
-								/>
+								/> */}
 							</Box>
-							<BukkenHistoryListTable
+							{/* <BukkenHistoryListTable
 								bukkenHistory={paginatedBukkenHistory}
 								bukkenHistoryCount={bukkenHistory.length}
 								onPageChange={handlePageHistoryChange}
 								onRowsPerPageChange={handleRowsPerPageHistoryChange}
 								rowsPerPage={rowsPerPageHistory}
 								page={page}
-							/>
+							/> */}
 						</CardContent>
 						<CardActions>
 							<Button

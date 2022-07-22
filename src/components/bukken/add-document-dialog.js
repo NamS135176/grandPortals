@@ -73,7 +73,7 @@ export const AddDocumentDialog = (props) => {
                         s3_file_name: s3FileName,
                         overview,
                         sort: 1, //always 1
-                        //   other_object_id
+                        // other_object_id: otherObject?.id
                     },
                 },
             });

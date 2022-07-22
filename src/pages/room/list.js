@@ -15,12 +15,15 @@ import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
 import { RoomListTable } from '../../components/room/room-list-table';
 import { useMounted } from '../../hooks/use-mounted';
 import { gtm } from '../../lib/gtm';
+import { useRoomList } from '../../hooks/use-room-list';
 import { ManagementList } from '../../components/management-menu';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const RoomList = () => {
+	const {roomList : rooms, deleteRoom} = useRoomList()
+	console.log(rooms);
 	const isMounted = useMounted();
 	const [room, setRoom] = useState([]);
 	const [page, setPage] = useState(0);
@@ -30,25 +33,25 @@ const RoomList = () => {
 		gtm.push({ event: 'page_view' });
 	}, []);
 
-	const getRoomList = useCallback(async () => {
-		try {
-			const data = await bukkenApi.getRoomList();
+	// const getRoomList = useCallback(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getRoomList();
+	// 		console.log(data);
+	// 		if (isMounted()) {
+	// 			setRoom(data);
+	// 		}
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, [isMounted]);
 
-			if (isMounted()) {
-				setRoom(data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}, [isMounted]);
-
-	useEffect(
-		() => {
-			getRoomList();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
-	);
+	// useEffect(
+	// 	() => {
+	// 		getRoomList();
+	// 	},
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// 	[]
+	// );
 
 	const handlePageChange = (event, newPage) => {
 		setPage(newPage);
@@ -59,7 +62,7 @@ const RoomList = () => {
 	};
 
 	// Usually query is done on backend with indexing solutions
-	const paginatedRoom = applyPagination(room, page, rowsPerPage);
+	const paginatedRoom = applyPagination(rooms, page, rowsPerPage);
 
 	return (
 		<>
@@ -101,11 +104,12 @@ const RoomList = () => {
 							</Box>
 							<RoomListTable
 								room={paginatedRoom}
-								roomCount={room.length}
+								roomCount={rooms.length}
 								onPageChange={handlePageChange}
 								onRowsPerPageChange={handleRowsPerPageChange}
 								rowsPerPage={rowsPerPage}
 								page={page}
+								deleteRoom={deleteRoom}
 							/>
 						</CardContent>
 					</Card>

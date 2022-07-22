@@ -41,6 +41,7 @@ export const RoomListTable = (props) => {
 		onRowsPerPageChange,
 		page,
 		rowsPerPage,
+		deleteRoom,
 		...other
 	} = props;
 	const [sort, setSort] = useState('desc');
@@ -79,7 +80,7 @@ export const RoomListTable = (props) => {
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
-										<NextLink href="/room/1" passHref>
+										<NextLink href={`/room/${buk.id}`} passHref>
 											<Box
 												sx={{
 													alignItems: 'center',
@@ -138,7 +139,7 @@ export const RoomListTable = (props) => {
 										</Typography>
 									</TableCell>
 									<TableCell align="left">
-										<IconButton component="a">
+										<IconButton component="a"  onClick={() => deleteRoom(buk)}>
 											<TrashIcon fontSize="small" color="error" />
 										</IconButton>
 									</TableCell>

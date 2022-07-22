@@ -26,7 +26,7 @@ import { resizeImage } from "../utils/image";
 export const useBukkenDetail = (bukkenNo) => {
     const isMounted = useMounted();
     const [coverImageUrl, setCoverImageUrl] = useState();
-    const [bukenOtherObject, setBukenOtherObject] = useState();
+    const [bukkenOtherObject, setBukkenOtherObject] = useState();
     const [bukken, setBukken] = useState();
     const [histories, setHistories] = useState([]);
     const [documents, setDocuments] = useState([]);
@@ -170,12 +170,12 @@ export const useBukkenDetail = (bukkenNo) => {
 
         reloadDocument(bukken, false);
 
-        getBukenOtherObject(bukken);
+        getBukkenOtherObject(bukken);
 
         setLoading(false);
     }, [bukkenNo]);
 
-    const getBukenOtherObject = useCallback(async (bukken) => {
+    const getBukkenOtherObject = useCallback(async (bukken) => {
         if (!bukken) return;
 
         const res = await API.graphql({
@@ -189,7 +189,7 @@ export const useBukkenDetail = (bukkenNo) => {
         const items = res.data.queryOtherObjectByBukkenId.items;
         if (items?.length > 0) {
             const otherObject = items[0];
-            setBukenOtherObject(otherObject);
+            setBukkenOtherObject(otherObject);
             const coverImageUrl = getBukkenCoverImageUrl(otherObject);
             if (coverImageUrl) {
                 setCoverImageUrl(coverImageUrl);
@@ -200,8 +200,8 @@ export const useBukkenDetail = (bukkenNo) => {
     const uploadBukenCover = useCallback(
         async (file) => {
             try {
-                //create other object if not exist firstly cause image cover will be save on bukenOtherObject
-                var tmpBukkenOtherObject = bukenOtherObject;
+                //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
+                var tmpBukkenOtherObject = bukkenOtherObject;
                 if (!tmpBukkenOtherObject) {
                     const otherObjectId = await getNextOtherObjectId();
                     const resOtherObject = await API.graphql({
@@ -266,13 +266,13 @@ export const useBukkenDetail = (bukkenNo) => {
                         },
                     },
                 });
-                setBukenOtherObject(resOtherObject.data.updateOtherObject);
+                setBukkenOtherObject(resOtherObject.data.updateOtherObject);
             } catch (e) {
                 console.error(e);
                 throw e;
             }
         },
-        [bukken, bukenOtherObject]
+        [bukken, bukkenOtherObject]
     );
 
     useEffect(() => {
