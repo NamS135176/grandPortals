@@ -21,6 +21,9 @@ export const useRoomList = () => {
                 filter:{
                     object_kind: {
                         eq: OtherObjectKind.RoomSpace
+                    },
+                    delete_flag:{
+                        eq: 0
                     }
                 }
             },
@@ -49,10 +52,11 @@ export const useRoomList = () => {
             try {
               
                 await API.graphql({
-                    query: mutations.deleteOtherObject,
+                    query: mutations.updateOtherObject,
                     variables: {
                         input: {
                             id: room.id,
+                            delete_flag: 1
                         },
                     },
                 });

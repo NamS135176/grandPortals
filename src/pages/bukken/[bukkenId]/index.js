@@ -12,6 +12,7 @@ import {
     Typography,
     TextField,
 } from "@mui/material";
+
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
 import {BukkenHistoryListTable} from "../../../components/bukken/bukken-history-list-table";
@@ -42,6 +43,7 @@ const BukkenDetails = () => {
         reloadDocument,
         reloadHistory,
         uploadBukenCover,
+        updateBukken,
     } = useBukkenDetail(bukkenId);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -68,6 +70,7 @@ const BukkenDetails = () => {
     }, []);
 
     const handleChange = (event) => {
+        console.log(event.target.name);
         setForm({
             ...form,
             [event.target.name]: event.target.value,
@@ -104,6 +107,10 @@ const BukkenDetails = () => {
 
     const handleRowsPerPageHistoryChange = (event) => {
         setRowsPerPageHistory(parseInt(event.target.value, 10));
+    };
+
+    const handleUpdateBukken = () => {
+        updateBukken(form.remarks);
     };
 
     // Usually query is done on backend with indexing solutions
@@ -234,11 +241,27 @@ const BukkenDetails = () => {
                                         multiline
                                         minRows={4}
                                         label="備考"
-                                        name="note"
-                                        value={form.remarks}
+                                        name="remarks"
+                                        defaultValue={form.remarks}
                                         onChange={handleChange}
                                     />
                                 </Grid>
+                                <Box
+                                    sx={{
+                                    
+                                        width:"100%",
+                                        display:'flex',
+                                        justifyContent:"flex-end"
+                                    }}
+                                >
+                                    <Button
+                                        onClick={handleUpdateBukken}
+                                        sx={{mt: 3}}
+                                        variant="contained"
+                                    >
+                                        登録
+                                    </Button>
+                                </Box>
                             </Grid>
                             <Divider
                                 sx={{
@@ -268,7 +291,7 @@ const BukkenDetails = () => {
                                     open={openDocumentDialog}
                                     mode="edit"
                                     bukken={bukken}
-                                    loadData={reloadDocument}
+                                    loadData={() => reloadDocument(bukken)}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
@@ -307,7 +330,7 @@ const BukkenDetails = () => {
                                     open={openHistoryDialog}
                                     mode="edit"
                                     bukken={bukken}
-                                    loadData={reloadHistory}
+                                    loadData={() => reloadHistory(bukken)}
                                 />
                             </Box>
                             <BukkenHistoryListTable
@@ -332,17 +355,6 @@ const BukkenDetails = () => {
                             </Button>
                         </CardActions>
                     </Card>
-                    <Box
-                        sx={{
-                            mx: -1,
-                            mb: -1,
-                            mt: 3,
-                        }}
-                    >
-                        <Button sx={{m: 1}} variant="contained">
-                            登録
-                        </Button>
-                    </Box>
                 </Container>
             </Box>
         </>

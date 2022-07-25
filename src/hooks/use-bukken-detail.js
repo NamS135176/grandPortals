@@ -15,15 +15,19 @@ import {
     getBukenCoverImageS3Path,
     getBukkenCoverImageUrl,
     getOtherObjectS3FileName,
+    getS3FromUrl,
     getUrlPath,
     OtherObjectFieldKind,
     OtherObjectKind,
 } from "../utils/bukken";
 import moment from "moment";
+import toast, { Toaster } from 'react-hot-toast';
 import {getNextDocumentId, getNextOtherObjectId} from "../utils/id-generator";
+import { useRouter } from "next/router";
 import { resizeImage } from "../utils/image";
 
 export const useBukkenDetail = (bukkenNo) => {
+    const router = useRouter();
     const isMounted = useMounted();
     const [coverImageUrl, setCoverImageUrl] = useState();
     const [bukkenOtherObject, setBukkenOtherObject] = useState();
@@ -151,6 +155,23 @@ export const useBukkenDetail = (bukkenNo) => {
         []
     );
 
+    const updateBukken = useCallback(
+        async (remarks) => {
+            const res = await API.graphql({
+                query: mutations.updateBukken,
+                variables: {
+                    input: {
+                        id: bukken.id,
+                        remarks: remarks
+                    }
+                },
+            });
+            toast.success("物件情報を登録しました。")
+            router.push('/bukken/list')
+        }
+       
+    )
+
     const loadData = useCallback(async () => {
         setLoading(true);
 
@@ -201,6 +222,14 @@ export const useBukkenDetail = (bukkenNo) => {
         async (file) => {
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
+                if (coverImageUrl) {
+                    // console.log();
+                    // const s3Old = getS3FromUrl(coverImageUrl);
+                    // console.log(s3Old);
+                    const res = await Storage.remove(getS3FromUrl(coverImageUrl), {level: "public"});
+                    // console.log(res);
+                }
+
                 var tmpBukkenOtherObject = bukkenOtherObject;
                 if (!tmpBukkenOtherObject) {
                     const otherObjectId = await getNextOtherObjectId();
@@ -291,5 +320,6 @@ export const useBukkenDetail = (bukkenNo) => {
         reloadDocument,
         reloadHistory,
         uploadBukenCover,
+        updateBukken
     };
 };

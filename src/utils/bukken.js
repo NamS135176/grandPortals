@@ -71,6 +71,10 @@ export function getUrlPath(s3FileName) {
     return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${s3FileName}`;
 }
 
+export function getS3FromUrl(url) {
+    return url.split('public/')[1]
+}
+
 /**
  * base on logic save file on s3: https://bjm.backlog.com/view/GRANDS_PORTAL_SITE-60#comment-110961690
  * @param {OtherObject} otherObject

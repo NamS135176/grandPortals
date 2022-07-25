@@ -17,11 +17,12 @@ import { useMounted } from '../../hooks/use-mounted';
 import { gtm } from '../../lib/gtm';
 import { useRoomList } from '../../hooks/use-room-list';
 import { ManagementList } from '../../components/management-menu';
-
+import { useRouter } from 'next/router';
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const RoomList = () => {
+	const router = useRouter()
 	const {roomList : rooms, deleteRoom} = useRoomList()
 	console.log(rooms);
 	const isMounted = useMounted();
@@ -100,7 +101,7 @@ const RoomList = () => {
 								}}
 							>
 								<Typography variant="h6">部屋・スペース一覧</Typography>
-								<Button variant="contained">新規登録</Button>
+								<Button onClick={() => {router.push('/room/0')}} variant="contained">新規登録</Button>
 							</Box>
 							<RoomListTable
 								room={paginatedRoom}
