@@ -81,14 +81,14 @@ export const BukkenHistoryListTable = (props) => {
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
-										<NextLink href={`/bukken/${bukken.bukken_no}`} passHref>
+										<NextLink href={`/bukken/${bukken?.bukken_no}`} passHref>
 											<IconButton component="a">
 												<ArrowRightIcon fontSize="small" />
 											</IconButton>
 										</NextLink>
 									</TableCell>
 									<TableCell>
-										<NextLink href={`/bukken/${bukken.bukken_no}`} passHref>
+										<NextLink href={`/bukken/${bukken?.bukken_no}`} passHref>
 											<Link color="inherit" variant="subtitle2">
 												<Box
 													sx={{

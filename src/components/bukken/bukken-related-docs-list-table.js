@@ -96,7 +96,7 @@ export const BukkenRelatedDocsListTable = (props) => {
                                     </TableCell>
                                     <TableCell>
                                         <NextLink
-                                            href={`/bukken/${bukken.bukken_no}`}
+                                            href={`/bukken/${bukken?.bukken_no}`}
                                             passHref
                                         >
                                             <Link

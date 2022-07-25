@@ -19,7 +19,15 @@ import {API} from "aws-amplify";
 import {getNextHistoryId} from "../../utils/id-generator";
 
 export const HistoryDialog = (props) => {
-    const {onClose, open, mode = "edit", bukken, loadData, ...other} = props;
+    const {
+        onClose,
+        open,
+        mode = "edit",
+        bukken,
+        otherObjectId,
+        loadData,
+        ...other
+    } = props;
     const [form, setForm] = useState({
         date: new Date(),
         overview: "",
@@ -62,7 +70,7 @@ export const HistoryDialog = (props) => {
                             "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
                         ),
                         sort: 1, //always 1
-                        //   other_object_id
+                        other_object_id: otherObjectId,
                     },
                 },
             });
@@ -155,4 +163,5 @@ HistoryDialog.propTypes = {
     open: PropTypes.bool,
     mode: PropTypes.oneOf(["edit", "reference"]),
     bukken: PropTypes.object,
+    otherObjectId: PropTypes.string,
 };

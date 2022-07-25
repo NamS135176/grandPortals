@@ -89,7 +89,7 @@ type OtherObject
     id: ID! @primaryKey
     bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryOtherObjectByBukkenId")
-    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    bukken: Bukken @belongsTo(fields: ["bukken_id"])
     bukken_no: String!
     user_id: ID!
     object_kind: String!
@@ -118,12 +118,12 @@ type Document
     id: ID! @primaryKey
     bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryDocumentByBukkenId")
-    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    bukken: Bukken @belongsTo(fields: ["bukken_id"])
     user_id: ID!
     other_object_id: ID
         @index(
             name: "GSI-otherObjectId"
-            queryField: "querDocumentByOtherObjectId"
+            queryField: "queryDocumentByOtherObjectId"
         )
     object_kind: String!
     orignal_file_name: String!
@@ -151,12 +151,12 @@ type History
     id: ID! @primaryKey
     bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryHistoryByBukkenId")
-    buken: Bukken @belongsTo(fields: ["bukken_id"])
+    bukken: Bukken @belongsTo(fields: ["bukken_id"])
     user_id: ID!
     other_object_id: ID
         @index(
             name: "GSI-otherObjectId"
-            queryField: "querHistoryByOtherObjectId"
+            queryField: "queryHistoryByOtherObjectId"
         )
     object_kind: String!
     remarks: String!

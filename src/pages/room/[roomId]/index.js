@@ -1,81 +1,78 @@
-import { useCallback, useEffect, useState } from 'react';
-import Head from 'next/head';
+import {useCallback, useEffect, useState} from "react";
+import Head from "next/head";
 import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	CardActions,
-	CardActionArea,
-	Container,
-	Divider,
-	Grid,
-	Typography,
-	TextField,
-} from '@mui/material';
-import { bukkenApi } from '../../../__fake-api__/bukken-api';
-import { DashboardLayout } from '../../../components/dashboard/dashboard-layout';
-import { BukkenRelatedDocsListTable } from '../../../components/bukken/bukken-related-docs-list-table';
-import { BukkenHistoryListTable } from '../../../components/bukken/bukken-history-list-table';
-import { useMounted } from '../../../hooks/use-mounted';
-import { gtm } from '../../../lib/gtm';
-import { ManagementList } from '../../../components/management-menu';
-import { ArrowLeft as ArrowLeftIcon } from '../../../icons/arrow-left';
-import { useRouter } from 'next/router';
-import { useBukkenDetail } from '../../../hooks/use-bukken-detail';
-import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
-import { HistoryDialog } from '../../../components/history/history-dialog';
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardActions,
+    CardActionArea,
+    Container,
+    Divider,
+    Grid,
+    Typography,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+} from "@mui/material";
+import {bukkenApi} from "../../../__fake-api__/bukken-api";
+import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
+import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
+import {BukkenHistoryListTable} from "../../../components/bukken/bukken-history-list-table";
+import {useMounted} from "../../../hooks/use-mounted";
+import {gtm} from "../../../lib/gtm";
+import {ManagementList} from "../../../components/management-menu";
+import {ArrowLeft as ArrowLeftIcon} from "../../../icons/arrow-left";
+import {ArrowRight as ArrowRightIcon} from "../../../icons/arrow-right";
+import {HistoryDialog} from "../../../components/history/history-dialog";
+import {useRoomDetail} from "../../../hooks/use-room-detail";
+import {useRouter} from "next/router";
+import {FileUpload} from "../../../components/widgets/file-upload";
+import {RoomArea, RoomHeight, RoomKind} from "../../../utils/global-data";
+import { AddDocumentDialog } from "../../../components/bukken/add-document-dialog";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
-	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const RoomDetails = () => {
-
-	const router = useRouter();
-    const {bukkenId} = router.query;
+    const router = useRouter();
+    const {roomId} = router.query;
     const {
-        bukken,
+        loading,
+        room,
+        coverImageUrl,
         histories: bukkenHistory,
         documents: bukkenDocs,
-        coverImageUrl,
-        deleteDocument,
+        uploadRoomCover,
         deleteHistory,
-        reloadDocument,
+        deleteDocument,
+        updateRoomFieldList,
         reloadHistory,
-        uploadBukenCover,
-    } = useBukkenDetail(bukkenId);
-    const [docList, setDoclist] = useState(bukkenDocs);
+        reloadDocument,
+    } = useRoomDetail(roomId);
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
     const [form, setForm] = useState({
-        bukken_kind: "自宅",
-        floor_plan: "2LDK",
-        shinchiku_date: "築10年",
-        remarks: "テキストサンプルテキストサンプルテキストサンプル",
+        kind: "",
+        name: "",
+        area: "",
+        height: "",
+        remarks: "",
     });
 
     useEffect(() => {
-        if (!bukken) return;
-        setForm({
-            bukken_kind: getBukkenType(bukken),
-            floor_plan: bukken.floor_plan,
-            shinchiku_date: moment().subtract(375, "days").fromNow(),
-            remarks: bukken.remarks,
-        });
-    }, [bukken]);
+        if (!room?.field_list) return;
+        const fieldList = JSON.parse(room.field_list);
+        const {kind, name, area, height, remarks} = fieldList;
 
-    useEffect(() => {
-        gtm.push({event: "page_view"});
-    }, []);
+        setForm({kind, name, area, height, remarks});
+    }, [room]);
 
-    const handleChange = (event) => {
-        setForm({
-            ...form,
-            [event.target.name]: event.target.value,
-        });
-    };
-
+    // dialog
     const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
     const handleOpenHistoryDialog = () => {
         setOpenHistoryDialog(true);
@@ -91,7 +88,31 @@ const RoomDetails = () => {
     const handleCloseDocumentDialog = () => {
         setOpenDocumentDialog(false);
     };
+    // ./dialog
 
+    useEffect(() => {
+        gtm.push({event: "page_view"});
+    }, []);
+
+    const handleChange = (event) => {
+        setForm({
+            ...form,
+            [event.target.name]: event.target.value,
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        //update other object for update field_list
+        const fieldList = room.field_list ? JSON.parse(room.field_list) : {};
+        fieldList["kind"] = form.kind;
+        fieldList["name"] = form.name;
+        fieldList["area"] = form.area;
+        fieldList["height"] = form.height;
+        fieldList["remarks"] = form.remarks;
+
+        updateRoomFieldList(fieldList);
+    };
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
     };
@@ -116,325 +137,345 @@ const RoomDetails = () => {
         rowsPerPage
     );
 
+	console.log("room", {room})
 
-	// const isMounted = useMounted();
-	// const [bukkenDocs, setBukkenDocs] = useState([]);
-	// const [bukkenHistory, setBukkenHistory] = useState([]);
-	// const [page, setPage] = useState(0);
-	// const [rowsPerPage, setRowsPerPage] = useState(5);
-	// const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
-	// const [form, setForm] = useState({
-	// 	type: '和室',
-	// 	name: '部屋A',
-	// 	area: '６畳',
-	// 	height: '240cm',
-	// 	note: 'テキストサンプルテキストサンプルテキストサンプル',
-	// });
-
-	// // dialog
-	// const [openDialog, setOpenDialog] = useState(false);
-	// const handleOpenDialog = () => {
-	// 	setOpenDialog(true);
-	// };
-	// const handleCloseDialog = () => {
-	// 	setOpenDialog(false);
-	// };
-	// // ./dialog
-
-	// useEffect(() => {
-	// 	gtm.push({ event: 'page_view' });
-	// }, []);
-
-	// const handleChange = (event) => {
-	// 	setForm({
-	// 		...form,
-	// 		[event.target.name]: event.target.value,
-	// 	});
-	// };
-
-	// const getRelatedDocs = useCallback(async () => {
-	// 	try {
-	// 		const data = await bukkenApi.getRelatedDocs();
-
-	// 		if (isMounted()) {
-	// 			setBukkenDocs(data);
-	// 		}
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, [isMounted]);
-
-	// const getHistory = useCallback(async () => {
-	// 	try {
-	// 		const data = await bukkenApi.getHistory();
-
-	// 		if (isMounted()) {
-	// 			setBukkenHistory(data);
-	// 		}
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, [isMounted]);
-
-	// useEffect(
-	// 	() => {
-	// 		getRelatedDocs();
-	// 		getHistory();
-	// 	},
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// 	[]
-	// );
-
-	// const handlePageChange = (event, newPage) => {
-	// 	setPage(newPage);
-	// };
-
-	// const handlePageHistoryChange = (event, newPage) => {
-	// 	setPage(newPage);
-	// };
-
-	// const handleRowsPerPageChange = (event) => {
-	// 	setRowsPerPage(parseInt(event.target.value, 10));
-	// };
-
-	// const handleRowsPerPageHistoryChange = (event) => {
-	// 	setRowsPerPageHistory(parseInt(event.target.value, 10));
-	// };
-
-	// // Usually query is done on backend with indexing solutions
-	// const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
-	// const paginatedBukkenHistory = applyPagination(
-	// 	bukkenHistory,
-	// 	page,
-	// 	rowsPerPage
-	// );
-
-	return (
-		<>
-			<Head>
-				<title>grandsポータルサイト｜外装・エクステリア情報</title>
-			</Head>
-			<Box
-				component="main"
-				sx={{
-					flexGrow: 1,
-					py: 8,
-				}}
-			>
-				<Container maxWidth="xl">
-					<Box sx={{ mb: 4, display: 'flex', justifyContent: 'flex-end' }}>
-						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
-						</Typography>
-					</Box>
-					<Card>
-						<CardContent>
-							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
-							<Box sx={{ mb: 4 }}>
-								<Grid container justifyContent="space-between" spacing={3}>
-									<Grid item sm={4}>
-										<CardActionArea href="/interior/list">
-											<Card
-												elevation={0}
-												variant="outlined"
-												sx={{
-													cursor: 'pointer',
-													borderColor: 'primary.main',
-													borderWidth: 2,
-												}}
-											>
-												<CardContent>
-													<Box
-														sx={{
-															alignItems: 'center',
-															display: 'flex',
-															justifyContent: 'center',
-														}}
-													>
-														<Typography variant="overline">
-															建具インテリア
-														</Typography>
-													</Box>
-												</CardContent>
-											</Card>
-										</CardActionArea>
-									</Grid>
-									<Grid item>
-										<Typography variant="subtitle2">
-											物件番号：HONR000001
-										</Typography>
-									</Grid>
-								</Grid>
-							</Box>
-							<Box sx={{ mb: 4 }}>
-								<Grid container justifyContent="space-between" spacing={3}>
-									<Grid item>
-										<Typography variant="h6" mb={3}>
-											部屋・スペース情報
-										</Typography>
-									</Grid>
-									<Grid item>
-										<Button variant="contained">画像追加</Button>
-									</Grid>
-								</Grid>
-							</Box>
-							<Box
-								sx={{
-									backgroundImage: `url(/images/mock-images/covers/cover_1.jpg)`,
-									backgroundPosition: 'center',
-									backgroundSize: 'cover',
-									borderRadius: 1,
-									height: 450,
-									mt: 3,
-								}}
-							/>
-							<Grid container spacing={3} mt={3}>
-								<Grid item md={8} xs={12}>
-									<TextField
-										fullWidth
-										label="種別"
-										name="type"
-										required
-										// value={form.type}
-										// onChange={handleChange}
-									/>
-								</Grid>
-								<Grid item md={8} xs={12}>
-									<TextField
-										fullWidth
-										label="名称"
-										name="name"
-										required
-										// value={form.name}
-										// onChange={handleChange}
-									/>
-								</Grid>
-								<Grid item md={8} xs={12}>
-									<TextField
-										fullWidth
-										label="面積"
-										name="area"
-										required
-										// value={form.area}
-										// onChange={handleChange}
-									/>
-								</Grid>
-								<Grid item md={8} xs={12}>
-									<TextField
-										fullWidth
-										label="天井高"
-										name="height"
-										required
-										// value={form.height}
-										// onChange={handleChange}
-									/>
-								</Grid>
-								<Grid item md={8} xs={12}>
-									<TextField
-										fullWidth
-										multiline
-										minRows={4}
-										label="備考"
-										name="note"
-										// value={form.note}
-										// onChange={handleChange}
-									/>
-								</Grid>
-							</Grid>
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
-							<Box
-								sx={{
-									alignItems: 'center',
-									display: 'flex',
-									justifyContent: 'space-between',
-									my: 3,
-								}}
-							>
-								<Typography variant="h6">関連資料一覧</Typography>
-								<Button variant="contained">資料追加</Button>
-							</Box>
-							{/* <BukkenRelatedDocsListTable
-								bukkenDocs={paginatedBukkenDocs}
-								bukkenDocsCount={bukkenDocs.length}
-								onPageChange={handlePageChange}
-								onRowsPerPageChange={handleRowsPerPageChange}
-								rowsPerPage={rowsPerPage}
-								page={page}
-							/> */}
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
-							<Box
-								sx={{
-									alignItems: 'center',
-									display: 'flex',
-									justifyContent: 'space-between',
-									my: 3,
-								}}
-							>
-								<Typography variant="h6">最新履歴</Typography>
-								<Button variant="contained">
-									履歴追加
-								</Button>
-								{/* <HistoryDialog
-									onClose={handleCloseDialog}
-									open={openDialog}
-									mode="edit"
-								/> */}
-							</Box>
-							{/* <BukkenHistoryListTable
-								bukkenHistory={paginatedBukkenHistory}
-								bukkenHistoryCount={bukkenHistory.length}
-								onPageChange={handlePageHistoryChange}
-								onRowsPerPageChange={handleRowsPerPageHistoryChange}
-								rowsPerPage={rowsPerPageHistory}
-								page={page}
-							/> */}
-						</CardContent>
-						<CardActions>
-							<Button
-								href="/history"
-								endIcon={<ArrowRightIcon fontSize="small" />}
-							>
-								全ての履歴を見る
-							</Button>
-						</CardActions>
-					</Card>
-					<Box
-						sx={{
-							mx: -1,
-							mb: -1,
-							mt: 3,
-						}}
-					>
-						<Button
-							endIcon={<ArrowLeftIcon fontSize="small" />}
-							variant="outlined"
-						>
-							戻る
-						</Button>
-						<Button sx={{ m: 1 }} variant="contained">
-							登録
-						</Button>
-					</Box>
-				</Container>
-			</Box>
-		</>
-	);
+    return (
+        <>
+            <Head>
+                <title>grandsポータルサイト｜外装・エクステリア情報</title>
+            </Head>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    py: 8,
+                }}
+            >
+                <Container maxWidth="xl">
+                    <Box
+                        sx={{
+                            mb: 4,
+                            display: "flex",
+                            justifyContent: "flex-end",
+                        }}
+                    >
+                        <Typography variant="subtitle2">
+                            お問い合わせ：0463-79-5564
+                        </Typography>
+                    </Box>
+                    <Card>
+                        <CardContent>
+                            <ManagementList />
+                            <Divider
+                                sx={{
+                                    mb: 3,
+                                    mt: 3,
+                                }}
+                            />
+                            <Box sx={{mb: 4}}>
+                                <Grid
+                                    container
+                                    justifyContent="space-between"
+                                    spacing={3}
+                                >
+                                    <Grid item sm={4}>
+                                        <CardActionArea href="/interior/list">
+                                            <Card
+                                                elevation={0}
+                                                variant="outlined"
+                                                sx={{
+                                                    cursor: "pointer",
+                                                    borderColor: "primary.main",
+                                                    borderWidth: 2,
+                                                }}
+                                            >
+                                                <CardContent>
+                                                    <Box
+                                                        sx={{
+                                                            alignItems:
+                                                                "center",
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                        }}
+                                                    >
+                                                        <Typography variant="overline">
+                                                            建具インテリア
+                                                        </Typography>
+                                                    </Box>
+                                                </CardContent>
+                                            </Card>
+                                        </CardActionArea>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="subtitle2">
+                                            {room?.bukken_no
+                                                ? `物件番号：${room?.bukken_no}`
+                                                : ""}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                            <Box sx={{mb: 4}}>
+                                <Grid
+                                    container
+                                    justifyContent="space-between"
+                                    spacing={3}
+                                >
+                                    <Grid item>
+                                        <Typography variant="h6" mb={3}>
+                                            部屋・スペース情報
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            component="label"
+                                        >
+                                            画像追加
+                                            <FileUpload
+                                                accept={"image/*"}
+                                                onChange={uploadRoomCover}
+                                                prefix="image"
+                                            >
+                                                <></>
+                                            </FileUpload>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                            <Box
+                                sx={{
+                                    backgroundImage: `url(${coverImageUrl})`,
+                                    backgroundColor: "#D0D0D0",
+                                    backgroundPosition: "center",
+                                    backgroundSize: "cover",
+                                    borderRadius: 1,
+                                    height: 450,
+                                    width: "100%",
+                                    mt: 3,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            />
+                            <Grid container spacing={3} mt={3}>
+                                <Grid item md={8} xs={12}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">
+                                            種別
+                                        </InputLabel>
+                                        <Select
+                                            labelId="select-kind"
+                                            id="select-kind"
+                                            name="kind"
+                                            value={form.kind}
+                                            label="種別"
+                                            onChange={handleChange}
+                                        >
+                                            {RoomKind.map((item, idx) => (
+                                                <MenuItem
+                                                    value={item}
+                                                    key={item}
+                                                >
+                                                    {item}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="名称"
+                                        name="name"
+                                        required
+                                        value={form.name}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">
+                                            種別
+                                        </InputLabel>
+                                        <Select
+                                            labelId="select-area"
+                                            id="select-area"
+                                            name="area"
+                                            value={form.area}
+                                            label="種別"
+                                            onChange={handleChange}
+                                        >
+                                            {RoomArea.map((item, idx) => (
+                                                <MenuItem
+                                                    value={item}
+                                                    key={item}
+                                                >
+                                                    {item}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">
+                                            種別
+                                        </InputLabel>
+                                        <Select
+                                            labelId="select-height"
+                                            id="select-height"
+                                            name="height"
+                                            value={form.height}
+                                            label="種別"
+                                            onChange={handleChange}
+                                        >
+                                            {RoomHeight.map((item, idx) => (
+                                                <MenuItem
+                                                    value={item}
+                                                    key={item}
+                                                >
+                                                    {`${item}cm`}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        minRows={4}
+                                        label="備考"
+                                        name="remarks"
+                                        value={form.remarks}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Divider
+                                sx={{
+                                    mb: 3,
+                                    mt: 3,
+                                }}
+                            />
+                            <Box
+                                sx={{
+                                    alignItems: "center",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    my: 3,
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    関連資料一覧
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleOpenDocumentDialog}
+                                    disabled={!room?.bukken}
+                                >
+                                    資料追加
+                                </Button>
+                                <AddDocumentDialog
+                                    onClose={handleCloseDocumentDialog}
+                                    open={openDocumentDialog}
+                                    mode="edit"
+                                    bukken={room?.bukken}
+                                    loadData={reloadDocument}
+									otherObjectId={room?.id}
+                                />
+                            </Box>
+                            <BukkenRelatedDocsListTable
+                                bukken={room?.bukken}
+                                bukkenDocs={paginatedBukkenDocs}
+                                bukkenDocsCount={bukkenDocs.length}
+                                onPageChange={handlePageChange}
+                                onRowsPerPageChange={handleRowsPerPageChange}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                deleteDocument={deleteDocument}
+                            />
+                            <Divider
+                                sx={{
+                                    mb: 3,
+                                    mt: 3,
+                                }}
+                            />
+                            <Box
+                                sx={{
+                                    alignItems: "center",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    my: 3,
+                                }}
+                            >
+                                <Typography variant="h6">最新履歴</Typography>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleOpenHistoryDialog}
+                                    disabled={!room?.bukken}
+                                >
+                                    履歴追加
+                                </Button>
+                                <HistoryDialog
+                                    onClose={handleCloseHistoryDialog}
+                                    open={openHistoryDialog}
+                                    mode="edit"
+                                    bukken={room?.bukken}
+                                    loadData={reloadHistory}
+									otherObjectId={room?.id}
+                                />
+                            </Box>
+                            <BukkenHistoryListTable
+                                bukken={room?.bukken}
+                                bukkenHistory={paginatedBukkenHistory}
+                                bukkenHistoryCount={bukkenHistory.length}
+                                onPageChange={handlePageHistoryChange}
+                                onRowsPerPageChange={
+                                    handleRowsPerPageHistoryChange
+                                }
+                                rowsPerPage={rowsPerPageHistory}
+                                page={page}
+                                deleteHistory={deleteHistory}
+                            />
+                        </CardContent>
+                        <CardActions>
+                            <Button
+                                href="/history"
+                                endIcon={<ArrowRightIcon fontSize="small" />}
+                            >
+                                全ての履歴を見る
+                            </Button>
+                        </CardActions>
+                    </Card>
+                    <Box
+                        sx={{
+                            mx: -1,
+                            mb: -1,
+                            mt: 3,
+                        }}
+                    >
+                        <Button
+                            endIcon={<ArrowLeftIcon fontSize="small" />}
+                            variant="outlined"
+                        >
+                            戻る
+                        </Button>
+                        <Button
+                            sx={{m: 1}}
+                            variant="contained"
+                            disabled={loading}
+                            onClick={handleSubmit}
+                        >
+                            登録
+                        </Button>
+                    </Box>
+                </Container>
+            </Box>
+        </>
+    );
 };
 RoomDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 

@@ -241,7 +241,7 @@ export const getOtherObject = /* GraphQL */ `
     getOtherObject(id: $id) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -297,7 +297,7 @@ export const listOtherObjects = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -333,7 +333,7 @@ export const getDocument = /* GraphQL */ `
     getDocument(id: $id) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -389,7 +389,7 @@ export const listDocuments = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -425,7 +425,7 @@ export const getHistory = /* GraphQL */ `
     getHistory(id: $id) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -479,7 +479,7 @@ export const listHistories = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -718,7 +718,7 @@ export const queryOtherObjectByBukkenId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -767,7 +767,7 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -816,7 +816,7 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -867,7 +867,7 @@ export const queryOtherObjectBySort = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -916,7 +916,7 @@ export const queryDocumentByBukkenId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -947,15 +947,15 @@ export const queryDocumentByBukkenId = /* GraphQL */ `
     }
   }
 `;
-export const querDocumentByOtherObjectId = /* GraphQL */ `
-  query QuerDocumentByOtherObjectId(
+export const queryDocumentByOtherObjectId = /* GraphQL */ `
+  query QueryDocumentByOtherObjectId(
     $other_object_id: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelDocumentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    querDocumentByOtherObjectId(
+    queryDocumentByOtherObjectId(
       other_object_id: $other_object_id
       sortDirection: $sortDirection
       filter: $filter
@@ -965,7 +965,7 @@ export const querDocumentByOtherObjectId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1016,7 +1016,7 @@ export const queryDocumentByObjectKindAndCreatedAt = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1067,7 +1067,7 @@ export const queryDocumentBySort = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1116,7 +1116,7 @@ export const queryHistoryByBukkenId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1145,15 +1145,15 @@ export const queryHistoryByBukkenId = /* GraphQL */ `
     }
   }
 `;
-export const querHistoryByOtherObjectId = /* GraphQL */ `
-  query QuerHistoryByOtherObjectId(
+export const queryHistoryByOtherObjectId = /* GraphQL */ `
+  query QueryHistoryByOtherObjectId(
     $other_object_id: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelHistoryFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    querHistoryByOtherObjectId(
+    queryHistoryByOtherObjectId(
       other_object_id: $other_object_id
       sortDirection: $sortDirection
       filter: $filter
@@ -1163,7 +1163,7 @@ export const querHistoryByOtherObjectId = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1212,7 +1212,7 @@ export const queryHistoryBySort = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no
@@ -1261,7 +1261,7 @@ export const querHistoryCreatedAt = /* GraphQL */ `
       items {
         id
         bukken_id
-        buken {
+        bukken {
           id
           s_object_id
           bukken_no

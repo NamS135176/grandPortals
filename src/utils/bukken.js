@@ -95,6 +95,20 @@ export function getBukkenCoverImageUrl(otherObject) {
     }
 }
 
+export function getRoomCoverImageUrl(otherObject) {
+    try {
+        //parse field_list to get cover image with thumnail key
+        const fieldList = otherObject.field_list
+            ? JSON.parse(otherObject.field_list)
+            : null;
+        if (fieldList && fieldList["thumnail"]) {
+            return fieldList["thumnail"];
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 export function getTypeFromOtherObjects(otherObject) {
     try {
         //parse field_list to get cover image with thumnail key

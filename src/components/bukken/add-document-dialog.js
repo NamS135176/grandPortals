@@ -20,9 +20,7 @@ import {API, Storage} from "aws-amplify";
 import {getNextDocumentId} from "../../utils/id-generator";
 
 export const AddDocumentDialog = (props) => {
-    const {user} = useAuth();
-
-    const {onClose, open, mode = "edit", bukken, loadData, ...other} = props;
+    const {onClose, open, mode = "edit", bukken, otherObjectId, loadData, ...other} = props;
     const [form, setForm] = useState({
         overview: "",
         file: null,
@@ -73,7 +71,7 @@ export const AddDocumentDialog = (props) => {
                         s3_file_name: s3FileName,
                         overview,
                         sort: 1, //always 1
-                        // other_object_id: otherObject?.id
+                        other_object_id: otherObjectId
                     },
                 },
             });
@@ -143,4 +141,5 @@ AddDocumentDialog.propTypes = {
     open: PropTypes.bool,
     mode: PropTypes.oneOf(["edit", "reference"]),
     bukken: PropTypes.object,
+    otherObjectId: PropTypes.string,
 };

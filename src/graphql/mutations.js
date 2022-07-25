@@ -363,7 +363,7 @@ export const createOtherObject = /* GraphQL */ `
     createOtherObject(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -409,7 +409,7 @@ export const updateOtherObject = /* GraphQL */ `
     updateOtherObject(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -455,7 +455,7 @@ export const deleteOtherObject = /* GraphQL */ `
     deleteOtherObject(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -501,7 +501,7 @@ export const createDocument = /* GraphQL */ `
     createDocument(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -547,7 +547,7 @@ export const updateDocument = /* GraphQL */ `
     updateDocument(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -593,7 +593,7 @@ export const deleteDocument = /* GraphQL */ `
     deleteDocument(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -639,7 +639,7 @@ export const createHistory = /* GraphQL */ `
     createHistory(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -683,7 +683,7 @@ export const updateHistory = /* GraphQL */ `
     updateHistory(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
@@ -727,7 +727,7 @@ export const deleteHistory = /* GraphQL */ `
     deleteHistory(input: $input, condition: $condition) {
       id
       bukken_id
-      buken {
+      bukken {
         id
         s_object_id
         bukken_no
