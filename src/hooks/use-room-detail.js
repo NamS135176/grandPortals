@@ -32,10 +32,11 @@ export const useRoomDetail = (roomId) => {
         async (history) => {
             try {
                 await API.graphql({
-                    query: mutations.deleteHistory,
+                    query: mutations.updateHistory,
                     variables: {
                         input: {
                             id: history.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -55,10 +56,11 @@ export const useRoomDetail = (roomId) => {
             try {
                 const {s3_file_name} = document;
                 await API.graphql({
-                    query: mutations.deleteDocument,
+                    query: mutations.updateDocument,
                     variables: {
                         input: {
                             id: document.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -84,6 +86,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryDocumentByOtherObjectId.items;
@@ -107,6 +114,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryHistoryByOtherObjectId.items;
@@ -171,13 +183,13 @@ export const useRoomDetail = (roomId) => {
             // console.log(JSON.parse(room?.field_list));
             try {
                 //upload file
-                const s3Old = "";
-                if (coverImageUrl) {
-                    s3Old = getS3FromUrl(coverImageUrl);
-                    console.log(s3Old);
-                    const res = await Storage.remove(s3Old, {level: "public"});
-                    console.log(res);
-                }
+                // const s3Old = "";
+                // if (coverImageUrl) {
+                //     s3Old = getS3FromUrl(coverImageUrl);
+                //     console.log(s3Old);
+                //     const res = await Storage.remove(s3Old, {level: "public"});
+                //     console.log(res);
+                // }
                
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
@@ -243,6 +255,8 @@ export const useRoomDetail = (roomId) => {
                     },
                 });
                 setRoom(resOtherObject.data.updateOtherObject);
+                toast.success("物件情報を登録しました。");
+                router.push("/room/list");
             } catch (e) {
                 console.error(e);
                 throw e;

@@ -40,10 +40,11 @@ export const useBukkenDetail = (bukkenNo) => {
         async (history) => {
             try {
                 await API.graphql({
-                    query: mutations.deleteHistory,
+                    query: mutations.updateHistory,
                     variables: {
                         input: {
                             id: history.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -63,10 +64,11 @@ export const useBukkenDetail = (bukkenNo) => {
             try {
                 const {s3_file_name} = document;
                 await API.graphql({
-                    query: mutations.deleteDocument,
+                    query: mutations.updateDocument,
                     variables: {
                         input: {
                             id: document.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -92,6 +94,11 @@ export const useBukkenDetail = (bukkenNo) => {
                 variables: {
                     bukken_id: bukken.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryDocumentByBukkenId.items;
@@ -115,6 +122,11 @@ export const useBukkenDetail = (bukkenNo) => {
                 variables: {
                     bukken_id: bukken.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryHistoryByBukkenId.items;
@@ -222,13 +234,9 @@ export const useBukkenDetail = (bukkenNo) => {
         async (file) => {
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
-                if (coverImageUrl) {
-                    // console.log();
-                    // const s3Old = getS3FromUrl(coverImageUrl);
-                    // console.log(s3Old);
-                    const res = await Storage.remove(getS3FromUrl(coverImageUrl), {level: "public"});
-                    // console.log(res);
-                }
+                // if (coverImageUrl) {
+                //     const res = await Storage.remove(getS3FromUrl(coverImageUrl), {level: "public"});   
+                // }
 
                 var tmpBukkenOtherObject = bukkenOtherObject;
                 if (!tmpBukkenOtherObject) {
