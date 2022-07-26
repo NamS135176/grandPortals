@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Head from 'next/head';
 import {
 	Box,
@@ -12,17 +12,18 @@ import {
 	Typography,
 	TextField,
 } from '@mui/material';
-import { bukkenApi } from '../../../../__fake-api__/bukken-api';
-import { DashboardLayout } from '../../../../components/dashboard/dashboard-layout';
-import { BukkenRelatedDocsListTable } from '../../../../components/bukken/bukken-related-docs-list-table';
-import { BukkenHistoryListTable } from '../../../../components/bukken/bukken-history-list-table';
-import { useMounted } from '../../../../hooks/use-mounted';
-import { gtm } from '../../../../lib/gtm';
-import { ManagementList } from '../../../../components/management-menu';
-import { ArrowLeft as ArrowLeftIcon } from '../../../../icons/arrow-left';
-import { ArrowRight as ArrowRightIcon } from '../../../../icons/arrow-right';
+import {bukkenApi} from '../../../../__fake-api__/bukken-api';
+import {DashboardLayout} from '../../../../components/dashboard/dashboard-layout';
+import {BukkenRelatedDocsListTable} from '../../../../components/bukken/bukken-related-docs-list-table';
+import {BukkenHistoryListTable} from '../../../../components/bukken/bukken-history-list-table';
+import {useMounted} from '../../../../hooks/use-mounted';
+import {gtm} from '../../../../lib/gtm';
+import {ManagementList} from '../../../../components/management-menu';
+import {ArrowLeft as ArrowLeftIcon} from '../../../../icons/arrow-left';
+import {ArrowRight as ArrowRightIcon} from '../../../../icons/arrow-right';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import { HistoryDialog } from '../../../../components/history/history-dialog';
+import {HistoryDialog} from '../../../../components/history/history-dialog';
+import {DocsDialog} from '../../../../components/documents/docs-dialog';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -47,7 +48,7 @@ const InteriorOrderDetails = () => {
 		note: 'テキストサンプルテキストサンプルテキストサンプル',
 	});
 
-	// dialog
+	// History dialog
 	const [openDialog, setOpenDialog] = useState(false);
 	const handleOpenDialog = () => {
 		setOpenDialog(true);
@@ -55,10 +56,18 @@ const InteriorOrderDetails = () => {
 	const handleCloseDialog = () => {
 		setOpenDialog(false);
 	};
-	// ./dialog
+
+	// Docs dialog
+	const [openDocsDialog, setOpenDocsDialog] = useState(false);
+	const handleOpenDocsDialog = () => {
+		setOpenDocsDialog(true);
+	};
+	const handleCloseDocsDialog = () => {
+		setOpenDocsDialog(false);
+	};
 
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	const handleChange = (event) => {
@@ -69,7 +78,7 @@ const InteriorOrderDetails = () => {
 	};
 
 	const handleDateChange = (date) => {
-		setForm({ ...form, purchaseDate: date });
+		setForm({...form, purchaseDate: date});
 	};
 
 	const getRelatedDocs = useCallback(async () => {
@@ -142,7 +151,13 @@ const InteriorOrderDetails = () => {
 				}}
 			>
 				<Container maxWidth="xl">
-					<Box sx={{ mb: 4, display: 'flex', justifyContent: 'flex-end' }}>
+					<Box
+						sx={{
+							mb: 4,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
 						<Typography variant="subtitle2">
 							お問い合わせ：0463-79-5564
 						</Typography>
@@ -156,20 +171,32 @@ const InteriorOrderDetails = () => {
 									mt: 3,
 								}}
 							/>
-							<Box sx={{ mb: 4, display: 'flex', justifyContent: 'flex-end' }}>
+							<Box
+								sx={{
+									mb: 4,
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
 								<Typography variant="subtitle2">
 									物件番号：HONR000001
 								</Typography>
 							</Box>
-							<Box sx={{ mb: 4 }}>
-								<Grid container justifyContent="space-between" spacing={3}>
+							<Box sx={{mb: 4}}>
+								<Grid
+									container
+									justifyContent="space-between"
+									spacing={3}
+								>
 									<Grid item>
 										<Typography variant="h6" mb={3}>
 											建具・インテリア（オーダー品）
 										</Typography>
 									</Grid>
 									<Grid item>
-										<Button variant="contained">画像追加</Button>
+										<Button variant="contained">
+											画像追加
+										</Button>
 									</Grid>
 								</Grid>
 							</Box>
@@ -222,7 +249,10 @@ const InteriorOrderDetails = () => {
 								</Grid>
 								<Grid item md={8} xs={12}>
 									<Box
-										sx={{ display: 'flex', justifyContent: 'space-between' }}
+										sx={{
+											display: 'flex',
+											justifyContent: 'space-between',
+										}}
 									>
 										<TextField
 											type="number"
@@ -253,7 +283,9 @@ const InteriorOrderDetails = () => {
 										inputFormat="MM/dd/yyyy"
 										value={form.purchaseDate}
 										onChange={handleDateChange}
-										renderInput={(inputProps) => <TextField {...inputProps} />}
+										renderInput={(inputProps) => (
+											<TextField {...inputProps} />
+										)}
 									/>
 								</Grid>
 								<Grid item md={8} xs={12}>
@@ -291,8 +323,19 @@ const InteriorOrderDetails = () => {
 									my: 3,
 								}}
 							>
-								<Typography variant="h6">関連資料一覧</Typography>
-								<Button variant="contained">資料追加</Button>
+								<Typography variant="h6">
+									関連資料一覧
+								</Typography>
+								<Button
+									variant="contained"
+									onClick={handleOpenDocsDialog}
+								>
+									資料追加
+								</Button>
+								<DocsDialog
+									onClose={handleCloseDocsDialog}
+									open={openDocsDialog}
+								/>
 							</Box>
 							<BukkenRelatedDocsListTable
 								bukkenDocs={paginatedBukkenDocs}
@@ -317,7 +360,10 @@ const InteriorOrderDetails = () => {
 								}}
 							>
 								<Typography variant="h6">最新履歴</Typography>
-								<Button variant="contained" onClick={handleOpenDialog}>
+								<Button
+									variant="contained"
+									onClick={handleOpenDialog}
+								>
 									履歴追加
 								</Button>
 								<HistoryDialog
@@ -330,7 +376,9 @@ const InteriorOrderDetails = () => {
 								bukkenHistory={paginatedBukkenHistory}
 								bukkenHistoryCount={bukkenHistory.length}
 								onPageChange={handlePageHistoryChange}
-								onRowsPerPageChange={handleRowsPerPageHistoryChange}
+								onRowsPerPageChange={
+									handleRowsPerPageHistoryChange
+								}
 								rowsPerPage={rowsPerPageHistory}
 								page={page}
 							/>
@@ -357,7 +405,7 @@ const InteriorOrderDetails = () => {
 						>
 							戻る
 						</Button>
-						<Button sx={{ m: 1 }} variant="contained">
+						<Button sx={{m: 1}} variant="contained">
 							登録
 						</Button>
 					</Box>
