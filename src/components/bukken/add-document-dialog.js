@@ -13,18 +13,42 @@ import {
 import {X as XIcon} from "../../icons/x";
 import {FileUpload} from "../widgets/file-upload";
 import {getBukkenS3FileName} from "../../utils/bukken";
-import {createDocument} from "../../graphql/mutations";
+import * as mutations from "../../graphql/mutations";
 import moment from "moment";
-import {useAuth} from "../../hooks/use-auth";
 import {API, Storage} from "aws-amplify";
 import {getNextDocumentId} from "../../utils/id-generator";
+import {FileDropzone} from "../file-dropzone";
+import * as R from "ramda";
 
 export const AddDocumentDialog = (props) => {
-    const {onClose, open, mode = "edit", bukken, otherObjectId, loadData, ...other} = props;
+    const {
+        onClose,
+        open,
+        mode = "edit",
+        bukken,
+        otherObjectId,
+        loadData,
+        ...other
+    } = props;
     const [form, setForm] = useState({
         overview: "",
-        file: null,
     });
+    const [files, setFiles] = useState([]);
+
+    const handleDrop = (newFiles) => {
+        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    };
+
+    const handleRemove = (file) => {
+        setFiles((prevFiles) =>
+            prevFiles.filter((_file) => _file.path !== file.path)
+        );
+    };
+
+    const handleRemoveAll = () => {
+        setFiles([]);
+    };
+
     const [loading, setLoading] = useState(false);
 
     const handleChange = (event) => {
@@ -34,11 +58,7 @@ export const AddDocumentDialog = (props) => {
         });
     };
 
-    const handleSubmit = async () => {
-        const {overview, file} = form;
-        console.log("handleSubmit... ", {overview, file, bukken});
-        if (!file || !overview) return;
-        setLoading(true);
+    const createDocument = async (file, overview) => {
         try {
             //upload file
             const originFileName = `${file.name.replace(/ |　/g, "")}`;
@@ -56,7 +76,7 @@ export const AddDocumentDialog = (props) => {
             const docId = await getNextDocumentId();
             const object_kind = "0";
             const response = await API.graphql({
-                query: createDocument,
+                query: mutations.createDocument,
                 variables: {
                     input: {
                         id: docId,
@@ -66,19 +86,37 @@ export const AddDocumentDialog = (props) => {
                         object_kind,
                         object_kind_createdAt: `${object_kind}#${moment()
                             .utc()
-                            .format("YYYYMMDDTHHmmss")}`,////0#20221201T102309
+                            .format("YYYYMMDDTHHmmss")}`, ////0#20221201T102309
                         orignal_file_name: originFileName,
                         s3_file_name: s3FileName,
                         overview,
                         sort: 1, //always 1
-                        other_object_id: otherObjectId
+                        other_object_id: otherObjectId,
                     },
                 },
             });
             console.log("response ", response);
-            loadData();
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const handleSubmit = async () => {
+        const {overview} = form;
+        console.log("handleSubmit... ", {overview, bukken});
+        if (!files?.length || !overview) return;
+        setLoading(true);
+        try {
+            var promises = files.map((file) => createDocument(file, overview));
+            await Promise.all(promises);
+            loadData(bukken);
         } catch (e) {}
         setLoading(false);
+        loadData(bukken);
+        setForm({
+            overview: "",
+        });
+        setFiles([]);
         onClose();
     };
 
@@ -86,7 +124,6 @@ export const AddDocumentDialog = (props) => {
         <Dialog
             fullWidth
             maxWidth="sm"
-            s
             onClose={onClose}
             open={!!open}
             {...other}
@@ -108,28 +145,40 @@ export const AddDocumentDialog = (props) => {
             <DialogContent>
                 <form>
                     <TextField
-                        disabled={mode === "reference"}
-                        sx={{mt: 3}}
-                        fullWidth
                         label="資料概要"
                         name="overview"
+                        value={form.overview}
                         onChange={handleChange}
-                        value={form.outline}
                     />
-                    <FileUpload
-                        accept=".pdf"
-                        onChange={(file) => setForm({...form, file})}
-                        prefix="document"
-                    />
+                    <Box sx={{mt: 3}}>
+                        <Typography
+                            color="textSecondary"
+                            variant="body2"
+                            sx={{mb: 1}}
+                        >
+                            資料追加（pdf）
+                        </Typography>
+
+                        <FileDropzone
+                            accept={{
+                                "image/*": [],
+                            }}
+                            // accept={{"pdf":[".pdf"]}}
+                            files={files}
+                            onDrop={handleDrop}
+                            onRemove={handleRemove}
+                            onRemoveAll={handleRemoveAll}
+                        />
+                    </Box>
                 </form>
             </DialogContent>
             <DialogActions>
                 <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    disabled={!form.overview || !form.file || loading}
+                    disabled={!form.overview || R.isEmpty(files) || loading}
                 >
-                    {mode === "reference" ? "詳細を参照" : "追加"}
+                    追加
                 </Button>
             </DialogActions>
         </Dialog>
