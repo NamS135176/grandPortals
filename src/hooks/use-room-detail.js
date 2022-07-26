@@ -11,12 +11,16 @@ import * as R from "ramda";
 import {
     getOtherObjectS3FileName,
     getRoomCoverImageUrl,
+    getS3FromUrl,
     getUrlPath,
 } from "../utils/bukken";
 import moment from "moment";
+import toast, {Toaster} from "react-hot-toast";
+import {useRouter} from "next/router";
 import {resizeImage} from "../utils/image";
 
 export const useRoomDetail = (roomId) => {
+    const router = useRouter();
     const isMounted = useMounted();
     const [room, setRoom] = useState();
     const [coverImageUrl, setCoverImageUrl] = useState();
@@ -28,10 +32,11 @@ export const useRoomDetail = (roomId) => {
         async (history) => {
             try {
                 await API.graphql({
-                    query: mutations.deleteHistory,
+                    query: mutations.updateHistory,
                     variables: {
                         input: {
                             id: history.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -51,10 +56,11 @@ export const useRoomDetail = (roomId) => {
             try {
                 const {s3_file_name} = document;
                 await API.graphql({
-                    query: mutations.deleteDocument,
+                    query: mutations.updateDocument,
                     variables: {
                         input: {
                             id: document.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -80,6 +86,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryDocumentByOtherObjectId.items;
@@ -103,6 +114,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryHistoryByOtherObjectId.items;
@@ -130,6 +146,7 @@ export const useRoomDetail = (roomId) => {
     const reloadHistory = useCallback(async (room, updateLoading = true) => {
         if (updateLoading) setLoading(true);
         const histories = await getListHistory(room);
+        console.log(room);
         if (histories?.length > 0) {
             setHistories(histories);
         }
@@ -163,8 +180,17 @@ export const useRoomDetail = (roomId) => {
 
     const uploadRoomCover = useCallback(
         async (file) => {
+            // console.log(JSON.parse(room?.field_list));
             try {
                 //upload file
+                // const s3Old = "";
+                // if (coverImageUrl) {
+                //     s3Old = getS3FromUrl(coverImageUrl);
+                //     console.log(s3Old);
+                //     const res = await Storage.remove(s3Old, {level: "public"});
+                //     console.log(res);
+                // }
+               
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
                 const s3FileName = getOtherObjectS3FileName(
@@ -189,7 +215,10 @@ export const useRoomDetail = (roomId) => {
                     : {};
                 fieldList["thumnail"] = urlPath;
 
-                updateRoomFieldList(fie)
+                updateRoomFieldList({
+                    ...JSON.parse(room?.field_list),
+                    thumnail: urlPath,
+                });
             } catch (e) {
                 console.error(e);
                 throw e;
@@ -198,9 +227,23 @@ export const useRoomDetail = (roomId) => {
         [room]
     );
 
+    const updateRoom = useCallback(async (fieldList) => {
+        const res = await API.graphql({
+            query: mutations.updateOtherObject,
+            variables: {
+                input: {
+                    id: room.id,
+                    fieldList: fieldList,
+                },
+            },
+        });
+        toast.success("物件情報を登録しました。");
+        router.push("/room/list");
+    });
+
     const updateRoomFieldList = useCallback(
         async (roomFieldList, updateLoading = true) => {
-            if (updateLoading) setLoading(true)
+            if (updateLoading) setLoading(true);
             try {
                 const resOtherObject = await API.graphql({
                     query: mutations.updateOtherObject,
@@ -212,11 +255,13 @@ export const useRoomDetail = (roomId) => {
                     },
                 });
                 setRoom(resOtherObject.data.updateOtherObject);
+                toast.success("物件情報を登録しました。");
+                router.push("/room/list");
             } catch (e) {
                 console.error(e);
                 throw e;
             }
-            if (updateLoading) setLoading(false)
+            if (updateLoading) setLoading(false);
         },
         [room]
     );
@@ -238,5 +283,6 @@ export const useRoomDetail = (roomId) => {
         reloadHistory,
         uploadRoomCover,
         updateRoomFieldList,
+        updateRoom,
     };
 };

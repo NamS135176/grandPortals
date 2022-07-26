@@ -76,7 +76,7 @@ export const AddDocumentDialog = (props) => {
                 },
             });
             console.log("response ", response);
-            loadData(bukken);
+            loadData();
         } catch (e) {}
         setLoading(false);
         onClose();

@@ -15,15 +15,19 @@ import {
     getBukenCoverImageS3Path,
     getBukkenCoverImageUrl,
     getOtherObjectS3FileName,
+    getS3FromUrl,
     getUrlPath,
     OtherObjectFieldKind,
     OtherObjectKind,
 } from "../utils/bukken";
 import moment from "moment";
+import toast, { Toaster } from 'react-hot-toast';
 import {getNextDocumentId, getNextOtherObjectId} from "../utils/id-generator";
+import { useRouter } from "next/router";
 import { resizeImage } from "../utils/image";
 
 export const useBukkenDetail = (bukkenNo) => {
+    const router = useRouter();
     const isMounted = useMounted();
     const [coverImageUrl, setCoverImageUrl] = useState();
     const [bukkenOtherObject, setBukkenOtherObject] = useState();
@@ -36,10 +40,11 @@ export const useBukkenDetail = (bukkenNo) => {
         async (history) => {
             try {
                 await API.graphql({
-                    query: mutations.deleteHistory,
+                    query: mutations.updateHistory,
                     variables: {
                         input: {
                             id: history.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -59,10 +64,11 @@ export const useBukkenDetail = (bukkenNo) => {
             try {
                 const {s3_file_name} = document;
                 await API.graphql({
-                    query: mutations.deleteDocument,
+                    query: mutations.updateDocument,
                     variables: {
                         input: {
                             id: document.id,
+                            delete_flag: 1
                         },
                     },
                 });
@@ -88,6 +94,11 @@ export const useBukkenDetail = (bukkenNo) => {
                 variables: {
                     bukken_id: bukken.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryDocumentByBukkenId.items;
@@ -111,6 +122,11 @@ export const useBukkenDetail = (bukkenNo) => {
                 variables: {
                     bukken_id: bukken.id,
                     nextToken,
+                    filter:{
+                        delete_flag:{
+                            eq: 0
+                        }
+                    }
                 },
             });
             const items = res.data.queryHistoryByBukkenId.items;
@@ -150,6 +166,23 @@ export const useBukkenDetail = (bukkenNo) => {
         },
         []
     );
+
+    const updateBukken = useCallback(
+        async (remarks) => {
+            const res = await API.graphql({
+                query: mutations.updateBukken,
+                variables: {
+                    input: {
+                        id: bukken.id,
+                        remarks: remarks
+                    }
+                },
+            });
+            toast.success("物件情報を登録しました。")
+            router.push('/bukken/list')
+        }
+       
+    )
 
     const loadData = useCallback(async () => {
         setLoading(true);
@@ -201,6 +234,10 @@ export const useBukkenDetail = (bukkenNo) => {
         async (file) => {
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
+                // if (coverImageUrl) {
+                //     const res = await Storage.remove(getS3FromUrl(coverImageUrl), {level: "public"});   
+                // }
+
                 var tmpBukkenOtherObject = bukkenOtherObject;
                 if (!tmpBukkenOtherObject) {
                     const otherObjectId = await getNextOtherObjectId();
@@ -291,5 +328,6 @@ export const useBukkenDetail = (bukkenNo) => {
         reloadDocument,
         reloadHistory,
         uploadBukenCover,
+        updateBukken
     };
 };

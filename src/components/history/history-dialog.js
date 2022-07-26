@@ -75,7 +75,7 @@ export const HistoryDialog = (props) => {
                 },
             });
             console.log("response ", response);
-            loadData(bukken);
+            loadData();
             //reset form
             setForm({
                 date: new Date(),
