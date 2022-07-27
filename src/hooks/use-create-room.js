@@ -64,7 +64,7 @@ export const useCreateRoom = () => {
                             id: nextId,
                             user_id: user.id,
                             bukken_id: bukken.id,
-                            bukken_no: bukken.bukken_no, //will delete later
+                            // bukken_no: bukken.bukken_no, //will delete later
                             delete_flag: 0,
                             object_kind: OtherObjectKind.RoomSpace,
                             field_kind: OtherObjectFieldKind.ReadyMadeProduct,

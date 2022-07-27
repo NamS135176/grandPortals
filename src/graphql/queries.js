@@ -139,7 +139,6 @@ export const getBukken = /* GraphQL */ `
         items {
           id
           bukken_id
-          bukken_no
           user_id
           object_kind
           room_id
@@ -265,7 +264,6 @@ export const getOtherObject = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      bukken_no
       user_id
       object_kind
       room_id
@@ -312,7 +310,6 @@ export const listOtherObjects = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        bukken_no
         user_id
         object_kind
         room_id
@@ -733,7 +730,6 @@ export const queryOtherObjectByBukkenId = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        bukken_no
         user_id
         object_kind
         room_id
@@ -782,7 +778,6 @@ export const queryOtherObjectByRoomId = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        bukken_no
         user_id
         object_kind
         room_id
@@ -831,7 +826,6 @@ export const queryOtherObjectByObjectKindAndUpdatedAt = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        bukken_no
         user_id
         object_kind
         room_id
@@ -882,7 +876,6 @@ export const queryOtherObjectBySort = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        bukken_no
         user_id
         object_kind
         room_id

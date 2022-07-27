@@ -161,8 +161,8 @@ export const useRoomDetail = (roomId) => {
         const room = response.data.getOtherObject;
         if (!room) {
             //not found
-            router.replace("/404")
-            return
+            router.replace("/404");
+            return;
         }
         preSetRoom(room);
         setRoom(room);
@@ -212,10 +212,10 @@ export const useRoomDetail = (roomId) => {
                 setCoverImageUrl(urlPath);
 
                 //update other object for update field_list
-                const fieldList = room.field_list
+                const fieldList = room.field_list;
                 fieldList["thumnail"] = urlPath;
 
-                updateRoomFieldList(fieldList);
+                updateRoomFieldList(fieldList, false, false);
             } catch (e) {
                 console.error(e);
                 throw e;
@@ -239,7 +239,11 @@ export const useRoomDetail = (roomId) => {
     });
 
     const updateRoomFieldList = useCallback(
-        async (roomFieldList, updateLoading = true) => {
+        async (
+            roomFieldList,
+            updateLoading = true,
+            navigateToListRoom = true
+        ) => {
             if (updateLoading) setLoading(true);
             try {
                 const resOtherObject = await API.graphql({
@@ -255,7 +259,9 @@ export const useRoomDetail = (roomId) => {
                 preSetRoom(updateRoom);
                 setRoom(updateRoom);
                 toast.success("物件情報を登録しました。");
-                router.push("/room/list");
+                if (navigateToListRoom) {
+                    router.push("/room/list");
+                }
             } catch (e) {
                 console.error(e);
                 throw e;
