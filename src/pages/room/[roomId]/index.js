@@ -16,6 +16,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+	Skeleton
 } from "@mui/material";
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
@@ -211,7 +212,7 @@ const RoomDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            <Box sx={{mb: 4}}>
+							<Box sx={{mb: 4}}>
                                 <Grid
                                     container
                                     justifyContent="space-between"
@@ -239,7 +240,10 @@ const RoomDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            <Box
+							{
+								loading ? 
+								<Skeleton animation="wave" variant="rectangular" width={'100%'} height={450} sx={{marginTop:'24px'}} /> :
+	                            <Box
                                 sx={{
                                     backgroundImage: `url(${coverImageUrl})`,
                                     backgroundColor: "#D0D0D0",
@@ -254,6 +258,9 @@ const RoomDetails = () => {
                                     alignItems: "center",
                                 }}
                             />
+							}
+            
+
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <FormControl fullWidth>

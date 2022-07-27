@@ -22,7 +22,9 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 
 const RoomList = () => {
 	const router = useRouter()
-	const {roomList : rooms, deleteRoom} = useRoomList()
+	const {bukkenId} = router.query
+	
+	const {roomList : rooms, deleteRoom} = useRoomList(bukkenId)
 	console.log(rooms);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);

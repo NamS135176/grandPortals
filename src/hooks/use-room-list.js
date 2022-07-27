@@ -7,26 +7,47 @@ import {listOtherObjects} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import {OtherObjectKind} from "../utils/bukken";
 
-export const useRoomList = () => {
+export const useRoomList = (bukkenId) => {
     const {user} = useAuth();
     const isMounted = useMounted();
     const [roomList, setRoomList] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    const getListRoom = useCallback(async (list = [], nextToken = null) => {
-        const response = await API.graphql({
-            query: listOtherObjects,
-            variables: {
-                filter: {
-                    object_kind: {
-                        eq: OtherObjectKind.RoomSpace,
-                    },
-                    delete_flag: {
-                        eq: 0,
+    
+    const getListRoom = useCallback(async (list = [], nextToken = null, bukken) => {
+        const response = null
+        if(bukken){
+            response = await API.graphql({
+                query: listOtherObjects,
+                variables: {
+                    filter: {
+                        object_kind: {
+                            eq: OtherObjectKind.RoomSpace,
+                        },
+                        delete_flag: {
+                            eq: 0,
+                        },
+                        bukken_id:{
+                            eq: bukken
+                        }
                     },
                 },
-            },
-        });
+            });
+        }
+        else{
+            response = await API.graphql({
+                query: listOtherObjects,
+                variables: {
+                    filter: {
+                        object_kind: {
+                            eq: OtherObjectKind.RoomSpace,
+                        },
+                        delete_flag: {
+                            eq: 0,
+                        }
+                    },
+                },
+            });
+        }
         var rooms = response.data.listOtherObjects.items;
         if (!R.isNil(rooms) && !R.isEmpty(rooms)) {
             rooms.forEach((room) => {
@@ -52,7 +73,7 @@ export const useRoomList = () => {
         }
         list = list.concat(rooms);
         if (response.data.listOtherObjects.nextToken) {
-            await getListRoom(list, response.data.listOtherObjects.nextToken);
+            await getListRoom(list, response.data.listOtherObjects.nextToken, bukken);
         }
         return list;
     }, []);
@@ -86,14 +107,14 @@ export const useRoomList = () => {
         async function loadData() {
             setLoading(true);
 
-            const rooms = await getListRoom();
+            const rooms = await getListRoom([], null, bukkenId);
             setRoomList(rooms);
             //end load list bukken
             setLoading(false);
         }
 
         if (isMounted) loadData();
-    }, [isMounted]);
+    }, [isMounted, bukkenId]);
 
     return {roomList, deleteRoom, loading};
 };

@@ -191,7 +191,9 @@ export const useRoomDetail = (roomId) => {
     }, []);
 
     const uploadRoomCover = useCallback(
+       
         async (file) => {
+            setLoading(true)
             try {
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
@@ -220,6 +222,7 @@ export const useRoomDetail = (roomId) => {
                 console.error(e);
                 throw e;
             }
+            setLoading(false)
         },
         [room]
     );
