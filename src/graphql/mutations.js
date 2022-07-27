@@ -153,7 +153,6 @@ export const createBukken = /* GraphQL */ `
         items {
           id
           bukken_id
-          bukken_no
           user_id
           object_kind
           room_id
@@ -227,7 +226,6 @@ export const updateBukken = /* GraphQL */ `
         items {
           id
           bukken_id
-          bukken_no
           user_id
           object_kind
           room_id
@@ -301,7 +299,6 @@ export const deleteBukken = /* GraphQL */ `
         items {
           id
           bukken_id
-          bukken_no
           user_id
           object_kind
           room_id
@@ -387,7 +384,6 @@ export const createOtherObject = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      bukken_no
       user_id
       object_kind
       room_id
@@ -433,7 +429,6 @@ export const updateOtherObject = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      bukken_no
       user_id
       object_kind
       room_id
@@ -479,7 +474,6 @@ export const deleteOtherObject = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      bukken_no
       user_id
       object_kind
       room_id

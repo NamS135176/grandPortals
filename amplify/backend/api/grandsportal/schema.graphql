@@ -90,7 +90,6 @@ type OtherObject
     bukken_id: ID
         @index(name: "GSI-bukkenId", queryField: "queryOtherObjectByBukkenId")
     bukken: Bukken @belongsTo(fields: ["bukken_id"])
-    bukken_no: String!
     user_id: ID!
     object_kind: String!
     room_id: ID

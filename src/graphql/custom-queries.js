@@ -28,7 +28,6 @@ export const queryBukkensByUserIdWithCoverImage = /* GraphQL */ `
                     nextToken
                     items {
                         bukken_id
-                        bukken_no
                         createdAt
                         delete_flag
                         field_kind
