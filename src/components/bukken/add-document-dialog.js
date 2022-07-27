@@ -161,7 +161,7 @@ export const AddDocumentDialog = (props) => {
 
                         <FileDropzone
                             accept={{
-                                "image/*": [],
+                                "application/pdf": [],
                             }}
                             // accept={{"pdf":[".pdf"]}}
                             files={files}

@@ -11,6 +11,7 @@ import {
     Grid,
     Typography,
     TextField,
+    Skeleton,
 } from "@mui/material";
 
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
@@ -44,6 +45,7 @@ const BukkenDetails = () => {
         reloadHistory,
         uploadBukenCover,
         updateBukken,
+        loading,
     } = useBukkenDetail(bukkenId);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -189,21 +191,25 @@ const BukkenDetails = () => {
                                     </FileUpload>
                                 </Button>
                             </Box>
-                            <Box
-                                sx={{
-                                    backgroundImage: `url(${coverImageUrl})`,
-                                    backgroundColor: "#D0D0D0",
-                                    backgroundPosition: "center",
-                                    backgroundSize: "cover",
-                                    borderRadius: 1,
-                                    height: 450,
-                                    width: "100%",
-                                    mt: 3,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            ></Box>
+                            {loading ? (
+                               <Skeleton animation="wave" variant="rectangular" width={'100%'} height={450} sx={{marginTop:'24px'}} />
+                            ) : (
+                                <Box
+                                    sx={{
+                                        backgroundImage: `url(${coverImageUrl})`,
+                                        backgroundColor: "#D0D0D0",
+                                        backgroundPosition: "center",
+                                        backgroundSize: "cover",
+                                        borderRadius: 1,
+                                        height: 450,
+                                        width: "100%",
+                                        mt: 3,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                ></Box>
+                            )}
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <TextField

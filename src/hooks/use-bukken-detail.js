@@ -233,6 +233,7 @@ export const useBukkenDetail = (bukkenNo) => {
 
     const uploadBukenCover = useCallback(
         async (file) => {
+            setLoading(true)
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
                 // if (coverImageUrl) {
@@ -309,6 +310,7 @@ export const useBukkenDetail = (bukkenNo) => {
                 console.error(e);
                 throw e;
             }
+            setLoading(false)
         },
         [bukken, bukkenOtherObject]
     );
@@ -329,6 +331,7 @@ export const useBukkenDetail = (bukkenNo) => {
         reloadDocument,
         reloadHistory,
         uploadBukenCover,
-        updateBukken
+        updateBukken,
+        loading
     };
 };
