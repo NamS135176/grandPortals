@@ -1,32 +1,29 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
-import { Toaster } from 'react-hot-toast';
-import { Provider as ReduxProvider } from 'react-redux';
+import {Toaster} from 'react-hot-toast';
+import {Provider as ReduxProvider} from 'react-redux';
 import nProgress from 'nprogress';
-import { CacheProvider } from '@emotion/react';
-import { ThemeProvider } from '@mui/material/styles';
+import {CacheProvider} from '@emotion/react';
+import {ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { LocalizationProvider } from '@mui/lab';
+import {LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { RTL } from '../components/rtl';
-import { SplashScreen } from '../components/splash-screen';
+import {RTL} from '../components/rtl';
+import {SplashScreen} from '../components/splash-screen';
 
-import {
-	SettingsConsumer,
-	SettingsProvider,
-} from '../contexts/settings-context';
-import { AuthConsumer, AuthProvider } from '../contexts/amplify-context';
-import { gtmConfig } from '../config';
-import { gtm } from '../lib/gtm';
-import { store } from '../store';
-import { createTheme } from '../theme';
-import { createEmotionCache } from '../utils/create-emotion-cache';
+import {SettingsConsumer, SettingsProvider} from '../contexts/settings-context';
+import {AuthConsumer, AuthProvider} from '../contexts/amplify-context';
+import {gtmConfig} from '../config';
+import {gtm} from '../lib/gtm';
+import {store} from '../store';
+import {createTheme} from '../theme';
+import {createEmotionCache} from '../utils/create-emotion-cache';
 import '../i18n';
 
-import moment from 'moment'
-import 'moment/locale/ja'  // without this line it didn't work
-moment.locale('ja')
+import moment from 'moment';
+import 'moment/locale/ja'; // without this line it didn't work
+moment.locale('ja');
 
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
@@ -35,7 +32,7 @@ Router.events.on('routeChangeComplete', nProgress.done);
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
-	const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+	const {Component, emotionCache = clientSideEmotionCache, pageProps} = props;
 
 	const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -46,19 +43,23 @@ const App = (props) => {
 	return (
 		<CacheProvider value={emotionCache}>
 			<Head>
-				<title>Material Kit Pro</title>
-				<meta name="viewport" content="initial-scale=1, width=device-width" />
+				<title>grandsポータルサイト</title>
+				<meta
+					name="viewport"
+					content="initial-scale=1, width=device-width"
+				/>
 			</Head>
 			<ReduxProvider store={store}>
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<AuthProvider>
 						<SettingsProvider>
 							<SettingsConsumer>
-								{({ settings }) => (
+								{({settings}) => (
 									<ThemeProvider
 										theme={createTheme({
 											direction: settings.direction,
-											responsiveFontSizes: settings.responsiveFontSizes,
+											responsiveFontSizes:
+												settings.responsiveFontSizes,
 											mode: settings.theme,
 										})}
 									>
@@ -67,11 +68,14 @@ const App = (props) => {
 											<Toaster position="top-center" />
 											<AuthConsumer>
 												{(auth) =>
-												    
 													!auth.isInitialized ? (
 														<SplashScreen />
 													) : (
-														getLayout(<Component {...pageProps} />)
+														getLayout(
+															<Component
+																{...pageProps}
+															/>
+														)
 													)
 												}
 											</AuthConsumer>
