@@ -17,11 +17,9 @@ import {
     Select,
     MenuItem,
 } from "@mui/material";
-import {bukkenApi} from "../../../__fake-api__/bukken-api";
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
 import {BukkenHistoryListTable} from "../../../components/bukken/bukken-history-list-table";
-import {useMounted} from "../../../hooks/use-mounted";
 import {gtm} from "../../../lib/gtm";
 import {ManagementList} from "../../../components/management-menu";
 import {ArrowLeft as ArrowLeftIcon} from "../../../icons/arrow-left";
@@ -30,7 +28,7 @@ import {HistoryDialog} from "../../../components/history/history-dialog";
 import {useRoomDetail} from "../../../hooks/use-room-detail";
 import {useRouter} from "next/router";
 import {FileUpload} from "../../../components/widgets/file-upload";
-import {RoomArea, RoomHeight, RoomKind} from "../../../utils/global-data";
+import {RoomKind} from "../../../utils/global-data";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
@@ -67,9 +65,7 @@ const RoomDetails = () => {
 
     useEffect(() => {
         if (!room?.field_list) return;
-        const fieldList = JSON.parse(room.field_list);
-        const {kind, name, area, height, remarks} = fieldList;
-        console.log(fieldList);
+        const {kind, name, area, height, remarks} = room.field_list;
         setForm({kind, name, area, height, remarks});
     }, [room]);
 
@@ -105,7 +101,7 @@ const RoomDetails = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         //update other object for update field_list
-        const fieldList = room.field_list ? JSON.parse(room.field_list) : {};
+        const fieldList = room?.field_list ?? {}
         fieldList["kind"] = form.kind;
         fieldList["name"] = form.name;
         fieldList["area"] = form.area;
@@ -137,17 +133,6 @@ const RoomDetails = () => {
         page,
         rowsPerPage
     );
-
-    const handleUpdateRoom = () => {
-        const fieldList = {
-            ...JSON.parse(room.field_list),
-            kind: form.kind,
-            name: form.name,
-            remarks: form.remarks,
-        };
-    };
-
-    console.log("room", {room});
 
     return (
         <>
@@ -305,54 +290,6 @@ const RoomDetails = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
-                                {/* <Grid item md={8} xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">
-                                            種別
-                                        </InputLabel>
-                                        <Select
-                                            labelId="select-area"
-                                            id="select-area"
-                                            name="area"
-                                            value={form.area}
-                                            label="種別"
-                                            onChange={handleChange}
-                                        >
-                                            {RoomArea.map((item, idx) => (
-                                                <MenuItem
-                                                    value={item}
-                                                    key={item}
-                                                >
-                                                    {item}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item md={8} xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">
-                                            種別
-                                        </InputLabel>
-                                        <Select
-                                            labelId="select-height"
-                                            id="select-height"
-                                            name="height"
-                                            value={form.height}
-                                            label="種別"
-                                            onChange={handleChange}
-                                        >
-                                            {RoomHeight.map((item, idx) => (
-                                                <MenuItem
-                                                    value={item}
-                                                    key={item}
-                                                >
-                                                    {`${item}cm`}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid> */}
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         fullWidth

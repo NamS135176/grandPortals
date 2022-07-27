@@ -25,11 +25,11 @@ const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.createdAt < b.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.createdAt > b.createdAt) {
 			newOrder = 1;
 		}
 

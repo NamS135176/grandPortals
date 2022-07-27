@@ -113,50 +113,6 @@ export function getRoomCoverImageUrl(otherObject) {
     }
 }
 
-export function getTypeFromOtherObjects(otherObject) {
-    try {
-        //parse field_list to get cover image with thumnail key
-        const fieldList = otherObject.field_list
-            ? JSON.parse(otherObject.field_list)
-            : null;
-        if (fieldList && fieldList["type"]) {
-            return fieldList["type"];
-        }
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-export function getNameFromOtherObjects(otherObject) {
-    try {
-        //parse field_list to get cover image with thumnail key
-        const fieldList = otherObject.field_list
-            ? JSON.parse(otherObject.field_list)
-            : null;
-        if (fieldList && fieldList["name"]) {
-            return fieldList["name"];
-        }
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-
-export function getRegisterAtFromOtherObjects(otherObject) {
-    try {
-        //parse field_list to get cover image with thumnail key
-        const fieldList = otherObject.field_list
-            ? JSON.parse(otherObject.field_list)
-            : null;
-        if (fieldList && fieldList["registeredAt"]) {
-            return fieldList["registeredAt"];
-        }
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-
 /**
  *
  * @param {Bukken} bukken

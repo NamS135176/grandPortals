@@ -1,12 +1,11 @@
 import {API} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
-import {queryBukkensByUserIdWithCoverImage} from "../graphql/custom-queries";
 import {useAuth} from "./use-auth";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import { listOtherObjects } from "../graphql/queries";
-import * as mutations from '../graphql/mutations'
-import {getBukkenCoverImageUrl, getBukkenCoverImageUrlByBukken, getNameFromOtherObjects, getRegisterAtFromOtherObjects, getTypeFromOtherObjects, OtherObjectKind} from "../utils/bukken";
+import {listOtherObjects} from "../graphql/queries";
+import * as mutations from "../graphql/mutations";
+import {OtherObjectKind} from "../utils/bukken";
 
 export const useRoomList = () => {
     const {user} = useAuth();
@@ -18,31 +17,42 @@ export const useRoomList = () => {
         const response = await API.graphql({
             query: listOtherObjects,
             variables: {
-                filter:{
+                filter: {
                     object_kind: {
-                        eq: OtherObjectKind.RoomSpace
+                        eq: OtherObjectKind.RoomSpace,
                     },
-                    delete_flag:{
-                        eq: 0
-                    }
-                }
+                    delete_flag: {
+                        eq: 0,
+                    },
+                },
             },
         });
         var rooms = response.data.listOtherObjects.items;
         if (!R.isNil(rooms) && !R.isEmpty(rooms)) {
-            rooms.forEach((buk) => {
-                buk.image = getBukkenCoverImageUrl(buk);
-                buk.type = getTypeFromOtherObjects(buk);
-                buk.name = getNameFromOtherObjects(buk)
-                buk.registeredAt = getRegisterAtFromOtherObjects(buk)
+            rooms.forEach((room) => {
+                try {
+                    //parse field_list to get cover image with thumnail key
+                    const fieldList = room.field_list
+                        ? JSON.parse(room.field_list)
+                        : {};
+                    room.field_list = fieldList;
+                    if (fieldList && fieldList["thumnail"]) {
+                        room.image = fieldList["thumnail"];
+                    }
+                    if (fieldList && fieldList["type"]) {
+                        room.type = fieldList["type"];
+                    }
+                    if (fieldList && fieldList["name"]) {
+                        room.name = fieldList["name"];
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             });
         }
         list = list.concat(rooms);
         if (response.data.listOtherObjects.nextToken) {
-            await getListRoom(
-                list,
-                response.data.listOtherObjects.nextToken
-            );
+            await getListRoom(list, response.data.listOtherObjects.nextToken);
         }
         return list;
     }, []);
@@ -50,13 +60,12 @@ export const useRoomList = () => {
     const deleteRoom = useCallback(
         async (room) => {
             try {
-              
                 await API.graphql({
                     query: mutations.updateOtherObject,
                     variables: {
                         input: {
                             id: room.id,
-                            delete_flag: 1
+                            delete_flag: 1,
                         },
                     },
                 });

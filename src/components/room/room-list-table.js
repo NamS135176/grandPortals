@@ -17,16 +17,17 @@ import { PencilAlt as PencilAltIcon } from '../../icons/pencil-alt';
 import { Trash as TrashIcon } from '../../icons/trash';
 import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
+import moment from 'moment';
 
 const applySort = (room, sortDir) =>
 	room.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.createdAt < b.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.createdAt > b.createdAt) {
 			newOrder = 1;
 		}
 
@@ -135,7 +136,7 @@ export const RoomListTable = (props) => {
 									<TableCell>{buk.name}</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
-											{buk.registeredAt}
+											{moment(buk.createdAt).format("YYYY/MM/DD HH:mm")}
 										</Typography>
 									</TableCell>
 									<TableCell align="left">

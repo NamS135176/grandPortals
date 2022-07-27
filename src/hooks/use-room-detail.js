@@ -8,12 +8,7 @@ import {
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {
-    getOtherObjectS3FileName,
-    getRoomCoverImageUrl,
-    getS3FromUrl,
-    getUrlPath,
-} from "../utils/bukken";
+import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
 import moment from "moment";
 import toast, {Toaster} from "react-hot-toast";
 import {useRouter} from "next/router";
@@ -36,7 +31,7 @@ export const useRoomDetail = (roomId) => {
                     variables: {
                         input: {
                             id: history.id,
-                            delete_flag: 1
+                            delete_flag: 1,
                         },
                     },
                 });
@@ -60,7 +55,7 @@ export const useRoomDetail = (roomId) => {
                     variables: {
                         input: {
                             id: document.id,
-                            delete_flag: 1
+                            delete_flag: 1,
                         },
                     },
                 });
@@ -86,11 +81,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
-                    filter:{
-                        delete_flag:{
-                            eq: 0
-                        }
-                    }
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                    },
                 },
             });
             const items = res.data.queryDocumentByOtherObjectId.items;
@@ -114,11 +109,11 @@ export const useRoomDetail = (roomId) => {
                 variables: {
                     other_object_id: room.id,
                     nextToken,
-                    filter:{
-                        delete_flag:{
-                            eq: 0
-                        }
-                    }
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                    },
                 },
             });
             const items = res.data.queryHistoryByOtherObjectId.items;
@@ -164,10 +159,10 @@ export const useRoomDetail = (roomId) => {
             },
         });
         const room = response.data.getOtherObject;
+        preSetRoom(room);
         setRoom(room);
-        const coverImageUrl = getRoomCoverImageUrl(room);
-        if (coverImageUrl) {
-            setCoverImageUrl(coverImageUrl);
+        if (room.field_list["thumnail"]) {
+            setCoverImageUrl(room.field_list["thumnail"]);
         }
         //end room detail
 
@@ -178,19 +173,21 @@ export const useRoomDetail = (roomId) => {
         setLoading(false);
     }, [roomId]);
 
+    const preSetRoom = useCallback((room) => {
+        try {
+            //parse field_list to get cover image with thumnail key
+            const fieldList = room.field_list
+                ? JSON.parse(room.field_list)
+                : {};
+            room.field_list = fieldList;
+        } catch (e) {
+            console.error(e);
+        }
+    }, []);
+
     const uploadRoomCover = useCallback(
         async (file) => {
-            // console.log(JSON.parse(room?.field_list));
             try {
-                //upload file
-                // const s3Old = "";
-                // if (coverImageUrl) {
-                //     s3Old = getS3FromUrl(coverImageUrl);
-                //     console.log(s3Old);
-                //     const res = await Storage.remove(s3Old, {level: "public"});
-                //     console.log(res);
-                // }
-               
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
                 const s3FileName = getOtherObjectS3FileName(
@@ -211,14 +208,9 @@ export const useRoomDetail = (roomId) => {
 
                 //update other object for update field_list
                 const fieldList = room.field_list
-                    ? JSON.parse(room.field_list)
-                    : {};
                 fieldList["thumnail"] = urlPath;
 
-                updateRoomFieldList({
-                    ...JSON.parse(room?.field_list),
-                    thumnail: urlPath,
-                });
+                updateRoomFieldList(fieldList);
             } catch (e) {
                 console.error(e);
                 throw e;
@@ -254,7 +246,9 @@ export const useRoomDetail = (roomId) => {
                         },
                     },
                 });
-                setRoom(resOtherObject.data.updateOtherObject);
+                const updateRoom = resOtherObject.data.updateOtherObject;
+                preSetRoom(updateRoom);
+                setRoom(updateRoom);
                 toast.success("物件情報を登録しました。");
                 router.push("/room/list");
             } catch (e) {
