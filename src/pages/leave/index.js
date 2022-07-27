@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
 import Head from 'next/head';
-import { gtm } from '../../../../grands-bukken-confirm/src/lib/gtm';
 import NextLink from 'next/link';
+import { gtm } from '../../lib/gtm';
 
 const Leave = () => {
 	useEffect(() => {
