@@ -10,7 +10,6 @@ import {
 	Divider,
 	Typography,
 } from '@mui/material';
-import { bukkenApi } from '../../__fake-api__/bukken-api';
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
 import { RoomListTable } from '../../components/room/room-list-table';
 import { useMounted } from '../../hooks/use-mounted';
@@ -25,34 +24,12 @@ const RoomList = () => {
 	const router = useRouter()
 	const {roomList : rooms, deleteRoom} = useRoomList()
 	console.log(rooms);
-	const isMounted = useMounted();
-	const [room, setRoom] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	useEffect(() => {
 		gtm.push({ event: 'page_view' });
 	}, []);
-
-	// const getRoomList = useCallback(async () => {
-	// 	try {
-	// 		const data = await bukkenApi.getRoomList();
-	// 		console.log(data);
-	// 		if (isMounted()) {
-	// 			setRoom(data);
-	// 		}
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, [isMounted]);
-
-	// useEffect(
-	// 	() => {
-	// 		getRoomList();
-	// 	},
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// 	[]
-	// );
 
 	const handlePageChange = (event, newPage) => {
 		setPage(newPage);
@@ -101,7 +78,7 @@ const RoomList = () => {
 								}}
 							>
 								<Typography variant="h6">部屋・スペース一覧</Typography>
-								<Button onClick={() => {router.push('/room/0')}} variant="contained">新規登録</Button>
+								<Button onClick={() => {router.push('/room/create')}} variant="contained">新規登録</Button>
 							</Box>
 							<RoomListTable
 								room={paginatedRoom}

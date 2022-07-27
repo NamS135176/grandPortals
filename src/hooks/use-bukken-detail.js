@@ -1,8 +1,6 @@
 import {API, Storage} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
 import {
-    listDocuments,
-    listHistories,
     queryBukkensByBukkenNo,
     queryOtherObjectByBukkenId,
     queryDocumentByBukkenId,
@@ -12,17 +10,15 @@ import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {
-    getBukenCoverImageS3Path,
     getBukkenCoverImageUrl,
     getOtherObjectS3FileName,
-    getS3FromUrl,
     getUrlPath,
     OtherObjectFieldKind,
     OtherObjectKind,
 } from "../utils/bukken";
 import moment from "moment";
-import toast, { Toaster } from 'react-hot-toast';
-import {getNextDocumentId, getNextOtherObjectId} from "../utils/id-generator";
+import toast from 'react-hot-toast';
+import {getNextOtherObjectId} from "../utils/id-generator";
 import { useRouter } from "next/router";
 import { resizeImage } from "../utils/image";
 
@@ -196,6 +192,11 @@ export const useBukkenDetail = (bukkenNo) => {
         });
         const {items} = response.data.queryBukkensByBukkenNo;
         const bukken = items?.length > 0 ? items[0] : null;
+        if (!bukken) {
+            //not found
+            router.replace("/404")
+            return
+        }
         setBukken(bukken);
         //end load list bukken
 

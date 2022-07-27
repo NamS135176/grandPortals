@@ -159,6 +159,11 @@ export const useRoomDetail = (roomId) => {
             },
         });
         const room = response.data.getOtherObject;
+        if (!room) {
+            //not found
+            router.replace("/404")
+            return
+        }
         preSetRoom(room);
         setRoom(room);
         if (room.field_list["thumnail"]) {
