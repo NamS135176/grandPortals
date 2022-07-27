@@ -147,7 +147,7 @@ const EquipmentDetails = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="xl">

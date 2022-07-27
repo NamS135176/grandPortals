@@ -6,6 +6,7 @@ import {
 	InputAdornment,
 	Link,
 	Table,
+	Grid,
 	TableBody,
 	TableCell,
 	TableHead,
@@ -15,11 +16,11 @@ import {
 	CardHeader,
 	CardContent,
 } from '@mui/material';
-import { PencilAlt as PencilAltIcon } from '../../icons/pencil-alt';
-import { Upload as UploadIcon } from '../../icons/upload';
-import { Search as SearchIcon } from '../../icons/search';
-import { Scrollbar } from '../scrollbar';
-import { useState } from 'react';
+import {PencilAlt as PencilAltIcon} from '../../icons/pencil-alt';
+import {Upload as UploadIcon} from '../../icons/upload';
+import {Search as SearchIcon} from '../../icons/search';
+import {Scrollbar} from '../scrollbar';
+import {useState} from 'react';
 
 const bukkenList = [
 	{
@@ -42,34 +43,38 @@ export const BukkenRegistInfoTable = () => {
 			<Card>
 				<CardHeader title="物件情報登録" />
 				<CardContent>
-					<Box
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'space-between',
-							flexWrap: 'wrap',
-							pb: 2,
-						}}
+					<Grid
+						container
+						spacing={3}
+						mb={3}
+						justifyContent="space-between"
+						alignContent="center"
 					>
-						<TextField
-							sx={{ pr: 2 }}
-							name="bukkenId"
-							value={bukkenId}
-							onChange={(event) => setBukkenId(event.target.value)}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SearchIcon fontSize="small" />
-									</InputAdornment>
-								),
-							}}
-						/>
-						<Button type="submit" variant="contained">
-							検索
-						</Button>
-					</Box>
+						<Grid item>
+							<TextField
+								sx={{pr: 2}}
+								name="bukkenId"
+								value={bukkenId}
+								onChange={(event) =>
+									setBukkenId(event.target.value)
+								}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon fontSize="small" />
+										</InputAdornment>
+									),
+								}}
+							/>
+						</Grid>
+						<Grid item>
+							<Button type="submit" variant="contained">
+								検索
+							</Button>
+						</Grid>
+					</Grid>
 					<Scrollbar>
-						<Table sx={{ minWidth: 1200 }}>
+						<Table sx={{minWidth: 1200}}>
 							<TableHead>
 								<TableRow>
 									<TableCell>物件番号</TableCell>
@@ -95,8 +100,10 @@ export const BukkenRegistInfoTable = () => {
 										<TableCell>{bukken.location}</TableCell>
 										<TableCell>
 											<Button
-												startIcon={<UploadIcon fontSize="small" />}
-												sx={{ m: 1 }}
+												startIcon={
+													<UploadIcon fontSize="small" />
+												}
+												sx={{m: 1}}
 											>
 												Import
 											</Button>

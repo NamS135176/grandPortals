@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import Head from 'next/head';
-import { Box, Container } from '@mui/material';
-import { PasswordResettingForm } from '../../../components/profile/password-resetting';
-import { gtm } from '../../../lib/gtm';
-import { DashboardLayout } from '../../../components/dashboard/dashboard-layout';
+import {Box, Container} from '@mui/material';
+import {PasswordResettingForm} from '../../../components/profile/password-resetting';
+import {gtm} from '../../../lib/gtm';
+import {DashboardLayout} from '../../../components/dashboard/dashboard-layout';
 
 const PasswordReset = () => {
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	return (
@@ -20,7 +20,7 @@ const PasswordReset = () => {
 				sx={{
 					backgroundColor: 'background.default',
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="md">
