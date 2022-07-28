@@ -11,7 +11,6 @@ import {
     Button,
 } from "@mui/material";
 import {X as XIcon} from "../../icons/x";
-import {FileUpload} from "../widgets/file-upload";
 import {getBukkenS3FileName} from "../../utils/bukken";
 import * as mutations from "../../graphql/mutations";
 import moment from "moment";
@@ -103,16 +102,14 @@ export const AddDocumentDialog = (props) => {
 
     const handleSubmit = async () => {
         const {overview} = form;
-        console.log("handleSubmit... ", {overview, bukken});
         if (!files?.length || !overview) return;
         setLoading(true);
         try {
             var promises = files.map((file) => createDocument(file, overview));
             await Promise.all(promises);
-            loadData(bukken);
         } catch (e) {}
         setLoading(false);
-        loadData(bukken);
+        loadData();
         setForm({
             overview: "",
         });
