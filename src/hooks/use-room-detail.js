@@ -22,6 +22,7 @@ export const useRoomDetail = (roomId) => {
     const [histories, setHistories] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploadCoverImage, setUploadCoverImage] = useState(false)
 
     const deleteHistory = useCallback(
         async (history) => {
@@ -193,7 +194,7 @@ export const useRoomDetail = (roomId) => {
     const uploadRoomCover = useCallback(
        
         async (file) => {
-            setLoading(true)
+            setUploadCoverImage(true)
             try {
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
@@ -220,26 +221,12 @@ export const useRoomDetail = (roomId) => {
                 updateRoomFieldList(fieldList, false, false);
             } catch (e) {
                 console.error(e);
-                throw e;
+                toast.error(e.message)
             }
-            setLoading(false)
+            setUploadCoverImage(false)
         },
         [room]
     );
-
-    const updateRoom = useCallback(async (fieldList) => {
-        const res = await API.graphql({
-            query: mutations.updateOtherObject,
-            variables: {
-                input: {
-                    id: room.id,
-                    fieldList: fieldList,
-                },
-            },
-        });
-        toast.success("物件情報を登録しました。");
-        router.push("/room/list");
-    });
 
     const updateRoomFieldList = useCallback(
         async (
@@ -286,11 +273,11 @@ export const useRoomDetail = (roomId) => {
         deleteHistory,
         deleteDocument,
         loading,
+        uploadCoverImage,
         loadData,
         reloadDocument,
         reloadHistory,
         uploadRoomCover,
         updateRoomFieldList,
-        updateRoom,
     };
 };

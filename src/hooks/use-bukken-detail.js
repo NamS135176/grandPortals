@@ -31,6 +31,7 @@ export const useBukkenDetail = (bukkenNo) => {
     const [histories, setHistories] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploadCoverImage, setUploadCoverImage] = useState(false)
 
     const deleteHistory = useCallback(
         async (history) => {
@@ -233,7 +234,7 @@ export const useBukkenDetail = (bukkenNo) => {
 
     const uploadBukenCover = useCallback(
         async (file) => {
-            setLoading(true)
+            setUploadCoverImage(true)
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
                 // if (coverImageUrl) {
@@ -308,9 +309,9 @@ export const useBukkenDetail = (bukkenNo) => {
                 setBukkenOtherObject(resOtherObject.data.updateOtherObject);
             } catch (e) {
                 console.error(e);
-                throw e;
+                toast.error(e.message)
             }
-            setLoading(false)
+            setUploadCoverImage(false)
         },
         [bukken, bukkenOtherObject]
     );
@@ -332,6 +333,7 @@ export const useBukkenDetail = (bukkenNo) => {
         reloadHistory,
         uploadBukenCover,
         updateBukken,
-        loading
+        loading,
+        uploadCoverImage,
     };
 };

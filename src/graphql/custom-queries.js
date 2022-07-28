@@ -55,3 +55,32 @@ export const queryBukkensByUserIdWithCoverImage = /* GraphQL */ `
         }
     }
 `;
+
+export const getBukkenOnly = /* GraphQL */ `
+  query GetBukken($id: ID!) {
+    getBukken(id: $id) {
+      id
+      s_object_id
+      bukken_no
+      user_id
+      address
+      bukken_kind
+      floor_plan
+      shinchiku_date
+      remarks
+      delete_flag
+      otherObjects {
+        nextToken
+      }
+      documents {
+        nextToken
+      }
+      histories {
+        nextToken
+      }
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;

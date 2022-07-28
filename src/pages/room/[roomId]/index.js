@@ -16,7 +16,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
-	Skeleton
+    Skeleton,
 } from "@mui/material";
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
@@ -40,6 +40,7 @@ const RoomDetails = () => {
     const {roomId} = router.query;
     const {
         loading,
+        uploadCoverImage,
         room,
         coverImageUrl,
         histories: bukkenHistory,
@@ -50,7 +51,6 @@ const RoomDetails = () => {
         updateRoomFieldList,
         reloadHistory,
         reloadDocument,
-        updateRoom,
     } = useRoomDetail(roomId);
 
     const [page, setPage] = useState(0);
@@ -102,7 +102,7 @@ const RoomDetails = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         //update other object for update field_list
-        const fieldList = room?.field_list ?? {}
+        const fieldList = room?.field_list ?? {};
         fieldList["kind"] = form.kind;
         fieldList["name"] = form.name;
         fieldList["area"] = form.area;
@@ -212,7 +212,7 @@ const RoomDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-							<Box sx={{mb: 4}}>
+                            <Box sx={{mb: 4}}>
                                 <Grid
                                     container
                                     justifyContent="space-between"
@@ -240,26 +240,31 @@ const RoomDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-							{
-								loading ? 
-								<Skeleton animation="wave" variant="rectangular" width={'100%'} height={450} sx={{marginTop:'24px'}} /> :
-	                            <Box
-                                sx={{
-                                    backgroundImage: `url(${coverImageUrl})`,
-                                    backgroundColor: "#D0D0D0",
-                                    backgroundPosition: "center",
-                                    backgroundSize: "cover",
-                                    borderRadius: 1,
-                                    height: 450,
-                                    width: "100%",
-                                    mt: 3,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            />
-							}
-            
+                            {uploadCoverImage ? (
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rectangular"
+                                    width={"100%"}
+                                    height={450}
+                                    sx={{marginTop: "24px"}}
+                                />
+                            ) : (
+                                <Box
+                                    sx={{
+                                        backgroundImage: `url(${coverImageUrl})`,
+                                        backgroundColor: "#D0D0D0",
+                                        backgroundPosition: "center",
+                                        backgroundSize: "cover",
+                                        borderRadius: 1,
+                                        height: 450,
+                                        width: "100%",
+                                        mt: 3,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                />
+                            )}
 
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>

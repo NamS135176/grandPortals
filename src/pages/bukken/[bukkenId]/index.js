@@ -46,6 +46,7 @@ const BukkenDetails = () => {
         uploadBukenCover,
         updateBukken,
         loading,
+        uploadCoverImage,
     } = useBukkenDetail(bukkenId);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -70,6 +71,13 @@ const BukkenDetails = () => {
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
+
+    useEffect(() => {
+        //save bukken id to storage for using default bukken when create new room or other object
+        if (bukken) {
+            sessionStorage.setItem("bukken_id", bukken.id);
+        }
+    }, [bukken]);
 
     const handleChange = (event) => {
         console.log(event.target.name);
@@ -191,8 +199,14 @@ const BukkenDetails = () => {
                                     </FileUpload>
                                 </Button>
                             </Box>
-                            {loading ? (
-                               <Skeleton animation="wave" variant="rectangular" width={'100%'} height={450} sx={{marginTop:'24px'}} />
+                            {uploadCoverImage ? (
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rectangular"
+                                    width={"100%"}
+                                    height={450}
+                                    sx={{marginTop: "24px"}}
+                                />
                             ) : (
                                 <Box
                                     sx={{
