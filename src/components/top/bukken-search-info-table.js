@@ -14,9 +14,9 @@ import {
 	CardHeader,
 	CardContent,
 } from '@mui/material';
-import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
-import { Scrollbar } from '../scrollbar';
-import { useState } from 'react';
+import {ArrowRight as ArrowRightIcon} from '../../icons/arrow-right';
+import {Scrollbar} from '../scrollbar';
+import {useState} from 'react';
 
 const bukkenList = [
 	{
@@ -74,14 +74,20 @@ export const BukkenSearchInfoTable = () => {
 							/>
 						</Grid>
 					</Grid>
-					<Grid container spacing={3} mb={3} justifyContent="space-between">
+					<Grid
+						container
+						spacing={3}
+						mb={3}
+						justifyContent="space-between"
+						alignContent="center"
+					>
 						<Grid item>
 							<TextField
 								label="物件番号"
 								name="id"
 								value={form.id}
 								onChange={handleChange}
-								sx={{ mr: 3 }}
+								sx={{mr: 3}}
 							/>
 							<TextField
 								label="メールアドレス"
@@ -96,7 +102,7 @@ export const BukkenSearchInfoTable = () => {
 					</Grid>
 
 					<Scrollbar>
-						<Table sx={{ minWidth: 1200 }}>
+						<Table sx={{minWidth: 1200}}>
 							<TableHead>
 								<TableRow>
 									<TableCell>メールアドレス</TableCell>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import {
 	Box,
 	Container,
@@ -8,14 +8,14 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
+import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
 import Head from 'next/head';
 import NextLink from 'next/link';
-import { gtm } from '../../lib/gtm';
+import {gtm} from '../../lib/gtm';
 
 const Leave = () => {
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	return (
@@ -27,11 +27,11 @@ const Leave = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="md">
-					<Box sx={{ mb: 4 }}>
+					<Box sx={{mb: 4}}>
 						<Typography variant="h4">退会完了</Typography>
 					</Box>
 					<Card>
@@ -43,10 +43,12 @@ const Leave = () => {
 									flexDirection: 'column',
 								}}
 							>
-								<Typography variant="h6">退会手続きが完了しました。</Typography>
+								<Typography variant="h6">
+									退会手続きが完了しました。
+								</Typography>
 								<Typography
 									color="textSecondary"
-									sx={{ mt: 1, textAlign: 'center' }}
+									sx={{mt: 1, textAlign: 'center'}}
 									variant="body2"
 								>
 									「XXXX」を利用いただき誠にありがとうございました。
@@ -55,9 +57,12 @@ const Leave = () => {
 								</Typography>
 							</Box>
 						</CardContent>
-						<CardActions sx={{ m: -1 }}>
+						<CardActions sx={{m: -1}}>
 							<NextLink href="/login" passHref>
-								<Button sx={{ m: 1, mr: 'auto' }} variant="contained">
+								<Button
+									sx={{m: 1, mr: 'auto'}}
+									variant="contained"
+								>
 									Topに戻る
 								</Button>
 							</NextLink>

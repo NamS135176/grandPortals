@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import Head from 'next/head';
-import { Box, Container } from '@mui/material';
-import { DashboardLayout } from '../components/dashboard/dashboard-layout';
-import { BukkenRegistInfoTable } from '../components/top/bukken-regist-info-table';
-import { BukkenSearchInfoTable } from '../components/top/bukken-search-info-table';
-import { gtm } from '../lib/gtm';
+import {Box, Container} from '@mui/material';
+import {DashboardLayout} from '../components/dashboard/dashboard-layout';
+import {BukkenRegistInfoTable} from '../components/top/bukken-regist-info-table';
+import {BukkenSearchInfoTable} from '../components/top/bukken-search-info-table';
+import {gtm} from '../lib/gtm';
 
 const Top = () => {
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	return (
@@ -20,7 +20,7 @@ const Top = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="xl">

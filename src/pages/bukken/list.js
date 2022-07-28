@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -10,24 +10,22 @@ import {
 	Grid,
 	Typography,
 } from '@mui/material';
-import { bukkenApi } from '../../__fake-api__/bukken-api';
-import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
-import { BukkenListTable } from '../../components/bukken/bukken-list-table';
-import { useMounted } from '../../hooks/use-mounted';
-import { gtm } from '../../lib/gtm';
-import { useBukkenList } from '../../hooks/use-bukken-list';
-import { AuthGuard } from '../../components/authentication/auth-guard';
+import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
+import {BukkenListTable} from '../../components/bukken/bukken-list-table';
+import {gtm} from '../../lib/gtm';
+import {useBukkenList} from '../../hooks/use-bukken-list';
+import {AuthGuard} from '../../components/authentication/auth-guard';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const BukkenList = () => {
-	const { bukkenList: bukken } = useBukkenList();
+	const {bukkenList: bukken} = useBukkenList();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	const handlePageChange = (event, newPage) => {
@@ -50,12 +48,16 @@ const BukkenList = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="xl">
-					<Box sx={{ mb: 4 }}>
-						<Grid container justifyContent="space-between" spacing={3}>
+					<Box sx={{mb: 4}}>
+						<Grid
+							container
+							justifyContent="space-between"
+							spacing={3}
+						>
 							<Grid item>
 								<Typography variant="h4">物件一覧</Typography>
 							</Grid>
@@ -85,7 +87,7 @@ const BukkenList = () => {
 						}}
 					>
 						<NextLink href="/" passHref>
-							<Button sx={{ m: 1 }} variant="contained">
+							<Button sx={{m: 1}} variant="contained">
 								TOP
 							</Button>
 						</NextLink>
@@ -96,9 +98,9 @@ const BukkenList = () => {
 	);
 };
 BukkenList.getLayout = (page) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+	<AuthGuard>
+		<DashboardLayout>{page}</DashboardLayout>
+	</AuthGuard>
 );
 
 export default BukkenList;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -10,12 +10,12 @@ import {
 	Divider,
 	Typography,
 } from '@mui/material';
-import { bukkenApi } from '../../__fake-api__/bukken-api';
-import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
-import { ExteriorListTable } from '../../components/exterior/exterior-list-table';
-import { useMounted } from '../../hooks/use-mounted';
-import { gtm } from '../../lib/gtm';
-import { ManagementList } from '../../components/management-menu';
+import {bukkenApi} from '../../__fake-api__/bukken-api';
+import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
+import {ExteriorListTable} from '../../components/exterior/exterior-list-table';
+import {useMounted} from '../../hooks/use-mounted';
+import {gtm} from '../../lib/gtm';
+import {ManagementList} from '../../components/management-menu';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -27,7 +27,7 @@ const ExteriorList = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	const getExteriorList = useCallback(async () => {
@@ -70,11 +70,17 @@ const ExteriorList = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="xl">
-					<Box sx={{ mb: 4, display: 'flex', justifyContent: 'flex-end' }}>
+					<Box
+						sx={{
+							mb: 4,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
 						<Typography variant="subtitle2">
 							お問い合わせ：0463-79-5564
 						</Typography>
@@ -96,7 +102,9 @@ const ExteriorList = () => {
 									my: 3,
 								}}
 							>
-								<Typography variant="h6">外装・エクステリア</Typography>
+								<Typography variant="h6">
+									外装・エクステリア
+								</Typography>
 								<Button variant="contained">新規登録</Button>
 							</Box>
 							<ExteriorListTable
@@ -117,7 +125,7 @@ const ExteriorList = () => {
 						}}
 					>
 						<NextLink href="/" passHref>
-							<Button sx={{ m: 1 }} variant="contained">
+							<Button sx={{m: 1}} variant="contained">
 								TOP
 							</Button>
 						</NextLink>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import {useCallback, useEffect, useState, useRef} from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -13,13 +13,13 @@ import {
 	TextField,
 	InputAdornment,
 } from '@mui/material';
-import { bukkenApi } from '../../__fake-api__/bukken-api';
-import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
-import { HistoryListTable } from '../../components/history/history-list-table';
-import { useMounted } from '../../hooks/use-mounted';
-import { gtm } from '../../lib/gtm';
-import { ManagementList } from '../../components/management-menu';
-import { Search as SearchIcon } from '../../icons/search';
+import {bukkenApi} from '../../__fake-api__/bukken-api';
+import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
+import {HistoryListTable} from '../../components/history/history-list-table';
+import {useMounted} from '../../hooks/use-mounted';
+import {gtm} from '../../lib/gtm';
+import {ManagementList} from '../../components/management-menu';
+import {Search as SearchIcon} from '../../icons/search';
 
 const sortOptions = [
 	{
@@ -89,7 +89,7 @@ const HistoryList = () => {
 	});
 
 	useEffect(() => {
-		gtm.push({ event: 'page_view' });
+		gtm.push({event: 'page_view'});
 	}, []);
 
 	const getHistory = useCallback(async () => {
@@ -150,11 +150,17 @@ const HistoryList = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8,
+					py: {xs: 4, md: 8},
 				}}
 			>
 				<Container maxWidth="xl">
-					<Box sx={{ mb: 4, display: 'flex', justifyContent: 'flex-end' }}>
+					<Box
+						sx={{
+							mb: 4,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
 						<Typography variant="subtitle2">
 							お問い合わせ：0463-79-5564
 						</Typography>
@@ -168,7 +174,11 @@ const HistoryList = () => {
 									mt: 3,
 								}}
 							/>
-							<Grid container justifyContent="space-between" spacing={3}>
+							<Grid
+								container
+								justifyContent="space-between"
+								spacing={3}
+							>
 								<Grid item>
 									<Typography variant="h6" mb={3}>
 										履歴一覧
@@ -192,7 +202,7 @@ const HistoryList = () => {
 								onSubmit={handleSubmit}
 							>
 								<TextField
-									sx={{ pr: 2 }}
+									sx={{pr: 2}}
 									name="name"
 									value={filters.name}
 									onChange={handleChange}
@@ -206,15 +216,18 @@ const HistoryList = () => {
 									placeholder="検索"
 								/>
 								<TextField
-									sx={{ pr: 2 }}
+									sx={{pr: 2}}
 									name="type"
 									onChange={handleChange}
 									select
-									SelectProps={{ native: true }}
+									SelectProps={{native: true}}
 									value={filters.type}
 								>
 									{sortOptions.map((option) => (
-										<option key={option.value} value={option.value}>
+										<option
+											key={option.value}
+											value={option.value}
+										>
 											{option.label}
 										</option>
 									))}
@@ -241,7 +254,7 @@ const HistoryList = () => {
 						}}
 					>
 						<NextLink href="/" passHref>
-							<Button sx={{ m: 1 }} variant="contained">
+							<Button sx={{m: 1}} variant="contained">
 								TOP
 							</Button>
 						</NextLink>
