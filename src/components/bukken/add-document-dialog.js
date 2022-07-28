@@ -158,9 +158,8 @@ export const AddDocumentDialog = (props) => {
 
                         <FileDropzone
                             accept={{
-                                "application/pdf": [],
+                                "application/pdf": [".pdf"],
                             }}
-                            // accept={{"pdf":[".pdf"]}}
                             files={files}
                             onDrop={handleDrop}
                             onRemove={handleRemove}
