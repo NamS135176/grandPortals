@@ -63,8 +63,6 @@ const CreateRoom = () => {
 		setCoverImage(URL.createObjectURL(file));
 	};
 
-	console.log('CreateRoom... ', {file, form});
-
 	return (
 		<>
 			<Head>
@@ -270,14 +268,6 @@ const CreateRoom = () => {
 								</Box>
 							</Grid>
 						</CardContent>
-						<CardActions>
-							<Button
-								href="/history"
-								endIcon={<ArrowRightIcon fontSize="small" />}
-							>
-								全ての履歴を見る
-							</Button>
-						</CardActions>
 					</Card>
 				</Container>
 			</Box>
