@@ -165,12 +165,10 @@ const ElectronicsDetails = () => {
 					<Card>
 						<CardContent>
 							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									mb: 4,
@@ -309,18 +307,16 @@ const ElectronicsDetails = () => {
 									/>
 								</Grid>
 							</Grid>
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: 'center',
 									display: 'flex',
 									justifyContent: 'space-between',
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">
@@ -345,18 +341,16 @@ const ElectronicsDetails = () => {
 								rowsPerPage={rowsPerPage}
 								page={page}
 							/>
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: 'center',
 									display: 'flex',
 									justifyContent: 'space-between',
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">最新履歴</Typography>

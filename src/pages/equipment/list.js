@@ -88,18 +88,16 @@ const EquipmentList = () => {
 					<Card>
 						<CardContent>
 							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: 'center',
 									display: 'flex',
 									justifyContent: 'space-between',
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">設備一覧</Typography>

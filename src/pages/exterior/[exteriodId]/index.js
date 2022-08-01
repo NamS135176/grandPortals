@@ -153,12 +153,10 @@ const ExteriorDetails = () => {
 					<Card>
 						<CardContent>
 							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									mb: 4,
@@ -232,18 +230,16 @@ const ExteriorDetails = () => {
 									/>
 								</Grid>
 							</Grid>
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: 'center',
 									display: 'flex',
 									justifyContent: 'space-between',
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">
@@ -268,12 +264,10 @@ const ExteriorDetails = () => {
 								rowsPerPage={rowsPerPage}
 								page={page}
 							/>
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: 'center',

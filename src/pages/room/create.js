@@ -92,12 +92,10 @@ const CreateRoom = () => {
 					<Card>
 						<CardContent>
 							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box sx={{mb: 4}}>
 								<Grid
 									container
