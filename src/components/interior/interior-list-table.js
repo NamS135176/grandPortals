@@ -17,6 +17,7 @@ import { PencilAlt as PencilAltIcon } from '../../icons/pencil-alt';
 import { Trash as TrashIcon } from '../../icons/trash';
 import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
+import { OtherObjectFieldKind } from '../../utils/bukken';
 
 const applySort = (interior, sortDir) =>
 	interior.sort((a, b) => {
@@ -76,10 +77,11 @@ export const InteriorListTable = (props) => {
 					</TableHead>
 					<TableBody>
 						{sortedBukken.map((buk) => {
+							const link = `/interior/${buk.field_kind == OtherObjectFieldKind.ReadyMadeProduct ? "normal" : "order"}/${buk.id}`
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
-										<NextLink href="/interior/normal/1" passHref>
+										<NextLink href={link} passHref>
 											<Box
 												sx={{
 													alignItems: 'center',

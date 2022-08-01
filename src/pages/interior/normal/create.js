@@ -26,7 +26,7 @@ import {useCreateInterior} from "../../../hooks/use-create-interior";
 import {useBukkenDefault} from "../../../hooks/use-bukken-default";
 import { FileUpload } from "../../../components/widgets/file-upload";
 
-const CreateInterior = (fieldKind = OtherObjectFieldKind.ReadyMadeProduct) => {
+const CreateInterior = () => {
     const {loading, createInterior} = useCreateInterior();
     const {bukken} = useBukkenDefault();
 
@@ -77,7 +77,7 @@ const CreateInterior = (fieldKind = OtherObjectFieldKind.ReadyMadeProduct) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createInterior(bukken, fieldKind, form, file);
+        createInterior(bukken, OtherObjectFieldKind.ReadyMadeProduct, form, file);
     };
 
     const handleChangeFile = (file) => {
