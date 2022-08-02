@@ -86,12 +86,17 @@ const InteriorList = () => {
                                     建具・インテリア一覧
                                 </Typography>
                                 <Box>
-                                    <Button variant="contained" sx={{mr: 2}}>
-                                        既製品新規登録
-                                    </Button>
-                                    <Button variant="contained">
-                                        オーダー製品新規登録
-                                    </Button>
+                                    <NextLink href="/interior/normal/create" passHref>
+                                        <Button variant="contained" sx={{mr: 2}}>
+                                            既製品新規登録
+
+                                        </Button>
+                                    </NextLink>
+                                    <NextLink href="/interior/order/create" passHref>
+                                        <Button variant="contained">
+                                            オーダー製品新規登録
+                                        </Button>
+                                    </NextLink>
                                 </Box>
                             </Box>
                             <InteriorListTable

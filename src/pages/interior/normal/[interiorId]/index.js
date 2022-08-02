@@ -15,7 +15,8 @@ import {
     Select,
     FormControl,
     MenuItem,
-	Skeleton,
+    Skeleton,
+    FormHelperText,
 } from "@mui/material";
 import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../../components/bukken/bukken-related-docs-list-table";
@@ -31,6 +32,9 @@ import {useRouter} from "next/router";
 import {FileUpload} from "../../../../components/widgets/file-upload";
 import {InteriorKind} from "../../../../utils/global-data";
 import {AddDocumentDialog} from "../../../../components/bukken/add-document-dialog";
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import * as R from "ramda";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -57,18 +61,32 @@ const InteriorDetails = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
-    const [form, setForm] = useState({
-        kind: "",
-        name: null,
-        location: null,
-        maker: null,
-        number: null,
-        height: null,
-        width: null,
-        depth: null,
-        date: null,
-        quantity: null,
-        remarks: null,
+    const formik = useFormik({
+        initialValues: {
+            kind: "",
+            name: "",
+            location: null,
+            maker: null,
+            number: null,
+            height: null,
+            width: null,
+            depth: null,
+            date: null,
+            quantity: null,
+            remarks: null,
+        },
+        validationSchema: Yup.object({
+            kind: Yup.string().required("種別は必須です。"),
+            name: Yup.string().required("名称は必須です。"),
+        }),
+        onSubmit: async (values, helpers) => {
+            // console.log("formik... onSubmit", { values, helpers });
+            const errors = await helpers.validateForm();
+            console.log("formik... onSubmit", { values, helpers, errors, errorsEmpty: R.isEmpty(errors) });
+            if (R.isEmpty(errors)) {
+                handleSubmit(values)
+            }
+        },
     });
 
     useEffect(() => {
@@ -91,7 +109,7 @@ const InteriorDetails = () => {
             quantity,
             remarks,
         } = interior.field_list;
-        setForm({
+        formik.setValues({
             kind,
             name,
             location,
@@ -102,33 +120,27 @@ const InteriorDetails = () => {
             depth,
             date,
             quantity,
-            remarks,
-        });
+            remarks
+        })
     }, [interior]);
 
-    const handleChange = (event) => {
-        setForm({
-            ...form,
-            [event.target.name]: event.target.value,
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (values) => {
+        console.log("handleSubmit... ", {values})
         //update other object for update field_list
         const fieldList = interior?.field_list ?? {};
-        fieldList["kind"] = form.kind;
-        fieldList["name"] = form.name;
-        fieldList["location"] = form.location;
-        fieldList["maker"] = form.maker;
-        fieldList["number"] = form.number;
-        fieldList["height"] = form.height;
-        fieldList["width"] = form.width;
-        fieldList["depth"] = form.depth;
-        fieldList["date"] = form.date;
-        fieldList["quantity"] = form.quantity;
-        fieldList["remarks"] = form.remarks;
+        fieldList["kind"] = values.kind;
+        fieldList["name"] = values.name;
+        fieldList["location"] = values.location;
+        fieldList["maker"] = values.maker;
+        fieldList["number"] = values.number;
+        fieldList["height"] = values.height;
+        fieldList["width"] = values.width;
+        fieldList["depth"] = values.depth;
+        fieldList["date"] = values.date;
+        fieldList["quantity"] = values.quantity;
+        fieldList["remarks"] = values.remarks;
 
+        console.log("handleSubmit... ", {fieldList})
         updateInteriorFieldList(fieldList);
     };
 
@@ -151,7 +163,7 @@ const InteriorDetails = () => {
     // end dialog
 
     const handleDateChange = (date) => {
-        setForm({...form, purchaseDate: date});
+        formik.setFieldValue("date", date)
     };
 
     const handlePageChange = (event, newPage) => {
@@ -273,17 +285,22 @@ const InteriorDetails = () => {
                             )}
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="select-lable-kind">
+                                    <FormControl fullWidth error={Boolean(
+                                            formik.touched.kind &&
+                                                formik.errors.kind
+                                        )}>
+                                        <InputLabel id="select-lable-kind" required>
                                             種別
                                         </InputLabel>
                                         <Select
                                             labelId="select-kind"
                                             id="select-kind"
                                             name="kind"
-                                            value={form.kind}
                                             label="種別"
-                                            onChange={handleChange}
+                                            required
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            value={formik.values.kind}
                                         >
                                             {InteriorKind.map((item, idx) => (
                                                 <MenuItem
@@ -294,6 +311,7 @@ const InteriorDetails = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <FormHelperText>{formik.touched.kind && formik.errors.kind}</FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item md={8} xs={12}>
@@ -301,9 +319,16 @@ const InteriorDetails = () => {
                                         fullWidth
                                         label="品名"
                                         name="name"
-                                        value={form.name}
-                                        onChange={handleChange}
                                         InputLabelProps={{shrink: true}}
+                                        error={Boolean(
+                                            formik.touched.name &&
+                                                formik.errors.name
+                                        )}
+                                        helperText={formik.touched.name && formik.errors.name}
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.name}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item md={8} xs={12}>
@@ -311,8 +336,8 @@ const InteriorDetails = () => {
                                         fullWidth
                                         label="設置場所"
                                         name="location"
-                                        value={form.location}
-                                        onChange={handleChange}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.location}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -321,8 +346,8 @@ const InteriorDetails = () => {
                                         fullWidth
                                         label="メーカー"
                                         name="maker"
-                                        value={form.maker}
-                                        onChange={handleChange}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.maker}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -331,8 +356,8 @@ const InteriorDetails = () => {
                                         fullWidth
                                         label="型番"
                                         name="number"
-                                        value={form.number}
-                                        onChange={handleChange}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.number}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -345,26 +370,26 @@ const InteriorDetails = () => {
                                     >
                                         <TextField
                                             type="number"
-                                            label="高さ"
+                                            label="高さ(cm)"
                                             name="height"
-                                            value={form.height}
-                                            onChange={handleChange}
+                                            onChange={formik.handleChange}
+                                            value={formik.values.height}
                                             InputLabelProps={{shrink: true}}
                                         />
                                         <TextField
                                             type="number"
-                                            label="幅"
+                                            label="幅(cm)"
                                             name="width"
-                                            value={form.width}
-                                            onChange={handleChange}
+                                            onChange={formik.handleChange}
+                                            value={formik.values.width}
                                             InputLabelProps={{shrink: true}}
                                         />
                                         <TextField
                                             type="number"
-                                            label="奥行"
+                                            label="奥行(cm)"
                                             name="depth"
-                                            value={form.depth}
-                                            onChange={handleChange}
+                                            onChange={formik.handleChange}
+                                            value={formik.values.depth}
                                             InputLabelProps={{shrink: true}}
                                         />
                                     </Box>
@@ -373,7 +398,7 @@ const InteriorDetails = () => {
                                     <MobileDatePicker
                                         label="購入日"
                                         inputFormat="MM/dd/yyyy"
-                                        value={form.purchaseDate}
+                                        value={formik.values.date}
                                         onChange={handleDateChange}
                                         renderInput={(inputProps) => (
                                             <TextField {...inputProps} />
@@ -385,8 +410,8 @@ const InteriorDetails = () => {
                                         type="number"
                                         label="個数"
                                         name="quantity"
-                                        value={form.quantity}
-                                        onChange={handleChange}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.quantity}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -397,8 +422,8 @@ const InteriorDetails = () => {
                                         minRows={4}
                                         label="備考"
                                         name="remarks"
-                                        value={form.remarks}
-                                        onChange={handleChange}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.remarks}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -427,7 +452,7 @@ const InteriorDetails = () => {
                                         sx={{m: 1}}
                                         variant="contained"
                                         disabled={loading}
-                                        onClick={handleSubmit}
+                                        onClick={formik.handleSubmit}
                                     >
                                         登録
                                     </Button>

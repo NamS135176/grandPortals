@@ -5,61 +5,39 @@ import {
     Button,
     Card,
     CardContent,
-    CardActions,
     Container,
     Divider,
     Grid,
     Typography,
     TextField,
+    FormControl,
     InputLabel,
     Select,
-    FormControl,
     MenuItem,
-    Skeleton,
     FormHelperText,
 } from "@mui/material";
-import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
-import {BukkenRelatedDocsListTable} from "../../../../components/bukken/bukken-related-docs-list-table";
-import {BukkenHistoryListTable} from "../../../../components/bukken/bukken-history-list-table";
-import {gtm} from "../../../../lib/gtm";
-import {ManagementList} from "../../../../components/management-menu";
-import {ArrowLeft as ArrowLeftIcon} from "../../../../icons/arrow-left";
-import {ArrowRight as ArrowRightIcon} from "../../../../icons/arrow-right";
+import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
+import {gtm} from "../../../lib/gtm";
+import {ManagementList} from "../../../components/management-menu";
+import {ArrowLeft as ArrowLeftIcon} from "../../../icons/arrow-left";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import {HistoryDialog} from "../../../../components/history/history-dialog";
-import {useInteriorDetail} from "../../../../hooks/use-interior-detail";
+import {OtherObjectFieldKind} from "../../../utils/bukken";
+import {InteriorKind} from "../../../utils/global-data";
+import {useCreateInterior} from "../../../hooks/use-create-interior";
+import {useBukkenDefault} from "../../../hooks/use-bukken-default";
+import {FileUpload} from "../../../components/widgets/file-upload";
 import {useRouter} from "next/router";
-import {FileUpload} from "../../../../components/widgets/file-upload";
-import {InteriorKind} from "../../../../utils/global-data";
-import {AddDocumentDialog} from "../../../../components/bukken/add-document-dialog";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-const InteriorDetails = () => {
+const CreateInterior = () => {
     const router = useRouter();
-    const {interiorId} = router.query;
-    const {
-        loading,
-        interior,
-        coverImageUrl,
-        histories: bukkenHistory,
-        documents: bukkenDocs,
-        uploadCoverImage,
-        uploadInteriorCover,
-        deleteHistory,
-        deleteDocument,
-        updateInteriorFieldList,
-        reloadHistory,
-        reloadDocument,
-    } = useInteriorDetail(interiorId);
+    const {loading, createInterior} = useCreateInterior();
+    const {bukken} = useBukkenDefault();
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
+    const [file, setFile] = useState();
+    const [coverImage, setCoverImage] = useState();
 
     const formik = useFormik({
         initialValues: {
@@ -98,102 +76,18 @@ const InteriorDetails = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    useEffect(() => {
-        if (!interior?.field_list) return;
-        console.log("interior... ", {interior});
-        const {
-            kind,
-            name,
-            location,
-            maker,
-            number,
-            height,
-            width,
-            depth,
-            date,
-            quantity,
-            remarks,
-        } = interior.field_list;
-        formik.setValues({
-            kind,
-            name,
-            location,
-            maker,
-            number,
-            height,
-            width,
-            depth,
-            date,
-            quantity,
-            remarks,
-        });
-    }, [interior]);
-
-    const handleSubmit = (values) => {
-        console.log("handleSubmit... ", {values});
-        //update other object for update field_list
-        const fieldList = interior?.field_list ?? {};
-        fieldList["kind"] = values.kind;
-        fieldList["name"] = values.name;
-        fieldList["location"] = values.location;
-        fieldList["maker"] = values.maker;
-        fieldList["number"] = values.number;
-        fieldList["height"] = values.height;
-        fieldList["width"] = values.width;
-        fieldList["depth"] = values.depth;
-        fieldList["date"] = values.date;
-        fieldList["quantity"] = values.quantity;
-        fieldList["remarks"] = values.remarks;
-
-        console.log("handleSubmit... ", {fieldList});
-        updateInteriorFieldList(fieldList);
-    };
-
-    // dialog
-    const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
-    const handleOpenHistoryDialog = () => {
-        setOpenHistoryDialog(true);
-    };
-    const handleCloseHistoryDialog = () => {
-        setOpenHistoryDialog(false);
-    };
-
-    const [openDocumentDialog, setOpenDocumentDialog] = useState(false);
-    const handleOpenDocumentDialog = () => {
-        setOpenDocumentDialog(true);
-    };
-    const handleCloseDocumentDialog = () => {
-        setOpenDocumentDialog(false);
-    };
-    // end dialog
-
     const handleDateChange = (date) => {
         formik.setFieldValue("date", date);
     };
 
-    const handlePageChange = (event, newPage) => {
-        setPage(newPage);
+    const handleSubmit = (values) => {
+        createInterior(bukken, OtherObjectFieldKind.Order, values, file);
     };
 
-    const handlePageHistoryChange = (event, newPage) => {
-        setPage(newPage);
+    const handleChangeFile = (file) => {
+        setFile(file);
+        setCoverImage(URL.createObjectURL(file));
     };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-    };
-
-    const handleRowsPerPageHistoryChange = (event) => {
-        setRowsPerPageHistory(parseInt(event.target.value, 10));
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
-    const paginatedBukkenHistory = applyPagination(
-        bukkenHistory,
-        page,
-        rowsPerPage
-    );
 
     return (
         <>
@@ -254,11 +148,12 @@ const InteriorDetails = () => {
                                         <Button
                                             variant="contained"
                                             component="label"
+                                            disabled={loading}
                                         >
                                             画像追加
                                             <FileUpload
                                                 accept={"image/*"}
-                                                onChange={uploadInteriorCover}
+                                                onChange={handleChangeFile}
                                                 prefix="image"
                                             >
                                                 <></>
@@ -267,27 +162,17 @@ const InteriorDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            {uploadCoverImage ? (
-                                <Skeleton
-                                    animation="wave"
-                                    variant="rectangular"
-                                    width={"100%"}
-                                    height={450}
-                                    sx={{marginTop: "24px"}}
-                                />
-                            ) : (
-                                <Box
-                                    sx={{
-                                        backgroundImage: `url(${coverImageUrl})`,
-                                        backgroundColor: "#D0D0D0",
-                                        backgroundPosition: "center",
-                                        backgroundSize: "cover",
-                                        borderRadius: 1,
-                                        height: 450,
-                                        mt: 3,
-                                    }}
-                                />
-                            )}
+                            <Box
+                                sx={{
+                                    backgroundImage: `url(${coverImage})`,
+                                    backgroundColor: "#D0D0D0",
+                                    backgroundPosition: "center",
+                                    backgroundSize: "cover",
+                                    borderRadius: 1,
+                                    height: 450,
+                                    mt: 3,
+                                }}
+                            />
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <FormControl
@@ -444,138 +329,39 @@ const InteriorDetails = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
-
-                                <Box
-                                    sx={{
-                                        justifyContent: "flex-end",
-                                        width: "100%",
-                                        display: "flex",
-                                        mt: 2,
-                                    }}
-                                >
-                                    <Button
-                                        endIcon={
-                                            <ArrowLeftIcon fontSize="small" />
-                                        }
-                                        onClick={() =>
-                                            router.push("/interior/list")
-                                        }
-                                        sx={{m: 1}}
-                                        variant="outlined"
-                                    >
-                                        戻る
-                                    </Button>
-                                    <Button
-                                        sx={{m: 1}}
-                                        variant="contained"
-                                        disabled={loading}
-                                        onClick={formik.handleSubmit}
-                                    >
-                                        登録
-                                    </Button>
-                                </Box>
                             </Grid>
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
-                            <Box
-                                sx={{
-                                    alignItems: "center",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    my: 3,
-                                }}
-                            >
-                                <Typography variant="h6">
-                                    関連資料一覧
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleOpenDocumentDialog}
-                                    disabled={!interior?.bukken}
-                                >
-                                    資料追加
-                                </Button>
-                                <AddDocumentDialog
-                                    onClose={handleCloseDocumentDialog}
-                                    open={openDocumentDialog}
-                                    mode="edit"
-                                    bukken={interior?.bukken}
-                                    loadData={() => reloadDocument(interior)}
-                                    otherObjectId={interior?.id}
-                                />
-                            </Box>
-                            <BukkenRelatedDocsListTable
-                                bukken={interior?.bukken}
-                                bukkenDocs={paginatedBukkenDocs}
-                                bukkenDocsCount={bukkenDocs.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                deleteDocument={deleteDocument}
-                            />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
-                            <Box
-                                sx={{
-                                    alignItems: "center",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    my: 3,
-                                }}
-                            >
-                                <Typography variant="h6">最新履歴</Typography>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleOpenHistoryDialog}
-                                    disabled={!interior?.bukken}
-                                >
-                                    履歴追加
-                                </Button>
-                                <HistoryDialog
-                                    onClose={handleCloseHistoryDialog}
-                                    open={openHistoryDialog}
-                                    mode="edit"
-                                    bukken={interior?.bukken}
-                                    loadData={() => reloadHistory(interior)}
-                                    otherObjectId={interior?.id}
-                                />
-                            </Box>
-                            <BukkenHistoryListTable
-                                bukken={interior?.bukken}
-                                bukkenHistory={paginatedBukkenHistory}
-                                bukkenHistoryCount={bukkenHistory.length}
-                                onPageChange={handlePageHistoryChange}
-                                onRowsPerPageChange={
-                                    handleRowsPerPageHistoryChange
-                                }
-                                rowsPerPage={rowsPerPageHistory}
-                                page={page}
-                                deleteHistory={deleteHistory}
-                            />
                         </CardContent>
-                        <CardActions>
-                            <Button
-                                href="/history"
-                                endIcon={<ArrowRightIcon fontSize="small" />}
-                            >
-                                全ての履歴を見る
-                            </Button>
-                        </CardActions>
                     </Card>
+                    <Box
+                        sx={{
+                            justifyContent: "flex-end",
+                            width: "100%",
+                            display: "flex",
+                            mt: 2,
+                        }}
+                    >
+                        <Button
+                            endIcon={<ArrowLeftIcon fontSize="small" />}
+                            onClick={() => router.push("/interior/list")}
+                            sx={{m: 1}}
+                            variant="outlined"
+                        >
+                            戻る
+                        </Button>
+                        <Button
+                            sx={{m: 1}}
+                            variant="contained"
+                            disabled={loading}
+                            onClick={formik.handleSubmit}
+                        >
+                            登録
+                        </Button>
+                    </Box>
                 </Container>
             </Box>
         </>
     );
 };
-InteriorDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+CreateInterior.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default InteriorDetails;
+export default CreateInterior;
