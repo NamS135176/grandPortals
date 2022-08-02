@@ -89,6 +89,10 @@ export function getCoverImageS3FileNameForCreateRoom(bukken, nextRoomId, fileNam
     return `${bukken.user_id}/${bukken.id}/${OtherObjectKind.RoomSpace}-${nextRoomId}/${fileName}`;
 }
 
+export function getCoverImageS3FileNameForCreateInterior(bukken, nextOtherObjectId, fileName) {
+    return `${bukken.user_id}/${bukken.id}/${OtherObjectKind.Interior}-${nextOtherObjectId}/${fileName}`;
+}
+
 export function getBukkenCoverImageUrl(otherObject) {
     try {
         //parse field_list to get cover image with thumnail key

@@ -10,14 +10,14 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
 import moment from "moment";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {useRouter} from "next/router";
 import {resizeImage} from "../utils/image";
 
-export const useRoomDetail = (roomId) => {
+export const useInteriorDetail = (interiorId) => {
     const router = useRouter();
     const isMounted = useMounted();
-    const [room, setRoom] = useState();
+    const [interior, setInterior] = useState();
     const [coverImageUrl, setCoverImageUrl] = useState();
     const [histories, setHistories] = useState([]);
     const [documents, setDocuments] = useState([]);
@@ -75,12 +75,12 @@ export const useRoomDetail = (roomId) => {
     );
 
     const getListDocument = useCallback(
-        async (room, list = [], nextToken = null) => {
-            if (!room) return;
+        async (interior, list = [], nextToken = null) => {
+            if (!interior) return;
             const res = await API.graphql({
                 query: queryDocumentByOtherObjectId,
                 variables: {
-                    other_object_id: room.id,
+                    other_object_id: interior.id,
                     nextToken,
                     filter: {
                         delete_flag: {
@@ -95,7 +95,7 @@ export const useRoomDetail = (roomId) => {
             }
             const nxtToken = res.data.queryDocumentByOtherObjectId.nextToken;
             if (nxtToken) {
-                await getListDocument(room, list, nxtToken); //load util nextToken is null
+                await getListDocument(interior, list, nxtToken); //load util nextToken is null
             }
             return list;
         },
@@ -103,12 +103,12 @@ export const useRoomDetail = (roomId) => {
     );
 
     const getListHistory = useCallback(
-        async (room, list = [], nextToken = null) => {
-            if (!room) return;
+        async (interior, list = [], nextToken = null) => {
+            if (!interior) return;
             const res = await API.graphql({
                 query: queryHistoryByOtherObjectId,
                 variables: {
-                    other_object_id: room.id,
+                    other_object_id: interior.id,
                     nextToken,
                     filter: {
                         delete_flag: {
@@ -123,26 +123,26 @@ export const useRoomDetail = (roomId) => {
             }
             const nxtToken = res.data.queryHistoryByOtherObjectId.nextToken;
             if (nxtToken) {
-                await getListHistory(room, list, nxtToken); //load util nextToken is null
+                await getListHistory(interior, list, nxtToken); //load util nextToken is null
             }
             return list;
         },
         []
     );
 
-    const reloadDocument = useCallback(async (room, updateLoading = true) => {
+    const reloadDocument = useCallback(async (interior, updateLoading = true) => {
         if (updateLoading) setLoading(true);
-        const documents = await getListDocument(room);
+        const documents = await getListDocument(interior);
         if (documents?.length > 0) {
             setDocuments(documents);
         }
         if (updateLoading) setLoading(false);
     }, []);
 
-    const reloadHistory = useCallback(async (room, updateLoading = true) => {
+    const reloadHistory = useCallback(async (interior, updateLoading = true) => {
         if (updateLoading) setLoading(true);
-        const histories = await getListHistory(room);
-        console.log(room);
+        const histories = await getListHistory(interior);
+        console.log(interior);
         if (histories?.length > 0) {
             setHistories(histories);
         }
@@ -152,47 +152,47 @@ export const useRoomDetail = (roomId) => {
     const loadData = useCallback(async () => {
         setLoading(true);
 
-        //load room detail
+        //load interior detail
         const response = await API.graphql({
             query: getOtherObject,
             variables: {
-                id: roomId,
+                id: interiorId,
             },
         });
-        const room = response.data.getOtherObject;
-        if (!room) {
+        const interior = response.data.getOtherObject;
+        if (!interior) {
             //not found
             router.replace("/404");
             return;
         }
-        preSetRoom(room);
-        setRoom(room);
-        if (room.field_list["thumnail"]) {
-            setCoverImageUrl(room.field_list["thumnail"]);
+        preSetInterior(interior);
+        setInterior(interior);
+        if (interior.field_list["thumnail"]) {
+            setCoverImageUrl(interior.field_list["thumnail"]);
         }
-        //end room detail
+        //end interior detail
 
-        reloadHistory(room, false);
+        reloadHistory(interior, false);
 
-        reloadDocument(room, false);
+        reloadDocument(interior, false);
 
         setLoading(false);
-    }, [roomId]);
+    }, [interiorId]);
 
-    const preSetRoom = useCallback((room) => {
+    const preSetInterior = useCallback((interior) => {
         try {
             //parse field_list to get cover image with thumnail key
-            const fieldList = room.field_list
-                ? JSON.parse(room.field_list)
+            const fieldList = interior.field_list
+                ? JSON.parse(interior.field_list)
                 : {};
-            room.field_list = fieldList;
+            interior.field_list = fieldList;
         } catch (e) {
             console.error(e);
-            room.field_list = {};
+            interior.field_list = {};
         }
     }, []);
 
-    const uploadRoomCover = useCallback(
+    const uploadInteriorCover = useCallback(
        
         async (file) => {
             setUploadCoverImage(true)
@@ -200,7 +200,7 @@ export const useRoomDetail = (roomId) => {
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
                 const s3FileName = getOtherObjectS3FileName(
-                    room,
+                    interior,
                     `${s3FileNamePrefix}_${originFileName}`
                 );
 
@@ -216,24 +216,24 @@ export const useRoomDetail = (roomId) => {
                 setCoverImageUrl(urlPath);
 
                 //update other object for update field_list
-                const fieldList = room.field_list;
+                const fieldList = interior.field_list;
                 fieldList["thumnail"] = urlPath;
 
-                updateRoomFieldList(fieldList, false, false);
+                updateInteriorFieldList(fieldList, false, false);
             } catch (e) {
                 console.error(e);
                 toast.error(e.message)
             }
             setUploadCoverImage(false)
         },
-        [room]
+        [interior]
     );
 
-    const updateRoomFieldList = useCallback(
+    const updateInteriorFieldList = useCallback(
         async (
-            roomFieldList,
+            interiorFieldList,
             updateLoading = true,
-            navigateToListRoom = true
+            navigateToListInterior = true
         ) => {
             if (updateLoading) setLoading(true);
             try {
@@ -241,17 +241,17 @@ export const useRoomDetail = (roomId) => {
                     query: mutations.updateOtherObject,
                     variables: {
                         input: {
-                            id: room.id,
-                            field_list: JSON.stringify(roomFieldList),
+                            id: interior.id,
+                            field_list: JSON.stringify(interiorFieldList),
                         },
                     },
                 });
-                const updateRoom = resOtherObject.data.updateOtherObject;
-                preSetRoom(updateRoom);
-                setRoom(updateRoom);
+                const updateInterior = resOtherObject.data.updateOtherObject;
+                preSetInterior(updateInterior);
+                setInterior(updateInterior);
                 toast.success("物件情報を登録しました。");
-                if (navigateToListRoom) {
-                    router.push("/room/list");
+                if (navigateToListInterior) {
+                    router.push("/interior/list");
                 }
             } catch (e) {
                 console.error(e);
@@ -259,15 +259,15 @@ export const useRoomDetail = (roomId) => {
             }
             if (updateLoading) setLoading(false);
         },
-        [room]
+        [interior]
     );
 
     useEffect(() => {
-        if (isMounted && roomId) loadData();
-    }, [isMounted, roomId]);
+        if (isMounted && interiorId) loadData();
+    }, [isMounted, interiorId]);
 
     return {
-        room,
+        interior,
         coverImageUrl,
         histories,
         documents,
@@ -278,7 +278,7 @@ export const useRoomDetail = (roomId) => {
         loadData,
         reloadDocument,
         reloadHistory,
-        uploadRoomCover,
-        updateRoomFieldList,
+        uploadInteriorCover,
+        updateInteriorFieldList,
     };
 };

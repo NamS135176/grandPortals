@@ -1,6 +1,5 @@
 import {API} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
-import {useAuth} from "./use-auth";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {listOtherObjects} from "../graphql/queries";
@@ -8,17 +7,17 @@ import * as mutations from "../graphql/mutations";
 import {OtherObjectKind} from "../utils/bukken";
 
 export const useRoomList = (bukkenId) => {
-    const {user} = useAuth();
     const isMounted = useMounted();
     const [roomList, setRoomList] = useState([]);
     const [loading, setLoading] = useState(false);
     
-    const getListRoom = useCallback(async (list = [], nextToken = null, bukken) => {
+    const getListRoom = useCallback(async (list = [], nextToken = null, bukkenId) => {
         const response = null
-        if(bukken){
+        if(bukkenId){
             response = await API.graphql({
                 query: listOtherObjects,
                 variables: {
+                    nextToken: nextToken,
                     filter: {
                         object_kind: {
                             eq: OtherObjectKind.RoomSpace,
@@ -27,7 +26,7 @@ export const useRoomList = (bukkenId) => {
                             eq: 0,
                         },
                         bukken_id:{
-                            eq: bukken
+                            eq: bukkenId
                         }
                     },
                 },
@@ -37,6 +36,7 @@ export const useRoomList = (bukkenId) => {
             response = await API.graphql({
                 query: listOtherObjects,
                 variables: {
+                    nextToken: nextToken,
                     filter: {
                         object_kind: {
                             eq: OtherObjectKind.RoomSpace,
@@ -73,7 +73,7 @@ export const useRoomList = (bukkenId) => {
         }
         list = list.concat(rooms);
         if (response.data.listOtherObjects.nextToken) {
-            await getListRoom(list, response.data.listOtherObjects.nextToken, bukken);
+            await getListRoom(list, response.data.listOtherObjects.nextToken, bukkenId);
         }
         return list;
     }, []);
