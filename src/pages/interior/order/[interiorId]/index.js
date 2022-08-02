@@ -80,14 +80,7 @@ const InteriorDetails = () => {
             name: Yup.string().required("名称は必須です。"),
         }),
         onSubmit: async (values, helpers) => {
-            // console.log("formik... onSubmit", { values, helpers });
             const errors = await helpers.validateForm();
-            console.log("formik... onSubmit", {
-                values,
-                helpers,
-                errors,
-                errorsEmpty: R.isEmpty(errors),
-            });
             if (R.isEmpty(errors)) {
                 handleSubmit(values);
             }
@@ -200,6 +193,7 @@ const InteriorDetails = () => {
             <Head>
                 <title>grandsポータルサイト｜建具・インテリア情報</title>
             </Head>
+            
             <Box
                 component="main"
                 sx={{

@@ -17,6 +17,7 @@ import {
     Select,
     MenuItem,
     Skeleton,
+    FormHelperText,
 } from "@mui/material";
 import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 import {BukkenRelatedDocsListTable} from "../../../components/bukken/bukken-related-docs-list-table";
@@ -31,6 +32,9 @@ import {useRouter} from "next/router";
 import {FileUpload} from "../../../components/widgets/file-upload";
 import {RoomKind} from "../../../utils/global-data";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import * as R from "ramda";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -56,18 +60,29 @@ const RoomDetails = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
-    const [form, setForm] = useState({
-        kind: "",
-        name: "",
-        area: "",
-        height: "",
-        remarks: "",
+
+    const formik = useFormik({
+        initialValues: {
+            kind: null,
+            name: "",
+            remarks: null,
+        },
+        validationSchema: Yup.object({
+            kind: Yup.string().required("種別は必須です。"),
+            name: Yup.string().required("名称は必須です。"),
+        }),
+        onSubmit: async (values, helpers) => {
+            const errors = await helpers.validateForm();
+            if (R.isEmpty(errors)) {
+                handleSubmit(values);
+            }
+        },
     });
 
     useEffect(() => {
         if (!room?.field_list) return;
-        const {kind, name, area, height, remarks} = room.field_list;
-        setForm({kind, name, area, height, remarks});
+        const {kind, name, remarks} = room.field_list;
+        formik.setValues({kind, name, remarks});
     }, [room]);
 
     // dialog
@@ -92,22 +107,12 @@ const RoomDetails = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handleChange = (event) => {
-        setForm({
-            ...form,
-            [event.target.name]: event.target.value,
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (values) => {
         //update other object for update field_list
         const fieldList = room?.field_list ?? {};
-        fieldList["kind"] = form.kind;
-        fieldList["name"] = form.name;
-        fieldList["area"] = form.area;
-        fieldList["height"] = form.height;
-        fieldList["remarks"] = form.remarks;
+        fieldList["kind"] = values.kind;
+        fieldList["name"] = values.name;
+        fieldList["remarks"] = values.remarks;
 
         updateRoomFieldList(fieldList);
     };
@@ -268,17 +273,25 @@ const RoomDetails = () => {
 
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">
+                                    <FormControl
+                                        fullWidth
+                                        error={Boolean(
+                                            formik.touched.kind &&
+                                                formik.errors.kind
+                                        )}
+                                    >
+                                        <InputLabel id="demo-simple-select-label" shrink={false}>
                                             種別
                                         </InputLabel>
                                         <Select
                                             labelId="select-kind"
                                             id="select-kind"
                                             name="kind"
-                                            value={form.kind}
                                             label="種別"
-                                            onChange={handleChange}
+                                            InputLabelProps={{shrink: true}}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            value={formik.values.kind}
                                         >
                                             {RoomKind.map((item, idx) => (
                                                 <MenuItem
@@ -289,6 +302,10 @@ const RoomDetails = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <FormHelperText>
+                                            {formik.touched.kind &&
+                                                formik.errors.kind}
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item md={8} xs={12}>
@@ -297,9 +314,19 @@ const RoomDetails = () => {
                                         label="備考"
                                         multiline
                                         name="name"
-                                        defaultValue={form.name}
-                                        onChange={handleChange}
                                         InputLabelProps={{shrink: true}}
+                                        error={Boolean(
+                                            formik.touched.name &&
+                                                formik.errors.name
+                                        )}
+                                        helperText={
+                                            formik.touched.name &&
+                                            formik.errors.name
+                                        }
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.name}
+                                        required
                                     />
                                 </Grid>
                                 <Grid item md={8} xs={12}>
@@ -309,8 +336,8 @@ const RoomDetails = () => {
                                         minRows={4}
                                         label="備考"
                                         name="remarks"
-                                        defaultValue={form.remarks}
-                                        onChange={handleChange}
+                                        value={formik.values.remarks}
+                                        onChange={formik.handleChange}
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
@@ -338,7 +365,7 @@ const RoomDetails = () => {
                                         sx={{m: 1}}
                                         variant="contained"
                                         disabled={loading}
-                                        onClick={handleSubmit}
+                                        onClick={formik.handleSubmit}
                                     >
                                         登録
                                     </Button>
