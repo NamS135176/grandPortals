@@ -8,7 +8,7 @@ import {
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
+import {getOtherObjectS3FileName, getUrlPath, OtherObjectKind} from "../utils/bukken";
 import moment from "moment";
 import toast, {Toaster} from "react-hot-toast";
 import {useRouter} from "next/router";
@@ -160,7 +160,8 @@ export const useRoomDetail = (roomId) => {
             },
         });
         const room = response.data.getOtherObject;
-        if (!room) {
+        console.log("useRoomDetail... ", { room })
+        if (!room || room.delete_flag == 1 ||  room.object_kind != OtherObjectKind.RoomSpace) {
             //not found
             router.replace("/404");
             return;

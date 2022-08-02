@@ -8,7 +8,7 @@ import {
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
+import {getOtherObjectS3FileName, getUrlPath, OtherObjectKind} from "../utils/bukken";
 import moment from "moment";
 import toast from "react-hot-toast";
 import {useRouter} from "next/router";
@@ -160,7 +160,8 @@ export const useInteriorDetail = (interiorId) => {
             },
         });
         const interior = response.data.getOtherObject;
-        if (!interior) {
+        console.log("useInteriorDetail... ", { interior })
+        if (!interior || interior.delete_flag == 1 ||  interior.object_kind != OtherObjectKind.Interior) {
             //not found
             router.replace("/404");
             return;
