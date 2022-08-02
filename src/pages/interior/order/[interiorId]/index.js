@@ -57,8 +57,9 @@ const InteriorDetails = () => {
         reloadDocument,
     } = useInteriorDetail(interiorId);
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [pageDocument, setPageDocument] = useState(0);
+    const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
+    const [pageHistory, setPageHistory] = useState(0);
     const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
     const formik = useFormik({
@@ -165,27 +166,33 @@ const InteriorDetails = () => {
     };
 
     const handlePageChange = (event, newPage) => {
-        setPage(newPage);
+        setPageDocument(newPage);
     };
 
     const handlePageHistoryChange = (event, newPage) => {
-        setPage(newPage);
+        setPageHistory(newPage);
     };
 
     const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        setRowsPerPageDocument(parseInt(event.target.value, 10));
+        setPageDocument(0);
     };
 
     const handleRowsPerPageHistoryChange = (event) => {
         setRowsPerPageHistory(parseInt(event.target.value, 10));
+        setPageHistory(0);
     };
 
     // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
+    const paginatedBukkenDocs = applyPagination(
+        bukkenDocs,
+        pageDocument,
+        rowsPerPageDocument
+    );
     const paginatedBukkenHistory = applyPagination(
         bukkenHistory,
-        page,
-        rowsPerPage
+        pageHistory,
+        rowsPerPageHistory
     );
 
     return (
@@ -504,8 +511,8 @@ const InteriorDetails = () => {
                                 bukkenDocsCount={bukkenDocs.length}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
+                                rowsPerPage={rowsPerPageDocument}
+                                page={pageDocument}
                                 deleteDocument={deleteDocument}
                             />
                         </CardContent>
@@ -546,7 +553,7 @@ const InteriorDetails = () => {
                                     handleRowsPerPageHistoryChange
                                 }
                                 rowsPerPage={rowsPerPageHistory}
-                                page={page}
+                                page={pageHistory}
                                 deleteHistory={deleteHistory}
                             />
                         </CardContent>

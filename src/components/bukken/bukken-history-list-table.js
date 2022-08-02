@@ -133,7 +133,7 @@ export const BukkenHistoryListTable = (props) => {
 				onRowsPerPageChange={onRowsPerPageChange}
 				page={page}
 				rowsPerPage={rowsPerPage}
-				rowsPerPageOptions={[5, 10, 25]}
+				rowsPerPageOptions={[1, 5, 10, 25]}
 			/>
 		</div>
 	);
