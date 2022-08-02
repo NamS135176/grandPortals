@@ -82,9 +82,14 @@ const InteriorDetails = () => {
         onSubmit: async (values, helpers) => {
             // console.log("formik... onSubmit", { values, helpers });
             const errors = await helpers.validateForm();
-            console.log("formik... onSubmit", { values, helpers, errors, errorsEmpty: R.isEmpty(errors) });
+            console.log("formik... onSubmit", {
+                values,
+                helpers,
+                errors,
+                errorsEmpty: R.isEmpty(errors),
+            });
             if (R.isEmpty(errors)) {
-                handleSubmit(values)
+                handleSubmit(values);
             }
         },
     });
@@ -120,12 +125,12 @@ const InteriorDetails = () => {
             depth,
             date,
             quantity,
-            remarks
-        })
+            remarks,
+        });
     }, [interior]);
 
     const handleSubmit = (values) => {
-        console.log("handleSubmit... ", {values})
+        console.log("handleSubmit... ", {values});
         //update other object for update field_list
         const fieldList = interior?.field_list ?? {};
         fieldList["kind"] = values.kind;
@@ -140,7 +145,7 @@ const InteriorDetails = () => {
         fieldList["quantity"] = values.quantity;
         fieldList["remarks"] = values.remarks;
 
-        console.log("handleSubmit... ", {fieldList})
+        console.log("handleSubmit... ", {fieldList});
         updateInteriorFieldList(fieldList);
     };
 
@@ -163,7 +168,7 @@ const InteriorDetails = () => {
     // end dialog
 
     const handleDateChange = (date) => {
-        formik.setFieldValue("date", date)
+        formik.setFieldValue("date", date);
     };
 
     const handlePageChange = (event, newPage) => {
@@ -217,12 +222,10 @@ const InteriorDetails = () => {
                     <Card>
                         <CardContent>
                             <ManagementList />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     mb: 4,
@@ -285,11 +288,17 @@ const InteriorDetails = () => {
                             )}
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
-                                    <FormControl fullWidth error={Boolean(
+                                    <FormControl
+                                        fullWidth
+                                        error={Boolean(
                                             formik.touched.kind &&
                                                 formik.errors.kind
-                                        )}>
-                                        <InputLabel id="select-lable-kind" required>
+                                        )}
+                                    >
+                                        <InputLabel
+                                            id="select-lable-kind"
+                                            required
+                                        >
                                             種別
                                         </InputLabel>
                                         <Select
@@ -311,7 +320,10 @@ const InteriorDetails = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
-                                        <FormHelperText>{formik.touched.kind && formik.errors.kind}</FormHelperText>
+                                        <FormHelperText>
+                                            {formik.touched.kind &&
+                                                formik.errors.kind}
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item md={8} xs={12}>
@@ -324,7 +336,10 @@ const InteriorDetails = () => {
                                             formik.touched.name &&
                                                 formik.errors.name
                                         )}
-                                        helperText={formik.touched.name && formik.errors.name}
+                                        helperText={
+                                            formik.touched.name &&
+                                            formik.errors.name
+                                        }
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
                                         value={formik.values.name}
@@ -458,12 +473,10 @@ const InteriorDetails = () => {
                                     </Button>
                                 </Box>
                             </Grid>
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     alignItems: "center",
@@ -501,12 +514,10 @@ const InteriorDetails = () => {
                                 page={page}
                                 deleteDocument={deleteDocument}
                             />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     alignItems: "center",

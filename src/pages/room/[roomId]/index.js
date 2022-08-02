@@ -167,12 +167,10 @@ const RoomDetails = () => {
                     <Card>
                         <CardContent>
                             <ManagementList />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box sx={{mb: 4}}>
                                 <Grid
                                     container
@@ -280,7 +278,10 @@ const RoomDetails = () => {
                                                 formik.errors.kind
                                         )}
                                     >
-                                        <InputLabel id="demo-simple-select-label" shrink={false}>
+                                        <InputLabel
+                                            id="demo-simple-select-label"
+                                            shrink={false}
+                                        >
                                             種別
                                         </InputLabel>
                                         <Select
@@ -371,6 +372,10 @@ const RoomDetails = () => {
                                     </Button>
                                 </Box>
                             </Grid>
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             {room ? (
                                 <>
                                     <Divider
@@ -424,6 +429,10 @@ const RoomDetails = () => {
                             ) : (
                                 <></>
                             )}
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             {room ? (
                                 <>
                                     <Divider

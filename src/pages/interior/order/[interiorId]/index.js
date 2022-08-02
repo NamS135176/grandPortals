@@ -193,7 +193,7 @@ const InteriorDetails = () => {
             <Head>
                 <title>grandsポータルサイト｜建具・インテリア情報</title>
             </Head>
-            
+
             <Box
                 component="main"
                 sx={{
@@ -216,12 +216,10 @@ const InteriorDetails = () => {
                     <Card>
                         <CardContent>
                             <ManagementList />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     mb: 4,
@@ -469,12 +467,10 @@ const InteriorDetails = () => {
                                     </Button>
                                 </Box>
                             </Grid>
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     alignItems: "center",
@@ -512,12 +508,10 @@ const InteriorDetails = () => {
                                 page={page}
                                 deleteDocument={deleteDocument}
                             />
-                            <Divider
-                                sx={{
-                                    mb: 3,
-                                    mt: 3,
-                                }}
-                            />
+                        </CardContent>
+                    </Card>
+                    <Card sx={{mt: 4}}>
+                        <CardContent>
                             <Box
                                 sx={{
                                     alignItems: "center",
