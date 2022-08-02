@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {useRouter} from 'next/router';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
-import { Box, Divider, Drawer, useMediaQuery, Typography } from '@mui/material';
-import { ArrowRight as ArrowRightIcon } from '../../icons/arrow-right';
-import { Menu as MenuIcon } from '../../icons/menu';
-import { Home as HomeIcon } from '../../icons/home';
-import { Lock as LockIcon } from '../../icons/lock';
-import { UserCircle as UserCircleIcon } from '../../icons/user-circle';
+import {useTranslation} from 'react-i18next';
+import {Box, Divider, Drawer, useMediaQuery, Typography} from '@mui/material';
+import {ArrowRight as ArrowRightIcon} from '../../icons/arrow-right';
+import {Menu as MenuIcon} from '../../icons/menu';
+import {Home as HomeIcon} from '../../icons/home';
+import {Lock as LockIcon} from '../../icons/lock';
+import {UserCircle as UserCircleIcon} from '../../icons/user-circle';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { Scrollbar } from '../scrollbar';
-import { DashboardSidebarSection } from './dashboard-sidebar-section';
-import { OrganizationPopover } from './organization-popover';
+import {Scrollbar} from '../scrollbar';
+import {DashboardSidebarSection} from './dashboard-sidebar-section';
+import {OrganizationPopover} from './organization-popover';
 
 const getSections = (t) => [
 	{
@@ -79,9 +79,9 @@ const getSections = (t) => [
 ];
 
 export const DashboardSidebar = (props) => {
-	const { onClose, open } = props;
+	const {onClose, open} = props;
 	const router = useRouter();
-	const { t } = useTranslation();
+	const {t} = useTranslation();
 	const sections = useMemo(() => getSections(t), [t]);
 	const organizationsRef = useRef(null);
 	const [openOrganizationsPopover, setOpenOrganizationsPopover] =
@@ -125,10 +125,11 @@ export const DashboardSidebar = (props) => {
 					}}
 				>
 					<div>
-						<Box sx={{ px: 2, pt: 3 }}>
+						<Box sx={{px: 2, pt: 3}}>
 							<Box
 								sx={{
-									backgroundColor: 'rgba(255, 255, 255, 0.04)',
+									backgroundColor:
+										'rgba(255, 255, 255, 0.04)',
 									cursor: 'pointer',
 									px: 3,
 									py: '11px',
@@ -147,10 +148,10 @@ export const DashboardSidebar = (props) => {
 							my: 3,
 						}}
 					/>
-					<Box sx={{ flexGrow: 1 }}>
-						{sections.map((section) => (
+					<Box sx={{flexGrow: 1}}>
+						{sections.map((section, index) => (
 							<DashboardSidebarSection
-								key={section.title}
+								key={index}
 								path={router.asPath}
 								sx={{
 									mt: 2,
@@ -184,7 +185,7 @@ export const DashboardSidebar = (props) => {
 					width: 280,
 				},
 			}}
-			sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+			sx={{zIndex: (theme) => theme.zIndex.appBar + 100}}
 			variant="temporary"
 		>
 			{content}
