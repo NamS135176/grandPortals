@@ -3,7 +3,6 @@ import {useCallback, useState} from "react";
 import * as mutations from "../graphql/mutations";
 import {
     getCoverImageS3FileNameForCreateInterior,
-    getCoverImageS3FileNameForCreateRoom,
     getUrlPath,
     OtherObjectKind,
 } from "../utils/bukken";

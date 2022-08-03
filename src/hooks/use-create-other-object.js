@@ -67,6 +67,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
                     const s3FileName =
                         getCoverImageS3FileNameForCreateOtherObject(
                             bukken,
+                            otherObjectKind,
                             nextId,
                             `${s3FileNamePrefix}_${originFileName}`
                         );
@@ -109,7 +110,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
             }
             setLoading(false);
         },
-        []
+        [otherObjectKind]
     );
 
     return {
