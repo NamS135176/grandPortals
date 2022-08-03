@@ -92,6 +92,13 @@ const RoomDetails = () => {
 		gtm.push({event: 'page_view'});
 	}, []);
 
+	useEffect(() => {
+		//save room id to storage for using default room when create new interior
+		if (room) {
+			sessionStorage.setItem('room_id', room.id);
+		}
+	}, [room]);
+
 	const handleChange = (event) => {
 		setForm({
 			...form,
@@ -173,7 +180,7 @@ const RoomDetails = () => {
 									spacing={3}
 								>
 									<Grid item sm={4}>
-										<CardActionArea href={`/interior/list?room=${roomId}`}>
+										<CardActionArea href={`/interior/list`}>
 											<Card
 												elevation={0}
 												variant="outlined"

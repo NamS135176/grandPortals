@@ -43,6 +43,7 @@ export const InteriorListTable = (props) => {
 		onRowsPerPageChange,
 		page,
 		rowsPerPage,
+		deleteInterior,
 		...other
 	} = props;
 	const [sort, setSort] = useState('desc');
@@ -142,7 +143,7 @@ export const InteriorListTable = (props) => {
 									</TableCell>
 									<TableCell align="left">
 										<IconButton component="a">
-											<TrashIcon fontSize="small" color="error" />
+											<TrashIcon fontSize="small" color="error" onClick={() => deleteInterior(buk)}/>
 										</IconButton>
 									</TableCell>
 								</TableRow>
@@ -171,4 +172,5 @@ InteriorListTable.propTypes = {
 	onRowsPerPageChange: PropTypes.func,
 	page: PropTypes.number.isRequired,
 	rowsPerPage: PropTypes.number.isRequired,
+	deleteInterior: PropTypes.func.isRequired,
 };

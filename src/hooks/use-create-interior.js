@@ -64,7 +64,7 @@ export const useCreateInterior = () => {
             });
             //upload image
             toast.success("建具・インテリアを登録しました。");
-            router.push(`/interior/list?room=${roomId}`);
+            router.push(`/interior/list`);
         } catch (e) {
             toast.error(e.message);
             console.error(e);

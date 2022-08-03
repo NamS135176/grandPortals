@@ -152,3 +152,22 @@ export const queryHistoryOnlyByOtherObjectId = /* GraphQL */ `
     }
   }
 `;
+
+export const getOtherObjectOnly = /* GraphQL */ `
+  query GetOtherObject($id: ID!) {
+    getOtherObject(id: $id) {
+      id
+      bukken_id
+      user_id
+      object_kind
+      room_id
+      field_kind
+      field_list
+      delete_flag
+      object_kind_updatedAt
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;

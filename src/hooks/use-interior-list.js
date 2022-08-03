@@ -4,11 +4,15 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
+import {useDocument} from "./use-document";
+import {useHistory} from "./use-history";
 
 export const useInteriorList = (roomId) => {
     const isMounted = useMounted();
     const [interiors, setInteriors] = useState([]);
     const [loading, setLoading] = useState(false);
+    const {deleteAllDocumentByOtherObjectId} = useDocument();
+    const {deleteAllHistoryByOtherObjectId} = useHistory();
 
     const getListInterior = useCallback(
         async (list = [], nextToken = null, roomId) => {
@@ -62,6 +66,10 @@ export const useInteriorList = (roomId) => {
                     interiors
                 );
                 setInteriors(newInteriors);
+
+                //update all documents + history related with this interior
+                await deleteAllDocumentByOtherObjectId(interior.id);
+                await deleteAllHistoryByOtherObjectId(interior.id);
             } catch (e) {
                 console.error(e);
             }

@@ -15,17 +15,16 @@ import {InteriorListTable} from "../../components/interior/interior-list-table";
 import {gtm} from "../../lib/gtm";
 import {ManagementList} from "../../components/management-menu";
 import {useInteriorList} from "../../hooks/use-interior-list";
-import { useRouter } from "next/router";
+import { useRoomDefault } from "../../hooks/use-room-default";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const InteriorList = () => {
-    const router = useRouter();
-    const roomId = router.query.room
+    const { room } = useRoomDefault();
 
     // const { bukken } = useBukkenDefault();
-    const {interiors: interior} = useInteriorList(roomId);
+    const {interiors: interior, deleteInterior} = useInteriorList(room?.id);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -89,13 +88,13 @@ const InteriorList = () => {
                                     建具・インテリア一覧
                                 </Typography>
                                 <Box>
-                                    <NextLink href={`/interior/normal/create?room=${roomId}`} passHref>
+                                    <NextLink href={`/interior/normal/create`} passHref>
                                         <Button variant="contained" sx={{mr: 2}}>
                                             既製品新規登録
 
                                         </Button>
                                     </NextLink>
-                                    <NextLink href={`/interior/order/create?room=${roomId}`} passHref>
+                                    <NextLink href={`/interior/order/create`} passHref>
                                         <Button variant="contained">
                                             オーダー製品新規登録
                                         </Button>
@@ -109,6 +108,7 @@ const InteriorList = () => {
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                deleteInterior={deleteInterior}
                             />
                         </CardContent>
                     </Card>
