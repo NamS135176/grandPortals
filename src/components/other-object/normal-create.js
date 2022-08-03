@@ -122,7 +122,7 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
             case OtherObjectKind.Facilities:
                 return "/facility/list";
             case OtherObjectKind.Other:
-                return "/others/list";
+                return "/other/list";
             default:
                 return "";
         }
