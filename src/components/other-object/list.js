@@ -64,6 +64,23 @@ const OtherObjectList = ({otherObjectKind}) => {
         }
     }, [otherObjectKind]);
 
+    const route = useMemo(() => {
+        switch (otherObjectKind) {
+            case OtherObjectKind.Interior:
+                return "/interior";
+            case OtherObjectKind.Furniture:
+                return "/furniture";
+            case OtherObjectKind.HomeAppliances:
+                return "/appliances";
+            case OtherObjectKind.Facilities:
+                return "/facility";
+            case OtherObjectKind.Other:
+                return "/others";
+            default:
+                return "";
+        }
+    }, [otherObjectKind]);
+
     return (
         <>
             <Head>
@@ -110,7 +127,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                 </Typography>
                                 <Box>
                                     <NextLink
-                                        href="/other-object/normal/create"
+                                        href={`${route}/normal/create`}
                                         passHref
                                     >
                                         <Button
@@ -121,7 +138,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                         </Button>
                                     </NextLink>
                                     <NextLink
-                                        href="/other-object/order/create"
+                                        href={`${route}/order/create`}
                                         passHref
                                     >
                                         <Button variant="contained">

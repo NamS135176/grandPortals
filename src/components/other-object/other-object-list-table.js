@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import NextLink from "next/link";
 import PropTypes from "prop-types";
 import {
@@ -17,17 +17,18 @@ import {PencilAlt as PencilAltIcon} from "../../icons/pencil-alt";
 import {Trash as TrashIcon} from "../../icons/trash";
 import {Image as ImageIcon} from "../../icons/image";
 import {Scrollbar} from "../scrollbar";
-import {OtherObjectFieldKind} from "../../utils/bukken";
+import {OtherObjectFieldKind, OtherObjectKind} from "../../utils/bukken";
+import moment from "moment";
 
 const applySort = (otherObject, sortDir) =>
     otherObject.sort((a, b) => {
         let newOrder = 0;
 
-        if (a.registeredAt < b.registeredAt) {
+        if (a.createdAt < b.createdAt) {
             newOrder = -1;
         }
 
-        if (a.registeredAt > b.registeredAt) {
+        if (a.createdAt > b.createdAt) {
             newOrder = 1;
         }
 
@@ -58,6 +59,23 @@ export const OtherObjectListTable = (props) => {
 
     const sortedBukken = applySort(otherObject, sort);
 
+    const getRoute = useCallback((otherObject) => {
+        switch (otherObject.object_kind) {
+            case OtherObjectKind.Interior:
+                return "/interior";
+            case OtherObjectKind.Furniture:
+                return "/furniture";
+            case OtherObjectKind.HomeAppliances:
+                return "/appliances";
+            case OtherObjectKind.Facilities:
+                return "/facility";
+            case OtherObjectKind.Other:
+                return "/others";
+            default:
+                return "";
+        }
+    }, []);
+
     return (
         <div {...other}>
             <Scrollbar>
@@ -81,7 +99,7 @@ export const OtherObjectListTable = (props) => {
                     </TableHead>
                     <TableBody>
                         {sortedBukken.map((buk) => {
-                            const link = `/otherObject/${
+                            const link = `/${getRoute(buk)}/${
                                 buk.field_kind ==
                                 OtherObjectFieldKind.ReadyMadeProduct
                                     ? "normal"
@@ -150,13 +168,13 @@ export const OtherObjectListTable = (props) => {
                                         </NextLink>
                                     </TableCell>
                                     <TableCell>{buk.name}</TableCell>
-                                    <TableCell>{buk.place}</TableCell>
+                                    <TableCell>{buk.field_list?.location}</TableCell>
                                     <TableCell>
                                         <Typography
                                             color="success.main"
                                             variant="subtitle2"
                                         >
-                                            {buk.registeredAt}
+                                            {moment(buk.createdAt).format("YYYY/MM/DD HH:mm")}
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="left">

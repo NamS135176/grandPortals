@@ -43,7 +43,7 @@ const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
-    const { router } = useRouter();
+    const router = useRouter();
     const {
         loading,
         otherObject,

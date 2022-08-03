@@ -18,16 +18,17 @@ import { Trash as TrashIcon } from '../../icons/trash';
 import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
 import { OtherObjectFieldKind } from '../../utils/bukken';
+import moment from 'moment';
 
 const applySort = (interior, sortDir) =>
 	interior.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.createdAt < b.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.createdAt > b.createdAt) {
 			newOrder = 1;
 		}
 
@@ -133,10 +134,10 @@ export const InteriorListTable = (props) => {
 										</NextLink>
 									</TableCell>
 									<TableCell>{buk.name}</TableCell>
-									<TableCell>{buk.place}</TableCell>
+									<TableCell>{buk.field_list?.location}</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
-											{buk.registeredAt}
+											{moment(buk.createdAt).format("YYYY/MM/DD HH:mm")}
 										</Typography>
 									</TableCell>
 									<TableCell align="left">

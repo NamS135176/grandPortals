@@ -128,7 +128,9 @@ const CreateInterior = () => {
                                 }}
                             >
                                 <Typography variant="subtitle2">
-                                    物件番号：HONR000001
+                                    {bukken
+                                        ? `物件番号：${bukken.bukken_no}`
+                                        : ""}
                                 </Typography>
                             </Box>
                             <Box sx={{mb: 4}}>

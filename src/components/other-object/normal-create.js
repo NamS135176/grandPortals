@@ -5,65 +5,39 @@ import {
     Button,
     Card,
     CardContent,
-    CardActions,
     Container,
-    Divider,
     Grid,
     Typography,
     TextField,
+    FormControl,
     InputLabel,
     Select,
-    FormControl,
     MenuItem,
-    Skeleton,
     FormHelperText,
 } from "@mui/material";
 import {DashboardLayout} from "../dashboard/dashboard-layout";
-import {BukkenRelatedDocsListTable} from "../bukken/bukken-related-docs-list-table";
-import {BukkenHistoryListTable} from "../bukken/bukken-history-list-table";
 import {ManagementList} from "../management-menu";
 import {ArrowLeft as ArrowLeftIcon} from "../../icons/arrow-left";
-import {ArrowRight as ArrowRightIcon} from "../../icons/arrow-right";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import {HistoryDialog} from "../history/history-dialog";
-import {useRouter} from "next/router";
 import {FileUpload} from "../widgets/file-upload";
-import {AddDocumentDialog} from "../bukken/add-document-dialog";
+import {useRouter} from "next/router";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
-import PropTypes from "prop-types";
-import {OtherObjectKind} from "../../utils/bukken";
-import {OtherObjectSelectKind} from "../../utils/global-data";
-import {gtm} from "../../lib/gtm";
-import {useOtherObjectDetail} from "../../hooks/use-other-object-detail";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
+import PropTypes from "prop-types";
+import {gtm} from "../../lib/gtm";
+import {OtherObjectSelectKind} from "../../utils/global-data";
+import {OtherObjectFieldKind, OtherObjectKind} from "../../utils/bukken";
+import {useCreateOtherObject} from "../../hooks/use-create-other-object";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
+const CreateNormalOtherObject = ({otherObjectKind}) => {
     const router = useRouter();
-    const {
-        loading,
-        otherObject,
-        coverImageUrl,
-        histories: bukkenHistory,
-        documents: bukkenDocs,
-        uploadingCoverImage,
-        uploadOtherObjectCover,
-        deleteHistory,
-        deleteDocument,
-        updateOtherObjectFieldList,
-        reloadHistory,
-        reloadDocument,
-    } = useOtherObjectDetail(id, otherObjectKind);
+    const {loading, createOtherObject} = useCreateOtherObject(otherObjectKind);
     const {bukken} = useBukkenDefault();
 
-    const [pageDocument, setPageDocument] = useState(0);
-    const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
-    const [pageHistory, setPageHistory] = useState(0);
-    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
+    const [file, setFile] = useState();
+    const [coverImage, setCoverImage] = useState();
 
     const formik = useFormik({
         initialValues: {
@@ -102,112 +76,27 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
         gtm.push({event: "page_view"});
     }, []);
 
-    useEffect(() => {
-        if (!otherObject?.field_list) return;
-        console.log("otherObject... ", {otherObject});
-        const {
-            kind,
-            name,
-            location,
-            maker,
-            number,
-            height,
-            width,
-            depth,
-            date,
-            quantity,
-            remarks,
-        } = otherObject.field_list;
-        formik.setValues({
-            kind,
-            name,
-            location,
-            maker,
-            number,
-            height,
-            width,
-            depth,
-            date,
-            quantity,
-            remarks,
-        });
-    }, [otherObject]);
-
-    const handleSubmit = (values) => {
-        console.log("handleSubmit... ", {values});
-        //update other object for update field_list
-        const fieldList = otherObject?.field_list ?? {};
-        fieldList["kind"] = values.kind;
-        fieldList["name"] = values.name;
-        fieldList["location"] = values.location;
-        fieldList["maker"] = values.maker;
-        fieldList["number"] = values.number;
-        fieldList["height"] = values.height;
-        fieldList["width"] = values.width;
-        fieldList["depth"] = values.depth;
-        fieldList["date"] = values.date;
-        fieldList["quantity"] = values.quantity;
-        fieldList["remarks"] = values.remarks;
-
-        console.log("handleSubmit... ", {fieldList});
-        updateOtherObjectFieldList(fieldList);
-    };
-
-    // dialog
-    const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
-    const handleOpenHistoryDialog = () => {
-        setOpenHistoryDialog(true);
-    };
-    const handleCloseHistoryDialog = () => {
-        setOpenHistoryDialog(false);
-    };
-
-    const [openDocumentDialog, setOpenDocumentDialog] = useState(false);
-    const handleOpenDocumentDialog = () => {
-        setOpenDocumentDialog(true);
-    };
-    const handleCloseDocumentDialog = () => {
-        setOpenDocumentDialog(false);
-    };
-    // end dialog
-
     const handleDateChange = (date) => {
         formik.setFieldValue("date", date);
     };
 
-    const handlePageChange = (event, newPage) => {
-        setPageDocument(newPage);
+    const handleSubmit = (values) => {
+        createOtherObject(
+            bukken,
+            OtherObjectFieldKind.ReadyMadeProduct,
+            values,
+            file
+        );
     };
 
-    const handlePageHistoryChange = (event, newPage) => {
-        setPageHistory(newPage);
+    const handleChangeFile = (file) => {
+        setFile(file);
+        setCoverImage(URL.createObjectURL(file));
     };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPageDocument(parseInt(event.target.value, 10));
-        setPageDocument(0);
-    };
-
-    const handleRowsPerPageHistoryChange = (event) => {
-        setRowsPerPageHistory(parseInt(event.target.value, 10));
-        setPageHistory(0);
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(
-        bukkenDocs,
-        pageDocument,
-        rowsPerPageDocument
-    );
-    const paginatedBukkenHistory = applyPagination(
-        bukkenHistory,
-        pageHistory,
-        rowsPerPageHistory
-    );
 
     const kindCaption = useMemo(() => {
         switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
+            case OtherObjectKind.OtherObject:
                 return "建具";
             case OtherObjectKind.Furniture:
                 return "家具一覧";
@@ -224,7 +113,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
 
     const backUrl = useMemo(() => {
         switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
+            case OtherObjectKind.OtherObject:
                 return "/interior/list";
             case OtherObjectKind.Furniture:
                 return "/furniture/list";
@@ -244,7 +133,6 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
             <Head>
                 <title>grandsポータルサイト｜建具・インテリア情報</title>
             </Head>
-
             <Box
                 component="main"
                 sx={{
@@ -292,21 +180,19 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            {kindCaption}
-                                            ・インテリア情報（オーダー品）
+                                            {kindCaption}・インテリア（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
                                         <Button
                                             variant="contained"
                                             component="label"
+                                            disabled={loading}
                                         >
                                             画像追加
                                             <FileUpload
                                                 accept={"image/*"}
-                                                onChange={
-                                                    uploadOtherObjectCover
-                                                }
+                                                onChange={handleChangeFile}
                                                 prefix="image"
                                             >
                                                 <></>
@@ -315,27 +201,17 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            {uploadingCoverImage ? (
-                                <Skeleton
-                                    animation="wave"
-                                    variant="rectangular"
-                                    width={"100%"}
-                                    height={450}
-                                    sx={{marginTop: "24px"}}
-                                />
-                            ) : (
-                                <Box
-                                    sx={{
-                                        backgroundImage: `url(${coverImageUrl})`,
-                                        backgroundColor: "#D0D0D0",
-                                        backgroundPosition: "center",
-                                        backgroundSize: "cover",
-                                        borderRadius: 1,
-                                        height: 450,
-                                        mt: 3,
-                                    }}
-                                />
-                            )}
+                            <Box
+                                sx={{
+                                    backgroundImage: `url(${coverImage})`,
+                                    backgroundColor: "#D0D0D0",
+                                    backgroundPosition: "center",
+                                    backgroundSize: "cover",
+                                    borderRadius: 1,
+                                    height: 450,
+                                    mt: 3,
+                                }}
+                            />
                             <Grid container spacing={3} mt={3}>
                                 <Grid item md={8} xs={12}>
                                     <FormControl
@@ -411,7 +287,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="素材・材質"
+                                        label="メーカー"
                                         name="maker"
                                         onChange={formik.handleChange}
                                         value={formik.values.maker}
@@ -421,7 +297,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="カスタム元型番"
+                                        label="型番"
                                         name="number"
                                         onChange={formik.handleChange}
                                         value={formik.values.number}
@@ -463,7 +339,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                 </Grid>
                                 <Grid item md={8} xs={12}>
                                     <MobileDatePicker
-                                        label="購入日（製作日）"
+                                        label="購入日"
                                         inputFormat="MM/dd/yyyy"
                                         value={formik.values.date}
                                         onChange={handleDateChange}
@@ -494,139 +370,44 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
-
-                                <Box
-                                    sx={{
-                                        justifyContent: "flex-end",
-                                        width: "100%",
-                                        display: "flex",
-                                        mt: 2,
-                                    }}
-                                >
-                                    <Button
-                                        endIcon={
-                                            <ArrowLeftIcon fontSize="small" />
-                                        }
-                                        onClick={() => router.push(backUrl)}
-                                        sx={{m: 1}}
-                                        variant="outlined"
-                                    >
-                                        戻る
-                                    </Button>
-                                    <Button
-                                        sx={{m: 1}}
-                                        variant="contained"
-                                        disabled={loading}
-                                        onClick={formik.handleSubmit}
-                                    >
-                                        登録
-                                    </Button>
-                                </Box>
                             </Grid>
                         </CardContent>
                     </Card>
-                    <Card sx={{mt: 4}}>
-                        <CardContent>
-                            <Box
-                                sx={{
-                                    alignItems: "center",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    my: 3,
-                                }}
-                            >
-                                <Typography variant="h6">
-                                    関連資料一覧
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleOpenDocumentDialog}
-                                    disabled={!otherObject?.bukken}
-                                >
-                                    資料追加
-                                </Button>
-                                <AddDocumentDialog
-                                    onClose={handleCloseDocumentDialog}
-                                    open={openDocumentDialog}
-                                    mode="edit"
-                                    bukken={otherObject?.bukken}
-                                    loadData={() => reloadDocument(otherObject)}
-                                    otherObjectId={otherObject?.id}
-                                />
-                            </Box>
-                            <BukkenRelatedDocsListTable
-                                bukken={otherObject?.bukken}
-                                bukkenDocs={paginatedBukkenDocs}
-                                bukkenDocsCount={bukkenDocs.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPageDocument}
-                                page={pageDocument}
-                                deleteDocument={deleteDocument}
-                            />
-                        </CardContent>
-                    </Card>
-                    <Card sx={{mt: 4}}>
-                        <CardContent>
-                            <Box
-                                sx={{
-                                    alignItems: "center",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    my: 3,
-                                }}
-                            >
-                                <Typography variant="h6">最新履歴</Typography>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleOpenHistoryDialog}
-                                    disabled={!otherObject?.bukken}
-                                >
-                                    履歴追加
-                                </Button>
-                                <HistoryDialog
-                                    onClose={handleCloseHistoryDialog}
-                                    open={openHistoryDialog}
-                                    mode="edit"
-                                    bukken={otherObject?.bukken}
-                                    loadData={() => reloadHistory(otherObject)}
-                                    otherObjectId={otherObject?.id}
-                                />
-                            </Box>
-                            <BukkenHistoryListTable
-                                bukken={otherObject?.bukken}
-                                bukkenHistory={paginatedBukkenHistory}
-                                bukkenHistoryCount={bukkenHistory.length}
-                                onPageChange={handlePageHistoryChange}
-                                onRowsPerPageChange={
-                                    handleRowsPerPageHistoryChange
-                                }
-                                rowsPerPage={rowsPerPageHistory}
-                                page={pageHistory}
-                                deleteHistory={deleteHistory}
-                            />
-                        </CardContent>
-                        <CardActions>
-                            <Button
-                                href="/history"
-                                endIcon={<ArrowRightIcon fontSize="small" />}
-                            >
-                                全ての履歴を見る
-                            </Button>
-                        </CardActions>
-                    </Card>
+                    <Box
+                        sx={{
+                            justifyContent: "flex-end",
+                            width: "100%",
+                            display: "flex",
+                            mt: 2,
+                        }}
+                    >
+                        <Button
+                            endIcon={<ArrowLeftIcon fontSize="small" />}
+                            onClick={() => router.push(backUrl)}
+                            sx={{m: 1}}
+                            variant="outlined"
+                        >
+                            戻る
+                        </Button>
+                        <Button
+                            sx={{m: 1}}
+                            variant="contained"
+                            disabled={loading}
+                            onClick={formik.handleSubmit}
+                        >
+                            登録
+                        </Button>
+                    </Box>
                 </Container>
             </Box>
         </>
     );
 };
-OtherObjectOrderDetails.getLayout = (page) => (
+CreateNormalOtherObject.getLayout = (page) => (
     <DashboardLayout>{page}</DashboardLayout>
 );
 
-OtherObjectOrderDetails.propTypes = {
-    id: PropTypes.string,
+CreateNormalOtherObject.propTypes = {
     otherObjectKind: PropTypes.string,
 };
-
-export default OtherObjectOrderDetails;
+export default CreateNormalOtherObject;

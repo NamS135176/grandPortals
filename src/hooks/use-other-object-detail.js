@@ -1,5 +1,5 @@
 import {API, Storage} from "aws-amplify";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {
     getOtherObject,
     queryDocumentByOtherObjectId,
@@ -8,7 +8,7 @@ import {
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
+import {getOtherObjectS3FileName, getUrlPath, OtherObjectKind} from "../utils/bukken";
 import moment from "moment";
 import toast from "react-hot-toast";
 import {useRouter} from "next/router";
@@ -23,6 +23,23 @@ export const useOtherObjectDetail = (id, otherObjectKind) => {
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [uploadingCoverImage, setUploadingCoverImage] = useState(false);
+
+    const backUrl = useMemo(() => {
+        switch (otherObjectKind) {
+            case OtherObjectKind.Interior:
+                return "/interior/list";
+            case OtherObjectKind.Furniture:
+                return "/furniture/list";
+            case OtherObjectKind.HomeAppliances:
+                return "/appliances/list";
+            case OtherObjectKind.Facilities:
+                return "/facility/list";
+            case OtherObjectKind.Other:
+                return "/others/list";
+            default:
+                return "";
+        }
+    }, [otherObjectKind]);
 
     const deleteHistory = useCallback(
         async (history) => {
@@ -164,7 +181,7 @@ export const useOtherObjectDetail = (id, otherObjectKind) => {
         const otherObject = response.data.getOtherObject;
         if (
             !otherObject ||
-            otherObject.delete_flag == 1 
+            otherObject.delete_flag == 1
             // ||otherObject.object_kind != otherObjectKind
         ) {
             //not found
@@ -256,7 +273,7 @@ export const useOtherObjectDetail = (id, otherObjectKind) => {
                 setOtherObject(updateOtherObject);
                 toast.success("物件情報を登録しました。");
                 if (navigateToListOtherObject) {
-                    router.push("/otherObject/list");
+                    router.push(backUrl);
                 }
             } catch (e) {
                 console.error(e);
