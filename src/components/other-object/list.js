@@ -24,7 +24,7 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 
 const OtherObjectList = ({otherObjectKind}) => {
     const {bukken} = useBukkenDefault();
-    const {otherObjects} = useOtherObjectList(bukken?.id, otherObjectKind);
+    const {otherObjects, deleteObject} = useOtherObjectList(bukken?.id, otherObjectKind);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -153,6 +153,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                deleteObject={deleteObject}
                             />
                         </CardContent>
                     </Card>

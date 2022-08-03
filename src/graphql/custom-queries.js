@@ -84,3 +84,71 @@ export const getBukkenOnly = /* GraphQL */ `
     }
   }
 `;
+
+export const queryDocumentOnlyByOtherObjectId = /* GraphQL */ `
+  query QueryDocumentByOtherObjectId(
+    $other_object_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDocumentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryDocumentByOtherObjectId(
+      other_object_id: $other_object_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        user_id
+        other_object_id
+        object_kind
+        orignal_file_name
+        s3_file_name
+        overview
+        delete_flag
+        object_kind_createdAt
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+
+export const queryHistoryOnlyByOtherObjectId = /* GraphQL */ `
+  query QueryHistoryByOtherObjectId(
+    $other_object_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryHistoryByOtherObjectId(
+      other_object_id: $other_object_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        user_id
+        other_object_id
+        object_kind
+        remarks
+        overview
+        delete_flag
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
