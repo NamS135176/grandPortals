@@ -99,12 +99,12 @@ export const InteriorListTable = (props) => {
 														<PencilAltIcon fontSize="small" />
 													</IconButton>
 												</Box>
-												{buk.image ? (
+												{buk.thumnail ? (
 													<Box
 														sx={{
 															alignItems: 'center',
 															backgroundColor: 'background.default',
-															backgroundImage: `url(${buk.image})`,
+															backgroundImage: `url(${buk.thumnail})`,
 															backgroundPosition: 'center',
 															backgroundSize: 'cover',
 															borderRadius: 1,

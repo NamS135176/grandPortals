@@ -173,7 +173,7 @@ const RoomDetails = () => {
 									spacing={3}
 								>
 									<Grid item sm={4}>
-										<CardActionArea href="/interior/list">
+										<CardActionArea href={`/interior/list?room=${roomId}`}>
 											<Card
 												elevation={0}
 												variant="outlined"

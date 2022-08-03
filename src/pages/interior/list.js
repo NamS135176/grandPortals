@@ -10,21 +10,22 @@ import {
     Divider,
     Typography,
 } from "@mui/material";
-import {bukkenApi} from "../../__fake-api__/bukken-api";
 import {DashboardLayout} from "../../components/dashboard/dashboard-layout";
 import {InteriorListTable} from "../../components/interior/interior-list-table";
-import {useMounted} from "../../hooks/use-mounted";
 import {gtm} from "../../lib/gtm";
 import {ManagementList} from "../../components/management-menu";
 import {useInteriorList} from "../../hooks/use-interior-list";
-import { useBukkenDefault } from "../../hooks/use-bukken-default";
+import { useRouter } from "next/router";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const InteriorList = () => {
-    const { bukken } = useBukkenDefault();
-    const {interiors: interior} = useInteriorList(bukken?.id);
+    const router = useRouter();
+    const roomId = router.query.room
+
+    // const { bukken } = useBukkenDefault();
+    const {interiors: interior} = useInteriorList(roomId);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -88,13 +89,13 @@ const InteriorList = () => {
                                     建具・インテリア一覧
                                 </Typography>
                                 <Box>
-                                    <NextLink href="/interior/normal/create" passHref>
+                                    <NextLink href={`/interior/normal/create?room=${roomId}`} passHref>
                                         <Button variant="contained" sx={{mr: 2}}>
                                             既製品新規登録
 
                                         </Button>
                                     </NextLink>
-                                    <NextLink href="/interior/order/create" passHref>
+                                    <NextLink href={`/interior/order/create?room=${roomId}`} passHref>
                                         <Button variant="contained">
                                             オーダー製品新規登録
                                         </Button>

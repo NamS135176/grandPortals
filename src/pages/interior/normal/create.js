@@ -32,6 +32,7 @@ import * as R from "ramda";
 
 const CreateInterior = () => {
     const router = useRouter();
+    const roomId = router.query.room;
     const {loading, createInterior} = useCreateInterior();
     const {bukken} = useBukkenDefault();
 
@@ -84,7 +85,8 @@ const CreateInterior = () => {
             bukken,
             OtherObjectFieldKind.ReadyMadeProduct,
             values,
-            file
+            file,
+            roomId
         );
     };
 

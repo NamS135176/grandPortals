@@ -18,7 +18,7 @@ export const useCreateInterior = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const createInterior = useCallback(async (bukken, fieldKind, fieldList, file) => {
+    const createInterior = useCallback(async (bukken, fieldKind, fieldList, file, roomId = null) => {
         setLoading(true);
         try {
             const nextId = await getNextOtherObjectId();
@@ -52,11 +52,11 @@ export const useCreateInterior = () => {
                         id: nextId,
                         user_id: user.id,
                         bukken_id: bukken.id,
-                        // bukken_no: bukken.bukken_no, //will delete later
                         delete_flag: 0,
                         object_kind: OtherObjectKind.Interior,
                         field_kind: fieldKind,
                         field_list: JSON.stringify(newFieldList),
+                        room_id: roomId,
                         sort: 1, //always 1
                         object_kind_updatedAt: `${OtherObjectKind.Interior}#${updatedAt}`, //0#20221201T102309
                     },
@@ -64,7 +64,7 @@ export const useCreateInterior = () => {
             });
             //upload image
             toast.success("建具・インテリアを登録しました。");
-            router.push("/interior/list");
+            router.push(`/interior/list?room=${roomId}`);
         } catch (e) {
             toast.error(e.message);
             console.error(e);
