@@ -8,25 +8,21 @@ import {
 import * as mutations from "../graphql/mutations";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {
-    getOtherObjectS3FileName,
-    getUrlPath,
-    OtherObjectKind,
-} from "../utils/bukken";
+import {getOtherObjectS3FileName, getUrlPath} from "../utils/bukken";
 import moment from "moment";
 import toast from "react-hot-toast";
 import {useRouter} from "next/router";
 import {resizeImage} from "../utils/image";
 
-export const useInteriorDetail = (interiorId) => {
+export const useOtherObjectDetail = (id, otherObjectKind) => {
     const router = useRouter();
     const isMounted = useMounted();
-    const [interior, setInterior] = useState();
+    const [otherObject, setOtherObject] = useState();
     const [coverImageUrl, setCoverImageUrl] = useState();
     const [histories, setHistories] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [uploadCoverImage, setUploadCoverImage] = useState(false);
+    const [uploadingCoverImage, setUploadingCoverImage] = useState(false);
 
     const deleteHistory = useCallback(
         async (history) => {
@@ -75,12 +71,12 @@ export const useInteriorDetail = (interiorId) => {
     );
 
     const getListDocument = useCallback(
-        async (interior, list = [], nextToken = null) => {
-            if (!interior) return;
+        async (otherObject, list = [], nextToken = null) => {
+            if (!otherObject) return;
             const res = await API.graphql({
                 query: queryDocumentByOtherObjectId,
                 variables: {
-                    other_object_id: interior.id,
+                    other_object_id: otherObject.id,
                     nextToken,
                     filter: {
                         delete_flag: {
@@ -95,7 +91,7 @@ export const useInteriorDetail = (interiorId) => {
             }
             const nxtToken = res.data.queryDocumentByOtherObjectId.nextToken;
             if (nxtToken) {
-                await getListDocument(interior, list, nxtToken); //load util nextToken is null
+                await getListDocument(otherObject, list, nxtToken); //load util nextToken is null
             }
             return list;
         },
@@ -103,12 +99,12 @@ export const useInteriorDetail = (interiorId) => {
     );
 
     const getListHistory = useCallback(
-        async (interior, list = [], nextToken = null) => {
-            if (!interior) return;
+        async (otherObject, list = [], nextToken = null) => {
+            if (!otherObject) return;
             const res = await API.graphql({
                 query: queryHistoryByOtherObjectId,
                 variables: {
-                    other_object_id: interior.id,
+                    other_object_id: otherObject.id,
                     nextToken,
                     filter: {
                         delete_flag: {
@@ -123,7 +119,7 @@ export const useInteriorDetail = (interiorId) => {
             }
             const nxtToken = res.data.queryHistoryByOtherObjectId.nextToken;
             if (nxtToken) {
-                await getListHistory(interior, list, nxtToken); //load util nextToken is null
+                await getListHistory(otherObject, list, nxtToken); //load util nextToken is null
             }
             return list;
         },
@@ -131,9 +127,9 @@ export const useInteriorDetail = (interiorId) => {
     );
 
     const reloadDocument = useCallback(
-        async (interior, updateLoading = true) => {
+        async (otherObject, updateLoading = true) => {
             if (updateLoading) setLoading(true);
-            const documents = await getListDocument(interior);
+            const documents = await getListDocument(otherObject);
             if (documents?.length > 0) {
                 setDocuments(documents);
             }
@@ -143,10 +139,10 @@ export const useInteriorDetail = (interiorId) => {
     );
 
     const reloadHistory = useCallback(
-        async (interior, updateLoading = true) => {
+        async (otherObject, updateLoading = true) => {
             if (updateLoading) setLoading(true);
-            const histories = await getListHistory(interior);
-            console.log(interior);
+            const histories = await getListHistory(otherObject);
+            console.log(otherObject);
             if (histories?.length > 0) {
                 setHistories(histories);
             }
@@ -158,59 +154,58 @@ export const useInteriorDetail = (interiorId) => {
     const loadData = useCallback(async () => {
         setLoading(true);
 
-        //load interior detail
+        //load otherObject detail
         const response = await API.graphql({
             query: getOtherObject,
             variables: {
-                id: interiorId,
+                id: id,
             },
         });
-        const interior = response.data.getOtherObject;
-        console.log("useInteriorDetail... ", {interior});
+        const otherObject = response.data.getOtherObject;
         if (
-            !interior ||
-            interior.delete_flag == 1 ||
-            interior.object_kind != OtherObjectKind.Interior
+            !otherObject ||
+            otherObject.delete_flag == 1 
+            // ||otherObject.object_kind != otherObjectKind
         ) {
             //not found
             router.replace("/404");
             return;
         }
-        preSetInterior(interior);
-        setInterior(interior);
-        if (interior.field_list["thumnail"]) {
-            setCoverImageUrl(interior.field_list["thumnail"]);
+        preSetOtherObject(otherObject);
+        setOtherObject(otherObject);
+        if (otherObject.field_list["thumnail"]) {
+            setCoverImageUrl(otherObject.field_list["thumnail"]);
         }
-        //end interior detail
+        //end otherObject detail
 
-        reloadHistory(interior, false);
+        reloadHistory(otherObject, false);
 
-        reloadDocument(interior, false);
+        reloadDocument(otherObject, false);
 
         setLoading(false);
-    }, [interiorId]);
+    }, [id, otherObjectKind]);
 
-    const preSetInterior = useCallback((interior) => {
+    const preSetOtherObject = useCallback((otherObject) => {
         try {
             //parse field_list to get cover image with thumnail key
-            const fieldList = interior.field_list
-                ? JSON.parse(interior.field_list)
+            const fieldList = otherObject.field_list
+                ? JSON.parse(otherObject.field_list)
                 : {};
-            interior.field_list = fieldList;
+            otherObject.field_list = fieldList;
         } catch (e) {
             console.error(e);
-            interior.field_list = {};
+            otherObject.field_list = {};
         }
     }, []);
 
-    const uploadInteriorCover = useCallback(
+    const uploadOtherObjectCover = useCallback(
         async (file) => {
-            setUploadCoverImage(true);
+            setUploadingCoverImage(true);
             try {
                 const originFileName = `${file.name.replace(/ |　/g, "")}`;
                 const s3FileNamePrefix = moment().format("YYYYMMDD_HHmmss");
                 const s3FileName = getOtherObjectS3FileName(
-                    interior,
+                    otherObject,
                     `${s3FileNamePrefix}_${originFileName}`
                 );
 
@@ -226,24 +221,24 @@ export const useInteriorDetail = (interiorId) => {
                 setCoverImageUrl(urlPath);
 
                 //update other object for update field_list
-                const fieldList = interior.field_list;
+                const fieldList = otherObject.field_list;
                 fieldList["thumnail"] = urlPath;
 
-                updateInteriorFieldList(fieldList, false, false);
+                updateOtherObjectFieldList(fieldList, false, false);
             } catch (e) {
                 console.error(e);
                 toast.error(e.message);
             }
-            setUploadCoverImage(false);
+            setUploadingCoverImage(false);
         },
-        [interior]
+        [otherObject]
     );
 
-    const updateInteriorFieldList = useCallback(
+    const updateOtherObjectFieldList = useCallback(
         async (
-            interiorFieldList,
+            otherObjectFieldList,
             updateLoading = true,
-            navigateToListInterior = true
+            navigateToListOtherObject = true
         ) => {
             if (updateLoading) setLoading(true);
             try {
@@ -251,17 +246,17 @@ export const useInteriorDetail = (interiorId) => {
                     query: mutations.updateOtherObject,
                     variables: {
                         input: {
-                            id: interior.id,
-                            field_list: JSON.stringify(interiorFieldList),
+                            id: otherObject.id,
+                            field_list: JSON.stringify(otherObjectFieldList),
                         },
                     },
                 });
-                const updateInterior = resOtherObject.data.updateOtherObject;
-                preSetInterior(updateInterior);
-                setInterior(updateInterior);
+                const updateOtherObject = resOtherObject.data.updateOtherObject;
+                preSetOtherObject(updateOtherObject);
+                setOtherObject(updateOtherObject);
                 toast.success("物件情報を登録しました。");
-                if (navigateToListInterior) {
-                    router.push("/interior/list");
+                if (navigateToListOtherObject) {
+                    router.push("/otherObject/list");
                 }
             } catch (e) {
                 console.error(e);
@@ -269,26 +264,26 @@ export const useInteriorDetail = (interiorId) => {
             }
             if (updateLoading) setLoading(false);
         },
-        [interior]
+        [otherObject]
     );
 
     useEffect(() => {
-        if (isMounted && interiorId) loadData();
-    }, [isMounted, interiorId]);
+        if (isMounted && id) loadData();
+    }, [isMounted, id]);
 
     return {
-        interior,
+        otherObject,
         coverImageUrl,
         histories,
         documents,
         deleteHistory,
         deleteDocument,
         loading,
-        uploadCoverImage,
+        uploadingCoverImage,
         loadData,
         reloadDocument,
         reloadHistory,
-        uploadInteriorCover,
-        updateInteriorFieldList,
+        uploadOtherObjectCover,
+        updateOtherObjectFieldList,
     };
 };

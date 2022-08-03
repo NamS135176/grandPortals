@@ -35,6 +35,7 @@ import {AddDocumentDialog} from "../../../../components/bukken/add-document-dial
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
+import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -56,7 +57,8 @@ const InteriorDetails = () => {
         reloadHistory,
         reloadDocument,
     } = useInteriorDetail(interiorId);
-
+    const {bukken} = useBukkenDefault();
+    
     const [pageDocument, setPageDocument] = useState(0);
     const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
     const [pageHistory, setPageHistory] = useState(0);
@@ -182,16 +184,20 @@ const InteriorDetails = () => {
 
     const handleRowsPerPageChange = (event) => {
         setRowsPerPageDocument(parseInt(event.target.value, 10));
-        setPageDocument(0)
+        setPageDocument(0);
     };
 
     const handleRowsPerPageHistoryChange = (event) => {
         setRowsPerPageHistory(parseInt(event.target.value, 10));
-        setPageHistory(0)
+        setPageHistory(0);
     };
 
     // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(bukkenDocs, pageDocument, rowsPerPageDocument);
+    const paginatedBukkenDocs = applyPagination(
+        bukkenDocs,
+        pageDocument,
+        rowsPerPageDocument
+    );
     const paginatedBukkenHistory = applyPagination(
         bukkenHistory,
         pageHistory,
@@ -237,7 +243,9 @@ const InteriorDetails = () => {
                                 }}
                             >
                                 <Typography variant="subtitle2">
-                                    物件番号：HONR000001
+                                    {bukken
+                                        ? `物件番号：${bukken.bukken_no}`
+                                        : ""}
                                 </Typography>
                             </Box>
                             <Box sx={{mb: 4}}>

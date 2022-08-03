@@ -4,11 +4,10 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {listOtherObjects} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {OtherObjectKind} from "../utils/bukken";
 
-export const useInteriorList = (bukkenId) => {
+export const useOtherObjectList = (bukkenId, otherObjectKind) => {
     const isMounted = useMounted();
-    const [interiors, setInteriors] = useState([]);
+    const [otherObjects, setOtherObjects] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const getListInterior = useCallback(
@@ -21,7 +20,7 @@ export const useInteriorList = (bukkenId) => {
                     variables: {
                         filter: {
                             object_kind: {
-                                eq: OtherObjectKind.Interior,
+                                eq: otherObjectKind,
                             },
                             delete_flag: {
                                 eq: 0,
@@ -39,7 +38,7 @@ export const useInteriorList = (bukkenId) => {
                         nextToken: nextToken,
                         filter: {
                             object_kind: {
-                                eq: OtherObjectKind.Interior,
+                                eq: otherObjectKind,
                             },
                             delete_flag: {
                                 eq: 0,
@@ -48,9 +47,9 @@ export const useInteriorList = (bukkenId) => {
                     },
                 });
             }
-            var interiors = response.data.listOtherObjects.items;
-            if (!R.isNil(interiors) && !R.isEmpty(interiors)) {
-                interiors.forEach((interior) => {
+            var otherObjects = response.data.listOtherObjects.items;
+            if (!R.isNil(otherObjects) && !R.isEmpty(otherObjects)) {
+                otherObjects.forEach((interior) => {
                     try {
                         //parse field_list to get cover image with thumnail key
                         const fieldList = interior.field_list
@@ -71,7 +70,7 @@ export const useInteriorList = (bukkenId) => {
                     }
                 });
             }
-            list = list.concat(interiors);
+            list = list.concat(otherObjects);
             if (response.data.listOtherObjects.nextToken) {
                 await getListInterior(
                     list,
@@ -81,10 +80,10 @@ export const useInteriorList = (bukkenId) => {
             }
             return list;
         },
-        []
+        [otherObjectKind]
     );
 
-    const deleteInterior = useCallback(
+    const deleteObject = useCallback(
         async (interior) => {
             try {
                 await API.graphql({
@@ -97,28 +96,26 @@ export const useInteriorList = (bukkenId) => {
                     },
                 });
                 const newInteriors = R.reject(R.propEq("id", interior.id))(
-                    interiors
+                    otherObjects
                 );
-                setInteriors(newInteriors);
-
-                //delete s3 also
+                setOtherObjects(newInteriors);
             } catch (e) {
                 console.error(e);
             }
         },
-        [interiors]
+        [otherObjects]
     );
 
     useEffect(() => {
         async function loadData() {
             setLoading(true);
-            const interiors = await getListInterior([], null, bukkenId);
-            setInteriors(interiors);
+            const otherObjects = await getListInterior([], null, bukkenId);
+            setOtherObjects(otherObjects);
             setLoading(false);
         }
 
-        if (isMounted && bukkenId) loadData();
+        if (isMounted) loadData();
     }, [isMounted, bukkenId]);
 
-    return {interiors, deleteInterior, loading};
+    return {otherObjects, deleteObject, loading};
 };

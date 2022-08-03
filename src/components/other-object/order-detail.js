@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import Head from "next/head";
 import {
     Box,
@@ -18,46 +18,47 @@ import {
     Skeleton,
     FormHelperText,
 } from "@mui/material";
-import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
-import {BukkenRelatedDocsListTable} from "../../../../components/bukken/bukken-related-docs-list-table";
-import {BukkenHistoryListTable} from "../../../../components/bukken/bukken-history-list-table";
-import {gtm} from "../../../../lib/gtm";
-import {ManagementList} from "../../../../components/management-menu";
-import {ArrowLeft as ArrowLeftIcon} from "../../../../icons/arrow-left";
-import {ArrowRight as ArrowRightIcon} from "../../../../icons/arrow-right";
+import {DashboardLayout} from "../dashboard/dashboard-layout";
+import {BukkenRelatedDocsListTable} from "../bukken/bukken-related-docs-list-table";
+import {BukkenHistoryListTable} from "../bukken/bukken-history-list-table";
+import {ManagementList} from "../management-menu";
+import {ArrowLeft as ArrowLeftIcon} from "../../icons/arrow-left";
+import {ArrowRight as ArrowRightIcon} from "../../icons/arrow-right";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import {HistoryDialog} from "../../../../components/history/history-dialog";
-import {useInteriorDetail} from "../../../../hooks/use-interior-detail";
+import {HistoryDialog} from "../history/history-dialog";
 import {useRouter} from "next/router";
-import {FileUpload} from "../../../../components/widgets/file-upload";
-import {InteriorKind} from "../../../../utils/global-data";
-import {AddDocumentDialog} from "../../../../components/bukken/add-document-dialog";
+import {FileUpload} from "../widgets/file-upload";
+import {AddDocumentDialog} from "../bukken/add-document-dialog";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
-import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
+import PropTypes from "prop-types";
+import {OtherObjectKind} from "../../utils/bukken";
+import {OtherObjectSelectKind} from "../../utils/global-data";
+import {gtm} from "../../lib/gtm";
+import {useOtherObjectDetail} from "../../hooks/use-other-object-detail";
+import {useBukkenDefault} from "../../hooks/use-bukken-default";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-const InteriorDetails = () => {
-    const router = useRouter();
-    const {interiorId} = router.query;
+const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
+    const { router } = useRouter();
     const {
         loading,
-        interior,
+        otherObject,
         coverImageUrl,
         histories: bukkenHistory,
         documents: bukkenDocs,
-        uploadCoverImage,
-        uploadInteriorCover,
+        uploadingCoverImage,
+        uploadOtherObjectCover,
         deleteHistory,
         deleteDocument,
-        updateInteriorFieldList,
+        updateOtherObjectFieldList,
         reloadHistory,
         reloadDocument,
-    } = useInteriorDetail(interiorId);
-    const {bukken} = useBukkenDefault()
+    } = useOtherObjectDetail(id, otherObjectKind);
+    const {bukken} = useBukkenDefault();
 
     const [pageDocument, setPageDocument] = useState(0);
     const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
@@ -83,7 +84,14 @@ const InteriorDetails = () => {
             name: Yup.string().required("名称は必須です。"),
         }),
         onSubmit: async (values, helpers) => {
+            // console.log("formik... onSubmit", { values, helpers });
             const errors = await helpers.validateForm();
+            console.log("formik... onSubmit", {
+                values,
+                helpers,
+                errors,
+                errorsEmpty: R.isEmpty(errors),
+            });
             if (R.isEmpty(errors)) {
                 handleSubmit(values);
             }
@@ -95,8 +103,8 @@ const InteriorDetails = () => {
     }, []);
 
     useEffect(() => {
-        if (!interior?.field_list) return;
-        console.log("interior... ", {interior});
+        if (!otherObject?.field_list) return;
+        console.log("otherObject... ", {otherObject});
         const {
             kind,
             name,
@@ -109,7 +117,7 @@ const InteriorDetails = () => {
             date,
             quantity,
             remarks,
-        } = interior.field_list;
+        } = otherObject.field_list;
         formik.setValues({
             kind,
             name,
@@ -123,12 +131,12 @@ const InteriorDetails = () => {
             quantity,
             remarks,
         });
-    }, [interior]);
+    }, [otherObject]);
 
     const handleSubmit = (values) => {
         console.log("handleSubmit... ", {values});
         //update other object for update field_list
-        const fieldList = interior?.field_list ?? {};
+        const fieldList = otherObject?.field_list ?? {};
         fieldList["kind"] = values.kind;
         fieldList["name"] = values.name;
         fieldList["location"] = values.location;
@@ -142,7 +150,7 @@ const InteriorDetails = () => {
         fieldList["remarks"] = values.remarks;
 
         console.log("handleSubmit... ", {fieldList});
-        updateInteriorFieldList(fieldList);
+        updateOtherObjectFieldList(fieldList);
     };
 
     // dialog
@@ -197,6 +205,40 @@ const InteriorDetails = () => {
         rowsPerPageHistory
     );
 
+    const kindCaption = useMemo(() => {
+        switch (otherObjectKind) {
+            case OtherObjectKind.Interior:
+                return "建具";
+            case OtherObjectKind.Furniture:
+                return "家具一覧";
+            case OtherObjectKind.HomeAppliances:
+                return "家電一覧";
+            case OtherObjectKind.Facilities:
+                return "設備一覧";
+            case OtherObjectKind.Other:
+                return "その他一覧";
+            default:
+                return "";
+        }
+    }, [otherObjectKind]);
+
+    const backUrl = useMemo(() => {
+        switch (otherObjectKind) {
+            case OtherObjectKind.Interior:
+                return "/otherObject/list";
+            case OtherObjectKind.Furniture:
+                return "/furniture/list";
+            case OtherObjectKind.HomeAppliances:
+                return "/appliances/list";
+            case OtherObjectKind.Facilities:
+                return "/facility/list";
+            case OtherObjectKind.Other:
+                return "/others/list";
+            default:
+                return "";
+        }
+    }, [otherObjectKind]);
+
     return (
         <>
             <Head>
@@ -250,7 +292,8 @@ const InteriorDetails = () => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            建具・インテリア情報（オーダー品）
+                                            {kindCaption}
+                                            ・インテリア情報（オーダー品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -261,7 +304,9 @@ const InteriorDetails = () => {
                                             画像追加
                                             <FileUpload
                                                 accept={"image/*"}
-                                                onChange={uploadInteriorCover}
+                                                onChange={
+                                                    uploadOtherObjectCover
+                                                }
                                                 prefix="image"
                                             >
                                                 <></>
@@ -270,7 +315,7 @@ const InteriorDetails = () => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            {uploadCoverImage ? (
+                            {uploadingCoverImage ? (
                                 <Skeleton
                                     animation="wave"
                                     variant="rectangular"
@@ -316,14 +361,16 @@ const InteriorDetails = () => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.kind}
                                         >
-                                            {InteriorKind.map((item, idx) => (
-                                                <MenuItem
-                                                    value={item}
-                                                    key={item}
-                                                >
-                                                    {item}
-                                                </MenuItem>
-                                            ))}
+                                            {OtherObjectSelectKind.map(
+                                                (item, idx) => (
+                                                    <MenuItem
+                                                        value={item}
+                                                        key={item}
+                                                    >
+                                                        {item}
+                                                    </MenuItem>
+                                                )
+                                            )}
                                         </Select>
                                         <FormHelperText>
                                             {formik.touched.kind &&
@@ -460,9 +507,7 @@ const InteriorDetails = () => {
                                         endIcon={
                                             <ArrowLeftIcon fontSize="small" />
                                         }
-                                        onClick={() =>
-                                            router.push("/interior/list")
-                                        }
+                                        onClick={() => router.push(backUrl)}
                                         sx={{m: 1}}
                                         variant="outlined"
                                     >
@@ -496,7 +541,7 @@ const InteriorDetails = () => {
                                 <Button
                                     variant="contained"
                                     onClick={handleOpenDocumentDialog}
-                                    disabled={!interior?.bukken}
+                                    disabled={!otherObject?.bukken}
                                 >
                                     資料追加
                                 </Button>
@@ -504,13 +549,13 @@ const InteriorDetails = () => {
                                     onClose={handleCloseDocumentDialog}
                                     open={openDocumentDialog}
                                     mode="edit"
-                                    bukken={interior?.bukken}
-                                    loadData={() => reloadDocument(interior)}
-                                    otherObjectId={interior?.id}
+                                    bukken={otherObject?.bukken}
+                                    loadData={() => reloadDocument(otherObject)}
+                                    otherObjectId={otherObject?.id}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
-                                bukken={interior?.bukken}
+                                bukken={otherObject?.bukken}
                                 bukkenDocs={paginatedBukkenDocs}
                                 bukkenDocsCount={bukkenDocs.length}
                                 onPageChange={handlePageChange}
@@ -535,7 +580,7 @@ const InteriorDetails = () => {
                                 <Button
                                     variant="contained"
                                     onClick={handleOpenHistoryDialog}
-                                    disabled={!interior?.bukken}
+                                    disabled={!otherObject?.bukken}
                                 >
                                     履歴追加
                                 </Button>
@@ -543,13 +588,13 @@ const InteriorDetails = () => {
                                     onClose={handleCloseHistoryDialog}
                                     open={openHistoryDialog}
                                     mode="edit"
-                                    bukken={interior?.bukken}
-                                    loadData={() => reloadHistory(interior)}
-                                    otherObjectId={interior?.id}
+                                    bukken={otherObject?.bukken}
+                                    loadData={() => reloadHistory(otherObject)}
+                                    otherObjectId={otherObject?.id}
                                 />
                             </Box>
                             <BukkenHistoryListTable
-                                bukken={interior?.bukken}
+                                bukken={otherObject?.bukken}
                                 bukkenHistory={paginatedBukkenHistory}
                                 bukkenHistoryCount={bukkenHistory.length}
                                 onPageChange={handlePageHistoryChange}
@@ -575,6 +620,13 @@ const InteriorDetails = () => {
         </>
     );
 };
-InteriorDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+OtherObjectOrderDetails.getLayout = (page) => (
+    <DashboardLayout>{page}</DashboardLayout>
+);
 
-export default InteriorDetails;
+OtherObjectOrderDetails.propTypes = {
+    id: PropTypes.string,
+    otherObjectKind: PropTypes.string,
+};
+
+export default OtherObjectOrderDetails;

@@ -7,3 +7,7 @@ export const RoomKind = [
 export const InteriorKind = [
     "テーブル",
 ];
+
+export const OtherObjectSelectKind = [
+    "テーブル",
+];

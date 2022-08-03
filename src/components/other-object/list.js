@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import {
@@ -10,21 +10,21 @@ import {
     Divider,
     Typography,
 } from "@mui/material";
-import {bukkenApi} from "../../__fake-api__/bukken-api";
 import {DashboardLayout} from "../../components/dashboard/dashboard-layout";
-import {InteriorListTable} from "../../components/interior/interior-list-table";
-import {useMounted} from "../../hooks/use-mounted";
 import {gtm} from "../../lib/gtm";
 import {ManagementList} from "../../components/management-menu";
-import {useInteriorList} from "../../hooks/use-interior-list";
-import { useBukkenDefault } from "../../hooks/use-bukken-default";
+import PropTypes from "prop-types";
+import {useOtherObjectList} from "../../hooks/use-other-object-list";
+import {OtherObjectListTable} from "./other-object-list-table";
+import {useBukkenDefault} from "../../hooks/use-bukken-default";
+import {OtherObjectKind} from "../../utils/bukken";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-const InteriorList = () => {
-    const { bukken } = useBukkenDefault();
-    const {interiors: interior} = useInteriorList(bukken?.id);
+const OtherObjectList = ({otherObjectKind}) => {
+    const {bukken} = useBukkenDefault();
+    const {otherObjects} = useOtherObjectList(bukken?.id, otherObjectKind);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -41,7 +41,28 @@ const InteriorList = () => {
     };
 
     // Usually query is done on backend with indexing solutions
-    const paginatedInterior = applyPagination(interior, page, rowsPerPage);
+    const paginatedOtherObject = applyPagination(
+        otherObjects,
+        page,
+        rowsPerPage
+    );
+
+    const kindCaption = useMemo(() => {
+        switch (otherObjectKind) {
+            case OtherObjectKind.Interior:
+                return "建具";
+            case OtherObjectKind.Furniture:
+                return "家具一覧";
+            case OtherObjectKind.HomeAppliances:
+                return "家電一覧";
+            case OtherObjectKind.Facilities:
+                return "設備一覧";
+            case OtherObjectKind.Other:
+                return "その他一覧";
+            default:
+                return "";
+        }
+    }, [otherObjectKind]);
 
     return (
         <>
@@ -85,25 +106,33 @@ const InteriorList = () => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    建具・インテリア一覧
+                                    {kindCaption}・インテリア一覧
                                 </Typography>
                                 <Box>
-                                    <NextLink href="/interior/normal/create" passHref>
-                                        <Button variant="contained" sx={{mr: 2}}>
+                                    <NextLink
+                                        href="/other-object/normal/create"
+                                        passHref
+                                    >
+                                        <Button
+                                            variant="contained"
+                                            sx={{mr: 2}}
+                                        >
                                             既製品新規登録
-
                                         </Button>
                                     </NextLink>
-                                    <NextLink href="/interior/order/create" passHref>
+                                    <NextLink
+                                        href="/other-object/order/create"
+                                        passHref
+                                    >
                                         <Button variant="contained">
                                             オーダー製品新規登録
                                         </Button>
                                     </NextLink>
                                 </Box>
                             </Box>
-                            <InteriorListTable
-                                interior={paginatedInterior}
-                                interiorCount={interior.length}
+                            <OtherObjectListTable
+                                otherObject={paginatedOtherObject}
+                                interiorCount={otherObjects.length}
                                 onPageChange={handlePageChange}
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPage={rowsPerPage}
@@ -129,6 +158,9 @@ const InteriorList = () => {
         </>
     );
 };
-InteriorList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+OtherObjectList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default InteriorList;
+OtherObjectList.propTypes = {
+    otherObjectKind: PropTypes.string,
+};
+export default OtherObjectList;
