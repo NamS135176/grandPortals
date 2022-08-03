@@ -106,8 +106,10 @@ export const lightThemeOptions = {
 		},
 		MuiOutlinedInput: {
 			styleOverrides: {
-				notchedOutline: {
-					borderColor: divider,
+				root: {
+					'&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+						borderColor: divider,
+					},
 				},
 			},
 		},
