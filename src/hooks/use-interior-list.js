@@ -6,6 +6,7 @@ import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import {useDeleteDocument} from "./use-delete-document";
 import {useDeleteHistory} from "./use-delete-history";
+import { OtherObjectKind } from "../utils/bukken";
 
 export const useInteriorList = (roomId) => {
     const isMounted = useMounted();
@@ -21,6 +22,14 @@ export const useInteriorList = (roomId) => {
                 variables: {
                     room_id: roomId,
                     nextToken,
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                        object_kind: {
+                            eq: OtherObjectKind.Interior,
+                        },
+                    },
                 },
             });
             var interiors = response.data.queryOtherObjectByRoomId.items;
@@ -87,6 +96,5 @@ export const useInteriorList = (roomId) => {
         if (isMounted && roomId) loadData();
     }, [isMounted, roomId]);
 
-    console.log("useInteriorList.. ", { interiors })
     return {interiors, deleteInterior, loading};
 };

@@ -19,6 +19,7 @@ import { Image as ImageIcon } from '../../icons/image';
 import { Scrollbar } from '../scrollbar';
 import { OtherObjectFieldKind } from '../../utils/bukken';
 import moment from 'moment';
+import { confirm } from '../dialog/confirm-dialog';
 
 const applySort = (interior, sortDir) =>
 	interior.sort((a, b) => {
@@ -61,6 +62,13 @@ export const InteriorListTable = (props) => {
 
 	const sortedBukken = applySort(interior, sort);
 
+	const handleDelete = async(item) => {
+		const accept = await confirm("削除する場合、関連する資料や画像、履歴も削除されますがよろしいですか？")
+		if (accept) {
+			deleteInterior(item);
+		}
+	}
+	
 	return (
 		<div {...other}>
 			<Scrollbar>
@@ -145,7 +153,7 @@ export const InteriorListTable = (props) => {
 									</TableCell>
 									<TableCell align="left">
 										<IconButton component="a">
-											<TrashIcon fontSize="small" color="error" onClick={() => deleteInterior(buk)}/>
+											<TrashIcon fontSize="small" color="error" onClick={() => handleDelete(buk)}/>
 										</IconButton>
 									</TableCell>
 								</TableRow>

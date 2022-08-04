@@ -111,6 +111,11 @@ export const useRoomList = (bukkenId) => {
                 await deleteAllDocumentByOtherObjectId(room.id);
                 await deleteAllHistoryByOtherObjectId(room.id);
                 await deleteAllInteriorByRoomId(room.id);
+
+                const activeRoomId = sessionStorage.getItem("room_id");
+                if (activeRoomId == room.id) {
+                    sessionStorage.removeItem("room_id");
+                }
             } catch (e) {
                 console.error(e);
             }
