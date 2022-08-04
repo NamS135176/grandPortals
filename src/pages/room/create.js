@@ -22,7 +22,6 @@ import {DashboardLayout} from "../../components/dashboard/dashboard-layout";
 import {gtm} from "../../lib/gtm";
 import {ManagementList} from "../../components/management-menu";
 import {ArrowLeft as ArrowLeftIcon} from "../../icons/arrow-left";
-import {ArrowRight as ArrowRightIcon} from "../../icons/arrow-right";
 import {useRouter} from "next/router";
 import {FileUpload} from "../../components/widgets/file-upload";
 import {RoomKind} from "../../utils/global-data";
@@ -110,35 +109,7 @@ const CreateRoom = () => {
                                     justifyContent="space-between"
                                     spacing={3}
                                 >
-                                    <Grid item sm={4}>
-                                        <CardActionArea href="/interior/list">
-                                            <Card
-                                                elevation={0}
-                                                variant="outlined"
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    borderColor: "primary.main",
-                                                    borderWidth: 2,
-                                                }}
-                                            >
-                                                <CardContent>
-                                                    <Box
-                                                        sx={{
-                                                            alignItems:
-                                                                "center",
-                                                            display: "flex",
-                                                            justifyContent:
-                                                                "center",
-                                                        }}
-                                                    >
-                                                        <Typography variant="overline">
-                                                            建具インテリア
-                                                        </Typography>
-                                                    </Box>
-                                                </CardContent>
-                                            </Card>
-                                        </CardActionArea>
-                                    </Grid>
+                                    <Grid item sm={4}></Grid>
                                     <Grid item>
                                         <Typography variant="subtitle2">
                                             {bukken?.bukken_no

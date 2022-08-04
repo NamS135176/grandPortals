@@ -4,15 +4,15 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {listOtherObjects} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {useDocument} from "./use-document";
-import {useHistory} from "./use-history";
+import {useDeleteHistory} from "./use-delete-history";
+import { useDeleteDocument } from "./use-delete-document";
 
 export const useOtherObjectList = (bukkenId, otherObjectKind) => {
     const isMounted = useMounted();
     const [otherObjects, setOtherObjects] = useState([]);
     const [loading, setLoading] = useState(false);
-    const {deleteAllDocumentByOtherObjectId} = useDocument();
-    const {deleteAllHistoryByOtherObjectId} = useHistory();
+    const {deleteAllDocumentByOtherObjectId} = useDeleteDocument();
+    const {deleteAllHistoryByOtherObjectId} = useDeleteHistory();
 
     const getListOtherObject = useCallback(
         async (list = [], nextToken = null, bukkenId) => {
@@ -36,7 +36,6 @@ export const useOtherObjectList = (bukkenId, otherObjectKind) => {
             }
             response = await API.graphql({
                 query: listOtherObjects,
-                nextToken: nextToken,
                 variables,
             });
             var otherObjects = response.data.listOtherObjects.items;

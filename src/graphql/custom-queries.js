@@ -171,3 +171,37 @@ export const getOtherObjectOnly = /* GraphQL */ `
     }
   }
 `;
+
+export const queryOtherObjectOnlyByRoomId = /* GraphQL */ `
+  query QueryOtherObjectByRoomId(
+    $room_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectByRoomId(
+      room_id: $room_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        user_id
+        object_kind
+        room_id
+        field_kind
+        field_list
+        delete_flag
+        object_kind_updatedAt
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

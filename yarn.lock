@@ -7321,6 +7321,11 @@ react-beautiful-dnd@^13.1.0:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
+react-confirm@0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/react-confirm/-/react-confirm-0.1.27.tgz#d8da5d62fa4d52fbe2ffe9d91cf5ba4bfc3dc8b4"
+  integrity sha512-CWrPjCXqYXIRnnmDbGezN+4Umz+yZnaxFQWqjhz8fJQLTgNC47stON8NK5NjXioXfcfVawCrLj757ztBBNBZFQ==
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"

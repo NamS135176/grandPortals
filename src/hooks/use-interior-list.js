@@ -4,23 +4,32 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {useDocument} from "./use-document";
-import {useHistory} from "./use-history";
+import {useDeleteDocument} from "./use-delete-document";
+import {useDeleteHistory} from "./use-delete-history";
+import { OtherObjectKind } from "../utils/bukken";
 
 export const useInteriorList = (roomId) => {
     const isMounted = useMounted();
     const [interiors, setInteriors] = useState([]);
     const [loading, setLoading] = useState(false);
-    const {deleteAllDocumentByOtherObjectId} = useDocument();
-    const {deleteAllHistoryByOtherObjectId} = useHistory();
+    const {deleteAllDocumentByOtherObjectId} = useDeleteDocument();
+    const {deleteAllHistoryByOtherObjectId} = useDeleteHistory();
 
     const getListInterior = useCallback(
         async (list = [], nextToken = null, roomId) => {
             const response = await API.graphql({
                 query: queries.queryOtherObjectByRoomId,
-                nextToken: nextToken,
                 variables: {
                     room_id: roomId,
+                    nextToken,
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                        object_kind: {
+                            eq: OtherObjectKind.Interior,
+                        },
+                    },
                 },
             });
             var interiors = response.data.queryOtherObjectByRoomId.items;
@@ -87,6 +96,5 @@ export const useInteriorList = (roomId) => {
         if (isMounted && roomId) loadData();
     }, [isMounted, roomId]);
 
-    console.log("useInteriorList.. ", { interiors })
     return {interiors, deleteInterior, loading};
 };

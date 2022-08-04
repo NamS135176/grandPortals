@@ -1,13 +1,13 @@
 import {API} from "aws-amplify";
-import {useCallback, useEffect, useState} from "react";
-import {queryDocumentOnlyByOtherObjectId} from "../graphql/custom-queries";
-import {queryDocumentByOtherObjectId} from "../graphql/queries";
+import {useCallback} from "react";
+import {queryHistoryOnlyByOtherObjectId} from "../graphql/custom-queries";
+import {queryHistoryByOtherObjectId} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import * as Throttle from "promise-parallel-throttle";
 import * as R from "ramda";
 
-export const useDocument = () => {
-    const getDocumentsByOtherObjectId = useCallback(
+export const useDeleteHistory = () => {
+    const getHistorysByOtherObjectId = useCallback(
         async (
             otherObjectId,
             includeBukken = false,
@@ -16,8 +16,8 @@ export const useDocument = () => {
         ) => {
             const res = await API.graphql({
                 query: includeBukken
-                    ? queryDocumentByOtherObjectId
-                    : queryDocumentOnlyByOtherObjectId,
+                    ? queryHistoryByOtherObjectId
+                    : queryHistoryOnlyByOtherObjectId,
                 variables: {
                     other_object_id: otherObjectId,
                     nextToken,
@@ -28,42 +28,42 @@ export const useDocument = () => {
                     },
                 },
             });
-            const items = res.data.queryDocumentByOtherObjectId.items;
+            const items = res.data.queryHistoryByOtherObjectId.items;
             if (items?.length > 0) {
                 list = list.concat(items);
             }
-            const nxtToken = res.data.queryDocumentByOtherObjectId.nextToken;
+            const nxtToken = res.data.queryHistoryByOtherObjectId.nextToken;
             if (nxtToken) {
-                await getDocumentsByOtherObjectId(otherObject, list, nxtToken); //load util nextToken is null
+                await getHistorysByOtherObjectId(otherObject, list, nxtToken); //load util nextToken is null
             }
             return list;
         },
         []
     );
 
-    const deleteDocument = useCallback(async (document) => {
+    const deleteHistory = useCallback(async (history) => {
         try {
             const res = await API.graphql({
-                query: mutations.updateDocument,
+                query: mutations.updateHistory,
                 variables: {
                     input: {
-                        id: document.id,
+                        id: history.id,
                         delete_flag: 1,
                     },
                 },
             });
-            return res.data.updateDocument;
+            return res.data.updateHistory;
         } catch (e) {
             console.error(e);
         }
     }, []);
 
-    const deleteAllDocumentByOtherObjectId = useCallback(
+    const deleteAllHistoryByOtherObjectId = useCallback(
         async (otherObjectId) => {
-            const documents = await getDocumentsByOtherObjectId(otherObjectId);
-            if (R.isNil(documents) || R.isEmpty(documents)) return;
+            const historys = await getHistorysByOtherObjectId(otherObjectId);
+            if (R.isNil(historys) || R.isEmpty(historys)) return;
 
-            const queue = documents.map((doc) => () => deleteDocument(doc));
+            const queue = historys.map((doc) => () => deleteHistory(doc));
             const results = await Throttle.all(queue);
             return results;
         },
@@ -71,8 +71,8 @@ export const useDocument = () => {
     );
 
     return {
-        getDocumentsByOtherObjectId,
-        deleteDocument,
-        deleteAllDocumentByOtherObjectId,
+        getHistorysByOtherObjectId,
+        deleteHistory,
+        deleteAllHistoryByOtherObjectId,
     };
 };

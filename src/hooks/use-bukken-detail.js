@@ -73,9 +73,6 @@ export const useBukkenDetail = (bukkenNo) => {
                     documents
                 );
                 setDocuments(newDocuments);
-
-                //delete s3 also
-                await Storage.remove(s3_file_name, {level: "public"});
             } catch (e) {
                 console.error(e);
             }
@@ -237,10 +234,6 @@ export const useBukkenDetail = (bukkenNo) => {
             setUploadCoverImage(true)
             try {
                 //create other object if not exist firstly cause image cover will be save on bukkenOtherObject
-                // if (coverImageUrl) {
-                //     const res = await Storage.remove(getS3FromUrl(coverImageUrl), {level: "public"});   
-                // }
-
                 var tmpBukkenOtherObject = bukkenOtherObject;
                 if (!tmpBukkenOtherObject) {
                     const otherObjectId = await getNextOtherObjectId();
