@@ -87,5 +87,6 @@ export const useInteriorList = (roomId) => {
         if (isMounted && roomId) loadData();
     }, [isMounted, roomId]);
 
+    console.log("useInteriorList.. ", { interiors })
     return {interiors, deleteInterior, loading};
 };

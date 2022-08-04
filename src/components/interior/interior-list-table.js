@@ -46,6 +46,7 @@ export const InteriorListTable = (props) => {
 		deleteInterior,
 		...other
 	} = props;
+
 	const [sort, setSort] = useState('desc');
 
 	const handleSort = () => {
@@ -80,6 +81,7 @@ export const InteriorListTable = (props) => {
 					<TableBody>
 						{sortedBukken.map((buk) => {
 							const link = `/interior/${buk.field_kind == OtherObjectFieldKind.ReadyMadeProduct ? "normal" : "order"}/${buk.id}`
+							console.log("InteriorListTable... ", buk)
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
@@ -100,12 +102,12 @@ export const InteriorListTable = (props) => {
 														<PencilAltIcon fontSize="small" />
 													</IconButton>
 												</Box>
-												{buk.thumnail ? (
+												{buk.field_list.thumnail ? (
 													<Box
 														sx={{
 															alignItems: 'center',
 															backgroundColor: 'background.default',
-															backgroundImage: `url(${buk.thumnail})`,
+															backgroundImage: `url(${buk.field_list.thumnail})`,
 															backgroundPosition: 'center',
 															backgroundSize: 'cover',
 															borderRadius: 1,
@@ -134,7 +136,7 @@ export const InteriorListTable = (props) => {
 											</Box>
 										</NextLink>
 									</TableCell>
-									<TableCell>{buk.name}</TableCell>
+									<TableCell>{buk.field_list.name}</TableCell>
 									<TableCell>{buk.field_list?.location}</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
