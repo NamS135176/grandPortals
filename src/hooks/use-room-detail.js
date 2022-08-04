@@ -64,9 +64,6 @@ export const useRoomDetail = (roomId) => {
                     documents
                 );
                 setDocuments(newDocuments);
-
-                //delete s3 also
-                await Storage.remove(s3_file_name, {level: "public"});
             } catch (e) {
                 console.error(e);
             }
