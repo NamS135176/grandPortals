@@ -43,6 +43,7 @@ export const OtherObjectListTable = (props) => {
         onRowsPerPageChange,
         page,
         rowsPerPage,
+        deleteObject,
         ...other
     } = props;
     const [sort, setSort] = useState("desc");
@@ -182,6 +183,7 @@ export const OtherObjectListTable = (props) => {
                                             <TrashIcon
                                                 fontSize="small"
                                                 color="error"
+                                                onClick={() => deleteObject(buk)}
                                             />
                                         </IconButton>
                                     </TableCell>
@@ -211,4 +213,5 @@ OtherObjectListTable.propTypes = {
     onRowsPerPageChange: PropTypes.func,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
+    deleteObject: PropTypes.func.isRequired,
 };

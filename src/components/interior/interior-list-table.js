@@ -43,8 +43,10 @@ export const InteriorListTable = (props) => {
 		onRowsPerPageChange,
 		page,
 		rowsPerPage,
+		deleteInterior,
 		...other
 	} = props;
+
 	const [sort, setSort] = useState('desc');
 
 	const handleSort = () => {
@@ -79,6 +81,7 @@ export const InteriorListTable = (props) => {
 					<TableBody>
 						{sortedBukken.map((buk) => {
 							const link = `/interior/${buk.field_kind == OtherObjectFieldKind.ReadyMadeProduct ? "normal" : "order"}/${buk.id}`
+							console.log("InteriorListTable... ", buk)
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">
@@ -99,12 +102,12 @@ export const InteriorListTable = (props) => {
 														<PencilAltIcon fontSize="small" />
 													</IconButton>
 												</Box>
-												{buk.image ? (
+												{buk.field_list.thumnail ? (
 													<Box
 														sx={{
 															alignItems: 'center',
 															backgroundColor: 'background.default',
-															backgroundImage: `url(${buk.image})`,
+															backgroundImage: `url(${buk.field_list.thumnail})`,
 															backgroundPosition: 'center',
 															backgroundSize: 'cover',
 															borderRadius: 1,
@@ -133,7 +136,7 @@ export const InteriorListTable = (props) => {
 											</Box>
 										</NextLink>
 									</TableCell>
-									<TableCell>{buk.name}</TableCell>
+									<TableCell>{buk.field_list.name}</TableCell>
 									<TableCell>{buk.field_list?.location}</TableCell>
 									<TableCell>
 										<Typography color="success.main" variant="subtitle2">
@@ -142,7 +145,7 @@ export const InteriorListTable = (props) => {
 									</TableCell>
 									<TableCell align="left">
 										<IconButton component="a">
-											<TrashIcon fontSize="small" color="error" />
+											<TrashIcon fontSize="small" color="error" onClick={() => deleteInterior(buk)}/>
 										</IconButton>
 									</TableCell>
 								</TableRow>
@@ -171,4 +174,5 @@ InteriorListTable.propTypes = {
 	onRowsPerPageChange: PropTypes.func,
 	page: PropTypes.number.isRequired,
 	rowsPerPage: PropTypes.number.isRequired,
+	deleteInterior: PropTypes.func.isRequired,
 };

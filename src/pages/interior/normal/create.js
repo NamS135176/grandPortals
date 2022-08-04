@@ -29,9 +29,11 @@ import {useRouter} from "next/router";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
+import { useRoomDefault } from "../../../hooks/use-room-default";
 
 const CreateInterior = () => {
     const router = useRouter();
+    const { room } = useRoomDefault();
     const {loading, createInterior} = useCreateInterior();
     const {bukken} = useBukkenDefault();
 
@@ -84,7 +86,8 @@ const CreateInterior = () => {
             bukken,
             OtherObjectFieldKind.ReadyMadeProduct,
             values,
-            file
+            file,
+            room?.id
         );
     };
 

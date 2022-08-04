@@ -30,9 +30,11 @@ import {useRouter} from "next/router";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
+import { useRoomDefault } from "../../../hooks/use-room-default";
 
 const CreateInterior = () => {
     const router = useRouter();
+    const {room} = useRoomDefault();
     const {loading, createInterior} = useCreateInterior();
     const {bukken} = useBukkenDefault();
 
@@ -81,7 +83,13 @@ const CreateInterior = () => {
     };
 
     const handleSubmit = (values) => {
-        createInterior(bukken, OtherObjectFieldKind.Order, values, file);
+        createInterior(
+            bukken,
+            OtherObjectFieldKind.Order,
+            values,
+            file,
+            room?.id
+        );
     };
 
     const handleChangeFile = (file) => {

@@ -35,13 +35,13 @@ const menu = [
 	},
 	{
 		name: '家電',
-		url: '/electronics/list',
-		key: 'electronics',
+		url: '/appliances/list',
+		key: 'appliances',
 	},
 	{
 		name: '設備',
-		url: '/equipment/list',
-		key: 'equipment',
+		url: '/facility/list',
+		key: 'facility',
 	},
 	{
 		name: 'その他',

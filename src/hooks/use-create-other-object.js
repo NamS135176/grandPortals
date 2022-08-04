@@ -46,7 +46,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
             case OtherObjectKind.Facilities:
                 return "/facility/list";
             case OtherObjectKind.Other:
-                return "/others/list";
+                return "/other/list";
             default:
                 return "";
         }
@@ -67,6 +67,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
                     const s3FileName =
                         getCoverImageS3FileNameForCreateOtherObject(
                             bukken,
+                            otherObjectKind,
                             nextId,
                             `${s3FileNamePrefix}_${originFileName}`
                         );
@@ -109,7 +110,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
             }
             setLoading(false);
         },
-        []
+        [otherObjectKind]
     );
 
     return {
