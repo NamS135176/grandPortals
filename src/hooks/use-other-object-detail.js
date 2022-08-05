@@ -285,7 +285,7 @@ export const useOtherObjectDetail = (id, otherObjectKind) => {
     );
 
     useEffect(() => {
-        if (isMounted && id) loadData();
+        if (isMounted() && id) loadData();
     }, [isMounted, id]);
 
     return {

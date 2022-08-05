@@ -89,7 +89,6 @@ export const InteriorListTable = (props) => {
 					<TableBody>
 						{sortedBukken.map((buk) => {
 							const link = `/interior/${buk.field_kind == OtherObjectFieldKind.ReadyMadeProduct ? "normal" : "order"}/${buk.id}`
-							console.log("InteriorListTable... ", buk)
 							return (
 								<TableRow hover key={buk.id}>
 									<TableCell align="right">

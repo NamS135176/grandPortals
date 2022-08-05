@@ -261,7 +261,7 @@ export const useRoomDetail = (roomId) => {
     );
 
     useEffect(() => {
-        if (isMounted && roomId) loadData();
+        if (isMounted() && roomId) loadData();
     }, [isMounted, roomId]);
 
     return {

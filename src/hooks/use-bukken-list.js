@@ -46,7 +46,7 @@ export const useBukkenList = () => {
             setLoading(false);
         }
 
-        if (isMounted) loadData();
+        if (isMounted()) loadData();
     }, [isMounted]);
 
     return {bukkenList, loading};

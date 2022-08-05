@@ -49,7 +49,7 @@ export const useBukkenDefault = () => {
     }, [user]);
 
     useEffect(() => {
-        if (isMounted && user) loadData();
+        if (isMounted() && user) loadData();
     }, [isMounted, user]);
 
     return {

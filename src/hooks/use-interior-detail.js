@@ -273,7 +273,7 @@ export const useInteriorDetail = (interiorId) => {
     );
 
     useEffect(() => {
-        if (isMounted && interiorId) loadData();
+        if (isMounted() && interiorId) loadData();
     }, [isMounted, interiorId]);
 
     return {

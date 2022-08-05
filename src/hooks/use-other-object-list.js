@@ -108,7 +108,7 @@ export const useOtherObjectList = (bukkenId, otherObjectKind) => {
             setLoading(false);
         }
 
-        if (isMounted && bukkenId) loadData();
+        if (isMounted() && bukkenId) loadData();
     }, [isMounted, bukkenId]);
 
     return {otherObjects, deleteObject, loading};

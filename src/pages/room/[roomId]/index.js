@@ -95,6 +95,7 @@ const RoomDetails = () => {
 	useEffect(() => {
 		//save room id to storage for using default room when create new interior
 		if (room) {
+			console.log("sessionStorage set item room_id", room.id)
 			sessionStorage.setItem('room_id', room.id);
 		}
 	}, [room]);

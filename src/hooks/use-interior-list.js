@@ -93,7 +93,7 @@ export const useInteriorList = (roomId) => {
             setInteriors(interiors);
             setLoading(false);
         }
-        if (isMounted && roomId) loadData();
+        if (isMounted() && roomId) loadData();
     }, [isMounted, roomId]);
 
     return {interiors, deleteInterior, loading};

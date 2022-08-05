@@ -6,7 +6,6 @@ import {useRouter} from "next/router";
 import { getOtherObjectOnly } from "../graphql/custom-queries";
 
 export const useRoomDefault = () => {
-    const {user} = useAuth();
     const router = useRouter();
     const isMounted = useMounted();
     const [room, setRoom] = useState();
@@ -23,17 +22,19 @@ export const useRoomDefault = () => {
             });
             activeRoom = response.data.getOtherObject;
         }
+        console.log("useRoomDefault", { activeRoomId, activeRoom })
         if (!activeRoom) {
             //not found
             router.replace("/room/list");
             return;
         }
         setRoom(activeRoom);
-    }, [user]);
+    }, []);
 
     useEffect(() => {
-        if (isMounted && user) loadData();
-    }, [isMounted, user]);
+        console.log("useRoomDefault... isMounted", { isMounted })
+        if (isMounted()) loadData();
+    }, [isMounted]);
 
     return {
         room,

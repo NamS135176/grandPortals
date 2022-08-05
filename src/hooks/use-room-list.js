@@ -114,7 +114,7 @@ export const useRoomList = (bukkenId) => {
 
                 const activeRoomId = sessionStorage.getItem("room_id");
                 if (activeRoomId == room.id) {
-                    sessionStorage.removeItem("room_id");
+                    // sessionStorage.removeItem("room_id");
                 }
             } catch (e) {
                 console.error(e);
@@ -133,7 +133,7 @@ export const useRoomList = (bukkenId) => {
             setLoading(false);
         }
 
-        if (isMounted) loadData();
+        if (isMounted()) loadData();
     }, [isMounted, bukkenId]);
 
     return {roomList, deleteRoom, loading};
