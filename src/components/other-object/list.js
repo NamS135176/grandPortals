@@ -75,7 +75,7 @@ const OtherObjectList = ({otherObjectKind}) => {
             case OtherObjectKind.Facilities:
                 return "/facility";
             case OtherObjectKind.Other:
-                return "/others";
+                return "/other";
             default:
                 return "";
         }

@@ -71,7 +71,7 @@ export const OtherObjectListTable = (props) => {
             case OtherObjectKind.Facilities:
                 return "/facility";
             case OtherObjectKind.Other:
-                return "/others";
+                return "/other";
             default:
                 return "";
         }
