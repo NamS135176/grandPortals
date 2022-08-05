@@ -303,7 +303,7 @@ const InteriorDetails = () => {
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="品名"
+                                        label="名称"
                                         name="name"
                                         InputLabelProps={{shrink: true}}
                                         error={Boolean(
