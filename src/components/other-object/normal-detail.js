@@ -291,7 +291,7 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            {kindCaption}・インテリア（既製品）
+                                            {kindCaption}（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>

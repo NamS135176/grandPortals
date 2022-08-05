@@ -103,7 +103,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    {kindCaption}・インテリア一覧
+                                    {kindCaption}
                                 </Typography>
                                 <Box>
                                     <NextLink

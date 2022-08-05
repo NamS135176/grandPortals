@@ -148,7 +148,7 @@ const CreateInterior = () => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            建具・インテリア（既製品）
+                                            建具・インテリア情報（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>

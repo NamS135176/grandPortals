@@ -99,13 +99,13 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
             case OtherObjectKind.OtherObject:
                 return "建具";
             case OtherObjectKind.Furniture:
-                return "家具一覧";
+                return "家具";
             case OtherObjectKind.HomeAppliances:
-                return "家電一覧";
+                return "家電";
             case OtherObjectKind.Facilities:
-                return "設備一覧";
+                return "設備";
             case OtherObjectKind.Other:
-                return "その他一覧";
+                return "その他";
             default:
                 return "";
         }
@@ -180,7 +180,7 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            {kindCaption}・インテリア（既製品）
+                                            {kindCaption}情報（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
