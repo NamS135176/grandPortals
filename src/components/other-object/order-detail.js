@@ -255,7 +255,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
                                             {kindCaption}
-                                            ・インテリア情報（オーダー品）
+                                            情報（オーダー品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -497,9 +497,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                     my: 3,
                                 }}
                             >
-                                <Typography variant="h6">
-                                    関連資料
-                                </Typography>
+                                <Typography variant="h6">関連資料</Typography>
                                 <Button
                                     variant="contained"
                                     onClick={handleOpenDocumentDialog}
