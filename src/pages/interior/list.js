@@ -23,25 +23,11 @@ const applyPagination = (bukken, page, rowsPerPage) =>
 const InteriorList = () => {
     const { room } = useRoomDefault();
 
-    // const { bukken } = useBukkenDefault();
     const {interiors: interior, deleteInterior} = useInteriorList(room?.id);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
-
-    const handlePageChange = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedInterior = applyPagination(interior, page, rowsPerPage);
 
     return (
         <>
@@ -102,12 +88,7 @@ const InteriorList = () => {
                                 </Box>
                             </Box>
                             <InteriorListTable
-                                interior={paginatedInterior}
-                                interiorCount={interior.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
+                                items={interior}
                                 deleteInterior={deleteInterior}
                             />
                         </CardContent>

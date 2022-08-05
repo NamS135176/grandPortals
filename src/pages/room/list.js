@@ -17,32 +17,16 @@ import {gtm} from '../../lib/gtm';
 import {useRoomList} from '../../hooks/use-room-list';
 import {ManagementList} from '../../components/management-menu';
 import {useRouter} from 'next/router';
-const applyPagination = (bukken, page, rowsPerPage) =>
-	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const RoomList = () => {
 	const router = useRouter();
 	const {bukkenId} = router.query;
 
 	const {roomList: rooms, deleteRoom} = useRoomList(bukkenId);
-	console.log(rooms);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
 	}, []);
-
-	const handlePageChange = (event, newPage) => {
-		setPage(newPage);
-	};
-
-	const handleRowsPerPageChange = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-	};
-
-	// Usually query is done on backend with indexing solutions
-	const paginatedRoom = applyPagination(rooms, page, rowsPerPage);
 
 	return (
 		<>
@@ -96,12 +80,7 @@ const RoomList = () => {
 								</Button>
 							</Box>
 							<RoomListTable
-								room={paginatedRoom}
-								roomCount={rooms.length}
-								onPageChange={handlePageChange}
-								onRowsPerPageChange={handleRowsPerPageChange}
-								rowsPerPage={rowsPerPage}
-								page={page}
+								items={rooms}
 								deleteRoom={deleteRoom}
 							/>
 						</CardContent>

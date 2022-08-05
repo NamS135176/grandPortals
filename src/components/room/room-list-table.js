@@ -35,18 +35,27 @@ const applySort = (room, sortDir) =>
         return sortDir === "asc" ? newOrder : -newOrder;
     });
 
+const applyPagination = (items, page, rowsPerPage) =>
+    items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
 export const RoomListTable = (props) => {
     const {
-        room,
-        roomCount,
-        onPageChange,
-        onRowsPerPageChange,
-        page,
-        rowsPerPage,
+        items,
         deleteRoom,
         ...other
     } = props;
     const [sort, setSort] = useState("desc");
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handlePageChange = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+    };
 
     const handleSort = () => {
         setSort((prevOrder) => {
@@ -58,7 +67,13 @@ export const RoomListTable = (props) => {
         });
     };
 
-    const sortedBukken = applySort(room, sort);
+    const sortedBukken = applySort(items, sort);
+
+    const paginatedItems = applyPagination(
+        sortedBukken,
+        page,
+        rowsPerPage
+    );
 
     const handleDelete = async (item) => {
         const accept = await confirm(
@@ -91,7 +106,7 @@ export const RoomListTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sortedBukken.map((buk) => {
+                        {paginatedItems.map((buk) => {
                             return (
                                 <TableRow hover key={buk.id}>
                                     <TableCell align="right">
@@ -188,9 +203,9 @@ export const RoomListTable = (props) => {
             </Scrollbar>
             <TablePagination
                 component="div"
-                count={roomCount}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
+                count={items?.length}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 rowsPerPageOptions={[5, 10, 25]}

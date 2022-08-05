@@ -19,33 +19,14 @@ import {OtherObjectListTable} from "./other-object-list-table";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
 import {OtherObjectKind} from "../../utils/bukken";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 const OtherObjectList = ({otherObjectKind}) => {
     const {bukken} = useBukkenDefault();
     const {otherObjects, deleteObject} = useOtherObjectList(bukken?.id, otherObjectKind);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handlePageChange = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedOtherObject = applyPagination(
-        otherObjects,
-        page,
-        rowsPerPage
-    );
 
     const kindCaption = useMemo(() => {
         switch (otherObjectKind) {
@@ -147,12 +128,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                 </Box>
                             </Box>
                             <OtherObjectListTable
-                                otherObject={paginatedOtherObject}
-                                interiorCount={otherObjects.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
+                                items={otherObjects}
                                 deleteObject={deleteObject}
                             />
                         </CardContent>
