@@ -172,7 +172,7 @@ const CreateRoom = () => {
                                                 formik.errors.kind
                                         )}
                                     >
-                                        <InputLabel id="demo-simple-select-label">
+                                        <InputLabel id="demo-simple-select-label" required>
                                             種別
                                         </InputLabel>
                                         <Select
@@ -202,7 +202,7 @@ const CreateRoom = () => {
                                 <Grid item md={8} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="備考"
+                                        label="名称"
                                         multiline
                                         name="name"
                                         InputLabelProps={{shrink: true}}
