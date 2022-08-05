@@ -185,8 +185,8 @@ const RoomDetails = () => {
                                     </Grid>
                                     <Grid item>
                                         <Typography variant="subtitle2">
-                                            {room?.bukken_no
-                                                ? `物件番号：${room?.bukken_no}`
+                                            {room?.bukken?.bukken_no
+                                                ? `物件番号：${room?.bukken.bukken_no}`
                                                 : ""}
                                         </Typography>
                                     </Grid>
