@@ -85,8 +85,8 @@ export const InteriorListTable = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell align="right">参照/編集</TableCell>
+                            <TableCell>種別</TableCell>
                             <TableCell>名称</TableCell>
-                            <TableCell>設置場所</TableCell>
                             <TableCell sortDirection={sort}>
                                 <TableSortLabel
                                     active
@@ -169,9 +169,9 @@ export const InteriorListTable = (props) => {
                                             </Box>
                                         </NextLink>
                                     </TableCell>
-                                    <TableCell>{buk.field_list.name}</TableCell>
+                                    <TableCell>{buk.field_list?.kind}</TableCell>
                                     <TableCell>
-                                        {buk.field_list?.location}
+                                        {buk.field_list?.name}
                                     </TableCell>
                                     <TableCell>
                                         <Typography
