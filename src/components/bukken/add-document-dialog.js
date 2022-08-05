@@ -169,7 +169,6 @@ export const AddDocumentDialog = (props) => {
                             onDrop={handleDrop}
                             onRemove={handleRemove}
                             onRemoveAll={handleRemoveAll}
-                            maxFiles={1}
                         />
                     </Box>
                 </form>
