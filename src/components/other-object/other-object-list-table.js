@@ -19,6 +19,7 @@ import {Image as ImageIcon} from "../../icons/image";
 import {Scrollbar} from "../scrollbar";
 import {OtherObjectFieldKind, OtherObjectKind} from "../../utils/bukken";
 import moment from "moment";
+import { confirm } from "../dialog/confirm-dialog";
 
 const applySort = (otherObject, sortDir) =>
     otherObject.sort((a, b) => {
@@ -76,6 +77,16 @@ export const OtherObjectListTable = (props) => {
                 return "";
         }
     }, []);
+
+
+    const handleDelete = async (item) => {
+        const accept = await confirm(
+            "削除する場合、関連する資料や画像、履歴も削除されますがよろしいですか？"
+        );
+        if (accept) {
+            deleteObject(item);
+        }
+    };
 
     return (
         <div {...other}>
@@ -183,7 +194,7 @@ export const OtherObjectListTable = (props) => {
                                             <TrashIcon
                                                 fontSize="small"
                                                 color="error"
-                                                onClick={() => deleteObject(buk)}
+                                                onClick={() => handleDelete(buk)}
                                             />
                                         </IconButton>
                                     </TableCell>
