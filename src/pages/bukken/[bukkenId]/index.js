@@ -23,7 +23,7 @@ import {ArrowRight as ArrowRightIcon} from '../../../icons/arrow-right';
 import {HistoryDialog} from '../../../components/history/history-dialog';
 import {useRouter} from 'next/router';
 import {useBukkenDetail} from '../../../hooks/use-bukken-detail';
-import {getBukkenType} from '../../../utils/bukken';
+import {getBukkenType, OtherObjectKind} from '../../../utils/bukken';
 import moment from 'moment';
 import {AddDocumentDialog} from '../../../components/bukken/add-document-dialog';
 import {FileUpload} from '../../../components/widgets/file-upload';
@@ -317,6 +317,7 @@ const BukkenDetails = () => {
 									mode="edit"
 									bukken={bukken}
 									loadData={() => reloadDocument(bukken)}
+									objectKind={OtherObjectKind.Bukken}
 								/>
 							</Box>
 							<BukkenRelatedDocsListTable
@@ -354,6 +355,7 @@ const BukkenDetails = () => {
 									mode="edit"
 									bukken={bukken}
 									loadData={() => reloadHistory(bukken)}
+									objectKind={OtherObjectKind.Bukken}
 								/>
 							</Box>
 							<BukkenHistoryListTable

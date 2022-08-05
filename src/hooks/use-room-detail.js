@@ -139,7 +139,6 @@ export const useRoomDetail = (roomId) => {
     const reloadHistory = useCallback(async (room, updateLoading = true) => {
         if (updateLoading) setLoading(true);
         const histories = await getListHistory(room);
-        console.log(room);
         if (histories?.length > 0) {
             setHistories(histories);
         }

@@ -25,6 +25,7 @@ export const HistoryDialog = (props) => {
         mode = "edit",
         bukken,
         otherObjectId,
+        objectKind,
         loadData,
         ...other
     } = props;
@@ -54,7 +55,6 @@ export const HistoryDialog = (props) => {
         setLoading(true);
         try {
             const historyId = await getNextHistoryId();
-            const object_kind = "0";
             const response = await API.graphql({
                 query: createHistory,
                 variables: {
@@ -63,7 +63,7 @@ export const HistoryDialog = (props) => {
                         user_id: bukken.user_id,
                         bukken_id: bukken.id,
                         delete_flag: 0,
-                        object_kind,
+                        object_kind: objectKind,
                         overview,
                         remarks,
                         createdAt: moment(date).format(
@@ -164,4 +164,5 @@ HistoryDialog.propTypes = {
     mode: PropTypes.oneOf(["edit", "reference"]),
     bukken: PropTypes.object,
     otherObjectId: PropTypes.string,
+    objectKind: PropTypes.string,
 };

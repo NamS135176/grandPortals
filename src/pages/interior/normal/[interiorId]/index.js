@@ -36,6 +36,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
 import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
+import { OtherObjectKind } from "../../../../utils/bukken";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -513,6 +514,7 @@ const InteriorDetails = () => {
                                     bukken={interior?.bukken}
                                     loadData={() => reloadDocument(interior)}
                                     otherObjectId={interior?.id}
+                                    objectKind={OtherObjectKind.Interior}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
@@ -552,6 +554,7 @@ const InteriorDetails = () => {
                                     bukken={interior?.bukken}
                                     loadData={() => reloadHistory(interior)}
                                     otherObjectId={interior?.id}
+                                    objectKind={OtherObjectKind.Interior}
                                 />
                             </Box>
                             <BukkenHistoryListTable

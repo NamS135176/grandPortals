@@ -35,6 +35,7 @@ import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog"
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
+import { OtherObjectKind } from "../../../utils/bukken";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -407,6 +408,7 @@ const RoomDetails = () => {
                                                 reloadDocument(room)
                                             }
                                             otherObjectId={room?.id}
+											objectKind={OtherObjectKind.RoomSpace}
                                         />
                                     </Box>
                                     <BukkenRelatedDocsListTable
@@ -456,6 +458,7 @@ const RoomDetails = () => {
                                             bukken={room?.bukken}
                                             loadData={() => reloadHistory(room)}
                                             otherObjectId={room?.id}
+											objectKind={OtherObjectKind.RoomSpace}
                                         />
                                     </Box>
                                     <BukkenHistoryListTable
