@@ -1,9 +1,11 @@
 import React from "react";
 import CreateNormalOtherObject from "../../../components/other-object/normal-create";
 import { OtherObjectKind } from "../../../utils/bukken";
+import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 
-export default () => {
-    return (
-        <CreateNormalOtherObject otherObjectKind={OtherObjectKind.Facilities} />
-    );
-};
+const Page = () => (
+    <CreateNormalOtherObject otherObjectKind={OtherObjectKind.Facilities} />
+);
+
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+export default Page;

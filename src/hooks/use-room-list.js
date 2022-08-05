@@ -63,15 +63,6 @@ export const useRoomList = (bukkenId) => {
                             ? JSON.parse(room.field_list)
                             : {};
                         room.field_list = fieldList;
-                        if (fieldList && fieldList["thumnail"]) {
-                            room.image = fieldList["thumnail"];
-                        }
-                        if (fieldList && fieldList["type"]) {
-                            room.type = fieldList["type"];
-                        }
-                        if (fieldList && fieldList["name"]) {
-                            room.name = fieldList["name"];
-                        }
                     } catch (e) {
                         console.error(e);
                     }

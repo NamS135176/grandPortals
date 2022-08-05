@@ -151,7 +151,6 @@ const OtherObjectList = ({otherObjectKind}) => {
         </>
     );
 };
-OtherObjectList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 OtherObjectList.propTypes = {
     otherObjectKind: PropTypes.string,

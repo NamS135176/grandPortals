@@ -1,9 +1,11 @@
 import React from "react";
 import CreateOrderOtherObject from "../../../components/other-object/order-create";
 import {OtherObjectKind} from "../../../utils/bukken";
+import {DashboardLayout} from "../../../components/dashboard/dashboard-layout";
 
-export default () => {
-    return (
-        <CreateOrderOtherObject otherObjectKind={OtherObjectKind.Furniture} />
-    );
-};
+const Page = () => (
+    <CreateOrderOtherObject otherObjectKind={OtherObjectKind.Furniture} />
+);
+
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+export default Page;

@@ -130,14 +130,14 @@ export const RoomListTable = (props) => {
                                                         <PencilAltIcon fontSize="small" />
                                                     </IconButton>
                                                 </Box>
-                                                {buk.image ? (
+                                                {buk.field_list.thumnail ? (
                                                     <Box
                                                         sx={{
                                                             alignItems:
                                                                 "center",
                                                             backgroundColor:
                                                                 "background.default",
-                                                            backgroundImage: `url(${buk.image})`,
+                                                            backgroundImage: `url(${buk.field_list.thumnail})`,
                                                             backgroundPosition:
                                                                 "center",
                                                             backgroundSize:
@@ -172,8 +172,8 @@ export const RoomListTable = (props) => {
                                             </Box>
                                         </NextLink>
                                     </TableCell>
-                                    <TableCell>{buk.type}</TableCell>
-                                    <TableCell>{buk.name}</TableCell>
+                                    <TableCell>{buk.field_list?.kind}</TableCell>
+                                    <TableCell>{buk.field_list?.name}</TableCell>
                                     <TableCell>
                                         <Typography
                                             color="success.main"

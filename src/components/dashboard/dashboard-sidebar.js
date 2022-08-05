@@ -46,11 +46,11 @@ const getSections = (t) => [
 					},
 					{
 						title: t('家電'),
-						path: '/electronics/list',
+						path: '/appliances/list',
 					},
 					{
 						title: t('設備'),
-						path: '/equipment/list',
+						path: '/facility/list',
 					},
 					{
 						title: t('その他'),
