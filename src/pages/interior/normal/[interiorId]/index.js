@@ -38,9 +38,6 @@ import * as R from "ramda";
 import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
 import { OtherObjectKind } from "../../../../utils/bukken";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 const InteriorDetails = () => {
     const router = useRouter();
     const {interiorId} = router.query;
@@ -59,11 +56,6 @@ const InteriorDetails = () => {
         reloadDocument,
     } = useInteriorDetail(interiorId);
     const {bukken} = useBukkenDefault();
-    
-    const [pageDocument, setPageDocument] = useState(0);
-    const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
-    const [pageHistory, setPageHistory] = useState(0);
-    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
     const formik = useFormik({
         initialValues: {
@@ -174,36 +166,6 @@ const InteriorDetails = () => {
     const handleDateChange = (date) => {
         formik.setFieldValue("date", date);
     };
-
-    const handlePageChange = (event, newPage) => {
-        setPageDocument(newPage);
-    };
-
-    const handlePageHistoryChange = (event, newPage) => {
-        setPageHistory(newPage);
-    };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPageDocument(parseInt(event.target.value, 10));
-        setPageDocument(0);
-    };
-
-    const handleRowsPerPageHistoryChange = (event) => {
-        setRowsPerPageHistory(parseInt(event.target.value, 10));
-        setPageHistory(0);
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(
-        bukkenDocs,
-        pageDocument,
-        rowsPerPageDocument
-    );
-    const paginatedBukkenHistory = applyPagination(
-        bukkenHistory,
-        pageHistory,
-        rowsPerPageHistory
-    );
 
     return (
         <>
@@ -519,12 +481,7 @@ const InteriorDetails = () => {
                             </Box>
                             <BukkenRelatedDocsListTable
                                 bukken={interior?.bukken}
-                                bukkenDocs={paginatedBukkenDocs}
-                                bukkenDocsCount={bukkenDocs.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPageDocument}
-                                page={pageDocument}
+                                bukkenDocs={bukkenDocs}
                                 deleteDocument={deleteDocument}
                             />
                         </CardContent>
@@ -559,14 +516,7 @@ const InteriorDetails = () => {
                             </Box>
                             <BukkenHistoryListTable
                                 bukken={interior?.bukken}
-                                bukkenHistory={paginatedBukkenHistory}
-                                bukkenHistoryCount={bukkenHistory.length}
-                                onPageChange={handlePageHistoryChange}
-                                onRowsPerPageChange={
-                                    handleRowsPerPageHistoryChange
-                                }
-                                rowsPerPage={rowsPerPageHistory}
-                                page={pageHistory}
+                                bukkenHistory={bukkenHistory}
                                 deleteHistory={deleteHistory}
                             />
                         </CardContent>

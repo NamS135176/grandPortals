@@ -39,9 +39,6 @@ import {gtm} from "../../lib/gtm";
 import {useOtherObjectDetail} from "../../hooks/use-other-object-detail";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
     const router = useRouter();
     const {
@@ -59,11 +56,6 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
         reloadDocument,
     } = useOtherObjectDetail(id, otherObjectKind);
     const {bukken} = useBukkenDefault();
-
-    const [pageDocument, setPageDocument] = useState(0);
-    const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
-    const [pageHistory, setPageHistory] = useState(0);
-    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
     const formik = useFormik({
         initialValues: {
@@ -175,48 +167,18 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
         formik.setFieldValue("date", date);
     };
 
-    const handlePageChange = (event, newPage) => {
-        setPageDocument(newPage);
-    };
-
-    const handlePageHistoryChange = (event, newPage) => {
-        setPageHistory(newPage);
-    };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPageDocument(parseInt(event.target.value, 10));
-        setPageDocument(0);
-    };
-
-    const handleRowsPerPageHistoryChange = (event) => {
-        setRowsPerPageHistory(parseInt(event.target.value, 10));
-        setPageHistory(0);
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(
-        bukkenDocs,
-        pageDocument,
-        rowsPerPageDocument
-    );
-    const paginatedBukkenHistory = applyPagination(
-        bukkenHistory,
-        pageHistory,
-        rowsPerPageHistory
-    );
-
     const kindCaption = useMemo(() => {
         switch (otherObjectKind) {
             case OtherObjectKind.Interior:
                 return "建具";
             case OtherObjectKind.Furniture:
-                return "家具一覧";
+                return "家具";
             case OtherObjectKind.HomeAppliances:
-                return "家電一覧";
+                return "家電";
             case OtherObjectKind.Facilities:
-                return "設備一覧";
+                return "設備";
             case OtherObjectKind.Other:
-                return "その他一覧";
+                return "その他";
             default:
                 return "";
         }
@@ -291,7 +253,7 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            {kindCaption}（既製品）
+                                            {kindCaption}情報（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -536,7 +498,7 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    関連資料一覧
+                                    関連資料
                                 </Typography>
                                 <Button
                                     variant="contained"
@@ -557,12 +519,7 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
                             </Box>
                             <BukkenRelatedDocsListTable
                                 bukken={otherObject?.bukken}
-                                bukkenDocs={paginatedBukkenDocs}
-                                bukkenDocsCount={bukkenDocs.length}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                rowsPerPage={rowsPerPageDocument}
-                                page={pageDocument}
+                                bukkenDocs={bukkenDocs}
                                 deleteDocument={deleteDocument}
                             />
                         </CardContent>
@@ -597,14 +554,7 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
                             </Box>
                             <BukkenHistoryListTable
                                 bukken={otherObject?.bukken}
-                                bukkenHistory={paginatedBukkenHistory}
-                                bukkenHistoryCount={bukkenHistory.length}
-                                onPageChange={handlePageHistoryChange}
-                                onRowsPerPageChange={
-                                    handleRowsPerPageHistoryChange
-                                }
-                                rowsPerPage={rowsPerPageHistory}
-                                page={pageHistory}
+                                bukkenHistory={bukkenHistory}
                                 deleteHistory={deleteHistory}
                             />
                         </CardContent>

@@ -37,9 +37,6 @@ import * as Yup from "yup";
 import * as R from "ramda";
 import { OtherObjectKind } from "../../../utils/bukken";
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 const RoomDetails = () => {
     const router = useRouter();
     const {roomId} = router.query;
@@ -57,10 +54,6 @@ const RoomDetails = () => {
         reloadHistory,
         reloadDocument,
     } = useRoomDetail(roomId);
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
     const formik = useFormik({
         initialValues: {
@@ -127,30 +120,7 @@ const RoomDetails = () => {
 
         updateRoomFieldList(fieldList);
     };
-    const handlePageChange = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handlePageHistoryChange = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-    };
-
-    const handleRowsPerPageHistoryChange = (event) => {
-        setRowsPerPageHistory(parseInt(event.target.value, 10));
-    };
-
-    // Usually query is done on backend with indexing solutions
-    const paginatedBukkenDocs = applyPagination(bukkenDocs, page, rowsPerPage);
-    const paginatedBukkenHistory = applyPagination(
-        bukkenHistory,
-        page,
-        rowsPerPage
-    );
-
+    
     return (
         <>
             <Head>
@@ -413,14 +383,7 @@ const RoomDetails = () => {
                                     </Box>
                                     <BukkenRelatedDocsListTable
                                         bukken={room?.bukken}
-                                        bukkenDocs={paginatedBukkenDocs}
-                                        bukkenDocsCount={bukkenDocs.length}
-                                        onPageChange={handlePageChange}
-                                        onRowsPerPageChange={
-                                            handleRowsPerPageChange
-                                        }
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
+                                        bukkenDocs={bukkenDocs}
                                         deleteDocument={deleteDocument}
                                     />
                                 </>
@@ -463,16 +426,7 @@ const RoomDetails = () => {
                                     </Box>
                                     <BukkenHistoryListTable
                                         bukken={room?.bukken}
-                                        bukkenHistory={paginatedBukkenHistory}
-                                        bukkenHistoryCount={
-                                            bukkenHistory.length
-                                        }
-                                        onPageChange={handlePageHistoryChange}
-                                        onRowsPerPageChange={
-                                            handleRowsPerPageHistoryChange
-                                        }
-                                        rowsPerPage={rowsPerPageHistory}
-                                        page={page}
+                                        bukkenHistory={bukkenHistory}
                                         deleteHistory={deleteHistory}
                                     />
                                 </>

@@ -28,9 +28,6 @@ import moment from 'moment';
 import {AddDocumentDialog} from '../../../components/bukken/add-document-dialog';
 import {FileUpload} from '../../../components/widgets/file-upload';
 
-const applyPagination = (bukken, page, rowsPerPage) =>
-	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 const BukkenDetails = () => {
 	const router = useRouter();
 	const {bukkenId} = router.query;
@@ -48,11 +45,6 @@ const BukkenDetails = () => {
 		loading,
 		uploadCoverImage,
 	} = useBukkenDetail(bukkenId);
-
-	const [pageDocument, setPageDocument] = useState(0);
-	const [rowsPerPageDocument, setRowsPerPageDocument] = useState(5);
-	const [pageHistory, setPageHistory] = useState(0);
-	const [rowsPerPageHistory, setRowsPerPageHistory] = useState(5);
 
 	const [form, setForm] = useState({
 		bukken_kind: '',
@@ -109,36 +101,6 @@ const BukkenDetails = () => {
 	const handleUpdateBukken = () => {
 		updateBukken(form.remarks);
 	};
-
-	const handlePageChange = (event, newPage) => {
-		setPageDocument(newPage);
-	};
-
-	const handlePageHistoryChange = (event, newPage) => {
-		setPageHistory(newPage);
-	};
-
-	const handleRowsPerPageChange = (event) => {
-		setRowsPerPageDocument(parseInt(event.target.value, 10));
-		setPageDocument(0);
-	};
-
-	const handleRowsPerPageHistoryChange = (event) => {
-		setRowsPerPageHistory(parseInt(event.target.value, 10));
-		setPageHistory(0);
-	};
-
-	// Usually query is done on backend with indexing solutions
-	const paginatedBukkenDocs = applyPagination(
-		bukkenDocs,
-		pageDocument,
-		rowsPerPageDocument
-	);
-	const paginatedBukkenHistory = applyPagination(
-		bukkenHistory,
-		pageHistory,
-		rowsPerPageHistory
-	);
 
 	return (
 		<>
@@ -322,12 +284,7 @@ const BukkenDetails = () => {
 							</Box>
 							<BukkenRelatedDocsListTable
 								bukken={bukken}
-								bukkenDocs={paginatedBukkenDocs}
-								bukkenDocsCount={bukkenDocs.length}
-								onPageChange={handlePageChange}
-								onRowsPerPageChange={handleRowsPerPageChange}
-								rowsPerPage={rowsPerPageDocument}
-								page={pageDocument}
+								bukkenDocs={bukkenDocs}
 								deleteDocument={deleteDocument}
 							/>
 						</CardContent>
@@ -360,14 +317,7 @@ const BukkenDetails = () => {
 							</Box>
 							<BukkenHistoryListTable
 								bukken={bukken}
-								bukkenHistory={paginatedBukkenHistory}
-								bukkenHistoryCount={bukkenHistory.length}
-								onPageChange={handlePageHistoryChange}
-								onRowsPerPageChange={
-									handleRowsPerPageHistoryChange
-								}
-								rowsPerPage={rowsPerPageHistory}
-								page={pageHistory}
+								bukkenHistory={bukkenHistory}
 								deleteHistory={deleteHistory}
 							/>
 						</CardContent>

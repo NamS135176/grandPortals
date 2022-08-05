@@ -1,97 +1,113 @@
-import React, { useState } from 'react';
-import NextLink from 'next/link';
-import PropTypes from 'prop-types';
+import React, {useState} from "react";
+import NextLink from "next/link";
+import PropTypes from "prop-types";
 import {
-	Box,
-	IconButton,
-	Link,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TablePagination,
-	TableSortLabel,
-	TableRow,
-	Typography,
-} from '@mui/material';
-import { Download as DownloadIcon } from '../../icons/download';
-import { Trash as TrashIcon } from '../../icons/trash';
-import { Scrollbar } from '../scrollbar';
-import moment from 'moment';
-import { getDocumentUrlPath } from '../../utils/bukken';
+    Box,
+    IconButton,
+    Link,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TablePagination,
+    TableSortLabel,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import {Download as DownloadIcon} from "../../icons/download";
+import {Trash as TrashIcon} from "../../icons/trash";
+import {Scrollbar} from "../scrollbar";
+import moment from "moment";
+import {getDocumentUrlPath} from "../../utils/bukken";
 
 const applySort = (bukken, sortDir) =>
-	bukken.sort((a, b) => {
-		let newOrder = 0;
+    bukken.sort((a, b) => {
+        let newOrder = 0;
 
-		if (a.createdAt < b.createdAt) {
-			newOrder = -1;
-		}
+        if (a.createdAt < b.createdAt) {
+            newOrder = -1;
+        }
 
-		if (a.createdAt > b.createdAt) {
-			newOrder = 1;
-		}
+        if (a.createdAt > b.createdAt) {
+            newOrder = 1;
+        }
 
-		return sortDir === 'asc' ? newOrder : -newOrder;
-	});
+        return sortDir === "asc" ? newOrder : -newOrder;
+    });
+
+const applyPagination = (items, page, rowsPerPage) =>
+    items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 export const BukkenRelatedDocsListTable = (props) => {
-	const {
-		bukken,
-		bukkenDocs,
-		bukkenDocsCount,
-		onPageChange,
-		onRowsPerPageChange,
-		page,
-		rowsPerPage,
-		deleteDocument,
-		...other
-	} = props;
-	const [sort, setSort] = useState('desc');
+    const {bukken, bukkenDocs, deleteDocument, ...other} = props;
+    const [sort, setSort] = useState("desc");
 
-	const handleSort = () => {
-		setSort((prevOrder) => {
-			if (prevOrder === 'asc') {
-				return 'desc';
-			}
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
-			return 'asc';
-		});
-	};
+    const handlePageChange = (event, newPage) => {
+        setPage(newPage);
+    };
 
-	const sortedBukkenDocs = applySort(bukkenDocs, sort);
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+    };
 
-	return (
-		<div {...other}>
-			<Scrollbar>
-				<Table sx={{ minWidth: 700 }}>
-					<TableHead>
-						<TableRow>
-							<TableCell align="right">ダウンロード</TableCell>
-							<TableCell>資料名</TableCell>
-							<TableCell>概要</TableCell>
-							<TableCell sortDirection={sort}>
-								<TableSortLabel active direction={sort} onClick={handleSort}>
-									登録日
-								</TableSortLabel>
-							</TableCell>
-							<TableCell align="right" />
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{sortedBukkenDocs.map((buk) => {
-							return (
+    const handleSort = () => {
+        setSort((prevOrder) => {
+            if (prevOrder === "asc") {
+                return "desc";
+            }
+
+            return "asc";
+        });
+    };
+
+    const sortedBukkenDocs = applySort(bukkenDocs, sort);
+    const paginatedBukkenDocs = applyPagination(
+        sortedBukkenDocs,
+        page,
+        rowsPerPage
+    );
+
+    return (
+        <div {...other}>
+            <Scrollbar>
+                <Table sx={{minWidth: 700}}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right">ダウンロード</TableCell>
+                            <TableCell>資料名</TableCell>
+                            <TableCell>概要</TableCell>
+                            <TableCell sortDirection={sort}>
+                                <TableSortLabel
+                                    active
+                                    direction={sort}
+                                    onClick={handleSort}
+                                >
+                                    登録日
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell align="right" />
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {paginatedBukkenDocs.map((buk) => {
+                            return (
                                 <TableRow hover key={buk.id}>
                                     <TableCell align="right">
                                         <NextLink
                                             href={getDocumentUrlPath(buk)}
                                             passHref
                                         >
-											<a href={getDocumentUrlPath(buk)} target={"_blank"}>
-												<IconButton component="a">
-													<DownloadIcon fontSize="small" />
-												</IconButton>
-											</a>
+                                            <a
+                                                href={getDocumentUrlPath(buk)}
+                                                target={"_blank"}
+                                            >
+                                                <IconButton component="a">
+                                                    <DownloadIcon fontSize="small" />
+                                                </IconButton>
+                                            </a>
                                         </NextLink>
                                     </TableCell>
                                     <TableCell>
@@ -137,35 +153,39 @@ export const BukkenRelatedDocsListTable = (props) => {
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="left">
-                                        <IconButton component="a" color="error" onClick={() => deleteDocument(buk)}>
+                                        <IconButton
+                                            component="a"
+                                            color="error"
+                                            onClick={() => deleteDocument(buk)}
+                                        >
                                             <TrashIcon fontSize="small" />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
                             );
-						})}
-					</TableBody>
-				</Table>
-			</Scrollbar>
-			<TablePagination
-				component="div"
-				count={bukkenDocsCount}
-				onPageChange={onPageChange}
-				onRowsPerPageChange={onRowsPerPageChange}
-				page={page}
-				rowsPerPage={rowsPerPage}
-				rowsPerPageOptions={[5, 10, 25]}
-			/>
-		</div>
-	);
+                        })}
+                    </TableBody>
+                </Table>
+            </Scrollbar>
+            <TablePagination
+                component="div"
+                count={bukkenDocs?.length}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+            />
+        </div>
+    );
 };
 
 BukkenRelatedDocsListTable.propTypes = {
-	bukken: PropTypes.array.isRequired,
-	bukkenCount: PropTypes.number.isRequired,
-	onPageChange: PropTypes.func.isRequired,
-	onRowsPerPageChange: PropTypes.func,
-	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired,
-	deleteDocument: PropTypes.func.isRequired,
+    bukken: PropTypes.array.isRequired,
+    bukkenCount: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    onRowsPerPageChange: PropTypes.func,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+    deleteDocument: PropTypes.func.isRequired,
 };
