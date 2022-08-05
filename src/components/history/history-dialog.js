@@ -66,9 +66,6 @@ export const HistoryDialog = (props) => {
                         object_kind: objectKind,
                         overview,
                         remarks,
-                        createdAt: moment(date).format(
-                            "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
-                        ),
                         sort: 1, //always 1
                         other_object_id: otherObjectId,
                     },
