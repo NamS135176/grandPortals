@@ -552,7 +552,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                     bukken={otherObject?.bukken}
                                     loadData={() => reloadDocument(otherObject)}
                                     otherObjectId={otherObject?.id}
-                                    objectKind={otherObject.object_kind}
+                                    objectKind={otherObject?.object_kind}
                                 />
                             </Box>
                             <BukkenRelatedDocsListTable
@@ -592,7 +592,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                     bukken={otherObject?.bukken}
                                     loadData={() => reloadHistory(otherObject)}
                                     otherObjectId={otherObject?.id}
-                                    objectKind={otherObject.object_kind}
+                                    objectKind={otherObject?.object_kind}
                                 />
                             </Box>
                             <BukkenHistoryListTable

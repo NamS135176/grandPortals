@@ -18,6 +18,7 @@ import {API, Storage} from "aws-amplify";
 import {getNextDocumentId} from "../../utils/id-generator";
 import {FileDropzone} from "../file-dropzone";
 import * as R from "ramda";
+import * as Throttle from "promise-parallel-throttle";
 
 export const AddDocumentDialog = (props) => {
     const {
@@ -83,7 +84,7 @@ export const AddDocumentDialog = (props) => {
                         bukken_id: bukken.id,
                         delete_flag: 0,
                         object_kind: objectKind,
-                        object_kind_createdAt: `${object_kind}#${moment()
+                        object_kind_createdAt: `${objectKind}#${moment()
                             .utc()
                             .format("YYYYMMDDTHHmmss")}`, ////0#20221201T102309
                         orignal_file_name: originFileName,
@@ -105,9 +106,13 @@ export const AddDocumentDialog = (props) => {
         if (!files?.length || !overview) return;
         setLoading(true);
         try {
-            var promises = files.map((file) => createDocument(file, overview));
-            await Promise.all(promises);
-        } catch (e) {}
+            const queue = files.map((file) => () => createDocument(file, overview));
+            const results = await Throttle.all(queue, { maxInProgress: 1});
+
+            // console.log("handleSubmit...", results)
+        } catch (e) {
+            console.error(e)
+        }
         setLoading(false);
         loadData();
         setForm({
@@ -164,6 +169,7 @@ export const AddDocumentDialog = (props) => {
                             onDrop={handleDrop}
                             onRemove={handleRemove}
                             onRemoveAll={handleRemoveAll}
+                            maxFiles={1}
                         />
                     </Box>
                 </form>
