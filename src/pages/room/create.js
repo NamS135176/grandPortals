@@ -24,14 +24,17 @@ import {ManagementList} from "../../components/management-menu";
 import {ArrowLeft as ArrowLeftIcon} from "../../icons/arrow-left";
 import {useRouter} from "next/router";
 import {FileUpload} from "../../components/widgets/file-upload";
-import {RoomKind} from "../../utils/global-data";
+import {RoomKind, UserGroup} from "../../utils/global-data";
 import {useCreateRoom} from "../../hooks/use-create-room";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
+import {MobileDatePicker} from "@mui/lab";
+import {useAuth} from "../../hooks/use-auth";
 
 const CreateRoom = () => {
+    const {user} = useAuth();
     const router = useRouter();
     const {loading, createRoom} = useCreateRoom("0");
 
@@ -43,7 +46,9 @@ const CreateRoom = () => {
         initialValues: {
             kind: "",
             name: "",
+            construction_details: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -62,7 +67,21 @@ const CreateRoom = () => {
     }, []);
 
     const handleSubmit = (values) => {
-        createRoom(bukken, values.name, values.kind, values.remarks, file);
+        const {
+            name,
+            kind,
+            remarks,
+            construction_details,
+            last_construction_date,
+        } = values;
+        const fieldList = {
+            name,
+            kind,
+            remarks,
+            construction_details,
+            last_construction_date,
+        };
+        createRoom(bukken, fieldList, file);
     };
 
     const handleChangeFile = (file) => {
@@ -172,7 +191,10 @@ const CreateRoom = () => {
                                                 formik.errors.kind
                                         )}
                                     >
-                                        <InputLabel id="demo-simple-select-label" required>
+                                        <InputLabel
+                                            id="demo-simple-select-label"
+                                            required
+                                        >
                                             種別
                                         </InputLabel>
                                         <Select
@@ -225,6 +247,20 @@ const CreateRoom = () => {
                                         fullWidth
                                         multiline
                                         minRows={4}
+                                        label="施工内容"
+                                        name="construction_details"
+                                        value={
+                                            formik.values.construction_details
+                                        }
+                                        onChange={formik.handleChange}
+                                        InputLabelProps={{shrink: true}}
+                                    />
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        minRows={4}
                                         label="備考"
                                         name="remarks"
                                         value={formik.values.remarks}
@@ -232,6 +268,27 @@ const CreateRoom = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                                 <Box
                                     sx={{
                                         justifyContent: "flex-end",

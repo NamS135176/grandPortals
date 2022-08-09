@@ -33,7 +33,3 @@ export const firebaseConfig = {
 export const gtmConfig = {
   containerId: process.env.NEXT_PUBLIC_GTM_CONTAINER_ID,
 };
-
-export const cognitoGroupAgentGrands = "agentGrands"
-export const cognitoGroupAgentNormal = "agentNormal"
-export const cognitoGroupSupport = "support"

@@ -21,7 +21,7 @@ import {ManagementList} from "../../../components/management-menu";
 import {ArrowLeft as ArrowLeftIcon} from "../../../icons/arrow-left";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import {OtherObjectFieldKind} from "../../../utils/bukken";
-import {InteriorKind} from "../../../utils/global-data";
+import {InteriorKind, UserGroup} from "../../../utils/global-data";
 import {useCreateInterior} from "../../../hooks/use-create-interior";
 import {useBukkenDefault} from "../../../hooks/use-bukken-default";
 import {FileUpload} from "../../../components/widgets/file-upload";
@@ -30,8 +30,10 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
 import { useRoomDefault } from "../../../hooks/use-room-default";
+import { useAuth } from "../../../hooks/use-auth";
 
 const CreateInterior = () => {
+    const {user} = useAuth();
     const router = useRouter();
     const { room } = useRoomDefault();
     const {loading, createInterior} = useCreateInterior();
@@ -53,6 +55,7 @@ const CreateInterior = () => {
             date: null,
             quantity: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -99,7 +102,7 @@ const CreateInterior = () => {
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア情報</title>
+                <title>grandsポータルサイト｜建具・収納情報</title>
             </Head>
             <Box
                 component="main"
@@ -148,7 +151,7 @@ const CreateInterior = () => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            建具・インテリア情報（既製品）
+                                            建具・収納情報（既製品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -336,6 +339,27 @@ const CreateInterior = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                             </Grid>
                         </CardContent>
                     </Card>

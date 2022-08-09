@@ -50,7 +50,7 @@ export const useCreateInterior = () => {
                 variables: {
                     input: {
                         id: nextId,
-                        user_id: user.id,
+                        user_id: bukken.user_id,
                         bukken_id: bukken.id,
                         delete_flag: 0,
                         object_kind: OtherObjectKind.Interior,

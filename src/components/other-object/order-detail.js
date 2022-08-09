@@ -33,13 +33,19 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
 import PropTypes from "prop-types";
-import {OtherObjectKind} from "../../utils/bukken";
-import {OtherObjectSelectKind} from "../../utils/global-data";
+import {
+    getKindCaption,
+    getOtherObjectListUrl,
+    getOtherObjectSelectKind,
+} from "../../utils/bukken";
 import {gtm} from "../../lib/gtm";
 import {useOtherObjectDetail} from "../../hooks/use-other-object-detail";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
+import { useAuth } from "../../hooks/use-auth";
+import { UserGroup } from "../../utils/global-data";
 
 const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
+    const {user} = useAuth();
     const router = useRouter();
     const {
         loading,
@@ -70,6 +76,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
             date: null,
             quantity: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -109,6 +116,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
             date,
             quantity,
             remarks,
+            last_construction_date,
         } = otherObject.field_list;
         formik.setValues({
             kind,
@@ -122,6 +130,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
             date,
             quantity,
             remarks,
+            last_construction_date,
         });
     }, [otherObject]);
 
@@ -140,7 +149,8 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
         fieldList["date"] = values.date;
         fieldList["quantity"] = values.quantity;
         fieldList["remarks"] = values.remarks;
-
+        fieldList["last_construction_date"] = values.last_construction_date;
+        
         console.log("handleSubmit... ", {fieldList});
         updateOtherObjectFieldList(fieldList);
     };
@@ -168,43 +178,21 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
     };
 
     const kindCaption = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "建具";
-            case OtherObjectKind.Furniture:
-                return "家具";
-            case OtherObjectKind.HomeAppliances:
-                return "家電";
-            case OtherObjectKind.Facilities:
-                return "設備";
-            case OtherObjectKind.Other:
-                return "その他";
-            default:
-                return "";
-        }
+        return getKindCaption(otherObjectKind);
     }, [otherObjectKind]);
 
     const backUrl = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "/interior/list";
-            case OtherObjectKind.Furniture:
-                return "/furniture/list";
-            case OtherObjectKind.HomeAppliances:
-                return "/appliances/list";
-            case OtherObjectKind.Facilities:
-                return "/facility/list";
-            case OtherObjectKind.Other:
-                return "/other/list";
-            default:
-                return "";
-        }
+        return getOtherObjectListUrl(otherObjectKind);
+    }, [otherObjectKind]);
+
+    const otherObjectSelect = useMemo(() => {
+        return getOtherObjectSelectKind(otherObjectKind);
     }, [otherObjectKind]);
 
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア情報</title>
+                <title>grandsポータルサイト｜{kindCaption}情報</title>
             </Head>
 
             <Box
@@ -323,7 +311,7 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.kind}
                                         >
-                                            {OtherObjectSelectKind.map(
+                                            {otherObjectSelect.map(
                                                 (item, idx) => (
                                                     <MenuItem
                                                         value={item}
@@ -456,7 +444,27 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
-
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                                 <Box
                                     sx={{
                                         justifyContent: "flex-end",

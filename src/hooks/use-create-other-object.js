@@ -3,6 +3,8 @@ import {useCallback, useMemo, useState} from "react";
 import * as mutations from "../graphql/mutations";
 import {
     getCoverImageS3FileNameForCreateOtherObject,
+    getKindCaption,
+    getOtherObjectListUrl,
     getUrlPath,
     OtherObjectKind,
 } from "../utils/bukken";
@@ -19,37 +21,11 @@ export const useCreateOtherObject = (otherObjectKind) => {
     const [loading, setLoading] = useState(false);
 
     const kindCaption = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "建具";
-            case OtherObjectKind.Furniture:
-                return "家具一覧";
-            case OtherObjectKind.HomeAppliances:
-                return "家電一覧";
-            case OtherObjectKind.Facilities:
-                return "設備一覧";
-            case OtherObjectKind.Other:
-                return "その他一覧";
-            default:
-                return "";
-        }
+        return getKindCaption(otherObjectKind);
     }, [otherObjectKind]);
 
     const backUrl = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "/interior/list";
-            case OtherObjectKind.Furniture:
-                return "/furniture/list";
-            case OtherObjectKind.HomeAppliances:
-                return "/appliances/list";
-            case OtherObjectKind.Facilities:
-                return "/facility/list";
-            case OtherObjectKind.Other:
-                return "/other/list";
-            default:
-                return "";
-        }
+        return getOtherObjectListUrl(otherObjectKind);
     }, [otherObjectKind]);
 
     const createOtherObject = useCallback(
@@ -88,7 +64,7 @@ export const useCreateOtherObject = (otherObjectKind) => {
                     variables: {
                         input: {
                             id: nextId,
-                            user_id: user.id,
+                            user_id: bukken.user_id,
                             bukken_id: bukken.id,
                             delete_flag: 0,
                             object_kind: otherObjectKind,

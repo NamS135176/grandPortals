@@ -30,18 +30,20 @@ import {HistoryDialog} from "../../../../components/history/history-dialog";
 import {useInteriorDetail} from "../../../../hooks/use-interior-detail";
 import {useRouter} from "next/router";
 import {FileUpload} from "../../../../components/widgets/file-upload";
-import {InteriorKind} from "../../../../utils/global-data";
+import {InteriorKind, UserGroup} from "../../../../utils/global-data";
 import {AddDocumentDialog} from "../../../../components/bukken/add-document-dialog";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
 import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
 import { OtherObjectKind } from "../../../../utils/bukken";
+import { useAuth } from "../../../../hooks/use-auth";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const InteriorDetails = () => {
+    const {user} = useAuth();
     const router = useRouter();
     const {interiorId} = router.query;
     const {
@@ -73,6 +75,7 @@ const InteriorDetails = () => {
             date: null,
             quantity: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -105,6 +108,7 @@ const InteriorDetails = () => {
             date,
             quantity,
             remarks,
+            last_construction_date,
         } = interior.field_list;
         formik.setValues({
             kind,
@@ -118,6 +122,7 @@ const InteriorDetails = () => {
             date,
             quantity,
             remarks,
+            last_construction_date,
         });
     }, [interior]);
 
@@ -136,6 +141,7 @@ const InteriorDetails = () => {
         fieldList["date"] = values.date;
         fieldList["quantity"] = values.quantity;
         fieldList["remarks"] = values.remarks;
+        fieldList["last_construction_date"] = values.last_construction_date;
 
         console.log("handleSubmit... ", {fieldList});
         updateInteriorFieldList(fieldList);
@@ -166,7 +172,7 @@ const InteriorDetails = () => {
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア情報</title>
+                <title>grandsポータルサイト｜建具・収納情報</title>
             </Head>
 
             <Box
@@ -216,7 +222,7 @@ const InteriorDetails = () => {
                                 >
                                     <Grid item>
                                         <Typography variant="h6" mb={3}>
-                                            建具・インテリア情報（オーダー品）
+                                            建具・収納情報（オーダー品）
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -413,7 +419,27 @@ const InteriorDetails = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
-
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                                 <Box
                                     sx={{
                                         justifyContent: "flex-end",

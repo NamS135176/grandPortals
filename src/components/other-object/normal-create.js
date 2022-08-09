@@ -27,11 +27,13 @@ import * as R from "ramda";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
 import PropTypes from "prop-types";
 import {gtm} from "../../lib/gtm";
-import {OtherObjectSelectKind} from "../../utils/global-data";
-import {OtherObjectFieldKind, OtherObjectKind} from "../../utils/bukken";
+import {getKindCaption, getOtherObjectListUrl, getOtherObjectSelectKind, OtherObjectFieldKind, OtherObjectKind} from "../../utils/bukken";
 import {useCreateOtherObject} from "../../hooks/use-create-other-object";
+import { UserGroup } from "../../utils/global-data";
+import { useAuth } from "../../hooks/use-auth";
 
 const CreateNormalOtherObject = ({otherObjectKind}) => {
+    const {user} = useAuth();
     const router = useRouter();
     const {loading, createOtherObject} = useCreateOtherObject(otherObjectKind);
     const {bukken} = useBukkenDefault();
@@ -52,6 +54,7 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
             date: null,
             quantity: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -95,43 +98,21 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
     };
 
     const kindCaption = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.OtherObject:
-                return "建具";
-            case OtherObjectKind.Furniture:
-                return "家具";
-            case OtherObjectKind.HomeAppliances:
-                return "家電";
-            case OtherObjectKind.Facilities:
-                return "設備";
-            case OtherObjectKind.Other:
-                return "その他";
-            default:
-                return "";
-        }
+        return getKindCaption(otherObjectKind);
     }, [otherObjectKind]);
 
     const backUrl = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.OtherObject:
-                return "/interior/list";
-            case OtherObjectKind.Furniture:
-                return "/furniture/list";
-            case OtherObjectKind.HomeAppliances:
-                return "/appliances/list";
-            case OtherObjectKind.Facilities:
-                return "/facility/list";
-            case OtherObjectKind.Other:
-                return "/other/list";
-            default:
-                return "";
-        }
+        return getOtherObjectListUrl(otherObjectKind);
+    }, [otherObjectKind]);
+
+    const otherObjectSelect = useMemo(() => {
+        return getOtherObjectSelectKind(otherObjectKind);
     }, [otherObjectKind]);
 
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア情報</title>
+                <title>grandsポータルサイト｜{kindCaption}情報</title>
             </Head>
             <Box
                 component="main"
@@ -237,7 +218,7 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
                                             onBlur={formik.handleBlur}
                                             value={formik.values.kind}
                                         >
-                                            {OtherObjectSelectKind.map(
+                                            {otherObjectSelect.map(
                                                 (item, idx) => (
                                                     <MenuItem
                                                         value={item}
@@ -370,6 +351,27 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                             </Grid>
                         </CardContent>
                     </Card>

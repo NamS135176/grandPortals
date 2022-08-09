@@ -30,14 +30,17 @@ import {HistoryDialog} from "../../../components/history/history-dialog";
 import {useRoomDetail} from "../../../hooks/use-room-detail";
 import {useRouter} from "next/router";
 import {FileUpload} from "../../../components/widgets/file-upload";
-import {RoomKind} from "../../../utils/global-data";
+import {RoomKind, UserGroup} from "../../../utils/global-data";
 import {AddDocumentDialog} from "../../../components/bukken/add-document-dialog";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import * as R from "ramda";
-import { OtherObjectKind } from "../../../utils/bukken";
+import {OtherObjectKind} from "../../../utils/bukken";
+import {MobileDatePicker} from "@mui/lab";
+import { useAuth } from "../../../hooks/use-auth";
 
 const RoomDetails = () => {
+    const {user} = useAuth();
     const router = useRouter();
     const {roomId} = router.query;
     const {
@@ -59,7 +62,9 @@ const RoomDetails = () => {
         initialValues: {
             kind: "",
             name: "",
+            construction_details: null,
             remarks: null,
+            last_construction_date: null,
         },
         validationSchema: Yup.object({
             kind: Yup.string().required("種別は必須です。"),
@@ -75,8 +80,20 @@ const RoomDetails = () => {
 
     useEffect(() => {
         if (!room?.field_list) return;
-        const {kind, name, remarks} = room.field_list;
-        formik.setValues({kind, name, remarks});
+        const {
+            kind,
+            name,
+            remarks,
+            construction_details,
+            last_construction_date,
+        } = room.field_list;
+        formik.setValues({
+            kind,
+            name,
+            remarks,
+            construction_details,
+            last_construction_date,
+        });
     }, [room]);
 
     // dialog
@@ -114,13 +131,13 @@ const RoomDetails = () => {
         const fieldList = room?.field_list ?? {};
         fieldList["kind"] = values.kind;
         fieldList["name"] = values.name;
-        fieldList["area"] = values.area;
-        fieldList["height"] = values.height;
         fieldList["remarks"] = values.remarks;
+        fieldList["construction_details"] = values.construction_details;
+        fieldList["last_construction_date"] = values.last_construction_date;
 
         updateRoomFieldList(fieldList);
     };
-    
+
     return (
         <>
             <Head>
@@ -255,7 +272,10 @@ const RoomDetails = () => {
                                                 formik.errors.kind
                                         )}
                                     >
-                                        <InputLabel id="demo-simple-select-label" required>
+                                        <InputLabel
+                                            id="demo-simple-select-label"
+                                            required
+                                        >
                                             種別
                                         </InputLabel>
                                         <Select
@@ -308,6 +328,20 @@ const RoomDetails = () => {
                                         fullWidth
                                         multiline
                                         minRows={4}
+                                        label="施工内容"
+                                        name="construction_details"
+                                        value={
+                                            formik.values.construction_details
+                                        }
+                                        onChange={formik.handleChange}
+                                        InputLabelProps={{shrink: true}}
+                                    />
+                                </Grid>
+                                <Grid item md={8} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        minRows={4}
                                         label="備考"
                                         name="remarks"
                                         value={formik.values.remarks}
@@ -315,6 +349,27 @@ const RoomDetails = () => {
                                         InputLabelProps={{shrink: true}}
                                     />
                                 </Grid>
+                                {user.group === UserGroup.support && (
+                                    <Grid item md={8} xs={12}>
+                                        <MobileDatePicker
+                                            label="最終施工日"
+                                            inputFormat="MM/dd/yyyy"
+                                            value={
+                                                formik.values
+                                                    .last_construction_date
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "last_construction_date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                )}
                                 <Box
                                     sx={{
                                         justifyContent: "flex-end",
@@ -378,7 +433,9 @@ const RoomDetails = () => {
                                                 reloadDocument(room)
                                             }
                                             otherObjectId={room?.id}
-											objectKind={OtherObjectKind.RoomSpace}
+                                            objectKind={
+                                                OtherObjectKind.RoomSpace
+                                            }
                                         />
                                     </Box>
                                     <BukkenRelatedDocsListTable
@@ -421,7 +478,9 @@ const RoomDetails = () => {
                                             bukken={room?.bukken}
                                             loadData={() => reloadHistory(room)}
                                             otherObjectId={room?.id}
-											objectKind={OtherObjectKind.RoomSpace}
+                                            objectKind={
+                                                OtherObjectKind.RoomSpace
+                                            }
                                         />
                                     </Box>
                                     <BukkenHistoryListTable

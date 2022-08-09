@@ -5,7 +5,7 @@ import Amplify, { Auth } from 'aws-amplify';
 
 // import { amplifyConfig } from '../config';
 import awsExports from "../aws-exports";
-import { cognitoGroupAgentGrands } from '../config';
+import { UserGroup } from '../utils/global-data';
 
 Amplify.configure(awsExports);
 
@@ -86,7 +86,7 @@ export const AuthProvider = (props) => {
             isAuthenticated: true,
             user: {
               id: user.username,
-              group: groups?.length > 0 ? groups[0] : cognitoGroupAgentGrands,
+              group: groups?.length > 0 ? groups[0] : UserGroup.agentGrands,
               avatar: '/images/mock-images/avatars/avatar-anika_visser.png',
               email: user.attributes.email,
               name: 'Anika Visser',

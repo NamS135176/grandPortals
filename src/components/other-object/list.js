@@ -17,55 +17,31 @@ import PropTypes from "prop-types";
 import {useOtherObjectList} from "../../hooks/use-other-object-list";
 import {OtherObjectListTable} from "./other-object-list-table";
 import {useBukkenDefault} from "../../hooks/use-bukken-default";
-import {OtherObjectKind} from "../../utils/bukken";
+import {getKindCaption, getOtherObjectRouteUrl, OtherObjectKind} from "../../utils/bukken";
 
 const OtherObjectList = ({otherObjectKind}) => {
     const {bukken} = useBukkenDefault();
-    const {otherObjects, deleteObject} = useOtherObjectList(bukken?.id, otherObjectKind);
+    const {otherObjects, deleteObject} = useOtherObjectList(
+        bukken?.id,
+        otherObjectKind
+    );
 
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
 
-
     const kindCaption = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "建具";
-            case OtherObjectKind.Furniture:
-                return "家具一覧";
-            case OtherObjectKind.HomeAppliances:
-                return "家電一覧";
-            case OtherObjectKind.Facilities:
-                return "設備一覧";
-            case OtherObjectKind.Other:
-                return "その他一覧";
-            default:
-                return "";
-        }
+        return getKindCaption(otherObjectKind);
     }, [otherObjectKind]);
 
     const route = useMemo(() => {
-        switch (otherObjectKind) {
-            case OtherObjectKind.Interior:
-                return "/interior";
-            case OtherObjectKind.Furniture:
-                return "/furniture";
-            case OtherObjectKind.HomeAppliances:
-                return "/appliances";
-            case OtherObjectKind.Facilities:
-                return "/facility";
-            case OtherObjectKind.Other:
-                return "/other";
-            default:
-                return "";
-        }
+        return getOtherObjectRouteUrl(otherObjectKind);
     }, [otherObjectKind]);
 
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア</title>
+                <title>grandsポータルサイト｜{kindCaption}</title>
             </Head>
             <Box
                 component="main"
@@ -103,7 +79,7 @@ const OtherObjectList = ({otherObjectKind}) => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    {kindCaption}
+                                    {kindCaption}一覧
                                 </Typography>
                                 <Box>
                                     <NextLink

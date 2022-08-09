@@ -32,7 +32,7 @@ const InteriorList = () => {
     return (
         <>
             <Head>
-                <title>grandsポータルサイト｜建具・インテリア</title>
+                <title>grandsポータルサイト｜建具・収納</title>
             </Head>
             <Box
                 component="main"
@@ -71,13 +71,12 @@ const InteriorList = () => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    建具・インテリア一覧
+                                    建具・収納一覧
                                 </Typography>
                                 <Box>
                                     <NextLink href={`/interior/normal/create`} passHref>
                                         <Button variant="contained" sx={{mr: 2}}>
                                             既製品新規登録
-
                                         </Button>
                                     </NextLink>
                                     <NextLink href={`/interior/order/create`} passHref>

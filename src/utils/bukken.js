@@ -1,4 +1,13 @@
 import * as R from "ramda";
+import {
+    ExteriorKind,
+    FacilitiesKind,
+    FurnitureKind,
+    HomeAppliancesKind,
+    InteriorKind,
+    OtherKind,
+    RoomKind,
+} from "./global-data";
 
 export const OtherObjectKind = {
     Bukken: "0",
@@ -37,32 +46,6 @@ export function getBukkenS3FileName(bukken, fileName) {
     }/${fileName}`;
 }
 
-export function getObjectKind(object_kind) {
-    switch (object_kind) {
-        case OtherObjectKind.Bukken:
-            return "物件";
-        case OtherObjectKind.Exterior:
-            return "外装・エクステリア";
-        case OtherObjectKind.RoomSpace:
-            return "部屋・スペース";
-        case OtherObjectKind.Interior:
-            return "建具・インテリア";
-        case OtherObjectKind.Furniture:
-            return "家具";
-        case OtherObjectKind.HomeAppliances:
-        case "5":
-            return "家電";
-        case OtherObjectKind.Facilities:
-        case "6":
-            return "設備";
-        case OtherObjectKind.Other:
-        case "7":
-            return "その他";
-        default:
-            return "-";
-    }
-}
-
 export function getDocumentUrlPath(document) {
     return getUrlPath(document.s3_file_name);
 }
@@ -72,7 +55,7 @@ export function getUrlPath(s3FileName) {
 }
 
 export function getS3FromUrl(url) {
-    return url.split('public/')[1]
+    return url.split("public/")[1];
 }
 
 /**
@@ -85,15 +68,28 @@ export function getOtherObjectS3FileName(otherObject, fileName) {
     return `${otherObject.user_id}/${otherObject.bukken_id}/${otherObject.object_kind}-${otherObject.id}/${fileName}`;
 }
 
-export function getCoverImageS3FileNameForCreateRoom(bukken, nextRoomId, fileName) {
+export function getCoverImageS3FileNameForCreateRoom(
+    bukken,
+    nextRoomId,
+    fileName
+) {
     return `${bukken.user_id}/${bukken.id}/${OtherObjectKind.RoomSpace}-${nextRoomId}/${fileName}`;
 }
 
-export function getCoverImageS3FileNameForCreateInterior(bukken, nextOtherObjectId, fileName) {
+export function getCoverImageS3FileNameForCreateInterior(
+    bukken,
+    nextOtherObjectId,
+    fileName
+) {
     return `${bukken.user_id}/${bukken.id}/${OtherObjectKind.Interior}-${nextOtherObjectId}/${fileName}`;
 }
 
-export function getCoverImageS3FileNameForCreateOtherObject(bukken, otherObjectKind, nextOtherObjectId, fileName) {
+export function getCoverImageS3FileNameForCreateOtherObject(
+    bukken,
+    otherObjectKind,
+    nextOtherObjectId,
+    fileName
+) {
     return `${bukken.user_id}/${bukken.id}/${otherObjectKind}-${nextOtherObjectId}/${fileName}`;
 }
 
@@ -137,3 +133,68 @@ export function getBukkenCoverImageUrlByBukken(bukken) {
     }
     return null;
 }
+
+export const getKindCaption = (otherObjectKind) => {
+    switch (otherObjectKind) {
+        case OtherObjectKind.Interior:
+            return "建具・収納";
+        case OtherObjectKind.Furniture:
+            return "家具・インテリア";
+        case OtherObjectKind.HomeAppliances:
+            return "家電";
+        case OtherObjectKind.Facilities:
+            return "設備・建材";
+        case OtherObjectKind.Other:
+            return "その他";
+        case OtherObjectKind.Exterior:
+            return "外装";
+        case OtherObjectKind.RoomSpace:
+            return "部屋・スペース";
+        default:
+            return "";
+    }
+};
+
+export const getOtherObjectListUrl = (otherObjectKind) => {
+    const route = getOtherObjectRouteUrl(otherObjectKind);
+    if (route) return `${route}/list`;
+    return "";
+};
+
+export const getOtherObjectRouteUrl = (otherObjectKind) => {
+    switch (otherObjectKind) {
+        case OtherObjectKind.Interior:
+            return "/interior";
+        case OtherObjectKind.Furniture:
+            return "/furniture";
+        case OtherObjectKind.HomeAppliances:
+            return "/appliances";
+        case OtherObjectKind.Facilities:
+            return "/facility";
+        case OtherObjectKind.Other:
+            return "/other";
+        default:
+            return null;
+    }
+};
+
+export const getOtherObjectSelectKind = (otherObjectKind) => {
+    switch (otherObjectKind) {
+        case OtherObjectKind.Interior:
+            return InteriorKind;
+        case OtherObjectKind.Furniture:
+            return FurnitureKind;
+        case OtherObjectKind.HomeAppliances:
+            return HomeAppliancesKind;
+        case OtherObjectKind.Facilities:
+            return FacilitiesKind;
+        case OtherObjectKind.Other:
+            return OtherKind;
+        case OtherObjectKind.Exterior:
+            return ExteriorKind;
+        case OtherObjectKind.RoomSpace:
+            return RoomKind;
+        default:
+            return null;
+    }
+};

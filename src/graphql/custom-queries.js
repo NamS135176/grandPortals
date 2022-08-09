@@ -24,7 +24,7 @@ export const queryBukkensByUserIdWithCoverImage = /* GraphQL */ `
                 shinchiku_date
                 remarks
                 delete_flag
-                otherObjects(filter: {object_kind: {eq: "0"}}) {
+                otherObjects(filter: {object_kind: {eq: "0"}}, limit: 1000) {
                     nextToken
                     items {
                         bukken_id
@@ -54,6 +54,64 @@ export const queryBukkensByUserIdWithCoverImage = /* GraphQL */ `
             nextToken
         }
     }
+`;
+
+export const listBukkensWithCoverImage = /* GraphQL */ `
+  query ListBukkens(
+    $id: ID
+    $filter: ModelBukkenFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listBukkens(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        s_object_id
+        bukken_no
+        user_id
+        address
+        bukken_kind
+        floor_plan
+        shinchiku_date
+        remarks
+        delete_flag
+        otherObjects(filter: {object_kind: {eq: "0"}}, limit: 1000) {
+          nextToken
+          items {
+              bukken_id
+              createdAt
+              delete_flag
+              field_kind
+              field_list
+              id
+              object_kind
+              object_kind_updatedAt
+              room_id
+              sort
+              updatedAt
+              user_id
+          }
+      }
+        documents {
+          nextToken
+        }
+        histories {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
 `;
 
 export const getBukkenOnly = /* GraphQL */ `
