@@ -31,6 +31,7 @@ import * as Yup from "yup";
 import * as R from "ramda";
 import { useRoomDefault } from "../../../hooks/use-room-default";
 import { useAuth } from "../../../hooks/use-auth";
+import { AuthGuard } from "../../../components/authentication/auth-guard";
 
 const CreateInterior = () => {
     const {user} = useAuth();
@@ -393,6 +394,10 @@ const CreateInterior = () => {
         </>
     );
 };
-CreateInterior.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+CreateInterior.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 
 export default CreateInterior;

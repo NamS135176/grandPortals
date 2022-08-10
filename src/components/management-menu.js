@@ -29,7 +29,7 @@ const menu = [
 		key: 'room',
 	},
 	{
-		name: '家具',
+		name: '家具・インテリア',
 		url: '/furniture/list',
 		key: 'furniture',
 	},
@@ -39,7 +39,7 @@ const menu = [
 		key: 'appliances',
 	},
 	{
-		name: '設備',
+		name: '設備・建材',
 		url: '/facility/list',
 		key: 'facility',
 	},

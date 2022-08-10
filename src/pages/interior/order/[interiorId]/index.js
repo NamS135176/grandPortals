@@ -38,6 +38,7 @@ import * as R from "ramda";
 import { useBukkenDefault } from "../../../../hooks/use-bukken-default";
 import { OtherObjectKind } from "../../../../utils/bukken";
 import { useAuth } from "../../../../hooks/use-auth";
+import { AuthGuard } from "../../../../components/authentication/auth-guard";
 
 const applyPagination = (bukken, page, rowsPerPage) =>
     bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -557,6 +558,10 @@ const InteriorDetails = () => {
         </>
     );
 };
-InteriorDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+InteriorDetails.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 
 export default InteriorDetails;

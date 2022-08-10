@@ -32,6 +32,7 @@ import * as Yup from "yup";
 import * as R from "ramda";
 import {MobileDatePicker} from "@mui/lab";
 import {useAuth} from "../../hooks/use-auth";
+import { AuthGuard } from "../../components/authentication/auth-guard";
 
 const CreateRoom = () => {
     const {user} = useAuth();
@@ -326,6 +327,9 @@ const CreateRoom = () => {
         </>
     );
 };
-CreateRoom.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
+CreateRoom.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 export default CreateRoom;

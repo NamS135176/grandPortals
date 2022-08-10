@@ -10,5 +10,6 @@
   },
   "prettier.tabWidth": 4,
   "editor.insertSpaces": true,
-  "prettier.bracketSpacing": false
+  "prettier.bracketSpacing": false,
+  "typescript.tsdk": "src"
 }

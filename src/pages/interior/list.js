@@ -16,9 +16,7 @@ import {gtm} from "../../lib/gtm";
 import {ManagementList} from "../../components/management-menu";
 import {useInteriorList} from "../../hooks/use-interior-list";
 import { useRoomDefault } from "../../hooks/use-room-default";
-
-const applyPagination = (bukken, page, rowsPerPage) =>
-    bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+import { AuthGuard } from "../../components/authentication/auth-guard";
 
 const InteriorList = () => {
     const { room } = useRoomDefault();
@@ -110,6 +108,10 @@ const InteriorList = () => {
         </>
     );
 };
-InteriorList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+InteriorList.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 
 export default InteriorList;

@@ -37,7 +37,8 @@ import * as Yup from "yup";
 import * as R from "ramda";
 import {OtherObjectKind} from "../../../utils/bukken";
 import {MobileDatePicker} from "@mui/lab";
-import { useAuth } from "../../../hooks/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
+import {AuthGuard} from "../../../components/authentication/auth-guard";
 
 const RoomDetails = () => {
     const {user} = useAuth();
@@ -193,7 +194,7 @@ const RoomDetails = () => {
                                                         }}
                                                     >
                                                         <Typography variant="overline">
-                                                            建具インテリア
+                                                            建具・収納
                                                         </Typography>
                                                     </Box>
                                                 </CardContent>
@@ -507,6 +508,10 @@ const RoomDetails = () => {
         </>
     );
 };
-RoomDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+RoomDetails.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 
 export default RoomDetails;

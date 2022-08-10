@@ -12,11 +12,11 @@ import {
 } from '@mui/material';
 import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
 import {RoomListTable} from '../../components/room/room-list-table';
-import {useMounted} from '../../hooks/use-mounted';
 import {gtm} from '../../lib/gtm';
 import {useRoomList} from '../../hooks/use-room-list';
 import {ManagementList} from '../../components/management-menu';
 import {useRouter} from 'next/router';
+import { AuthGuard } from '../../components/authentication/auth-guard';
 
 const RoomList = () => {
 	const router = useRouter();
@@ -103,6 +103,10 @@ const RoomList = () => {
 		</>
 	);
 };
-RoomList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+RoomList.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 
 export default RoomList;
