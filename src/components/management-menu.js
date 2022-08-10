@@ -24,7 +24,7 @@ const menu = [
 		key: 'exterior',
 	},
 	{
-		name: '部屋スペース',
+		name: '部屋・スペース',
 		url: '/room/list',
 		key: 'room',
 	},
