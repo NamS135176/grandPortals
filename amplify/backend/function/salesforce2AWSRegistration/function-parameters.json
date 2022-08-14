@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "auth": {
+      "grandsPortal": [
+        "create"
+      ]
+    },
+    "api": {
+      "grandsportal": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
