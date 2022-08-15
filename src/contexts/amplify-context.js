@@ -62,7 +62,7 @@ export const AuthContext = createContext({
   verifyCode: () => Promise.resolve(),
   resendCode: () => Promise.resolve(),
   passwordRecovery: () => Promise.resolve(),
-  passwordReset: () => Promise.resolve()
+  passwordReset: () => Promise.resolve(),
 });
 
 export const AuthProvider = (props) => {

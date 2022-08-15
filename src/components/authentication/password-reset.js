@@ -4,10 +4,12 @@ import { Box, Button, FormHelperText, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useMounted } from '../../hooks/use-mounted';
 import toast from 'react-hot-toast';
-
+import { useAuth } from 'hooks/use-auth';
 export const PasswordResetForm = (props) => {
 	const router = useRouter();
 	const isMounted = useMounted();
+	const {passwordResetRequest} = useAuth();
+
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -21,6 +23,7 @@ export const PasswordResetForm = (props) => {
 		}),
 		onSubmit: async (values, helpers) => {
 			try {
+				await passwordResetRequest(values.email)
 				if (isMounted()) {
 					helpers.setStatus({ success: true });
 					helpers.setSubmitting(false);

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { Box, Card, Container, Divider, Link, Typography } from '@mui/material';
 import { PasswordResettingForm } from '../../components/authentication/password-resetting';
+import { AmplifyPasswordReset } from 'components/authentication/amplify-password-reset';
 import { gtm } from '../../lib/gtm';
 import { MainLayout } from '../../components/main-layout';
 
@@ -51,7 +52,7 @@ const PasswordReset = () => {
 								mt: 3,
 							}}
 						>
-							<PasswordResettingForm />
+							<AmplifyPasswordReset />
 						</Box>
 						<Divider sx={{ my: 3 }} />
 						<Box

@@ -31,7 +31,7 @@ export const AmplifyLogin = (props) => {
                     router.push(returnUrl).catch(console.error);
                 }
             } catch (err) {
-                console.error(err);
+                console.error(err.message);
 
                 if (isMounted()) {
                     if (err.code === "UserNotConfirmedException") {
@@ -43,7 +43,7 @@ export const AmplifyLogin = (props) => {
                     }
 
                     helpers.setStatus({success: false});
-                    helpers.setErrors({submit: err.message});
+                    helpers.setErrors({submit: 'メールアドレスもしくはパスワードに誤りがあります。'});
                     helpers.setSubmitting(false);
                 }
             }
