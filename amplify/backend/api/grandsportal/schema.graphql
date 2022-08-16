@@ -6,7 +6,7 @@ type User
     @auth(
         rules: [
             {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
-            {allow: private, provider: iam, operations: [create]}
+            {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
     id: ID! @primaryKey

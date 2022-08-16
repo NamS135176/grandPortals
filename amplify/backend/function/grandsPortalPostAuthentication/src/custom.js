@@ -6,31 +6,32 @@ const axios = require("axios");
 const AWS = require("aws-sdk");
 const urlParse = require("url").URL;
 const moment = require("moment");
-const appsyncUrl = process.env.API_LIFEPARTNER_GRAPHQLAPIENDPOINTOUTPUT;
+const appsyncUrl = process.env.API_GRANDSPORTAL_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 const {updateUser} = require("./graphql");
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
     // insert code to be executed by your lambda trigger
     const {userName} = event;
-    const params = {
+    const input = {
         input: {
             id: userName,
-            lastLoginDate: moment(new Date()).utc(),
+            last_login_date: moment(new Date()).utc(),
         },
     };
+    // console.log(`Update User with ${event.triggerSource} input=`, JSON.stringify(input));
     try {
         const response = await appSyncRequest(
             updateUser,
             "UpdateUser",
-            JSON.stringify(params)
+            input
         );
         console.log(`Update User with ${event.triggerSource}`, response.data);
     } catch (error) {
         console.log(`Update User error ${event.triggerSource}`, {error});
     }
-    callback(null, event);
+    return event;
 };
 
 /**
@@ -42,7 +43,6 @@ exports.handler = async (event, context, callback) => {
  */
 const appSyncRequest = async (query, operationName, condition) => {
     const req = new AWS.HttpRequest(appsyncUrl, region);
-    // console.log('req', req);
     const body = {
         query: query,
         operationName: operationName,

@@ -55,7 +55,7 @@
         },
         "grandsPortalPostAuthentication": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/grandsPortalPostAuthentication-41306744546a34342f32-build.zip"
+          "s3Key": "amplify-builds/grandsPortalPostAuthentication-536f7943744e5231464a-build.zip"
         }
       }
     }
