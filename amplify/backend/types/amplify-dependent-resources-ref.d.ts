@@ -16,17 +16,17 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "function": {
-        "grandsPortalPostConfirmation": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
         "salesforce2AWSRegistration": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
+        },
+        "grandsPortalPostAuthentication": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
+            "Region": "string"
         }
     },
     "api": {

@@ -4,9 +4,22 @@
   "bucketName": "grands-portal-resource",
   "storageAccess": "auth",
   "guestAccess": [],
-  "authAccess": [
-    "CREATE_AND_UPDATE",
-    "READ",
-    "DELETE"
-  ]
+  "authAccess": [],
+  "groupAccess": {
+    "agentGrands": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "agentNormal": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "support": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ]
+  }
 }
