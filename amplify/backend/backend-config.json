@@ -57,7 +57,8 @@
     "grandsPortalPostConfirmation": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": []
     },
     "salesforce2AWSRegistration": {
       "build": true,
