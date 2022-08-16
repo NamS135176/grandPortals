@@ -59,13 +59,13 @@ const Login = () => {
 								href="https://grands.co.jp/privacy"
 								passHref
 							>
-								<Link color="textSecondary" variant="body2">
+								<Link color="textSecondary" variant="body2" underline='always'>
 									プライバシーポリシー
 								</Link>
 							</NextLink>
 							<Box sx={{mt: 1}}>
 								<NextLink href="/passwordreset" passHref>
-									<Link color="textSecondary" variant="body2">
+									<Link color="textSecondary" variant="body2" underline='always'>
 										パスワードをお忘れの方はこちら
 									</Link>
 								</NextLink>
