@@ -6,6 +6,7 @@ type User
     @auth(
         rules: [
             {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+            {allow: private, provider: iam, operations: [create]}
         ]
     ) {
     id: ID! @primaryKey
@@ -54,6 +55,7 @@ type Bukken
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [read, update]}
         ]
     ) {
     id: ID! @primaryKey
