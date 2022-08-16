@@ -8,23 +8,5 @@
     "CREATE_AND_UPDATE",
     "READ",
     "DELETE"
-  ],
-  "triggerFunction": "NONE",
-  "groupAccess": {
-    "agentGrands": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ],
-    "agentNormal": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ],
-    "support": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ]
-  }
+  ]
 }
