@@ -27,6 +27,7 @@ import {getBukkenType, OtherObjectKind} from '../../../utils/bukken';
 import moment from 'moment';
 import {AddDocumentDialog} from '../../../components/bukken/add-document-dialog';
 import {FileUpload} from '../../../components/widgets/file-upload';
+import { AuthGuard } from 'components/authentication/auth-guard';
 
 const BukkenDetails = () => {
 	const router = useRouter();
@@ -335,6 +336,10 @@ const BukkenDetails = () => {
 		</>
 	);
 };
-BukkenDetails.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
+BukkenDetails.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
 export default BukkenDetails;

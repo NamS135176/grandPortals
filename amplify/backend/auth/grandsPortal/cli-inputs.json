@@ -43,7 +43,11 @@
     ],
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": {},
+    "triggers": {
+      "PostAuthentication": [
+        "custom"
+      ]
+    },
     "hostedUI": false,
     "userPoolGroupList": [
       "agentGrands",
@@ -66,11 +70,22 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "grandsPortalPostAuthentication",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "permissions": [],
     "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
-    }
+    },
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostAuthentication\",\n    \"lambdaFunctionName\": \"grandsPortalPostAuthentication\"\n  }\n]"
   }
 }

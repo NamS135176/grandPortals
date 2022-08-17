@@ -19,7 +19,17 @@
     "grandsPortal": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "grandsPortalPostAuthentication",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
@@ -44,12 +54,6 @@
     }
   },
   "function": {
-    "grandsPortalPostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
     "salesforce2AWSRegistration": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -62,6 +66,21 @@
             "UserPoolId"
           ]
         },
+        {
+          "category": "api",
+          "resourceName": "grandsportal",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "grandsPortalPostAuthentication": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
         {
           "category": "api",
           "resourceName": "grandsportal",

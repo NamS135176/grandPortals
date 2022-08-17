@@ -32,8 +32,7 @@ export const AmplifyPasswordReset = (props) => {
         .required('メールアドレスは必須です。'),
       password: Yup
         .string()
-        .min(7, '新しいパスワードは半角英数記号で8文字以上、32文字以内を指定してください。')
-        .max(32, "新しいパスワードは半角英数記号で8文字以上、32文字以内を指定してください。")
+        .matches("^[a-zA-Z0-9&@`'\"!#\\\$%()*:+;\\[{,¥|\\-=\\]}.^~/?_]{8,32}\$","新しいパスワードは半角英数記号で8文字以上、32文字以内を指定し")
         .required('現在のパスワードは必須です。'),
       passwordConfirm: Yup
         .string()
@@ -126,7 +125,7 @@ export const AmplifyPasswordReset = (props) => {
             error={Boolean(formik.touched.email && formik.errors.email)}
             fullWidth
             helperText={formik.touched.email && formik.errors.email}
-            label="Email Address"
+            label="メールアドレス"
             margin="normal"
             name="email"
             onBlur={formik.handleBlur}
@@ -151,7 +150,7 @@ export const AmplifyPasswordReset = (props) => {
         }}
         variant="subtitle2"
       >
-        Verification code
+        認証コード
       </Typography>
       <Box
         sx={{
@@ -199,7 +198,7 @@ export const AmplifyPasswordReset = (props) => {
         error={Boolean(formik.touched.password && formik.errors.password)}
         fullWidth
         helperText={formik.touched.password && formik.errors.password}
-        label="Password"
+        label="新しいパスワード ※ （半角英数記号で8文字以上、32文字以内）"
         margin="normal"
         name="password"
         onBlur={formik.handleBlur}
@@ -211,7 +210,7 @@ export const AmplifyPasswordReset = (props) => {
         error={Boolean(formik.touched.passwordConfirm && formik.errors.passwordConfirm)}
         fullWidth
         helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-        label="Password Confirmation"
+        label="新しいパスワード（確認）※ "
         margin="normal"
         name="passwordConfirm"
         onBlur={formik.handleBlur}
@@ -234,7 +233,7 @@ export const AmplifyPasswordReset = (props) => {
           type="submit"
           variant="contained"
         >
-          Reset Password
+          変更
         </Button>
       </Box>
     </form>
