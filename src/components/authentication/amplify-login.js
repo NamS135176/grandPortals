@@ -26,10 +26,10 @@ export const AmplifyLogin = (props) => {
         onSubmit: async (values, helpers) => {
             try {
                 await login(values.email, values.password);
-                if (isMounted()) {
-                    const returnUrl = "/bukken/list";
-                    router.push(returnUrl).catch(console.error);
-                }
+                // if (isMounted()) {
+                //     const returnUrl = "/bukken/list";
+                //     router.push(returnUrl).catch(console.error);
+                // }
             } catch (err) {
                 console.error(err.message);
 
