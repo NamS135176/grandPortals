@@ -104,7 +104,7 @@ const PasswordRecovery = () => {
                                 href="/login"
                                 passHref
                             >
-                                <Link color="textSecondary" variant="body2">
+                                <Link color="textSecondary" variant="body2" underline="always">
 								ログイン
                                 </Link>
                             </NextLink>
