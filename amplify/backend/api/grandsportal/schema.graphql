@@ -86,6 +86,7 @@ type OtherObject
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
         ]
     ) {
     id: ID! @primaryKey
@@ -114,6 +115,7 @@ type Document
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
         ]
     ) {
     id: ID! @primaryKey
@@ -147,6 +149,7 @@ type History
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
         ]
     ) {
     id: ID! @primaryKey

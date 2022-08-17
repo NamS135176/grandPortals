@@ -17,12 +17,14 @@ import {useRoomList} from '../../hooks/use-room-list';
 import {ManagementList} from '../../components/management-menu';
 import {useRouter} from 'next/router';
 import { AuthGuard } from '../../components/authentication/auth-guard';
+import { useBukkenDefault } from 'hooks/use-bukken-default';
 
 const RoomList = () => {
 	const router = useRouter();
-	const {bukkenId} = router.query;
+	// const {bukkenId} = router.query;
+	const { bukken } = useBukkenDefault();
 
-	const {roomList: rooms, deleteRoom} = useRoomList(bukkenId);
+	const {roomList: rooms, deleteRoom} = useRoomList(bukken?.id);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});

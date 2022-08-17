@@ -2,10 +2,10 @@ import {API} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {listOtherObjects} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import {useDeleteHistory} from "./use-delete-history";
 import { useDeleteDocument } from "./use-delete-document";
+import { queryOtherObjectOnlyByBukkenId } from "graphql/custom-queries";
 
 export const useOtherObjectList = (bukkenId, otherObjectKind) => {
     const isMounted = useMounted();
@@ -20,6 +20,7 @@ export const useOtherObjectList = (bukkenId, otherObjectKind) => {
             const variables = {
                 limit: 1000,
                 nextToken: nextToken,
+                bukken_id: bukkenId,
                 filter: {
                     object_kind: {
                         eq: otherObjectKind,
@@ -29,16 +30,11 @@ export const useOtherObjectList = (bukkenId, otherObjectKind) => {
                     },
                 },
             };
-            if (bukkenId) {
-                variables["bukken_id"] = {
-                    eq: bukkenId,
-                };
-            }
             response = await API.graphql({
-                query: listOtherObjects,
+                query: queryOtherObjectOnlyByBukkenId,
                 variables,
             });
-            var otherObjects = response.data.listOtherObjects.items;
+            var otherObjects = response.data.queryOtherObjectByBukkenId.items;
             if (!R.isNil(otherObjects) && !R.isEmpty(otherObjects)) {
                 otherObjects.forEach((otherObject) => {
                     try {
@@ -62,10 +58,10 @@ export const useOtherObjectList = (bukkenId, otherObjectKind) => {
                 });
             }
             list = list.concat(otherObjects);
-            if (response.data.listOtherObjects.nextToken) {
+            if (response.data.queryOtherObjectByBukkenId.nextToken) {
                 await getListOtherObject(
                     list,
-                    response.data.listOtherObjects.nextToken,
+                    response.data.queryOtherObjectByBukkenId.nextToken,
                     bukkenId
                 );
             }
