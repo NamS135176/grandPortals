@@ -1,0 +1,37 @@
+{
+  "develop": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-grandsportal-develop-152938-authRole",
+      "UnauthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-develop-152938-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-develop-152938-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+      "UnauthRoleName": "amplify-grandsportal-develop-152938-unauthRole",
+      "StackName": "amplify-grandsportal-develop-152938",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:147662606770:stack/amplify-grandsportal-develop-152938/98c325d0-1d3d-11ed-91be-06d006256dc1",
+      "AmplifyAppId": "d3i7r774ih5bz6",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-grandsportal-develop-152938-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "userPoolGroups": {},
+        "grandsPortal": {}
+      },
+      "function": {
+        "salesforce2AWSRegistration": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/salesforce2AWSRegistration-423854475537696b4e63-build.zip"
+        },
+        "grandsPortalPostAuthentication": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/grandsPortalPostAuthentication-536f7943744e5231464a-build.zip"
+        },
+        "grandsPortalCustomMessage": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/grandsPortalCustomMessage-34356769346c516a4d4e-build.zip",
+          "prefixDomain": "http://localhost:3001"
+        }
+      }
+    }
+  }
+}

@@ -27,7 +27,7 @@ export const AmplifyPasswordRecovery = (props) => {
 
         if (isMounted()) {
           sessionStorage.setItem('username', values.email);
-          router.push('/passwordresetting').catch(console.error);
+          router.push('/login').catch(console.error);
         }
       } catch (err) {
         console.error(err);

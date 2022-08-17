@@ -1,0 +1,14 @@
+[
+  {
+    "groupName": "agentGrands",
+    "precedence": 1
+  },
+  {
+    "groupName": "agentNormal",
+    "precedence": 2
+  },
+  {
+    "groupName": "support",
+    "precedence": 3
+  }
+]
