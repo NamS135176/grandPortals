@@ -8,7 +8,7 @@
  if (event.triggerSource == 'CustomMessage_ForgotPassword') {
 		console.log(event.triggerSource);
 		const url = `${process.env.PREFIX_DOMAIN}/passwordresetting/${codeParameter}`;
-		const message = `山田太郎　さん<br /><br />
+		const message = `山田太郎 さん<br /><br />
   [${process.env.TITLE_HOLDER}】のパスワードをリセットするには、次のリンクをクリックしてください。<br /><br />
   パスワードの再設定をご希望の場合は、以下URLをクリックし<br />
   <a href=${url}>${url}</a><br /><br />

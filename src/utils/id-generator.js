@@ -1,5 +1,6 @@
 import {API} from "aws-amplify";
 import * as queries from "../graphql/queries";
+import * as customQueries from "../graphql/custom-queries";
 
 const variables = {
     sort: 1,
@@ -47,9 +48,11 @@ export async function getNextHistoryId() {
 }
 
 export async function getNextOtherObjectId() {
+    console.log("getNextOtherObjectId...", {variables} )
     const response = await API.graphql({
-        query: queries.queryOtherObjectBySort,
+        query: customQueries.queryOtherObjectBySortForNextID,
         variables,
+        authMode: 'API_KEY',
     });
     const items = response.data.queryOtherObjectBySort.items;
     const data = items?.length > 0 ? items[0] : null;

@@ -2,12 +2,12 @@ import {API} from "aws-amplify";
 import {useCallback, useEffect, useState} from "react";
 import {useMounted} from "./use-mounted";
 import * as R from "ramda";
-import {listOtherObjects} from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import {OtherObjectKind} from "../utils/bukken";
 import {useDeleteDocument} from "./use-delete-document";
 import {useDeleteHistory} from "./use-delete-history";
 import {useDeleteInterior} from "./use-delete-interior";
+import {queryOtherObjectOnlyByBukkenId} from "graphql/custom-queries";
 
 export const useRoomList = (bukkenId) => {
     const isMounted = useMounted();
@@ -19,42 +19,22 @@ export const useRoomList = (bukkenId) => {
 
     const getListRoom = useCallback(
         async (list = [], nextToken = null, bukkenId) => {
-            const response = null;
-            if (bukkenId) {
-                response = await API.graphql({
-                    query: listOtherObjects,
-                    variables: {
-                        nextToken: nextToken,
-                        filter: {
-                            object_kind: {
-                                eq: OtherObjectKind.RoomSpace,
-                            },
-                            delete_flag: {
-                                eq: 0,
-                            },
-                            bukken_id: {
-                                eq: bukkenId,
-                            },
+            const response = await API.graphql({
+                query: queryOtherObjectOnlyByBukkenId,
+                variables: {
+                    nextToken: nextToken,
+                    bukken_id: bukkenId,
+                    filter: {
+                        object_kind: {
+                            eq: OtherObjectKind.RoomSpace,
+                        },
+                        delete_flag: {
+                            eq: 0,
                         },
                     },
-                });
-            } else {
-                response = await API.graphql({
-                    query: listOtherObjects,
-                    variables: {
-                        nextToken: nextToken,
-                        filter: {
-                            object_kind: {
-                                eq: OtherObjectKind.RoomSpace,
-                            },
-                            delete_flag: {
-                                eq: 0,
-                            },
-                        },
-                    },
-                });
-            }
-            var rooms = response.data.listOtherObjects.items;
+                },
+            });
+            var rooms = response.data.queryOtherObjectByBukkenId.items;
             if (!R.isNil(rooms) && !R.isEmpty(rooms)) {
                 rooms.forEach((room) => {
                     try {
@@ -69,16 +49,16 @@ export const useRoomList = (bukkenId) => {
                 });
             }
             list = list.concat(rooms);
-            if (response.data.listOtherObjects.nextToken) {
+            if (response.data.queryOtherObjectByBukkenId.nextToken) {
                 await getListRoom(
                     list,
-                    response.data.listOtherObjects.nextToken,
+                    response.data.queryOtherObjectByBukkenId.nextToken,
                     bukkenId
                 );
             }
             return list;
         },
-        []
+        [bukkenId]
     );
 
     const deleteRoom = useCallback(
@@ -124,7 +104,7 @@ export const useRoomList = (bukkenId) => {
             setLoading(false);
         }
 
-        if (isMounted()) loadData();
+        if (isMounted() && bukkenId) loadData();
     }, [isMounted, bukkenId]);
 
     return {roomList, deleteRoom, loading};

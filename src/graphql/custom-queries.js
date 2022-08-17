@@ -263,3 +263,62 @@ export const queryOtherObjectOnlyByRoomId = /* GraphQL */ `
     }
   }
 `;
+
+export const queryOtherObjectOnlyByBukkenId = /* GraphQL */ `
+  query QueryOtherObjectByBukkenId(
+    $bukken_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectByBukkenId(
+      bukken_id: $bukken_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        bukken_id
+        user_id
+        object_kind
+        room_id
+        field_kind
+        field_list
+        delete_flag
+        object_kind_updatedAt
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+
+export const queryOtherObjectBySortForNextID = /* GraphQL */ `
+  query QueryOtherObjectBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOtherObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryOtherObjectBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+`;
