@@ -21,7 +21,11 @@
         "grandsPortalPostConfirmation": {
           "GROUP": "agentGrands",
           "deploymentBucketName": "amplify-grandsportal-dev-112323-deployment",
-          "s3Key": "amplify-builds/grandsPortalPostConfirmation-4d43414249736a674b62-build.zip"
+          "s3Key": "amplify-builds/grandsPortalPostConfirmation-6e706465694d556e4e47-build.zip"
+        },
+        "salesforce2AWSRegistration": {
+          "deploymentBucketName": "amplify-grandsportal-dev-112323-deployment",
+          "s3Key": "amplify-builds/salesforce2AWSRegistration-423854475537696b4e63-build.zip"
         }
       }
     }

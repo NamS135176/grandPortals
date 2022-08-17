@@ -14,5 +14,6 @@
   "roleName": "grandsPortalPostConfirmation",
   "skipEdit": true,
   "GROUP": "agentGrands",
-  "enableCors": false
+  "enableCors": false,
+  "permissions": {}
 }
