@@ -10,12 +10,14 @@ export const AmplifyPasswordReset = (props) => {
   const isMounted = useMounted();
   const { passwordReset } = useAuth();
   const router = useRouter();
+  const {code} = router.query
   const itemsRef = useRef([]);
   const [username, setUsername] = useState('');
+  const [coded,   setCode] = useState(['', '', '', '', '', ''])
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      code: ['', '', '', '', '', ''],
+      code: coded,
       email: username,
       password: '',
       passwordConfirm: '',
@@ -61,12 +63,15 @@ export const AmplifyPasswordReset = (props) => {
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, 6);
 
-    const storedUsername = sessionStorage.getItem('username');
+    const storedUsername = localStorage.getItem('username');
 
     if (storedUsername) {
       setUsername(storedUsername);
     }
-  }, []);
+    if(code){
+      setCode(code.split(""))
+    }
+  }, [code]);
 
   const handleKeyDown = (event, index) => {
     if (event.code === 'Enter') {

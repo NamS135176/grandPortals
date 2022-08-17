@@ -18,6 +18,10 @@
     {
       "cloudFormationParameterName": "prefixDomain",
       "environmentVariableName": "PREFIX_DOMAIN"
+    },
+    {
+      "cloudFormationParameterName": "titleHolder",
+      "environmentVariableName": "TITLE_HOLDER"
     }
   ]
 }

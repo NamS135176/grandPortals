@@ -8,19 +8,20 @@
  if (event.triggerSource == 'CustomMessage_ForgotPassword') {
 		console.log(event.triggerSource);
 		const url = `${process.env.PREFIX_DOMAIN}/passwordresetting/${codeParameter}`;
-		const message = `件名：パスワードリセット：習慣アプリNeuro Habitsニューロハビッツ<br /><br />
-  パスワードリセットの申請を受け付けました。<br /><br />
+		const message = `山田太郎 さん<br /><br />
+  [${process.env.TITLE_HOLDER}】のパスワードをリセットするには、次のリンクをクリックしてください。<br /><br />
   パスワードの再設定をご希望の場合は、以下URLをクリックし<br />
-  新しいパスワードをご登録ください。<br /><br />
-  ※パスワードリセットの申請に心当たりがない場合は<br />
-  以降の対応は不要となります。<br /><br />
-  ▼パスワードの再設定URL<br />
-  <a href=${url}>パスワード再設定用のURLが入ります。</a><br /><br />
-  ―――――――――――――――――――――――――――<br />
-  習慣アプリ Neuro Habits ニューロハビッツ<br /><br />
-  ―――――――――――――――――――――――――――<br /> `;
+  <a href=${url}>${url}</a><br /><br />
+  このメールに心当たりがない場合、他の方がパスワードをリセットする際に誤ってお客様のメール アドレスを入力した可能性があります。<br />
+  リクエストした覚えがない場合は、何も行わずにこのメールを破棄してください。<br /><br />
+  ※本メールは送信専用となっております。ご返信いただいても管理者には届きませんのでご注意ください。<br /><br />
+  -----------------------------------<br />
+  ${process.env.TITLE_HOLDER}<br /><br />
+  0463-79-5564<br />
+  株式会社grands<br />
+  -----------------------------------<br /> `;
 		event.response.smsMessage = message;
-		event.response.emailSubject = 'パスワードリセットの文章作成';
+		event.response.emailSubject = `【${process.env.TITLE_HOLDER}】パスワードリセットのお知らせ`;
 		event.response.emailMessage = message;
 		console.log('event.response', event.response);
 	} else {

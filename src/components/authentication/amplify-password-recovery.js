@@ -26,7 +26,7 @@ export const AmplifyPasswordRecovery = (props) => {
         await passwordRecovery(values.email);
 
         if (isMounted()) {
-          sessionStorage.setItem('username', values.email);
+          localStorage.setItem('username', values.email);
           router.push('/login').catch(console.error);
         }
       } catch (err) {

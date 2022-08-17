@@ -28,8 +28,9 @@
         },
         "grandsPortalCustomMessage": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/grandsPortalCustomMessage-34356769346c516a4d4e-build.zip",
-          "prefixDomain": "http://localhost:3001"
+          "s3Key": "amplify-builds/grandsPortalCustomMessage-67433133307747685971-build.zip",
+          "prefixDomain": "http://localhost:3001",
+          "titleHolder": "XXXX"
         }
       }
     }

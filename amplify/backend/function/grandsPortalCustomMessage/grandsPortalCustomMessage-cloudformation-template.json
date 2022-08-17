@@ -54,6 +54,9 @@
     },
     "prefixDomain": {
       "Type": "String"
+    },
+    "titleHolder": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -118,6 +121,9 @@
             },
             "PREFIX_DOMAIN": {
               "Ref": "prefixDomain"
+            },
+            "TITLE_HOLDER": {
+              "Ref": "titleHolder"
             }
           }
         },
