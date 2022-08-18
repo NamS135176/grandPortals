@@ -48,11 +48,9 @@ export async function getNextHistoryId() {
 }
 
 export async function getNextOtherObjectId() {
-    console.log("getNextOtherObjectId...", {variables} )
     const response = await API.graphql({
         query: customQueries.queryOtherObjectBySortForNextID,
         variables,
-        authMode: 'API_KEY',
     });
     const items = response.data.queryOtherObjectBySort.items;
     const data = items?.length > 0 ? items[0] : null;

@@ -21,7 +21,6 @@ import { useBukkenDefault } from 'hooks/use-bukken-default';
 
 const RoomList = () => {
 	const router = useRouter();
-	// const {bukkenId} = router.query;
 	const { bukken } = useBukkenDefault();
 
 	const {roomList: rooms, deleteRoom} = useRoomList(bukken?.id);
