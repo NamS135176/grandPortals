@@ -10,9 +10,11 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon } from '../icons/menu';
 import { Logo } from './logo';
+import { useAuth } from 'hooks/use-auth';
 
 export const MainNavbar = (props) => {
 	const { onOpenSidebar } = props;
+	const { user } = useAuth();
 
 	return (
 		<AppBar
@@ -60,7 +62,7 @@ export const MainNavbar = (props) => {
 								variant="subtitle2"
 								mr={2}
 							>
-								Kate Nolast
+								{user?.name}
 							</Link>
 						</NextLink>
 					</Box>

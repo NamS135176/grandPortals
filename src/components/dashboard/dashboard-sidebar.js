@@ -60,7 +60,7 @@ const getSections = (t) => [
 			},
 			{
 				title: t('プロフィール変更'),
-				path: '#',
+				path: '/profile/edit',
 				icon: <UserCircleIcon fontSize="small" />,
 			},
 
