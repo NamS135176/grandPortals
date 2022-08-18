@@ -1,6 +1,25 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
+type Query {
+  settingCognitoPassword(input: settingCognitoPasswordInput!): AWSJSON @function(name: "settingCognitoPassword-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
+
+  publishPasswordResetLink(email: String!): AWSJSON @function(name: "publishPasswordResetLink-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
+
+  checkLinkValidation(id: ID!): AWSJSON @function(name: "checkLinkValidation-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
+
+}
+
+
 type User
     @model
     @auth(
@@ -173,4 +192,9 @@ type History
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "querHistoryCreatedAt"
         )
+}
+
+input settingCognitoPasswordInput {
+  email: String!
+  password: String!
 }

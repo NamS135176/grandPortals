@@ -1283,3 +1283,18 @@ export const querHistoryCreatedAt = /* GraphQL */ `
     }
   }
 `;
+export const settingCognitoPassword = /* GraphQL */ `
+  query SettingCognitoPassword($input: settingCognitoPasswordInput!) {
+    settingCognitoPassword(input: $input)
+  }
+`;
+export const publishPasswordResetLink = /* GraphQL */ `
+  query PublishPasswordResetLink($email: String!) {
+    publishPasswordResetLink(email: $email)
+  }
+`;
+export const checkLinkValidation = /* GraphQL */ `
+  query CheckLinkValidation($id: ID!) {
+    checkLinkValidation(id: $id)
+  }
+`;
