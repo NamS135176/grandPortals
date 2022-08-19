@@ -4,11 +4,24 @@ import { useFormik } from 'formik';
 import { Box, Button, FormHelperText, TextField } from '@mui/material';
 import { useAuth } from '../../hooks/use-auth';
 import { useMounted } from '../../hooks/use-mounted';
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import config from '../../aws-exports';
+import { publishPasswordResetLink } from 'graphql/queries';
 
 export const AmplifyPasswordRecovery = (props) => {
   const isMounted = useMounted();
   const { passwordRecovery } = useAuth();
   const router = useRouter();
+
+  const resetPassword = async (params) => {
+    config.aws_appsync_authenticationType = 'AWS_IAM';
+    Amplify.configure(config);
+    // console.log('params', params);
+    const res_gq = await API.graphql(
+      graphqlOperation(publishPasswordResetLink, JSON.stringify(params))
+    );
+    return res_gq;
+  };
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -23,6 +36,10 @@ export const AmplifyPasswordRecovery = (props) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+        // const res = await resetPassword({
+        //   email: values.email
+        // })
+        // console.log(res);
         await passwordRecovery(values.email);
 
         if (isMounted()) {
