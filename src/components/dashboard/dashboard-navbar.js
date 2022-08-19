@@ -10,6 +10,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { Menu as MenuIcon } from '../../icons/menu';
 import NextLink from 'next/link';
+import { useAuth } from 'hooks/use-auth';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper,
@@ -28,7 +29,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar = (props) => {
 	const { onOpenSidebar, ...other } = props;
-
+	const { user } = useAuth();
 	return (
 		<>
 			<DashboardNavbarRoot {...other}>
@@ -52,7 +53,7 @@ export const DashboardNavbar = (props) => {
 						variant="subtitle2"
 						mr={2}
 					>
-						Kate Nolast
+						{user?.name}
 					</Typography>
 					<IconButton
 						onClick={onOpenSidebar}

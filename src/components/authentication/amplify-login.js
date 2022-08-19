@@ -4,12 +4,25 @@ import {Box, Button, FormHelperText, TextField} from "@mui/material";
 import {useRouter} from "next/router";
 import {useMounted} from "../../hooks/use-mounted";
 import { useAuth } from "../../hooks/use-auth";
+import { useCallback } from "react";
+import { API } from "aws-amplify";
+import { getUser } from "graphql/queries";
 
 export const AmplifyLogin = (props) => {
     const router = useRouter();
     const isMounted = useMounted();
 	const { login } = useAuth();
 	
+    const getUserInfo = useCallback(async (userId) => {
+        const response = await API.graphql({
+            query: getUser,
+            variables: {
+                id: userId,
+            },
+        });
+        return response.data.getUser;
+    }, []);
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -25,11 +38,18 @@ export const AmplifyLogin = (props) => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                await login(values.email, values.password);
-                // if (isMounted()) {
-                //     const returnUrl = "/bukken/list";
-                //     router.push(returnUrl).catch(console.error);
-                // }
+                const cognitoUser = await login(values.email, values.password);
+                console.log("login success..", {cognitoUser});
+                if (isMounted()) {
+                    //check profile
+                    const userInfo = await getUserInfo(cognitoUser.username);
+                    console.log("login success..", {userInfo});
+                    var returnUrl = "/bukken/list";
+                    if (!userInfo?.name) {
+                        returnUrl = "/profile/regist";
+                    }
+                    router.push(returnUrl).catch(console.error);
+                }
             } catch (err) {
                 console.error(err.message);
 

@@ -13,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import {Scrollbar} from '../scrollbar';
 import {DashboardSidebarSection} from './dashboard-sidebar-section';
 import {OrganizationPopover} from './organization-popover';
+import { DashboardSidebarLogout } from './dashboard-sidebar-logout';
 
 const getSections = (t) => [
 	{
@@ -60,7 +61,7 @@ const getSections = (t) => [
 			},
 			{
 				title: t('プロフィール変更'),
-				path: '#',
+				path: '/profile/edit',
 				icon: <UserCircleIcon fontSize="small" />,
 			},
 
@@ -68,11 +69,6 @@ const getSections = (t) => [
 				title: t('パスワード変更'),
 				path: '#',
 				icon: <LockIcon fontSize="small" />,
-			},
-			{
-				title: t('ログアウト'),
-				path: '#',
-				icon: <LogoutIcon fontSize="small" />,
 			},
 		],
 	},
@@ -162,6 +158,12 @@ export const DashboardSidebar = (props) => {
 								{...section}
 							/>
 						))}
+						<DashboardSidebarLogout 
+							active={false}
+							depth={0}
+							icon={<LogoutIcon fontSize="small" />}
+							title={t('ログアウト')}
+						/>
 					</Box>
 				</Box>
 			</Scrollbar>
