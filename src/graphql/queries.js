@@ -13,6 +13,7 @@ export const getUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
+      user_id
     }
   }
 `;
@@ -41,6 +42,7 @@ export const listUsers = /* GraphQL */ `
         sort
         createdAt
         updatedAt
+        user_id
       }
       nextToken
     }
@@ -73,6 +75,7 @@ export const queryUserBySort = /* GraphQL */ `
         sort
         createdAt
         updatedAt
+        user_id
       }
       nextToken
     }
@@ -1296,5 +1299,25 @@ export const publishPasswordResetLink = /* GraphQL */ `
 export const checkLinkValidation = /* GraphQL */ `
   query CheckLinkValidation($id: ID!) {
     checkLinkValidation(id: $id)
+  }
+`;
+export const getNextDocumentId = /* GraphQL */ `
+  query GetNextDocumentId {
+    getNextDocumentId
+  }
+`;
+export const getNextHistoryId = /* GraphQL */ `
+  query GetNextHistoryId {
+    getNextHistoryId
+  }
+`;
+export const getNextBukkenId = /* GraphQL */ `
+  query GetNextBukkenId {
+    getNextBukkenId
+  }
+`;
+export const getNextOtherObjectId = /* GraphQL */ `
+  query GetNextOtherObjectId {
+    getNextOtherObjectId
   }
 `;

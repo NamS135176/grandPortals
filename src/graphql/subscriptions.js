@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser($user_id: String) {
+    onCreateUser(user_id: $user_id) {
       id
       email
       name
@@ -13,12 +13,13 @@ export const onCreateUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
+      user_id
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser($user_id: String) {
+    onUpdateUser(user_id: $user_id) {
       id
       email
       name
@@ -28,12 +29,13 @@ export const onUpdateUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
+      user_id
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+  subscription OnDeleteUser($user_id: String) {
+    onDeleteUser(user_id: $user_id) {
       id
       email
       name
@@ -43,6 +45,7 @@ export const onDeleteUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
+      user_id
     }
   }
 `;
