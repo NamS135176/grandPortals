@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "api": {
+      "grandsportal": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "SENDGRID_API_KEY"
+  ]
+}
