@@ -17,6 +17,29 @@ type Query {
     { allow: public, provider: iam }
   ])
 
+  getNextDocumentId: AWSJSON @function(name: "getNextDocumentId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  getNextHistoryId: AWSJSON @function(name: "getNextHistoryId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  getNextBukkenId: AWSJSON @function(name: "getNextBukkenId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  getNextOtherObjectId: AWSJSON @function(name: "getNextOtherObjectId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 }
 
 
@@ -106,6 +129,7 @@ type OtherObject
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
             {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
     id: ID! @primaryKey
@@ -135,6 +159,7 @@ type Document
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
             {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
     id: ID! @primaryKey
@@ -169,6 +194,7 @@ type History
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
             {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
     id: ID! @primaryKey

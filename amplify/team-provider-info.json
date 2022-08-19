@@ -44,6 +44,22 @@
         "settingCognitoPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/settingCognitoPassword-7a4e645a4371566a6248-build.zip"
+        },
+        "getNextDocumentId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextDocumentId-63437339374443516833-build.zip"
+        },
+        "getNextBukkenId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextBukkenId-2b345435635039502b67-build.zip"
+        },
+        "getNextHistoryId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextHistoryId-6669366543744a644868-build.zip"
+        },
+        "getNextOtherObjectId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextOtherObjectId-6664566d53554d4c3475-build.zip"
         }
       }
     }
