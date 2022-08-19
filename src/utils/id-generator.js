@@ -1,6 +1,6 @@
 import {API} from "aws-amplify";
 import * as queries from "../graphql/queries";
-import * as customQueries from "../graphql/custom-queries";
+// import * as customQueries from "../graphql/custom-queries";
 
 const variables = {
     sort: 1,
@@ -15,6 +15,20 @@ function padLeadingZeros(num, size = 6) {
 }
 
 export async function getNextBukkenId() {
+    /**
+     {
+        "data": {
+            "getNextDocumentId": "{\"statusCode\":200,\"body\":{\"nextId\":\"000002\"}}"
+        }
+        }
+     */
+    const response = await API.graphql({
+        query: queries.getNextDocumentId,
+    });
+    const data = JSON.parse(response.data.getNextDocumentId);
+    console.log("getNextDocumentId... ", {data, nextId: data.body.nextId});
+    return data.body.nextId;
+    /*
     const response = await API.graphql({
         query: queries.queryBukkenBySort,
         variables,
@@ -23,9 +37,24 @@ export async function getNextBukkenId() {
     const bukken = items?.length > 0 ? items[0] : null;
     const bukkenIdNumber = bukken ? parseInt(bukken.id) : 0;
     return padLeadingZeros(bukkenIdNumber + 1);
+    */
 }
 
 export async function getNextDocumentId() {
+    /**
+     {
+        "data": {
+            "getNextDocumentId": "{\"statusCode\":200,\"body\":{\"nextId\":\"000002\"}}"
+        }
+        }
+     */
+    const response = await API.graphql({
+        query: queries.getNextDocumentId,
+    });
+    const data = JSON.parse(response.data.getNextDocumentId);
+    console.log("getNextDocumentId... ", {data, nextId: data.body.nextId});
+    return data.body.nextId;
+    /*
     const response = await API.graphql({
         query: queries.queryDocumentBySort,
         variables,
@@ -34,9 +63,24 @@ export async function getNextDocumentId() {
     const data = items?.length > 0 ? items[0] : null;
     const idNumber = data ? parseInt(data.id) : 0;
     return padLeadingZeros(idNumber + 1);
+    */
 }
 
 export async function getNextHistoryId() {
+    /**
+     {
+        "data": {
+            "getNextOtherObjectId": "{\"statusCode\":200,\"body\":{\"nextId\":\"000002\"}}"
+        }
+        }
+     */
+    const response = await API.graphql({
+        query: queries.getNextHistoryId,
+    });
+    const data = JSON.parse(response.data.getNextHistoryId);
+    console.log("getNextHistoryId... ", {data, nextId: data.body.nextId});
+    return data.body.nextId;
+    /*
     const response = await API.graphql({
         query: queries.queryHistoryBySort,
         variables,
@@ -45,9 +89,24 @@ export async function getNextHistoryId() {
     const data = items?.length > 0 ? items[0] : null;
     const idNumber = data ? parseInt(data.id) : 0;
     return padLeadingZeros(idNumber + 1);
+    */
 }
 
 export async function getNextOtherObjectId() {
+    /**
+     {
+        "data": {
+            "getNextHistoryId": "{\"statusCode\":200,\"body\":{\"nextId\":\"000002\"}}"
+        }
+        }
+     */
+    const response = await API.graphql({
+        query: queries.getNextOtherObjectId,
+    });
+    const data = JSON.parse(response.data.getNextOtherObjectId);
+    console.log("getNextOtherObjectId... ", {data, nextId: data.body.nextId});
+    return data.body.nextId;
+    /*
     const response = await API.graphql({
         query: customQueries.queryOtherObjectBySortForNextID,
         variables,
@@ -56,4 +115,5 @@ export async function getNextOtherObjectId() {
     const data = items?.length > 0 ? items[0] : null;
     const idNumber = data ? parseInt(data.id) : 0;
     return padLeadingZeros(idNumber + 1);
+    */
 }

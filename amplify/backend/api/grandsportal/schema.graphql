@@ -47,8 +47,10 @@ type User
     @model
     @auth(
         rules: [
-            {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
             {allow: private, provider: iam, operations: [create, update]}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
         ]
     ) {
     id: ID! @primaryKey
@@ -65,7 +67,7 @@ type CS
     @model
     @auth(
         rules: [
-            {allow: groups, groups: ["support", "agentNormal", "agentGrands"]}
+            {allow: groups, groups: ["support"]}
         ]
     ) {
     email: String! @primaryKey
@@ -128,7 +130,7 @@ type OtherObject
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
-            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            # {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
             {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
@@ -158,7 +160,7 @@ type Document
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
-            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            # {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
             {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
@@ -193,7 +195,7 @@ type History
         rules: [
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "user_id"}
-            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read, update] }
+            # {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
             {allow: private, provider: iam, operations: [create, update]}
         ]
     ) {
