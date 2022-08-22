@@ -62,12 +62,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "withdrawalRequest",
+            "withdrawal",
             {
               "Fn::Join": [
                 "",
                 [
-                  "withdrawalRequest",
+                  "withdrawal",
                   "-",
                   {
                     "Ref": "env"
@@ -108,7 +108,7 @@
                         "env": {
                           "Ref": "env"
                         },
-                        "functionName": "withdrawalRequest"
+                        "functionName": "withdrawal"
                       }
                     ]
                   },
@@ -135,12 +135,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "grandsportalLambdaRole0eadb089",
+            "grandsportalLambdaRole1f7dc261",
             {
               "Fn::Join": [
                 "",
                 [
-                  "grandsportalLambdaRole0eadb089",
+                  "grandsportalLambdaRole1f7dc261",
                   "-",
                   {
                     "Ref": "env"
@@ -254,7 +254,8 @@
                 "cognito-idp:UpdateGroup",
                 "cognito-idp:AdminUpdateAuthEventFeedback",
                 "cognito-idp:UpdateDeviceStatus",
-                "cognito-idp:UpdateUserPool"
+                "cognito-idp:UpdateUserPool",
+                "cognito-idp:AdminDisableUser"
               ],
               "Resource": [
                 {
@@ -371,7 +372,7 @@
                           "env": {
                             "Ref": "env"
                           },
-                          "functionName": "withdrawalRequest"
+                          "functionName": "withdrawal"
                         }
                       ]
                     },

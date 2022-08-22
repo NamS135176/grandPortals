@@ -1783,7 +1783,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "withdrawalRequest",
+          "name" : "withdrawal",
           "description" : null,
           "args" : [ ],
           "type" : {
