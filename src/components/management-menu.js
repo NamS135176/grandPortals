@@ -19,7 +19,7 @@ padding: 0;
 
 const menu = [
 	{
-		name: '外装エクステリア',
+		name: '外装・エクステリア',
 		url: '/exterior/list',
 		key: 'exterior',
 	},
@@ -66,6 +66,7 @@ export const ManagementList = () => {
 									elevation={0}
 									variant="outlined"
 									sx={{
+										backgroundColor: '#10b981',
 										cursor: 'pointer',
 										...(path.includes(menu_.key) && {
 											borderColor: 'primary.main',
