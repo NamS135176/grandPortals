@@ -51,12 +51,6 @@
     },
     "s3Key": {
       "Type": "String"
-    },
-    "prefixDomain": {
-      "Type": "String"
-    },
-    "titleHolder": {
-      "Type": "String"
     }
   },
   "Conditions": {
@@ -118,12 +112,6 @@
             },
             "RESOURCENAME": {
               "Ref": "resourceName"
-            },
-            "PREFIX_DOMAIN": {
-              "Ref": "prefixDomain"
-            },
-            "TITLE_HOLDER": {
-              "Ref": "titleHolder"
             }
           }
         },

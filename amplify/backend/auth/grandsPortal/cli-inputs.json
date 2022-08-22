@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "grandsportal46287fd4_identitypool_46287fd4",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "grands46287fd4",
     "userPoolName": "grandsportal46287fd4_userpool_46287fd4",
     "autoVerifiedAttributes": [
@@ -76,7 +76,7 @@
     "dependsOn": [
       {
         "category": "function",
-        "resourceName": "grandsPortalPostAuthentication",
+        "resourceName": "grandsPortalCustomMessage",
         "triggerProvider": "Cognito",
         "attributes": [
           "Arn",
@@ -85,7 +85,7 @@
       },
       {
         "category": "function",
-        "resourceName": "grandsPortalCustomMessage",
+        "resourceName": "grandsPortalPostAuthentication",
         "triggerProvider": "Cognito",
         "attributes": [
           "Arn",

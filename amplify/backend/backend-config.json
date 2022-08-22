@@ -22,7 +22,7 @@
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "grandsPortalPostAuthentication",
+          "resourceName": "grandsPortalCustomMessage",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -31,7 +31,7 @@
         },
         {
           "category": "function",
-          "resourceName": "grandsPortalCustomMessage",
+          "resourceName": "grandsPortalPostAuthentication",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",

@@ -28,14 +28,12 @@
         },
         "grandsPortalCustomMessage": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/grandsPortalCustomMessage-524e656a2f7179704d57-build.zip",
-          "prefixDomain": "http://localhost:3001",
-          "titleHolder": "XXXX"
+          "s3Key": "amplify-builds/grandsPortalCustomMessage-524e656a2f7179704d57-build.zip"
         },
         "publishPasswordResetLink": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-59517434675176677257-build.zip"
+          "s3Key": "amplify-builds/publishPasswordResetLink-456a4e386848584b6451-build.zip"
         },
         "checkLinkValidation": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
