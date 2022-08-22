@@ -147,7 +147,7 @@ const ExteriorDetails = () => {
 						}}
 					>
 						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
+							お問い合わせ：050-5443-5974
 						</Typography>
 					</Box>
 					<Card>

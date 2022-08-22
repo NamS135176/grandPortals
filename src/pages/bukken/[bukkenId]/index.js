@@ -27,7 +27,7 @@ import {getBukkenType, OtherObjectKind} from '../../../utils/bukken';
 import moment from 'moment';
 import {AddDocumentDialog} from '../../../components/bukken/add-document-dialog';
 import {FileUpload} from '../../../components/widgets/file-upload';
-import { AuthGuard } from 'components/authentication/auth-guard';
+import {AuthGuard} from 'components/authentication/auth-guard';
 
 const BukkenDetails = () => {
 	const router = useRouter();
@@ -124,7 +124,7 @@ const BukkenDetails = () => {
 						}}
 					>
 						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
+							お問い合わせ：050-5443-5974
 						</Typography>
 					</Box>
 					<Card>
@@ -338,8 +338,8 @@ const BukkenDetails = () => {
 };
 
 BukkenDetails.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+	<AuthGuard>
+		<DashboardLayout>{page}</DashboardLayout>
+	</AuthGuard>
 );
 export default BukkenDetails;

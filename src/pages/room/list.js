@@ -16,12 +16,12 @@ import {gtm} from '../../lib/gtm';
 import {useRoomList} from '../../hooks/use-room-list';
 import {ManagementList} from '../../components/management-menu';
 import {useRouter} from 'next/router';
-import { AuthGuard } from '../../components/authentication/auth-guard';
-import { useBukkenDefault } from 'hooks/use-bukken-default';
+import {AuthGuard} from '../../components/authentication/auth-guard';
+import {useBukkenDefault} from 'hooks/use-bukken-default';
 
 const RoomList = () => {
 	const router = useRouter();
-	const { bukken } = useBukkenDefault();
+	const {bukken} = useBukkenDefault();
 
 	const {roomList: rooms, deleteRoom} = useRoomList(bukken?.id);
 
@@ -50,7 +50,7 @@ const RoomList = () => {
 						}}
 					>
 						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
+							お問い合わせ：050-5443-5974
 						</Typography>
 					</Box>
 					<Card>
@@ -105,9 +105,9 @@ const RoomList = () => {
 	);
 };
 RoomList.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+	<AuthGuard>
+		<DashboardLayout>{page}</DashboardLayout>
+	</AuthGuard>
 );
 
 export default RoomList;
