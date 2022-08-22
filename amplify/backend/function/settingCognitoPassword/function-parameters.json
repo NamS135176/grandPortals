@@ -1,5 +1,13 @@
 {
   "permissions": {
+    "auth": {
+      "grandsPortal": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
     "api": {
       "grandsportal": [
         "Query",
