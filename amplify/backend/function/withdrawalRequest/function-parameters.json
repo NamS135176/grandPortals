@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "auth": {
+      "grandsPortal": [
+        "read",
+        "update"
+      ]
+    },
+    "api": {
+      "grandsportal": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "SENDGRID_API_SECRET"
+  ]
+}

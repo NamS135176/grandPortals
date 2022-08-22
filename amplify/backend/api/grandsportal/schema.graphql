@@ -40,15 +40,20 @@ type Query {
     { allow: public, provider: iam }
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
   ])
-}
 
+  withdrawalRequest: AWSJSON @function(name: "withdrawalRequest-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+}
 
 type User
     @model
     @auth(
         rules: [
             {allow: groups, groups: ["support"]}
-            {allow: owner, ownerField: "user_id"}
+            {allow: owner, ownerField: "id"}
             {allow: private, provider: iam, operations: [create, update, read]}
             {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
         ]

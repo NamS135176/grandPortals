@@ -13,7 +13,6 @@ export const getUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -42,7 +41,6 @@ export const listUsers = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        user_id
       }
       nextToken
     }
@@ -75,7 +73,6 @@ export const queryUserBySort = /* GraphQL */ `
         sort
         createdAt
         updatedAt
-        user_id
       }
       nextToken
     }
@@ -1319,5 +1316,10 @@ export const getNextBukkenId = /* GraphQL */ `
 export const getNextOtherObjectId = /* GraphQL */ `
   query GetNextOtherObjectId {
     getNextOtherObjectId
+  }
+`;
+export const withdrawalRequest = /* GraphQL */ `
+  query WithdrawalRequest {
+    withdrawalRequest
   }
 `;

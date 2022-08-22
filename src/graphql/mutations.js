@@ -16,7 +16,6 @@ export const createUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -35,7 +34,6 @@ export const updateUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -54,7 +52,6 @@ export const deleteUser = /* GraphQL */ `
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;

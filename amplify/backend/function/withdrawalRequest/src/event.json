@@ -1,0 +1,74 @@
+{
+  "typeName": "Query",
+  "fieldName": "getNextDocumentId",
+  "arguments": {},
+  "identity": {
+      "claims": {
+          "sub": "c7963993-0e96-4472-8ce1-57257a4df39d",
+          "cognito:groups": [
+              "agentGrands"
+          ],
+          "iss": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_lhljGmXCg",
+          "client_id": "i05fdih62lv0v1nq1kfstofcb",
+          "origin_jti": "1ab36258-d894-46f1-867b-35eaa7118e01",
+          "event_id": "cd90be6a-5d2b-4399-a97b-3b631e5fb36a",
+          "token_use": "access",
+          "scope": "aws.cognito.signin.user.admin",
+          "auth_time": 1661138641,
+          "exp": 1661142241,
+          "iat": 1661138641,
+          "jti": "145fce1b-4dcb-4e94-8cd5-ec8eeb177875",
+          "username": "c7963993-0e96-4472-8ce1-57257a4df39d"
+      },
+      "defaultAuthStrategy": "ALLOW",
+      "groups": [
+          "agentGrands"
+      ],
+      "issuer": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_lhljGmXCg",
+      "sourceIp": [
+          "116.96.44.48"
+      ],
+      "sub": "c7963993-0e96-4472-8ce1-57257a4df39d",
+      "username": "c7963993-0e96-4472-8ce1-57257a4df39d"
+  },
+  "source": null,
+  "request": {
+      "headers": {
+          "x-forwarded-for": "116.96.44.48, 15.158.12.8",
+          "sec-ch-ua-mobile": "?0",
+          "cloudfront-viewer-country": "VN",
+          "cloudfront-is-tablet-viewer": "false",
+          "x-amzn-requestid": "55cb6b9e-0419-4fb2-9f12-d20072e93c44",
+          "via": "2.0 7f77267795be1ea28052297cb47d9c5c.cloudfront.net (CloudFront)",
+          "cloudfront-forwarded-proto": "https",
+          "origin": "http://localhost:3000",
+          "content-length": "78",
+          "x-forwarded-proto": "https",
+          "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,vi;q=0.7,ja;q=0.6",
+          "host": "2jz77qik7vdunbviwjpkn6wi5i.appsync-api.ap-northeast-1.amazonaws.com",
+          "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
+          "cloudfront-is-mobile-viewer": "false",
+          "accept": "application/json, text/plain, */*",
+          "cloudfront-viewer-asn": "7552",
+          "cloudfront-is-smarttv-viewer": "false",
+          "accept-encoding": "gzip, deflate, br",
+          "referer": "http://localhost:3000/",
+          "content-type": "application/json; charset=UTF-8",
+          "sec-fetch-mode": "cors",
+          "x-amzn-trace-id": "Root=1-6302f6d3-1fb45b9809c7a31972167283",
+          "x-amz-cf-id": "k7ky8pZ6AQIJp_7QKp0bgM9GGy5seqE8_6t-rCYwG739RmkId67Vfw==",
+          "authorization": "eyJraWQiOiJOODZqbHdPMTQrWTgxT0UrWHNiZkNzb3dmbFE4emdtR1NRaUlqNnQyRnlZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJjNzk2Mzk5My0wZTk2LTQ0NzItOGNlMS01NzI1N2E0ZGYzOWQiLCJjb2duaXRvOmdyb3VwcyI6WyJhZ2VudEdyYW5kcyJdLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtbm9ydGhlYXN0LTEuYW1hem9uYXdzLmNvbVwvYXAtbm9ydGhlYXN0LTFfbGhsakdtWENnIiwiY2xpZW50X2lkIjoiaTA1ZmRpaDYybHYwdjFucTFrZnN0b2ZjYiIsIm9yaWdpbl9qdGkiOiIxYWIzNjI1OC1kODk0LTQ2ZjEtODY3Yi0zNWVhYTcxMThlMDEiLCJldmVudF9pZCI6ImNkOTBiZTZhLTVkMmItNDM5OS1hOTdiLTNiNjMxZTVmYjM2YSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2NjExMzg2NDEsImV4cCI6MTY2MTE0MjI0MSwiaWF0IjoxNjYxMTM4NjQxLCJqdGkiOiIxNDVmY2UxYi00ZGNiLTRlOTQtOGNkNS1lYzhlZWIxNzc4NzUiLCJ1c2VybmFtZSI6ImM3OTYzOTkzLTBlOTYtNDQ3Mi04Y2UxLTU3MjU3YTRkZjM5ZCJ9.X553iaIK4-MElrsTxFVxVuPTn9nLbtfmEAyOp3EtU6ULCeOaPVe-HOjcAanPtzm0TKZBQrLkVQJrXGfhSlEAncUMymt2I0yE_X5KZwWpGPHMDl-nYMSvovwZt0wmAeETnsPr0PkTmQXUGPZY5rUkMe_LQWpVRgbOSdJU7EI5d2Srh6PgFQYJf1TOMJlu4dY4lViQh_1WNaFxxCJ6e5gjcRpQZNZ8eEueavLYbybku3h3SILRwPn1HJewawni_A5hllYuhO0J5lf08pjNam44X6mIAQAl13NXai3mvrCwgSQDZ-Ltnut9XRgSku49ITwr3CI0DrZv5rPGmDwZs5Z71Q",
+          "sec-fetch-dest": "empty",
+          "x-amz-user-agent": "aws-amplify/4.5.7 js",
+          "sec-ch-ua-platform": "\"macOS\"",
+          "cloudfront-is-desktop-viewer": "true",
+          "sec-fetch-site": "cross-site",
+          "sec-ch-ua": "\"Chromium\";v=\"104\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"104\"",
+          "x-forwarded-port": "443"
+      },
+      "domainName": null
+  },
+  "prev": {
+      "result": {}
+  }
+}
