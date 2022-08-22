@@ -75,15 +75,6 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
-<<<<<<< HEAD
-=======
-        },
-        "withdrawal": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
->>>>>>> b7da8e979db0a1d373c9b953bd466af6f194c791
         }
     },
     "api": {

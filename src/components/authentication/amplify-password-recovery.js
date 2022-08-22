@@ -41,10 +41,10 @@ export const AmplifyPasswordRecovery = (props) => {
                 console.log(res);
                 // await passwordRecovery(values.email);
 
-                // if (isMounted()) {
-                //   localStorage.setItem('username', values.email);
-                //   router.push('/login').catch(console.error);
-                // }
+                if (isMounted()) {
+                  localStorage.setItem('username', values.email);
+                  router.push('/login').catch(console.error);
+                }
             } catch (err) {
                 console.error(err);
 
