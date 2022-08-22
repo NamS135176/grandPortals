@@ -28,6 +28,7 @@ const UserPoolId = process.env.AUTH_GRANDSPORTAL_USERPOOLID;
 const cognito = new AWS.CognitoIdentityServiceProvider();
 const sgMail = require("@sendgrid/mail");
 
+const axios = require("axios");
 const urlParse = require("url").URL;
 const appsyncUrl = process.env.API_GRANDSPORTAL_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
@@ -39,23 +40,6 @@ const updateUser = /* GraphQL */ `
         $condition: ModelUserConditionInput
     ) {
         updateUser(input: $input, condition: $condition) {
-            id
-            email
-            name
-            name_kana
-            delete_flag
-            last_login_date
-            sort
-            createdAt
-            updatedAt
-            user_id
-        }
-    }
-`;
-
-const getUser = /* GraphQL */ `
-    query GetUser($id: ID!) {
-        getUser(id: $id) {
             id
             email
             name
@@ -136,8 +120,13 @@ const disableCognitoUser = async (email) => {
 // 渡されたデータに必要なパラメータがあるかチェック
 const checkParams = (event) => {
     const claims = event.identity.claims;
-    if (!claims.username) return [false, "username"];
-    return [true, claims];
+    const sub = claims.sub;
+    const email = claims.email;
+    const name = event.arguments.name;
+    if (!sub) return [false, "sub"];
+    if (!name) return [false, "name"];
+    if (!email) return [false, "email"];
+    return [true, {name, sub, email}];
 };
 
 // 初期処理
@@ -171,6 +160,7 @@ const returnTrue = () => {
  */
 exports.handler = async (event) => {
     let params;
+    console.log("event: ", event);
     console.log("初期処理", JSON.stringify(event));
     try {
         params = init(event);
@@ -179,33 +169,16 @@ exports.handler = async (event) => {
         return returnError(`init error: ${err}`);
     }
 
-    //get user from db
-    var user = null;
-    try {
-        const input = {
-            id: params.username,
-        };
-
-        console.log("getUser", JSON.stringify(input));
-        const res = await appSyncRequest(getUser, "GetUser", input);
-        console.log("getUser res", res);
-        user = res.data.getUser;
-    } catch (err) {
-        console.log(err);
-        return returnError(`Get User error: ${err}`);
-    }
-    if (!user) return returnError(`User can not found`);
-
     // cognitoログイン情報をDisableにする
     try {
-        await disableCognitoUser(user.email);
+        await disableCognitoUser(params.email);
     } catch (err) {
         console.log(err);
         return returnError(`disableCognitoUser error: ${err}`);
     }
     // 退会メール送信
     try {
-        await sendMailToDisabledUser(user.email, user.name);
+        await sendMailToDisabledUser(params.email, params.name);
     } catch (err) {
         console.log(err);
         return returnError(`sendMailToDisabledUser error: ${err}`);
@@ -215,15 +188,17 @@ exports.handler = async (event) => {
     try {
         const input = {
             input: {
-                id: user.username,
+                id: params.sub,
+                user_id: params.sub,
                 delete_flag: true,
             },
         };
 
-        await appSyncRequest(updateUser, "UpdateUser", input);
+        const res = await appSyncRequest(updateUser, "UpdateUser", input);
+        console.log("update user res: ", res.data)
     } catch (err) {
         console.log(err);
-        return returnError(`sendMailToDisabledUser error: ${err}`);
+        return returnError(`update user error: ${err}`);
     }
 
     return returnTrue();

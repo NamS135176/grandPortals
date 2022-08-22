@@ -217,7 +217,7 @@
         }
       ]
     },
-    "withdrawalRequest": {
+    "withdrawal": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

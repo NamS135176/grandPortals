@@ -59,10 +59,10 @@
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/getNextOtherObjectId-6664566d53554d4c3475-build.zip"
         },
-        "withdrawalRequest": {
+        "withdrawal": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-667377584d5146494441-build.zip"
+          "s3Key": "amplify-builds/withdrawal-327166426b3562593371-build.zip"
         }
       }
     }
