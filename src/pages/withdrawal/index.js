@@ -15,10 +15,16 @@ import {ConfirmationDialog} from '../../components/withdrawal/confirmation-dialo
 import Head from 'next/head';
 import {alpha} from '@mui/material/styles';
 import WarningIcon from '@mui/icons-material/Warning';
+import { useAuth } from 'hooks/use-auth';
+import Amplify,{ API, graphqlOperation } from 'aws-amplify';
+import { withdrawalRequest } from 'graphql/queries';
+// import awsmobile from 'aws-exports';
 
+// Amplify.configure(awsmobile)
 const Withdrawal = () => {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
+	const {user, logout} = useAuth()
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -30,8 +36,22 @@ const Withdrawal = () => {
 
 	const handleSubmit = async () => {
 		// API request
-		const returnUrl = '/leave';
-		router.push(returnUrl).catch(console.error);
+		// const returnUrl = '/leave';
+		// router.push(returnUrl).catch(console.error);
+		const input = {
+			name: user.name
+		};
+		const res_gq = await API.graphql(
+			graphqlOperation(withdrawalRequest, JSON.stringify(input))
+		);
+		const response = JSON.parse(res_gq.data.withdrawalRequest);
+		if (response.statusCode !== 200) {
+			console.error(response.body);
+			
+		} else {
+			await logout()
+			router.push('/login')
+		}
 	};
 
 	return (

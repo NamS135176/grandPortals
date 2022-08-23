@@ -7,6 +7,7 @@ import {useMounted} from "../../hooks/use-mounted";
 import Amplify, {API, graphqlOperation, graphql} from "aws-amplify";
 import awsmobile from "../../aws-exports";
 import {publishPasswordResetLink} from "graphql/queries";
+import toast from "react-hot-toast";
 
 export const AmplifyPasswordRecovery = (props) => {
     const isMounted = useMounted();
@@ -38,12 +39,31 @@ export const AmplifyPasswordRecovery = (props) => {
                 const res = await resetPassword({
                     email: values.email,
                 });
-                console.log(res);
+                
                 // await passwordRecovery(values.email);
-
+                const data = JSON.parse(res.data.publishPasswordResetLink)
+                console.log(data);
                 if (isMounted()) {
                   localStorage.setItem('username', values.email);
-                  router.push('/login').catch(console.error);
+                  // router.push('/login').catch(console.error);
+                  if (data.statusCode === 200) {
+                    router.push('/login');
+                    helpers.setStatus({ success: true });
+                    helpers.setSubmitting(false);
+                    toast.success(
+                      '入力されたメールアドレス宛にパスワードリセットメールを送信しました。'
+                    );
+                  } else if (data.statusCode === 10) {
+                    helpers.setStatus({ success: true });
+                    helpers.setSubmitting(false);
+                    console.log(data.body);
+                    toast.error(
+                      data.body
+                    );
+                  } else {
+                    console.error('errorMessage', data.body);
+                    throw new Error();
+                  }
                 }
             } catch (err) {
                 console.error(err);
