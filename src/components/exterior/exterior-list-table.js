@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import {
@@ -13,10 +13,10 @@ import {
 	TableRow,
 	Typography,
 } from '@mui/material';
-import { PencilAlt as PencilAltIcon } from '../../icons/pencil-alt';
-import { Trash as TrashIcon } from '../../icons/trash';
-import { Image as ImageIcon } from '../../icons/image';
-import { Scrollbar } from '../scrollbar';
+import {PencilAlt as PencilAltIcon} from '../../icons/pencil-alt';
+import {Trash as TrashIcon} from '../../icons/trash';
+import {Image as ImageIcon} from '../../icons/image';
+import {Scrollbar} from '../scrollbar';
 
 const applySort = (exterior, sortDir) =>
 	exterior.sort((a, b) => {
@@ -60,14 +60,18 @@ export const ExteriorListTable = (props) => {
 	return (
 		<div {...other}>
 			<Scrollbar>
-				<Table sx={{ minWidth: 700 }}>
+				<Table sx={{minWidth: 700}}>
 					<TableHead>
 						<TableRow>
-							<TableCell align="right">参照/編集</TableCell>
+							<TableCell>参照/編集</TableCell>
 							<TableCell>種別</TableCell>
 							<TableCell>名称</TableCell>
 							<TableCell sortDirection={sort}>
-								<TableSortLabel active direction={sort} onClick={handleSort}>
+								<TableSortLabel
+									active
+									direction={sort}
+									onClick={handleSort}
+								>
 									登録日
 								</TableSortLabel>
 							</TableCell>
@@ -84,7 +88,10 @@ export const ExteriorListTable = (props) => {
 												sx={{
 													alignItems: 'center',
 													display: 'flex',
-													justifyContent: 'end',
+													justifyContent: {
+														xs: 'end',
+														md: 'space-between',
+													},
 												}}
 											>
 												<Box
@@ -99,15 +106,20 @@ export const ExteriorListTable = (props) => {
 												{buk.image ? (
 													<Box
 														sx={{
-															alignItems: 'center',
-															backgroundColor: 'background.default',
+															alignItems:
+																'center',
+															backgroundColor:
+																'background.default',
 															backgroundImage: `url(${buk.image})`,
-															backgroundPosition: 'center',
-															backgroundSize: 'cover',
+															backgroundPosition:
+																'center',
+															backgroundSize:
+																'cover',
 															borderRadius: 1,
 															display: 'flex',
 															height: 80,
-															justifyContent: 'center',
+															justifyContent:
+																'center',
 															overflow: 'hidden',
 															width: 80,
 														}}
@@ -115,12 +127,15 @@ export const ExteriorListTable = (props) => {
 												) : (
 													<Box
 														sx={{
-															alignItems: 'center',
-															backgroundColor: 'background.default',
+															alignItems:
+																'center',
+															backgroundColor:
+																'background.default',
 															borderRadius: 1,
 															display: 'flex',
 															height: 80,
-															justifyContent: 'center',
+															justifyContent:
+																'center',
 															width: 80,
 														}}
 													>
@@ -133,13 +148,19 @@ export const ExteriorListTable = (props) => {
 									<TableCell>{buk.type}</TableCell>
 									<TableCell>{buk.name}</TableCell>
 									<TableCell>
-										<Typography color="success.main" variant="subtitle2">
+										<Typography
+											color="success.main"
+											variant="subtitle2"
+										>
 											{buk.registeredAt}
 										</Typography>
 									</TableCell>
 									<TableCell align="left">
 										<IconButton component="a">
-											<TrashIcon fontSize="small" color="error" />
+											<TrashIcon
+												fontSize="small"
+												color="error"
+											/>
 										</IconButton>
 									</TableCell>
 								</TableRow>
