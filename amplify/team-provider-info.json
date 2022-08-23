@@ -33,15 +33,15 @@
         "publishPasswordResetLink": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-7470657148762b4c5244-build.zip"
+          "s3Key": "amplify-builds/publishPasswordResetLink-456a4e386848584b6451-build.zip"
         },
         "checkLinkValidation": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/checkLinkValidation-4e52336e2b2b6d665249-build.zip"
+          "s3Key": "amplify-builds/checkLinkValidation-475647435a5a35767877-build.zip"
         },
         "settingCognitoPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
+          "s3Key": "amplify-builds/settingCognitoPassword-7a4e645a4371566a6248-build.zip"
         },
         "getNextDocumentId": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
@@ -59,9 +59,10 @@
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/getNextOtherObjectId-6664566d53554d4c3475-build.zip"
         },
-        "withdrawal": {
+        "withdrawalRequest": {
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawal-327166426b3562593371-build.zip"
+          "s3Key": "amplify-builds/withdrawalRequest-55615048616535373166-build.zip"
         }
       }
     }

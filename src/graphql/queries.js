@@ -1318,8 +1318,8 @@ export const getNextOtherObjectId = /* GraphQL */ `
     getNextOtherObjectId
   }
 `;
-export const withdrawal = /* GraphQL */ `
-  query Withdrawal {
-    withdrawal
+export const withdrawalRequest = /* GraphQL */ `
+  query WithdrawalRequest($name: String!) {
+    withdrawalRequest(name: $name)
   }
 `;

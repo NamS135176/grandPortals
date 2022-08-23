@@ -41,7 +41,7 @@ type Query {
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
   ])
 
-  withdrawal(name: String!): AWSJSON @function(name: "withdrawal-${env}")
+  withdrawalRequest(name: String!): AWSJSON @function(name: "withdrawalRequest-${env}")
   @auth(rules: [
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
   ])
