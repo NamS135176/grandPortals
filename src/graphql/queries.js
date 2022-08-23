@@ -1319,7 +1319,7 @@ export const getNextOtherObjectId = /* GraphQL */ `
   }
 `;
 export const withdrawalRequest = /* GraphQL */ `
-  query WithdrawalRequest {
-    withdrawalRequest
+  query WithdrawalRequest($name: String!) {
+    withdrawalRequest(name: $name)
   }
 `;

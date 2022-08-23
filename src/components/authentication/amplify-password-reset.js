@@ -5,6 +5,10 @@ import { useFormik } from 'formik';
 import { Box, Button, FormHelperText, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../hooks/use-auth';
 import { useMounted } from '../../hooks/use-mounted';
+import awsmobile from 'aws-exports';
+import Amplify, {API, graphqlOperation} from 'aws-amplify';
+import { checkLinkValidation , settingCognitoPassword} from 'graphql/queries';
+import toast from 'react-hot-toast';
 
 export const AmplifyPasswordReset = (props) => {
   const isMounted = useMounted();
@@ -17,21 +21,17 @@ export const AmplifyPasswordReset = (props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      code: coded,
-      email: username,
+      // email: username,
       password: '',
       passwordConfirm: '',
       submit: null
     },
     validationSchema: Yup.object({
-      code: Yup
-        .array()
-        .of(Yup.string().required('Code is required')),
-      email: Yup
-        .string()
-        .email('メールアドレス形式で指定してください。')
-        .max(255)
-        .required('メールアドレスは必須です。'),
+      // email: Yup
+      //   .string()
+      //   .email('メールアドレス形式で指定してください。')
+      //   .max(255)
+      //   .required('メールアドレスは必須です。'),
       password: Yup
         .string()
         .matches("^[a-zA-Z0-9&@`'\"!#\\\$%()*:+;\\[{,¥|\\-=\\]}.^~/?_]{8,32}\$","新しいパスワードは半角英数記号で8文字以上、32文字以内を指定し")
@@ -43,7 +43,13 @@ export const AmplifyPasswordReset = (props) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await passwordReset(values.email, values.code.join(''), values.password);
+        const params = {
+					input: {
+						email: username,
+						password: values.password,
+					},
+				};
+        await settingPassword(params);
 
         if (isMounted()) {
           router.push('/login').catch(console.error);
@@ -60,17 +66,55 @@ export const AmplifyPasswordReset = (props) => {
     }
   });
 
+  const checkLinkIsValid = async (id) => {
+    awsmobile.aws_appsync_authenticationType = 'AWS_IAM';
+    Amplify.configure(awsmobile);
+    try {
+      const res_gq = await API.graphql(
+        graphqlOperation(checkLinkValidation, { id })
+      );
+      // console.log(res_gq);
+      return res_gq;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const settingPassword = async (params) => {
+    awsmobile.aws_appsync_authenticationType = 'AWS_IAM';
+    Amplify.configure(awsmobile);
+    const res_gq = await API.graphql(
+      graphqlOperation(settingCognitoPassword, JSON.stringify(params))
+    );
+    return res_gq;
+  };
+
   useEffect(() => {
-    itemsRef.current = itemsRef.current.slice(0, 6);
-
-    const storedUsername = localStorage.getItem('username');
-
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
     if(code){
-      setCode(code.split(""))
+      checkLinkIsValid(router.query.code).then(res => {
+        const res_data = JSON.parse(res.data.checkLinkValidation);
+        console.log('res_data', res_data);
+        if (res_data.status !== 200) {
+          toast.error(
+            'パスワードリセットの有効期限が過ぎました。リセットする場合は再度パスワードリセットを実行してください'
+          );
+          router.push('/login');
+        } else {
+          console.log('email set');
+          setUsername(res_data.email);
+        }
+      })
     }
+    // itemsRef.current = itemsRef.current.slice(0, 6);
+
+    // const storedUsername = localStorage.getItem('username');
+
+    // if (storedUsername) {
+    //   setUsername(storedUsername);
+    // }
+    // if(code){
+    //   setCode(code.split(""))
+    // }
   }, [code]);
 
   const handleKeyDown = (event, index) => {
@@ -123,7 +167,7 @@ export const AmplifyPasswordReset = (props) => {
       noValidate
       onSubmit={formik.handleSubmit}
       {...props}>
-      {!username
+      {/* {!username
         ? (
           <TextField
             autoFocus
@@ -146,8 +190,8 @@ export const AmplifyPasswordReset = (props) => {
             margin="normal"
             value={username}
           />
-        )}
-      <Typography
+        )} */}
+      {/* <Typography
         color="textSecondary"
         sx={{
           mb: 2,
@@ -156,8 +200,8 @@ export const AmplifyPasswordReset = (props) => {
         variant="subtitle2"
       >
         認証コード
-      </Typography>
-      <Box
+      </Typography> */}
+      {/* <Box
         sx={{
           columnGap: '16px',
           display: 'grid',
@@ -188,7 +232,7 @@ export const AmplifyPasswordReset = (props) => {
             }}
           />
         ))}
-      </Box>
+      </Box> */}
       {Boolean(Array.isArray(formik.touched.code)
         && formik.touched.code.length === 6
         && formik.errors.code) && (

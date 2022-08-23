@@ -135,12 +135,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "grandsportalLambdaRole0eadb089",
+            "grandsportalLambdaRolec4088ba3",
             {
               "Fn::Join": [
                 "",
                 [
-                  "grandsportalLambdaRole0eadb089",
+                  "grandsportalLambdaRolec4088ba3",
                   "-",
                   {
                     "Ref": "env"
@@ -254,7 +254,8 @@
                 "cognito-idp:UpdateGroup",
                 "cognito-idp:AdminUpdateAuthEventFeedback",
                 "cognito-idp:UpdateDeviceStatus",
-                "cognito-idp:UpdateUserPool"
+                "cognito-idp:UpdateUserPool",
+                "cognito-idp:AdminDisableUser"
               ],
               "Resource": [
                 {
