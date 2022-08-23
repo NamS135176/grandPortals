@@ -139,6 +139,8 @@ export const AuthProvider = (props) => {
             );
             return;
         }
+        awsExports.aws_appsync_authenticationType = "AMAZON_COGNITO_USER_POOLS";
+        Amplify.configure(awsExports);
 
         const groups = user.signInUserSession.idToken.payload["cognito:groups"];
         const userInfo = await getUserInfo(user.username);
