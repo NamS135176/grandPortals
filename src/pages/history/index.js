@@ -200,21 +200,14 @@ const HistoryList = () => {
 								onSubmit={handleSubmit}
 							>
 								<TextField
-									sx={{pr: 2}}
+									sx={{pr: 2, mb: {xs: 1, md: 0}}}
 									name="name"
 									value={filters.name}
 									onChange={handleChange}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SearchIcon fontSize="small" />
-											</InputAdornment>
-										),
-									}}
-									placeholder="検索"
+									placeholder="名称"
 								/>
 								<TextField
-									sx={{pr: 2}}
+									sx={{pr: 2, mb: {xs: 1, md: 0}}}
 									name="type"
 									onChange={handleChange}
 									select

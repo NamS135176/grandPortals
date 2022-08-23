@@ -77,7 +77,7 @@ export const HistoryListTable = (props) => {
 							<TableCell align="right">参照</TableCell>
 							<TableCell align="left">種別</TableCell>
 							<TableCell align="left">名称</TableCell>
-							<TableCell>概要</TableCell>
+							<TableCell sx={{minWidth: 200}}>概要</TableCell>
 							<TableCell sortDirection={sort}>
 								<TableSortLabel
 									active
