@@ -119,6 +119,7 @@ export const PasswordResettingForm = (props) => {
 						onChange={formik.handleChange}
 						type="password"
 						value={formik.values.password}
+						required
 					/>
 					<TextField
 						required
@@ -156,6 +157,7 @@ export const PasswordResettingForm = (props) => {
 						onChange={formik.handleChange}
 						type="password"
 						value={formik.values.passwordConfirm}
+						required
 					/>
 					{formik.errors.submit && (
 						<Box sx={{mt: 3}}>
