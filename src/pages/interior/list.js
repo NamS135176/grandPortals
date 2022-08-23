@@ -62,9 +62,16 @@ const InteriorList = () => {
 							/>
 							<Box
 								sx={{
-									alignItems: 'center',
+									alignItems: {sx: 'start', md: 'center'},
 									display: 'flex',
-									justifyContent: 'space-between',
+									justifyContent: {
+										sx: 'start',
+										md: 'space-between',
+									},
+									flexDirection: {
+										xs: 'column',
+										md: 'row',
+									},
 									my: 3,
 								}}
 							>
@@ -78,7 +85,14 @@ const InteriorList = () => {
 									>
 										<Button
 											variant="contained"
-											sx={{mr: 2}}
+											sx={{
+												mr: {xs: 0, md: 2},
+												mb: {xs: 1, md: 0},
+												float: {
+													xs: 'right',
+													md: 'none',
+												},
+											}}
 										>
 											既製品新規登録
 										</Button>
@@ -87,7 +101,15 @@ const InteriorList = () => {
 										href={`/interior/order/create`}
 										passHref
 									>
-										<Button variant="contained">
+										<Button
+											variant="contained"
+											sx={{
+												float: {
+													xs: 'right',
+													md: 'none',
+												},
+											}}
+										>
 											オーダー製品新規登録
 										</Button>
 									</NextLink>
