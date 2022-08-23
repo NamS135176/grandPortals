@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import {
@@ -14,10 +14,10 @@ import {
 	TableRow,
 	Typography,
 } from '@mui/material';
-import { Trash as TrashIcon } from '../../icons/trash';
-import { PencilAlt as PencilAltIcon } from '../../icons/pencil-alt';
-import { Scrollbar } from '../scrollbar';
-import { HistoryDialog } from '../../components/history/history-dialog';
+import {Trash as TrashIcon} from '../../icons/trash';
+import {PencilAlt as PencilAltIcon} from '../../icons/pencil-alt';
+import {Scrollbar} from '../scrollbar';
+import {HistoryDialog} from '../../components/history/history-dialog';
 
 const applySort = (bukken, sortDir) =>
 	bukken.sort((a, b) => {
@@ -71,7 +71,7 @@ export const HistoryListTable = (props) => {
 	return (
 		<div {...other}>
 			<Scrollbar>
-				<Table sx={{ minWidth: 700 }}>
+				<Table sx={{minWidth: 700}}>
 					<TableHead>
 						<TableRow>
 							<TableCell align="right">参照</TableCell>
@@ -79,7 +79,11 @@ export const HistoryListTable = (props) => {
 							<TableCell align="left">名称</TableCell>
 							<TableCell>概要</TableCell>
 							<TableCell sortDirection={sort}>
-								<TableSortLabel active direction={sort} onClick={handleSort}>
+								<TableSortLabel
+									active
+									direction={sort}
+									onClick={handleSort}
+								>
 									履歴
 								</TableSortLabel>
 							</TableCell>
@@ -103,7 +107,10 @@ export const HistoryListTable = (props) => {
 									<TableCell>{buk.name}</TableCell>
 									<TableCell>
 										<NextLink href="/bukken/1" passHref>
-											<Link color="inherit" variant="subtitle2">
+											<Link
+												color="inherit"
+												variant="subtitle2"
+											>
 												<Box
 													sx={{
 														alignItems: 'center',
@@ -125,13 +132,19 @@ export const HistoryListTable = (props) => {
 										</NextLink>
 									</TableCell>
 									<TableCell>
-										<Typography color="success.main" variant="subtitle2">
+										<Typography
+											color="success.main"
+											variant="subtitle2"
+										>
 											{buk.registeredAt}
 										</Typography>
 									</TableCell>
 									<TableCell align="left">
 										<NextLink href="/bukken/1" passHref>
-											<IconButton component="a" color="error">
+											<IconButton
+												component="a"
+												color="error"
+											>
 												<TrashIcon fontSize="small" />
 											</IconButton>
 										</NextLink>
@@ -150,6 +163,7 @@ export const HistoryListTable = (props) => {
 				page={page}
 				rowsPerPage={rowsPerPage}
 				rowsPerPageOptions={[5, 10, 25]}
+				labelRowsPerPage="表示数"
 			/>
 			<HistoryDialog
 				onClose={handleCloseDialog}

@@ -213,6 +213,7 @@ export const InteriorListTable = (props) => {
 				page={page}
 				rowsPerPage={rowsPerPage}
 				rowsPerPageOptions={[5, 10, 25]}
+				labelRowsPerPage="表示数"
 			/>
 		</div>
 	);
