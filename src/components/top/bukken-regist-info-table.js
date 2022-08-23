@@ -126,6 +126,7 @@ export const BukkenRegistInfoTable = () => {
 						page={0}
 						rowsPerPage={5}
 						rowsPerPageOptions={[5, 10, 25]}
+						labelRowsPerPage="表示数"
 					/>
 				</CardContent>
 			</Card>
