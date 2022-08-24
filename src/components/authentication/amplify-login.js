@@ -40,7 +40,7 @@ export const AmplifyLogin = (props) => {
             try {
                 const cognitoUser = await login(values.email, values.password);
                 console.log("login success..", {cognitoUser});
-                if(cognitoUser.username == "NEW_PASSWORD_REQUIRED"){
+                if(cognitoUser.challengeName == "NEW_PASSWORD_REQUIRED"){
                     router.push(`/passwordresetting?email=${values.email}`)
                 }
                 else{

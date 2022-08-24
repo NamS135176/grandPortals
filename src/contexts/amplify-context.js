@@ -126,15 +126,10 @@ export const AuthProvider = (props) => {
 
     const login = async (email, password) => {
         var user = await Auth.signIn(email, password);
-
-        // if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
-        //     await Auth.completeNewPassword(
-        //         user, // the Cognito User Object
-        //         password // the new password
-        //     );
-        //     user = await Auth.signIn(email, password);
-        // } else
-         if (user.challengeName && user.challengeName != "NEW_PASSWORD_REQUIRED") {
+        console.log(user);
+        if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
+           return user
+        } else if (user.challengeName) {
             console.error(
                 `Unable to login, because challenge "${user.challengeName}" is mandated and we did not handle this case.`
             );
@@ -143,7 +138,7 @@ export const AuthProvider = (props) => {
         awsExports.aws_appsync_authenticationType = "AMAZON_COGNITO_USER_POOLS";
         Amplify.configure(awsExports);
 
-        const groups = user.signInUserSession.idToken.payload["cognito:groups"];
+        const groups = user.signInUserSession?.idToken.payload["cognito:groups"];
         const userInfo = await getUserInfo(user.username);
 
         dispatch({
