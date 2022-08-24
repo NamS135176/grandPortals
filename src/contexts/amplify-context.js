@@ -127,13 +127,14 @@ export const AuthProvider = (props) => {
     const login = async (email, password) => {
         var user = await Auth.signIn(email, password);
 
-        if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
-            await Auth.completeNewPassword(
-                user, // the Cognito User Object
-                password // the new password
-            );
-            user = await Auth.signIn(email, password);
-        } else if (user.challengeName) {
+        // if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
+        //     await Auth.completeNewPassword(
+        //         user, // the Cognito User Object
+        //         password // the new password
+        //     );
+        //     user = await Auth.signIn(email, password);
+        // } else
+         if (user.challengeName && user.challengeName != "NEW_PASSWORD_REQUIRED") {
             console.error(
                 `Unable to login, because challenge "${user.challengeName}" is mandated and we did not handle this case.`
             );

@@ -4,11 +4,10 @@ import NextLink from 'next/link';
 import { Box, Card, Container, Divider, Link, Typography } from '@mui/material';
 import { PasswordResettingForm } from '../../components/authentication/password-resetting';
 import { AmplifyPasswordReset } from 'components/authentication/amplify-password-reset';
-import { AmplifyPasswordConfirm} from 'components/authentication/amplify-password-confirm';
 import { gtm } from '../../lib/gtm';
 import { MainLayout } from '../../components/main-layout';
 
-const PasswordResetting = () => {
+const PasswordReset = () => {
 	useEffect(() => {
 		gtm.push({ event: 'page_view' });
 	}, []);
@@ -53,7 +52,7 @@ const PasswordResetting = () => {
 								mt: 3,
 							}}
 						>
-							<AmplifyPasswordConfirm />
+							<AmplifyPasswordReset />
 						</Box>
 						<Divider sx={{ my: 3 }} />
 						<Box
@@ -77,6 +76,6 @@ const PasswordResetting = () => {
 	);
 };
 
-PasswordResetting.getLayout = (page) => <MainLayout>{page}</MainLayout>;
+PasswordReset.getLayout = (page) => <MainLayout>{page}</MainLayout>;
 
-export default PasswordResetting;
+export default PasswordReset;

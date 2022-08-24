@@ -40,15 +40,20 @@ export const AmplifyLogin = (props) => {
             try {
                 const cognitoUser = await login(values.email, values.password);
                 console.log("login success..", {cognitoUser});
-                if (isMounted()) {
-                    //check profile
-                    const userInfo = await getUserInfo(cognitoUser.username);
-                    console.log("login success..", {userInfo});
-                    var returnUrl = "/bukken/list";
-                    if (!userInfo?.name) {
-                        returnUrl = "/profile/regist";
+                if(cognitoUser.username == "NEW_PASSWORD_REQUIRED"){
+                    router.push(`/passwordresetting?email=${values.email}`)
+                }
+                else{
+                    if (isMounted()) {
+                        //check profile
+                        const userInfo = await getUserInfo(cognitoUser.username);
+                        console.log("login success..", {userInfo});
+                        var returnUrl = "/bukken/list";
+                        if (!userInfo?.name) {
+                            returnUrl = "/profile/regist";
+                        }
+                        router.push(returnUrl).catch(console.error);
                     }
-                    router.push(returnUrl).catch(console.error);
                 }
             } catch (err) {
                 console.error(err.message);
