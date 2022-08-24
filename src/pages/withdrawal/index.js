@@ -55,7 +55,7 @@ const Withdrawal = () => {
 		} else {
 			setLoading(false)
 			await logout()
-			router.push('/login')
+			router.push('/leave')
 		}
 	};
 
