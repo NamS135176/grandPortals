@@ -14,7 +14,7 @@ export const AmplifyPasswordReset = (props) => {
   const isMounted = useMounted();
   const { passwordReset } = useAuth();
   const router = useRouter();
-  const {code} = router.query
+  const {code, email} = router.query
   const itemsRef = useRef([]);
   const [username, setUsername] = useState('');
   const [coded,   setCode] = useState(['', '', '', '', '', ''])
@@ -105,6 +105,10 @@ export const AmplifyPasswordReset = (props) => {
         }
       })
     }
+    if(email){
+      setUsername(email);
+    }
+
     // itemsRef.current = itemsRef.current.slice(0, 6);
 
     // const storedUsername = localStorage.getItem('username');
@@ -115,7 +119,7 @@ export const AmplifyPasswordReset = (props) => {
     // if(code){
     //   setCode(code.split(""))
     // }
-  }, [code]);
+  }, [code, email]);
 
   const handleKeyDown = (event, index) => {
     if (event.code === 'Enter') {

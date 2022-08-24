@@ -16,3 +16,19 @@ module.exports.updateUser = /* GraphQL */ `
     }
   }
 `;
+
+module.exports.getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      email
+      name
+      name_kana
+      delete_flag
+      last_login_date
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;

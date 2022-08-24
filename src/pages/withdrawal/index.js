@@ -18,6 +18,8 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { useAuth } from 'hooks/use-auth';
 import Amplify,{ API, graphqlOperation } from 'aws-amplify';
 import { withdrawalRequest } from 'graphql/queries';
+import toast from 'react-hot-toast';
+import { transpileModule } from 'typescript';
 // import awsmobile from 'aws-exports';
 
 // Amplify.configure(awsmobile)
@@ -25,7 +27,7 @@ const Withdrawal = () => {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const {user, logout} = useAuth()
-
+	const [loading, setLoading] = useState(false)
 	const handleOpen = () => {
 		setOpen(true);
 	};
@@ -38,6 +40,7 @@ const Withdrawal = () => {
 		// API request
 		// const returnUrl = '/leave';
 		// router.push(returnUrl).catch(console.error);
+		setLoading(true)
 		const input = {
 			name: user.name
 		};
@@ -46,9 +49,11 @@ const Withdrawal = () => {
 		);
 		const response = JSON.parse(res_gq.data.withdrawalRequest);
 		if (response.statusCode !== 200) {
+			setLoading(false)
 			console.error(response.body);
-			
+			toast.error(response.body)
 		} else {
+			setLoading(false)
 			await logout()
 			router.push('/login')
 		}
@@ -129,6 +134,7 @@ const Withdrawal = () => {
 				open={open}
 				onClose={handleClose}
 				onSubmit={handleSubmit}
+				isRequesting={loading}
 			/>
 		</>
 	);

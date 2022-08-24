@@ -30,18 +30,18 @@
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/grandsPortalCustomMessage-524e656a2f7179704d57-build.zip"
         },
-        "publishPasswordResetLink": {
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
+        "settingCognitoPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-7470657148762b4c5244-build.zip"
+          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
+        },
+        "publishPasswordResetLink": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/publishPasswordResetLink-7645676c69696b2f5577-build.zip",
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         },
         "checkLinkValidation": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/checkLinkValidation-4e52336e2b2b6d665249-build.zip"
-        },
-        "settingCognitoPassword": {
-          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
         },
         "getNextDocumentId": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
@@ -60,77 +60,9 @@
           "s3Key": "amplify-builds/getNextOtherObjectId-6664566d53554d4c3475-build.zip"
         },
         "withdrawalRequest": {
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-55615048616535373166-build.zip"
-        }
-      }
-    }
-  },
-  "production": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-grandsportal-production-124646-authRole",
-      "UnauthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-production-124646-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::147662606770:role/amplify-grandsportal-production-124646-authRole",
-      "Region": "ap-northeast-1",
-      "DeploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-      "UnauthRoleName": "amplify-grandsportal-production-124646-unauthRole",
-      "StackName": "amplify-grandsportal-production-124646",
-      "StackId": "arn:aws:cloudformation:ap-northeast-1:147662606770:stack/amplify-grandsportal-production-124646/09f5cd20-22a7-11ed-8cfa-0a1bd3e9b735",
-      "AmplifyAppId": "d3i7r774ih5bz6",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-grandsportal-production-124646-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "auth": {
-        "userPoolGroups": {},
-        "grandsPortal": {}
-      },
-      "function": {
-        "salesforce2AWSRegistration": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/salesforce2AWSRegistration-423854475537696b4e63-build.zip"
-        },
-        "grandsPortalPostAuthentication": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/grandsPortalPostAuthentication-536f7943744e5231464a-build.zip"
-        },
-        "grandsPortalCustomMessage": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/grandsPortalCustomMessage-524e656a2f7179704d57-build.zip"
-        },
-        "settingCognitoPassword": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
-        },
-        "publishPasswordResetLink": {
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-7470657148762b4c5244-build.zip"
-        },
-        "checkLinkValidation": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/checkLinkValidation-4e52336e2b2b6d665249-build.zip"
-        },
-        "getNextDocumentId": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/getNextDocumentId-63437339374443516833-build.zip"
-        },
-        "getNextBukkenId": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/getNextBukkenId-2b345435635039502b67-build.zip"
-        },
-        "getNextHistoryId": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/getNextHistoryId-6669366543744a644868-build.zip"
-        },
-        "getNextOtherObjectId": {
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/getNextOtherObjectId-6664566d53554d4c3475-build.zip"
-        },
-        "withdrawalRequest": {
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
-          "deploymentBucketName": "amplify-grandsportal-production-124646-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-55615048616535373166-build.zip"
+          "s3Key": "amplify-builds/withdrawalRequest-6156704f467248583651-build.zip",
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         }
       }
     }
