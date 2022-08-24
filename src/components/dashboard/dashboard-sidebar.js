@@ -8,6 +8,7 @@ import {Menu as MenuIcon} from '../../icons/menu';
 import {Home as HomeIcon} from '../../icons/home';
 import {Lock as LockIcon} from '../../icons/lock';
 import {UserCircle as UserCircleIcon} from '../../icons/user-circle';
+import {Unsubscribe as UnsubscribeIcon} from '../../icons/unsubscribe';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import {Scrollbar} from '../scrollbar';
@@ -64,11 +65,15 @@ const getSections = (t) => [
 				path: '/profile/edit',
 				icon: <UserCircleIcon fontSize="small" />,
 			},
-
 			{
 				title: t('パスワード変更'),
 				path: '#',
 				icon: <LockIcon fontSize="small" />,
+			},
+			{
+				title: t('退会手続き'),
+				path: '/withdrawal',
+				icon: <UnsubscribeIcon fontSize="small" />,
 			},
 		],
 	},
