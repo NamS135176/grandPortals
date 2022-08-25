@@ -84,7 +84,7 @@ export const AmplifyPasswordRecovery = (props) => {
     return (
         <form noValidate onSubmit={formik.handleSubmit} {...props}>
             <TextField
-                autoFocus
+                
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 fullWidth
                 helperText={formik.touched.email && formik.errors.email}
