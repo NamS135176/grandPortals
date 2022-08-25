@@ -1,13 +1,24 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Head from 'next/head';
 import {Box, Container} from '@mui/material';
 import {PasswordResettingForm} from '../../../components/profile/password-resetting';
 import {gtm} from '../../../lib/gtm';
 import {DashboardLayout} from '../../../components/dashboard/dashboard-layout';
+import { use } from 'i18next';
+import { Auth } from 'aws-amplify';
 
 const PasswordReset = () => {
+	const [username, setUsername] = useState();
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
+		Auth.currentAuthenticatedUser()
+		.then((user) => {
+			setUsername(user.username)
+		})
+		.catch((err) => {
+			console.log(err);
+			router.push('/login')
+		});
 	}, []);
 
 	return (
@@ -24,7 +35,7 @@ const PasswordReset = () => {
 				}}
 			>
 				<Container maxWidth="md">
-					<PasswordResettingForm />
+					<PasswordResettingForm username={username} />
 				</Container>
 			</Box>
 		</>

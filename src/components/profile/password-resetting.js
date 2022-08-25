@@ -15,10 +15,33 @@ import {
 import {useRouter} from 'next/router';
 import {useMounted} from '../../hooks/use-mounted';
 import toast from 'react-hot-toast';
+import { Auth } from 'aws-amplify';
+import { useState } from 'react';
 
 export const PasswordResettingForm = (props) => {
 	const router = useRouter();
 	const isMounted = useMounted();
+	const {username} = props
+	const [isResetting, setIsResetting] = useState(false);
+
+	const resetPassword = async (params) => {
+		let { oldPassword, newPassword } = params;
+		try {
+			await Auth.signIn(username, oldPassword);
+		} catch (error) {
+			console.log(error);
+			throw new Error('現在のパスワードに誤りがあります。')
+		}
+		try {
+			const user = await Auth.currentAuthenticatedUser()
+			await Auth.changePassword(user, oldPassword, newPassword);
+		} catch (error) {
+			console.log(error)
+			throw new Error ('エラーが発生しました。')
+		}
+	};
+
+	
 	const formik = useFormik({
 		initialValues: {
 			password: '',
@@ -60,7 +83,7 @@ export const PasswordResettingForm = (props) => {
 				),
 			passwordConfirm: Yup.string()
 				.oneOf(
-					[Yup.ref('password'), null],
+					[Yup.ref('newPassword'), null],
 					'新しいパスワードとパスワード（確認）が一致していません。'
 				)
 				.required('新しいパスワード（確認）は必須です。')
@@ -74,12 +97,17 @@ export const PasswordResettingForm = (props) => {
 				)
 				.max(
 					32,
-					'新しいパスワードと新しいパスワード（確認）が一致しているか。'
+					'新しいパスワード（確認）は半角英数記号で8文字以上、32文字以内を指定してください。'
 				),
 		}),
 		onSubmit: async (values, helpers) => {
 			try {
 				if (isMounted()) {
+					const params = {
+						oldPassword: values.password,
+						newPassword: values.newPassword,
+					};
+					await resetPassword(params);
 					helpers.setStatus({success: true});
 					helpers.setSubmitting(false);
 					const returnUrl = '/';

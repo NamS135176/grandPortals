@@ -169,6 +169,7 @@ export const ProfileForm = (props) => {
 								name="email"
 								disabled
 								value={formik.values.email}
+								required
 							/>
 						</Grid>
 					</Grid>

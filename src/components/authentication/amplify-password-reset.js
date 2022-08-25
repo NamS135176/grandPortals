@@ -45,7 +45,7 @@ export const AmplifyPasswordReset = (props) => {
 				.max(
 					32,
 					'新しいパスワードは半角英数記号で8文字以上、32文字以内を指定してください。'
-				).required('現在のパスワードは必須です。'),
+				).required('新しいパスワードは必須です。'),
        
       passwordConfirm: Yup
         .string()

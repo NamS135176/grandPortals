@@ -67,7 +67,7 @@ const getSections = (t) => [
 			},
 			{
 				title: t('パスワード変更'),
-				path: '#',
+				path: '/profile/passwordresetting',
 				icon: <LockIcon fontSize="small" />,
 			},
 			{
