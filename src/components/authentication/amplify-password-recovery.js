@@ -57,9 +57,13 @@ export const AmplifyPasswordRecovery = (props) => {
                     helpers.setStatus({ success: true });
                     helpers.setSubmitting(false);
                     console.log(data.body);
-                    toast.error(
-                      data.body
+                    router.push('/login');
+                    toast.success(
+                      '入力されたメールアドレス宛にパスワードリセットメールを送信しました。'
                     );
+                    // toast.error(
+                    //   data.body
+                    // );
                   } else {
                     console.error('errorMessage', data.body);
                     throw new Error();

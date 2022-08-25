@@ -31,7 +31,7 @@ Amplify Params - DO NOT EDIT */
  const sgMail = require("@sendgrid/mail");
  const {v4: uuidv4} = require("uuid");
  
- const sendResetLink = async (id, email) => {
+ const sendResetLink = async (id, email, name) => {
      try {
          const {Parameters} = await new AWS.SSM()
              .getParameters({
@@ -48,9 +48,8 @@ Amplify Params - DO NOT EDIT */
              to: email,
              from: "no-reply@grands.co.jp",
              subject: `【${process.env.TITLE_HOLDER}】パスワードリセットのお知らせ`,
-             html: `山田太郎 さん<br /><br />
+             html: `${name} さん<br /><br />
     [${process.env.TITLE_HOLDER}】のパスワードをリセットするには、次のリンクをクリックしてください。<br /><br />
-    パスワードの再設定をご希望の場合は、以下URLをクリックし<br />
     <a href=${url}>${url}</a><br /><br />
     このメールに心当たりがない場合、他の方がパスワードをリセットする際に誤ってお客様のメール アドレスを入力した可能性があります。<br />
     リクエストした覚えがない場合は、何も行わずにこのメールを破棄してください。<br /><br />
@@ -190,7 +189,7 @@ Amplify Params - DO NOT EDIT */
  
          if (result.length > 0) {
              const id = await createDBRecord(email);
-             await sendResetLink(id, email);
+             await sendResetLink(id, email, result[0].name);
              const response = {
                  statusCode: 200,
                  body: JSON.stringify("success"),

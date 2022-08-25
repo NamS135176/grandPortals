@@ -104,6 +104,7 @@ export const AmplifyLogin = (props) => {
                 onChange={formik.handleChange}
                 type="password"
                 value={formik.values.password}
+                required
             />
             {formik.errors.submit && (
                 <Box sx={{mt: 3}}>

@@ -36,7 +36,7 @@
         },
         "publishPasswordResetLink": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-7645676c69696b2f5577-build.zip",
+          "s3Key": "amplify-builds/publishPasswordResetLink-2f6a67505a69352f336e-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         },
         "checkLinkValidation": {
@@ -61,7 +61,7 @@
         },
         "withdrawalRequest": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-6156704f467248583651-build.zip",
+          "s3Key": "amplify-builds/withdrawalRequest-31764876676c50425452-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         }
       }

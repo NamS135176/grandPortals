@@ -30,7 +30,7 @@ export const ProfileForm = (props) => {
 	console.log('ProfileForm... ', {user});
 	const router = useRouter();
 	const parsedName = parseUserName(user.name);
-	const parsedNameKana = parseUserName(user.name);
+	const parsedNameKana = parseUserName(user.nameKana);
 	const formik = useFormik({
 		initialValues: {
 			surname: parsedName[0],
@@ -38,7 +38,7 @@ export const ProfileForm = (props) => {
 			surnameKana: parsedNameKana[0],
 			nameKana: parsedNameKana[1],
 			email: user.email || '',
-			emailAlerts: true,
+			// emailAlerts: true,
 			submit: null,
 		},
 		validationSchema: Yup.object({
@@ -47,7 +47,7 @@ export const ProfileForm = (props) => {
 			surnameKana: Yup.string()
 				.max(255)
 				.required('姓（カナ）は必須です。'),
-			emailAlerts: Yup.boolean(),
+			// emailAlerts: Yup.boolean(),
 			nameKana: Yup.string().max(255).required('名（カナ）は必須です。'),
 		}),
 		onSubmit: async (values, helpers) => {
@@ -172,7 +172,7 @@ export const ProfileForm = (props) => {
 							/>
 						</Grid>
 					</Grid>
-					<Box sx={{mt: 2}}>
+					{/* <Box sx={{mt: 2}}>
 						<FormControlLabel
 							control={
 								<Checkbox
@@ -188,7 +188,7 @@ export const ProfileForm = (props) => {
 							}
 							label="お知らせメールを受け取る"
 						/>
-					</Box>
+					</Box> */}
 				</CardContent>
 				<CardActions>
 					<NextLink href="/" passHref>
