@@ -5,8 +5,10 @@ import {useRouter} from "next/router";
 import {useMounted} from "../../hooks/use-mounted";
 import { useAuth } from "../../hooks/use-auth";
 import { useCallback } from "react";
-import { API } from "aws-amplify";
-import { getUser } from "graphql/queries";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import { getUser, createForceResetPassword } from "graphql/queries";
+import awsmobile from "aws-exports";
+import { createUserTempResetPassword } from "graphql/mutations";
 
 export const AmplifyLogin = (props) => {
     const router = useRouter();
@@ -41,7 +43,16 @@ export const AmplifyLogin = (props) => {
                 const cognitoUser = await login(values.email, values.password);
                 console.log("login success..", {cognitoUser});
                 if(cognitoUser.challengeName == "NEW_PASSWORD_REQUIRED"){
-                    router.push(`/passwordresetting?email=${values.email}`)
+                    awsmobile.aws_appsync_authenticationType = "AWS_IAM";
+                    Amplify.configure(awsmobile);
+                    // console.log('params', params);
+                    const res_gq = await API.graphql(
+                        graphqlOperation(createForceResetPassword, JSON.stringify({
+                            email: values.email,
+                        }))
+                    );
+                    // console.log();
+                    router.push(`/passwordresetting/${JSON.parse(JSON.parse(res_gq.data.createForceResetPassword).body)}`)
                 }
                 else{
                     if (isMounted()) {

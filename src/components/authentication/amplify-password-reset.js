@@ -12,7 +12,8 @@ import toast from 'react-hot-toast';
 
 export const AmplifyPasswordReset = (props) => {
   const isMounted = useMounted();
-  const { passwordReset } = useAuth();
+  const { passwordReset, user } = useAuth();
+  console.log(user);
   const router = useRouter();
   const {code, email} = router.query
   const itemsRef = useRef([]);
@@ -128,9 +129,9 @@ export const AmplifyPasswordReset = (props) => {
         }
       })
     }
-    if(email){
-      setUsername(email);
-    }
+    // if(email){
+    //   setUsername(email);
+    // }
 
     // itemsRef.current = itemsRef.current.slice(0, 6);
 

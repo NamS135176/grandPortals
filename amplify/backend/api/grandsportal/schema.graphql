@@ -12,6 +12,11 @@ type Query {
     { allow: public, provider: iam }
   ])
 
+  createForceResetPassword(email: String!): AWSJSON @function(name: "createForceResetPassword-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
+
   checkLinkValidation(id: ID!): AWSJSON @function(name: "checkLinkValidation-${env}")
   @auth(rules: [
     { allow: public, provider: iam }

@@ -1293,6 +1293,11 @@ export const publishPasswordResetLink = /* GraphQL */ `
     publishPasswordResetLink(email: $email)
   }
 `;
+export const createForceResetPassword = /* GraphQL */ `
+  query CreateForceResetPassword($email: String!) {
+    createForceResetPassword(email: $email)
+  }
+`;
 export const checkLinkValidation = /* GraphQL */ `
   query CheckLinkValidation($id: ID!) {
     checkLinkValidation(id: $id)
