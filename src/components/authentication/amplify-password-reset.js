@@ -69,15 +69,15 @@ export const AmplifyPasswordReset = (props) => {
       try {
         const params = {
 					input: {
-						email: username,
 						password: values.password,
+            idTemp: code
 					},
 				};
-        await settingPassword(params);
-
-        if (isMounted()) {
-          router.push('/login').catch(console.error);
-        }
+        const result = await settingPassword(params);
+        console.log(result);
+        // if (isMounted()) {
+        //   router.push('/login').catch(console.error);
+        // }
       } catch (err) {
         console.error(err);
 

@@ -231,6 +231,6 @@ type History
 }
 
 input settingCognitoPasswordInput {
-  email: String!
   password: String!
+  idTemp: String!
 }
