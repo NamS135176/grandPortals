@@ -75,9 +75,9 @@ export const AmplifyPasswordReset = (props) => {
 				};
         const result = await settingPassword(params);
         console.log(result);
-        // if (isMounted()) {
-        //   router.push('/login').catch(console.error);
-        // }
+        if (isMounted()) {
+          router.push('/login').catch(console.error);
+        }
       } catch (err) {
         console.error(err);
 
