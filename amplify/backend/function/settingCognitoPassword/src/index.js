@@ -34,7 +34,7 @@ Amplify Params - DO NOT EDIT */
 
  exports.handler = async (event) => {
      try {
-         const email = event['arguments']['input']['email'];
+        //  const email = event['arguments']['input']['email'];
          const password = event['arguments']['input']['password'];
          const id = event['arguments']['input']['idTemp'];
          const result = await appSyncRequest(
@@ -61,7 +61,7 @@ Amplify Params - DO NOT EDIT */
         if (data && time - linkTime < 1800) {
             await cognito.adminSetUserPassword({
                 UserPoolId,
-                Username: email,
+                Username: data.email,
                 Password: password,
                 Permanent: true
             }).promise();
