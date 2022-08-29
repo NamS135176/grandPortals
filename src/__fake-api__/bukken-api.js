@@ -493,6 +493,25 @@ class BukkenApi {
 
 		return Promise.resolve(user);
 	}
+
+	getInformationList() {
+		const information = [
+			{
+				id: '528651571N1',
+				type: 'お知らせ',
+				name: 'XXキャンペインのお知らせ',
+				registeredAt: '2022/08/29 15:09',
+			},
+			{
+				id: '311658671J2',
+				type: '重要なお知らせ',
+				name: 'XX製給湯器をお使いの方',
+				registeredAt: '2022/08/29 15:09',
+			},
+		];
+
+		return Promise.resolve(information);
+	}
 }
 
 export const bukkenApi = new BukkenApi();
