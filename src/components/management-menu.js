@@ -66,6 +66,8 @@ export const ManagementList = () => {
 									elevation={0}
 									variant="outlined"
 									sx={{
+										paddingTop: 2,
+										paddingBottom: 2,
 										backgroundColor: '#10b981',
 										cursor: 'pointer',
 										...(path.includes(menu_.key) && {
