@@ -97,7 +97,7 @@ const ExteriorList = () => {
 									alignItems: 'center',
 									display: 'flex',
 									justifyContent: 'space-between',
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">
