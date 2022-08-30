@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import Head from 'next/head';
+import NextLink from 'next/link';
 import {
 	Box,
 	Button,
@@ -13,13 +14,10 @@ import {
 import {DashboardLayout} from '../../../components/dashboard/dashboard-layout';
 import {gtm} from '../../../lib/gtm';
 import {ArrowLeft as ArrowLeftIcon} from '../../../icons/arrow-left';
-import {useRouter} from 'next/router';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
 import {Download as DownloadIcon} from '../../../icons/download';
 
 const InformationDetails = () => {
-	const router = useRouter();
-
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
 	}, []);
@@ -111,13 +109,14 @@ const InformationDetails = () => {
 							mt: 3,
 						}}
 					>
-						<Button
-							endIcon={<ArrowLeftIcon fontSize="small" />}
-							variant="outlined"
-							onClick={() => router.push(backUrl)}
-						>
-							戻る
-						</Button>
+						<NextLink href="/information/list" passHref>
+							<Button
+								endIcon={<ArrowLeftIcon fontSize="small" />}
+								variant="outlined"
+							>
+								戻る
+							</Button>
+						</NextLink>
 					</Box>
 				</Container>
 			</Box>
