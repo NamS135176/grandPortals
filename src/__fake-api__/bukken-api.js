@@ -552,13 +552,60 @@ class BukkenApi {
 				registeredAt: '2022/08/05 14:31',
 			},
 			{
-				id: '311658671J2',
+				id: '311658671J3',
 				status: '送信済',
 				type: '重要なお知らせ',
 				url: '/images/mock-images/covers/cover_3.jpg',
 				name: 'XX製〇〇リコールのお知らせ',
 				sendAt: '2022/08/01 11:01',
 				registeredAt: '2022/07/28 15:34',
+			},
+		];
+
+		return Promise.resolve(information);
+	}
+
+	getCsDestinationList() {
+		const information = [
+			{
+				id: '528651571N1',
+				status: '有効',
+				delivery: false,
+				email: 'tanaka1@example.com',
+				name: '田中 一郎',
+				nameKana: 'タナカ イチロウ',
+			},
+			{
+				id: '528651571N2',
+				status: '有効',
+				delivery: true,
+				email: 'tanaka2@example.com',
+				name: '田中 二郎',
+				nameKana: 'タナカ ジロウ',
+			},
+			{
+				id: '528651571N3',
+				status: '有効',
+				delivery: false,
+				email: 'tanaka3@example.com',
+				name: '田中 三郎',
+				nameKana: 'タナカ サブロウ',
+			},
+			{
+				id: '311658671J2',
+				status: '有効',
+				delivery: false,
+				email: 'tanaka4@example.com',
+				name: '田中 四郎',
+				nameKana: 'タナカ シロウ',
+			},
+			{
+				id: '311658671J3',
+				status: '無効',
+				delivery: true,
+				email: 'tanaka5@example.com',
+				name: '田中 五郎',
+				nameKana: 'タナカ ゴロウ',
 			},
 		];
 
