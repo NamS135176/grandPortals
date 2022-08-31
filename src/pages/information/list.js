@@ -5,6 +5,7 @@ import {
 	Box,
 	Button,
 	Card,
+	CardContent,
 	Container,
 	Divider,
 	Grid,
@@ -45,26 +46,21 @@ const InformationList = () => {
 				}}
 			>
 				<Container maxWidth="xl">
-					<Box sx={{mb: 4}}>
-						<Grid
-							container
-							justifyContent="space-between"
-							spacing={3}
-						>
-							<Grid item>
-								<Typography variant="h4">
-									お知らせ一覧
-								</Typography>
-							</Grid>
-							<Grid item>
-								<Typography variant="subtitle2">
-									お問い合わせ：050-5443-5974
-								</Typography>
-							</Grid>
-						</Grid>
+					<Box
+						sx={{
+							mb: 4,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
+						<Typography variant="subtitle2">
+							お問い合わせ：050-5443-5974
+						</Typography>
 					</Box>
 					<Card>
-						<Divider />
+						<CardContent>
+							<Typography variant="h6">お知らせ一覧</Typography>
+						</CardContent>
 						{items.length > 0 && (
 							<InformationListTable items={items} />
 						)}

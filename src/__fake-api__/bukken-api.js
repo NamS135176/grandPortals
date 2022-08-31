@@ -512,6 +512,58 @@ class BukkenApi {
 
 		return Promise.resolve(information);
 	}
+
+	getCsInformationList() {
+		const information = [
+			{
+				id: '528651571N1',
+				status: '下書き',
+				type: 'お知らせ',
+				url: '/images/mock-images/covers/cover_3.jpg',
+				name: 'XXキャンペインのお知らせ',
+				sendAt: '',
+				registeredAt: '2022/09/15 12:34',
+			},
+			{
+				id: '528651571N2',
+				status: '下書き',
+				type: 'お知らせ',
+				url: '/images/mock-images/covers/cover_3.jpg',
+				name: '〇〇キャンペインのお知らせ',
+				sendAt: '2022/10/01 11:01',
+				registeredAt: '2022/09/12 13:45',
+			},
+			{
+				id: '528651571N3',
+				status: '未送信',
+				type: '重要なお知らせ',
+				url: '',
+				name: 'XX製給湯器をお使いの方',
+				sendAt: '',
+				registeredAt: '2022/08/30 17:11',
+			},
+			{
+				id: '311658671J2',
+				status: '送信予定',
+				type: '重要なお知らせ',
+				url: '/images/mock-images/covers/cover_3.jpg',
+				name: '〇〇製給湯器をお使いの方',
+				sendAt: '2022/09/01 11:01',
+				registeredAt: '2022/08/05 14:31',
+			},
+			{
+				id: '311658671J2',
+				status: '送信済',
+				type: '重要なお知らせ',
+				url: '/images/mock-images/covers/cover_3.jpg',
+				name: 'XX製〇〇リコールのお知らせ',
+				sendAt: '2022/08/01 11:01',
+				registeredAt: '2022/07/28 15:34',
+			},
+		];
+
+		return Promise.resolve(information);
+	}
 }
 
 export const bukkenApi = new BukkenApi();
