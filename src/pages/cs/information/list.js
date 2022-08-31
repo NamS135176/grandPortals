@@ -108,7 +108,7 @@ const CsInformationList = () => {
 	return (
 		<>
 			<Head>
-				<title>grandsポータルサイト｜お知らせ</title>
+				<title>grandsポータルサイト｜お知らせ一覧（CS）</title>
 			</Head>
 			<Box
 				component="main"

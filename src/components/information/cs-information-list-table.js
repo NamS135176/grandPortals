@@ -105,7 +105,7 @@ export const CsInformationListTable = (props) => {
 									<TableRow hover key={item.id}>
 										<TableCell align="right">
 											<NextLink
-												href={`/information/${item.id}`}
+												href={`/cs/information/${item.id}`}
 												passHref
 											>
 												<IconButton component="a">
