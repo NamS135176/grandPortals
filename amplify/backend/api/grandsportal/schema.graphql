@@ -2,54 +2,80 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
 type Query {
-  settingCognitoPassword(input: settingCognitoPasswordInput!): AWSJSON @function(name: "settingCognitoPassword-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-  ])
+    settingCognitoPassword(input: settingCognitoPasswordInput!): AWSJSON
+        @function(name: "settingCognitoPassword-${env}")
+        @auth(rules: [{allow: public, provider: iam}])
 
-  publishPasswordResetLink(email: String!): AWSJSON @function(name: "publishPasswordResetLink-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-  ])
+    publishPasswordResetLink(email: String!): AWSJSON
+        @function(name: "publishPasswordResetLink-${env}")
+        @auth(rules: [{allow: public, provider: iam}])
 
-  createForceResetPassword(email: String!): AWSJSON @function(name: "createForceResetPassword-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-  ])
+    createForceResetPassword(email: String!): AWSJSON
+        @function(name: "createForceResetPassword-${env}")
+        @auth(rules: [{allow: public, provider: iam}])
 
-  checkLinkValidation(id: ID!): AWSJSON @function(name: "checkLinkValidation-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-  ])
+    checkLinkValidation(id: ID!): AWSJSON
+        @function(name: "checkLinkValidation-${env}")
+        @auth(rules: [{allow: public, provider: iam}])
 
-  getNextDocumentId: AWSJSON @function(name: "getNextDocumentId-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
-  ])
+    getNextDocumentId: AWSJSON
+        @function(name: "getNextDocumentId-${env}")
+        @auth(
+            rules: [
+                {allow: public, provider: iam}
+                {
+                    allow: groups
+                    groups: ["support", "agentNormal", "agentGrands"]
+                }
+            ]
+        )
 
-  getNextHistoryId: AWSJSON @function(name: "getNextHistoryId-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
-  ])
+    getNextHistoryId: AWSJSON
+        @function(name: "getNextHistoryId-${env}")
+        @auth(
+            rules: [
+                {allow: public, provider: iam}
+                {
+                    allow: groups
+                    groups: ["support", "agentNormal", "agentGrands"]
+                }
+            ]
+        )
 
-  getNextBukkenId: AWSJSON @function(name: "getNextBukkenId-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
-  ])
+    getNextBukkenId: AWSJSON
+        @function(name: "getNextBukkenId-${env}")
+        @auth(
+            rules: [
+                {allow: public, provider: iam}
+                {
+                    allow: groups
+                    groups: ["support", "agentNormal", "agentGrands"]
+                }
+            ]
+        )
 
-  getNextOtherObjectId: AWSJSON @function(name: "getNextOtherObjectId-${env}")
-  @auth(rules: [
-    { allow: public, provider: iam }
-    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
-  ])
+    getNextOtherObjectId: AWSJSON
+        @function(name: "getNextOtherObjectId-${env}")
+        @auth(
+            rules: [
+                {allow: public, provider: iam}
+                {
+                    allow: groups
+                    groups: ["support", "agentNormal", "agentGrands"]
+                }
+            ]
+        )
 
-  withdrawalRequest(name: String!): AWSJSON @function(name: "withdrawalRequest-${env}")
-  @auth(rules: [
-    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
-  ])
+    withdrawalRequest(name: String!): AWSJSON
+        @function(name: "withdrawalRequest-${env}")
+        @auth(
+            rules: [
+                {
+                    allow: groups
+                    groups: ["support", "agentNormal", "agentGrands"]
+                }
+            ]
+        )
 }
 
 type User
@@ -59,7 +85,11 @@ type User
             {allow: groups, groups: ["support"]}
             {allow: owner, ownerField: "id"}
             {allow: private, provider: iam, operations: [create, update, read]}
-            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
+            {
+                allow: groups
+                groups: ["agentNormal", "agentGrands"]
+                operations: [read]
+            }
         ]
     ) {
     id: ID! @primaryKey
@@ -68,7 +98,13 @@ type User
     name_kana: String
     delete_flag: Boolean!
     last_login_date: AWSDateTime!
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryUserBySort")
+    receive_notification_email_flag: Boolean!
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryUserBySort"
+        )
     createdAt: AWSDateTime!
 }
 
@@ -128,10 +164,16 @@ type Bukken
     shinchiku_date: AWSDateTime
     remarks: String
     delete_flag: Int!
-    otherObjects: [OtherObject] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
+    otherObjects: [OtherObject]
+        @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
     documents: [Document] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
     histories: [History] @hasMany(indexName: "GSI-bukkenId", fields: ["id"])
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryBukkenBySort")
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryBukkenBySort"
+        )
     createdAt: AWSDateTime!
 }
 
@@ -160,7 +202,12 @@ type OtherObject
             name: "byObjectKindAndUpdatedAt"
             queryField: "queryOtherObjectByObjectKindAndUpdatedAt"
         )
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryOtherObjectBySort")
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryOtherObjectBySort"
+        )
     createdAt: AWSDateTime!
 }
 
@@ -194,7 +241,12 @@ type Document
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "queryDocumentByObjectKindAndCreatedAt"
         )
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryDocumentBySort")
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryDocumentBySort"
+        )
     createdAt: AWSDateTime!
 }
 
@@ -221,16 +273,88 @@ type History
     remarks: String!
     overview: String!
     delete_flag: Int!
-    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryHistoryBySort")
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryHistoryBySort"
+        )
     createdAt: AWSDateTime!
         @index(
             name: "byCreatedAt"
             sortKeyFields: ["object_kind", "bukken_id"]
-            queryField: "querHistoryCreatedAt"
+            queryField: "queryHistoryCreatedAt"
+        )
+}
+
+type Information
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    subject: String!
+    content: String!
+    scheduled_delivery_date: AWSDateTime!
+    important_info_flag: Int!
+    draft_flag: Int!
+    delete_flag: Int!
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryInformationBySort"
+        )
+    createdAt: AWSDateTime!
+        @index(
+            name: "byCreatedAt"
+            sortKeyFields: ["object_kind", "bukken_id"]
+            queryField: "queryInformationCreatedAt"
+        )
+}
+
+type InformationListSend
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    information_id: ID!
+        @index(
+            name: "GSI-informationId"
+            queryField: "queryListSendByInformationId"
+        )
+    user_id: ID! @index(name: "GSI-userId", queryField: "queryListSendByUserId")
+    email: String
+    name: String!
+    name_kana: String!
+    withdrawal_flag: Boolean!
+    receive_notification_email_flag: Boolean!
+    last_user_read: AWSDateTime!
+    delete_flag: Int!
+    sort: Int!
+        @index(
+            name: "GSI-sort"
+            sortKeyFields: ["createdAt"]
+            queryField: "queryListSendBySort"
+        )
+    createdAt: AWSDateTime!
+        @index(
+            name: "byCreatedAt"
+            sortKeyFields: ["object_kind", "bukken_id"]
+            queryField: "queryListSendCreatedAt"
         )
 }
 
 input settingCognitoPasswordInput {
-  password: String!
-  idTemp: String!
+    password: String!
+    idTemp: String!
 }
