@@ -23,7 +23,6 @@ const InformationList = () => {
 	useEffect(async () => {
 		try {
 			const data = await bukkenApi.getInformationList();
-			console.log(data);
 			setItems(data);
 		} catch (err) {
 			console.error(err);

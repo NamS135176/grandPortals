@@ -1420,39 +1420,6 @@ export const listInformationListSends = /* GraphQL */ `
     }
   }
 `;
-export const queryInformationListSendByInformationId = /* GraphQL */ `
-  query QueryInformationListSendByInformationId(
-    $information_id: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInformationListSendFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryInformationListSendByInformationId(
-      information_id: $information_id
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        information_id
-        user_id
-        email
-        name
-        name_kana
-        withdrawal_flag
-        receive_notification_email_flag
-        last_user_read
-        sort
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const queryInformationListSendByUserId = /* GraphQL */ `
   query QueryInformationListSendByUserId(
     $user_id: ID!
@@ -1559,6 +1526,16 @@ export const getNextBukkenId = /* GraphQL */ `
 export const getNextOtherObjectId = /* GraphQL */ `
   query GetNextOtherObjectId {
     getNextOtherObjectId
+  }
+`;
+export const getNextInformationId = /* GraphQL */ `
+  query GetNextInformationId {
+    getNextInformationId
+  }
+`;
+export const getNextInformationListSendId = /* GraphQL */ `
+  query GetNextInformationListSendId {
+    getNextInformationListSendId
   }
 `;
 export const withdrawalRequest = /* GraphQL */ `

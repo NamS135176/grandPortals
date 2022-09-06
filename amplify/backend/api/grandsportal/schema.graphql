@@ -46,6 +46,18 @@ type Query {
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
   ])
 
+  getNextInformationId: AWSJSON @function(name: "getNextInformationId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  getNextInformationListSendId: AWSJSON @function(name: "getNextInformationListSendId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
   withdrawalRequest(name: String!): AWSJSON @function(name: "withdrawalRequest-${env}")
   @auth(rules: [
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
@@ -261,7 +273,7 @@ type InformationListSend
         ]
     ) {
     id: ID! @primaryKey
-    information_id: ID!  @index(name: "GSI-InformationId", queryField: "queryInformationListSendByInformationId")
+    information_id: ID!
     user_id: ID! @index(name: "GSI-userId", queryField: "queryInformationListSendByUserId")
     email: String
     name: String!

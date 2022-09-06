@@ -67,6 +67,14 @@
         "createForceResetPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/createForceResetPassword-6c793859613175512f35-build.zip"
+        },
+        "getNextInformationId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextInformationId-6831747945453668325a-build.zip"
+        },
+        "getNextInformationListSendId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextInformationListSendId-353246617a3055726636-build.zip"
         }
       }
     }
