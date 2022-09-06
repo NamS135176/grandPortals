@@ -66,6 +66,7 @@ type User
     email: String
     name: String
     name_kana: String
+    receive_notification_email_flag: Boolean!
     delete_flag: Boolean!
     last_login_date: AWSDateTime!
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryUserBySort")
@@ -228,6 +229,48 @@ type History
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "querHistoryCreatedAt"
         )
+}
+
+type Information
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    subject: String!
+    content: String
+    scheduled_delivery_date: AWSDateTime
+    important_info_flag: Int
+    draft_flag: Int
+    delete_flag: Int!
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationBySort")
+    createdAt: AWSDateTime!
+}
+
+type InformationListSend
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    information_id: ID!  @index(name: "GSI-InformationId", queryField: "queryInformationListSendByInformationId")
+    user_id: ID! @index(name: "GSI-userId", queryField: "queryInformationListSendByUserId")
+    email: String
+    name: String!
+    name_kana: String!
+    withdrawal_flag: Boolean!
+    receive_notification_email_flag: Boolean!
+    last_user_read: AWSDateTime
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationListSendBySort")
+    createdAt: AWSDateTime!
 }
 
 input settingCognitoPasswordInput {

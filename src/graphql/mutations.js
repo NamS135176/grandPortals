@@ -11,6 +11,7 @@ export const createUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -29,6 +30,7 @@ export const updateUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -47,6 +49,7 @@ export const deleteUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -751,6 +754,129 @@ export const deleteHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createInformation = /* GraphQL */ `
+  mutation CreateInformation(
+    $input: CreateInformationInput!
+    $condition: ModelInformationConditionInput
+  ) {
+    createInformation(input: $input, condition: $condition) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const updateInformation = /* GraphQL */ `
+  mutation UpdateInformation(
+    $input: UpdateInformationInput!
+    $condition: ModelInformationConditionInput
+  ) {
+    updateInformation(input: $input, condition: $condition) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const deleteInformation = /* GraphQL */ `
+  mutation DeleteInformation(
+    $input: DeleteInformationInput!
+    $condition: ModelInformationConditionInput
+  ) {
+    deleteInformation(input: $input, condition: $condition) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const createInformationListSend = /* GraphQL */ `
+  mutation CreateInformationListSend(
+    $input: CreateInformationListSendInput!
+    $condition: ModelInformationListSendConditionInput
+  ) {
+    createInformationListSend(input: $input, condition: $condition) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateInformationListSend = /* GraphQL */ `
+  mutation UpdateInformationListSend(
+    $input: UpdateInformationListSendInput!
+    $condition: ModelInformationListSendConditionInput
+  ) {
+    updateInformationListSend(input: $input, condition: $condition) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteInformationListSend = /* GraphQL */ `
+  mutation DeleteInformationListSend(
+    $input: DeleteInformationListSendInput!
+    $condition: ModelInformationListSendConditionInput
+  ) {
+    deleteInformationListSend(input: $input, condition: $condition) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
       sort
       createdAt
       updatedAt

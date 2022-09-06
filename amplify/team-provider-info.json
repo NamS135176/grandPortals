@@ -32,7 +32,7 @@
         },
         "settingCognitoPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
+          "s3Key": "amplify-builds/settingCognitoPassword-5030304e64335167686c-build.zip"
         },
         "publishPasswordResetLink": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",

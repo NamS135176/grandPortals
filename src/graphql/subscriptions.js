@@ -8,6 +8,7 @@ export const onCreateUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -23,6 +24,7 @@ export const onUpdateUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -38,6 +40,7 @@ export const onDeleteUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -697,6 +700,111 @@ export const onDeleteHistory = /* GraphQL */ `
       remarks
       overview
       delete_flag
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateInformation = /* GraphQL */ `
+  subscription OnCreateInformation($user_id: String) {
+    onCreateInformation(user_id: $user_id) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const onUpdateInformation = /* GraphQL */ `
+  subscription OnUpdateInformation($user_id: String) {
+    onUpdateInformation(user_id: $user_id) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const onDeleteInformation = /* GraphQL */ `
+  subscription OnDeleteInformation($user_id: String) {
+    onDeleteInformation(user_id: $user_id) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      sort
+      createdAt
+      updatedAt
+      user_id
+    }
+  }
+`;
+export const onCreateInformationListSend = /* GraphQL */ `
+  subscription OnCreateInformationListSend($user_id: String) {
+    onCreateInformationListSend(user_id: $user_id) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInformationListSend = /* GraphQL */ `
+  subscription OnUpdateInformationListSend($user_id: String) {
+    onUpdateInformationListSend(user_id: $user_id) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInformationListSend = /* GraphQL */ `
+  subscription OnDeleteInformationListSend($user_id: String) {
+    onDeleteInformationListSend(user_id: $user_id) {
+      id
+      information_id
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
       sort
       createdAt
       updatedAt
