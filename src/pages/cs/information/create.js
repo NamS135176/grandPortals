@@ -97,7 +97,9 @@ const CsInformationCreate = () => {
                         subject: formik.values.subject,
                         content: formik.values.content,
                         draft_flag,
-                        important_info_flag: formik.values.importantInfoFlag ? 1 : 0,
+                        important_info_flag: formik.values.importantInfoFlag
+                            ? 1
+                            : 0,
                         scheduled_delivery_date: formik.values.date,
                         sort: 1, //always 1
                     },
