@@ -13,6 +13,7 @@ import {
     Checkbox,
     FormControlLabel,
     Link,
+    CircularProgress,
 } from "@mui/material";
 import {DashboardLayout} from "components/dashboard/dashboard-layout";
 import {gtm} from "lib/gtm";
@@ -24,17 +25,27 @@ import * as Yup from "yup";
 import {useFormik} from "formik";
 import {wait} from "utils/wait";
 import toast from "react-hot-toast";
-import {ImportCSVInformation} from "components/import-csv-information";
 import * as R from "ramda";
 import {API} from "aws-amplify";
 import {updateInformation} from "graphql/mutations";
 import {useRouter} from "next/router";
+import Papa from "papaparse";
+import {useImportCSVInformation} from "hooks/use-import-csv-information";
+import {LoadingButton} from "@mui/lab";
+import {confirm} from "components/dialog/confirm-dialog";
+import {useDropzone} from "react-dropzone";
+import {Upload as UploadIcon} from "icons/upload";
+import {useInformationFile} from "hooks/use-information-file";
 
 const CsInformationCreate = () => {
     const router = useRouter();
+    const {createInformation, loading} = useImportCSVInformation();
+    const {uploadFiles} = useInformationFile();
+
     const [createdInformationId, setCreatedInformationId] = useState();
     const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
+
     const handleDrop = (newFiles) => {
         setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     };
@@ -48,6 +59,47 @@ const CsInformationCreate = () => {
     const handleRemoveAll = () => {
         setFiles([]);
     };
+
+    const onDrop = useCallback((acceptedFiles) => {
+        acceptedFiles.forEach((file) => {
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                transformHeader: (header) => {
+                    console.log("transformHeader:", header);
+                    return "email";
+                },
+                error: (errors) => {
+                    console.log("error:", errors);
+                },
+                complete: async (results) => {
+                    console.log("Finished:", results.data);
+                    const accept = await confirm(
+                        "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                    );
+                    if (!accept) return;
+
+                    const {data, information} = await createInformation({
+                        data: results.data,
+                    });
+
+                    console.log("CsInformationCreate... createInformation: ", {
+                        data,
+                        information,
+                    });
+                    setListInformationSend(data);
+                    setCreatedInformationId(information.id);
+                },
+            });
+        });
+    }, []);
+
+    const {getRootProps, getInputProps} = useDropzone({
+        onDrop,
+        accept: {
+            "text/csv": [".csv"],
+        },
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -105,6 +157,11 @@ const CsInformationCreate = () => {
                     },
                 },
             });
+
+            //upload s3 file
+            if (!R.isEmpty(files)) {
+                await uploadFiles(files, createdInformationId);
+            }
             router.push("/cs/information/list");
         } catch (e) {
             toast.error(e.message);
@@ -247,23 +304,23 @@ const CsInformationCreate = () => {
                                     >
                                         <Typography variant="subtitle1">
                                             送信対象取込
-                                            <ImportCSVInformation
-                                                onComplete={(
-                                                    data,
-                                                    informationId
-                                                ) => {
-                                                    console.log(
-                                                        "ImportCSVInformation... onComplete: ",
-                                                        {data, informationId}
-                                                    );
-                                                    setListInformationSend(
-                                                        data
-                                                    );
-                                                    setCreatedInformationId(
-                                                        informationId
-                                                    );
-                                                }}
-                                            />
+                                            <LoadingButton
+                                                loading={loading}
+                                                loadingIndicator={
+                                                    <CircularProgress
+                                                        color="primary"
+                                                        size={30}
+                                                    />
+                                                }
+                                                startIcon={
+                                                    <UploadIcon fontSize="small" />
+                                                }
+                                                sx={{m: 1}}
+                                                {...getRootProps()}
+                                            >
+                                                <input {...getInputProps()} />
+                                                Import
+                                            </LoadingButton>
                                         </Typography>
                                         {listInformationSend &&
                                             listInformationSend.length > 0 && (

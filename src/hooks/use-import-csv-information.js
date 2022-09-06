@@ -121,6 +121,7 @@ export const useImportCSVInformation = () => {
                 query: queries.queryInformationListSendByInformationId,
                 variables: {
                     information_id: informationId,
+                    nextToken,
                 },
             });
             list = list.concat(
@@ -150,7 +151,7 @@ export const useImportCSVInformation = () => {
     }, []);
 
     const deleteAllInformationListSendByInformationId = useCallback(
-        async ({informationId}) => {
+        async (informationId) => {
             //delete infomationListSend
             const listInfomationListSend =
                 await getAllInformationListSendByInformationId(informationId);
@@ -168,42 +169,51 @@ export const useImportCSVInformation = () => {
         []
     );
 
-    const updateInformation = useCallback(async ({informationId, data}) => {
-        //data is array list of { email: "email" }
-        var results = [];
-        setLoading(true);
-        try {
-            //delete infomationListSend
-            await deleteAllInformationListSendByInformationId(informationId);
-            // const queueDeleteInformationListSend =
-            const queue = data.map(
-                ({email}) =>
-                    () =>
-                        createInformationListSend(information.id, email)
-            );
-            const allRes = await Throttle.all(queue, {maxInProgress: 1});
-            const errors = [];
-            //filter errors
-            allRes.forEach((item) => {
-                if (item.isError) errors.push(item);
-                else results.push(item);
-            });
-            console.log("updateInformation... results: ", results);
-            if (!R.isEmpty(errors)) {
-                toast.error(errors.map((error) => error.message));
+    const updateInformationListSend = useCallback(
+        async ({informationId, data}) => {
+            //data is array list of { email: "email" }
+            var results = [];
+            setLoading(true);
+            try {
+                console.log("updateInformationListSend... ", {
+                    informationId,
+                    data,
+                });
+                //delete infomationListSend
+                await deleteAllInformationListSendByInformationId(
+                    informationId
+                );
+                // const queueDeleteInformationListSend =
+                const queue = data.map(
+                    ({email}) =>
+                        () =>
+                            createInformationListSend(informationId, email)
+                );
+                const allRes = await Throttle.all(queue, {maxInProgress: 1});
+                const errors = [];
+                //filter errors
+                allRes.forEach((item) => {
+                    if (item.isError) errors.push(item);
+                    else results.push(item);
+                });
+                console.log("updateInformation... results: ", results);
+                if (!R.isEmpty(errors)) {
+                    toast.error(errors.map((error) => error.message));
+                }
+            } catch (e) {
+                toast.error(e.message);
+                console.error(e);
+                // throw e;
             }
-        } catch (e) {
-            toast.error(e.message);
-            console.error(e);
-            // throw e;
-        }
-        setLoading(false);
-        return results;
-    }, []);
+            setLoading(false);
+            return results;
+        },
+        []
+    );
 
     return {
         createInformation,
-        updateInformation,
+        updateInformationListSend,
         loading,
     };
 };
