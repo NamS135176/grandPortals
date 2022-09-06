@@ -28,11 +28,15 @@ import toast from "react-hot-toast";
 import {useInformation} from "hooks/use-information";
 import moment from "moment";
 import {useRouter} from "next/router";
+import {useInformationFile} from "hooks/use-information-file";
+import * as R from "ramda";
 
 const CsInformationDetails = () => {
     const router = useRouter();
     const {id} = router.query;
     const {loading, information, updateInformation} = useInformation(id);
+    const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
+        useInformationFile();
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
@@ -47,22 +51,37 @@ const CsInformationDetails = () => {
         });
     }, [information]);
 
+    useEffect(async () => {
+        if (!id) return;
+        const files = await getFilesFromS3(id);
+        if (!R.isNil(files) && !R.isEmpty(files)) {
+            setFiles(files);
+        }
+    }, [id]);
+
     const handleDrop = (newFiles) => {
         setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     };
 
-    const handleRemove = (file) => {
+    const handleRemove = async (file) => {
         setFiles((prevFiles) =>
             prevFiles.filter((_file) => _file.path !== file.path)
         );
+        await deleteFileFromS3(file);
     };
 
-    const handleRemoveAll = () => {
+    const handleRemoveAll = async () => {
         setFiles([]);
+        await deleteFilesFromS3(files);
     };
 
     const handleSave = async (draftFlag = 0) => {
         await updateInformation({...formik.values, id, draftFlag});
+        //upload s3 file if
+        const uploads = files.filter((file) => !file.uploaded);
+        if (!R.isEmpty(uploads)) {
+            await uploadFiles(uploads, id);
+        }
     };
 
     const formik = useFormik({
@@ -287,7 +306,7 @@ const CsInformationDetails = () => {
                                         sx={{m: 1}}
                                         variant="contained"
                                         color="success"
-										onClick={() => handleSave(1)}
+                                        onClick={() => handleSave(1)}
                                     >
                                         下書き保存
                                     </Button>
@@ -297,7 +316,7 @@ const CsInformationDetails = () => {
                                         sx={{m: 1}}
                                         variant="contained"
                                         type="submit"
-										onClick={() => handleSave(0)}
+                                        onClick={() => handleSave(0)}
                                     >
                                         送信
                                     </Button>

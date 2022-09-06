@@ -198,3 +198,21 @@ export const getOtherObjectSelectKind = (otherObjectKind) => {
             return null;
     }
 };
+
+/**
+ * base on logic save file on s3, see sheet "（想定）S３フォルダ構成" on file 【grandsポータルサイト構築】DynamoDB詳細設計_20220906
+ * @param {String} informationId
+ * @returns
+ */
+ export function getInformationS3FilePath(informationId) {
+    return `information/${informationId}/`;
+}
+/**
+ * base on logic save file on s3, see sheet "（想定）S３フォルダ構成" on file 【grandsポータルサイト構築】DynamoDB詳細設計_20220906
+ * @param {String} informationId
+ * @param {String} fileName
+ * @returns
+ */
+ export function getInformationS3FileName(informationId, fileName) {
+    return `information/${informationId}/${fileName}`;
+}
