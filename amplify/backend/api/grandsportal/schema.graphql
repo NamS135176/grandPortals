@@ -248,6 +248,7 @@ type Information
     @auth(
         rules: [
             {allow: groups, groups: ["support"]}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
             {allow: private, provider: iam, operations: [create, update, read]}
         ]
     ) {
