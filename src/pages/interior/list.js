@@ -54,12 +54,10 @@ const InteriorList = () => {
 					<Card>
 						<CardContent>
 							<ManagementList />
-							<Divider
-								sx={{
-									mb: 3,
-									mt: 3,
-								}}
-							/>
+						</CardContent>
+					</Card>
+					<Card sx={{mt: 4}}>
+						<CardContent>
 							<Box
 								sx={{
 									alignItems: {sx: 'start', md: 'center'},
@@ -72,7 +70,7 @@ const InteriorList = () => {
 										xs: 'column',
 										md: 'row',
 									},
-									my: 3,
+									mb: 3,
 								}}
 							>
 								<Typography variant="h6">
