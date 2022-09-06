@@ -707,8 +707,8 @@ export const onDeleteHistory = /* GraphQL */ `
   }
 `;
 export const onCreateInformation = /* GraphQL */ `
-  subscription OnCreateInformation($user_id: String) {
-    onCreateInformation(user_id: $user_id) {
+  subscription OnCreateInformation {
+    onCreateInformation {
       id
       subject
       content
@@ -716,16 +716,32 @@ export const onCreateInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
 export const onUpdateInformation = /* GraphQL */ `
-  subscription OnUpdateInformation($user_id: String) {
-    onUpdateInformation(user_id: $user_id) {
+  subscription OnUpdateInformation {
+    onUpdateInformation {
       id
       subject
       content
@@ -733,16 +749,32 @@ export const onUpdateInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
 export const onDeleteInformation = /* GraphQL */ `
-  subscription OnDeleteInformation($user_id: String) {
-    onDeleteInformation(user_id: $user_id) {
+  subscription OnDeleteInformation {
+    onDeleteInformation {
       id
       subject
       content
@@ -750,10 +782,26 @@ export const onDeleteInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -762,6 +810,21 @@ export const onCreateInformationListSend = /* GraphQL */ `
     onCreateInformationListSend(user_id: $user_id) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name
@@ -780,6 +843,21 @@ export const onUpdateInformationListSend = /* GraphQL */ `
     onUpdateInformationListSend(user_id: $user_id) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name
@@ -798,6 +876,21 @@ export const onDeleteInformationListSend = /* GraphQL */ `
     onDeleteInformationListSend(user_id: $user_id) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name

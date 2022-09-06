@@ -773,10 +773,26 @@ export const createInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -793,10 +809,26 @@ export const updateInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -813,10 +845,26 @@ export const deleteInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -828,6 +876,21 @@ export const createInformationListSend = /* GraphQL */ `
     createInformationListSend(input: $input, condition: $condition) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name
@@ -849,6 +912,21 @@ export const updateInformationListSend = /* GraphQL */ `
     updateInformationListSend(input: $input, condition: $condition) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name
@@ -870,6 +948,21 @@ export const deleteInformationListSend = /* GraphQL */ `
     deleteInformationListSend(input: $input, condition: $condition) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name

@@ -16,6 +16,8 @@ import {InformationListTable} from '../../components/information/information-lis
 import {gtm} from '../../lib/gtm';
 import {AuthGuard} from '../../components/authentication/auth-guard';
 import {bukkenApi} from '__fake-api__/bukken-api';
+import { API } from 'aws-amplify';
+import { queryInformationListSendByUserId } from 'graphql/queries';
 
 const InformationList = () => {
 	const [items, setItems] = useState([]);
@@ -23,6 +25,14 @@ const InformationList = () => {
 	useEffect(async () => {
 		try {
 			const data = await bukkenApi.getInformationList();
+			const response = await API.graphql({
+				query: queryInformationListSendByUserId,
+				variables: {
+					user_id: "439e1736-2784-4e77-b18c-681acc1b1c0a",
+				},
+			});
+			const listInfo = response.data.queryInformationListSendByUserId.items
+			console.log(response);
 			setItems(data);
 		} catch (err) {
 			console.error(err);

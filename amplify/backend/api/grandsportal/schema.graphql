@@ -248,7 +248,6 @@ type Information
     @auth(
         rules: [
             {allow: groups, groups: ["support"]}
-            {allow: owner, ownerField: "user_id"}
             {allow: private, provider: iam, operations: [create, update, read]}
         ]
     ) {
@@ -259,6 +258,7 @@ type Information
     important_info_flag: Int
     draft_flag: Int
     delete_flag: Int!
+    informaionListSends: [InformationListSend] @hasMany(indexName: "GSI-informationId", fields: ["id"])
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationBySort")
     createdAt: AWSDateTime!
 }
@@ -273,7 +273,8 @@ type InformationListSend
         ]
     ) {
     id: ID! @primaryKey
-    information_id: ID!
+    information_id: ID!  @index(name: "GSI-informationId", queryField: "queryInformationListSendByInformationId")
+    information: Information @belongsTo(fields: ["information_id"])
     user_id: ID! @index(name: "GSI-userId", queryField: "queryInformationListSendByUserId")
     email: String
     name: String!

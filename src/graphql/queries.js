@@ -1296,10 +1296,26 @@ export const getInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       sort
       createdAt
       updatedAt
-      user_id
     }
   }
 `;
@@ -1326,10 +1342,12 @@ export const listInformation = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        informaionListSends {
+          nextToken
+        }
         sort
         createdAt
         updatedAt
-        user_id
       }
       nextToken
     }
@@ -1360,10 +1378,12 @@ export const queryInformationBySort = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        informaionListSends {
+          nextToken
+        }
         sort
         createdAt
         updatedAt
-        user_id
       }
       nextToken
     }
@@ -1374,6 +1394,21 @@ export const getInformationListSend = /* GraphQL */ `
     getInformationListSend(id: $id) {
       id
       information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
       user_id
       email
       name
@@ -1405,6 +1440,63 @@ export const listInformationListSends = /* GraphQL */ `
       items {
         id
         information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        email
+        name
+        name_kana
+        withdrawal_flag
+        receive_notification_email_flag
+        last_user_read
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationListSendByInformationId = /* GraphQL */ `
+  query QueryInformationListSendByInformationId(
+    $information_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationListSendFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationListSendByInformationId(
+      information_id: $information_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
         user_id
         email
         name
@@ -1438,6 +1530,18 @@ export const queryInformationListSendByUserId = /* GraphQL */ `
       items {
         id
         information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
         user_id
         email
         name
@@ -1473,6 +1577,18 @@ export const queryInformationListSendBySort = /* GraphQL */ `
       items {
         id
         information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          sort
+          createdAt
+          updatedAt
+        }
         user_id
         email
         name
