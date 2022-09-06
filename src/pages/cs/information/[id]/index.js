@@ -25,9 +25,10 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import {wait} from '../../../../utils/wait';
 import toast from 'react-hot-toast';
-
+import { useInformationList } from 'hooks/use-information-list';
 const CsInformationDetails = () => {
 	const [files, setFiles] = useState([]);
+
 	const handleDrop = (newFiles) => {
 		setFiles((prevFiles) => [...prevFiles, ...newFiles]);
 	};

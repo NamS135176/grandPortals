@@ -38,7 +38,7 @@ export const ProfileForm = (props) => {
 			surnameKana: parsedNameKana[0],
 			nameKana: parsedNameKana[1],
 			email: user.email || '',
-			emailAlerts: true,
+			emailAlerts: user.receiveNotificationEmailFlag,
 			submit: null,
 		},
 		validationSchema: Yup.object({
@@ -51,6 +51,7 @@ export const ProfileForm = (props) => {
 			nameKana: Yup.string().max(255).required('名（カナ）は必須です。'),
 		}),
 		onSubmit: async (values, helpers) => {
+			// console.log(values.emailAlerts);
 			try {
 				// NOTE: Make API request
 				await API.graphql({
@@ -60,6 +61,7 @@ export const ProfileForm = (props) => {
 							id: user.id,
 							name: `${values.name} ${values.surname}`,
 							name_kana: `${values.nameKana} ${values.surnameKana}`,
+							receive_notification_email_flag: values.emailAlerts
 						},
 					},
 				});

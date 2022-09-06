@@ -15,29 +15,10 @@ import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
 import {InformationListTable} from '../../components/information/information-list-table';
 import {gtm} from '../../lib/gtm';
 import {AuthGuard} from '../../components/authentication/auth-guard';
-import {bukkenApi} from '__fake-api__/bukken-api';
-import { API } from 'aws-amplify';
-import { queryInformationListSendByUserId } from 'graphql/queries';
-
+import { useInformationList } from 'hooks/use-information-list';
 const InformationList = () => {
 	const [items, setItems] = useState([]);
-
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getInformationList();
-			const response = await API.graphql({
-				query: queryInformationListSendByUserId,
-				variables: {
-					user_id: "439e1736-2784-4e77-b18c-681acc1b1c0a",
-				},
-			});
-			const listInfo = response.data.queryInformationListSendByUserId.items
-			console.log(response);
-			setItems(data);
-		} catch (err) {
-			console.error(err);
-		}
-	}, []);
+	const {informationList:list} = useInformationList()
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -71,8 +52,8 @@ const InformationList = () => {
 						<CardContent>
 							<Typography variant="h6">お知らせ一覧</Typography>
 						</CardContent>
-						{items.length > 0 && (
-							<InformationListTable items={items} />
+						{list.length > 0 && (
+							<InformationListTable items={list} />
 						)}
 					</Card>
 					<Box

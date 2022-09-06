@@ -22,11 +22,11 @@ const applySort = (items, sortDir) =>
 	items.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.information.createdAt < b.information.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.information.createdAt > b.information.createdAt) {
 			newOrder = 1;
 		}
 
@@ -109,18 +109,18 @@ export const InformationListTable = (props) => {
 											>
 												<SeverityPill
 													color={
-														(item.type ===
-															'お知らせ' &&
+														(item.information.important_info_flag ===
+															0 &&
 															'info') ||
-														(item.type ===
-															'重要なお知らせ' &&
+														(item.information.important_info_flag ===
+															1 &&
 															'error') ||
 														'warning'
 													}
 												>
-													{item.type}
+													{item.information.important_info_flag === 1 ? "重要なお知らせ" : "お知らせ"}
 												</SeverityPill>
-												{item.type === 'お知らせ' && (
+												{item.last_user_read == null && (
 													<Box
 														sx={{
 															backgroundColor:
@@ -143,12 +143,12 @@ export const InformationListTable = (props) => {
 													underline="none"
 													variant="subtitle2"
 												>
-													{item.name}
+													{item.information.content}
 												</Link>
 											</NextLink>
 										</TableCell>
 										<TableCell>
-											{moment(item.createdAt).format(
+											{moment(item.information.createdAt).format(
 												'YYYY/MM/DD HH:mm'
 											)}
 										</TableCell>

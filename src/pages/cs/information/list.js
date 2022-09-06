@@ -18,6 +18,7 @@ import {gtm} from '../../../lib/gtm';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
 import {bukkenApi} from '__fake-api__/bukken-api';
 import {DateTimePicker} from '@mui/lab';
+import { useInformationList } from 'hooks/use-information-list';
 
 const sortOptions = [
 	{
@@ -69,6 +70,8 @@ const applyFilters = (items, filters) =>
 	});
 
 const CsInformationList = () => {
+	const {informationList:list} = useInformationList()
+	console.log(list);
 	const [items, setItems] = useState([]);
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
@@ -79,14 +82,14 @@ const CsInformationList = () => {
 		endDate: null,
 	});
 
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getCsInformationList();
-			setItems(data);
-		} catch (err) {
-			console.error(err);
-		}
-	}, []);
+	// useEffect(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getCsInformationList();
+	// 		setItems(data);
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, []);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -101,7 +104,7 @@ const CsInformationList = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const filteredItems = applyFilters(items, filters);
+		const filteredItems = applyFilters(list, filters);
 		setFilteredItems(filteredItems);
 	};
 
@@ -239,8 +242,8 @@ const CsInformationList = () => {
 								</Grid>
 							</Box>
 							<Divider />
-							{items.length > 0 && (
-								<CsInformationListTable items={filteredItems} />
+							{list.length > 0 && (
+								<CsInformationListTable items={list} />
 							)}
 						</CardContent>
 					</Card>

@@ -106,6 +106,7 @@ export const AuthProvider = (props) => {
                         email: user.attributes.email,
                         name: userInfo?.name ?? "",
                         nameKana: userInfo?.name_kana ?? "",
+                        receiveNotificationEmailFlag: userInfo?.receive_notification_email_flag ?? true
                     },
                 },
             });
@@ -152,6 +153,7 @@ export const AuthProvider = (props) => {
                     email: user.attributes.email,
                     name: userInfo?.name ?? "",
                     nameKana: userInfo?.name_kana ?? "",
+                    receiveNotificationEmailFlag: userInfo?.receive_notification_email_flag ?? true
                 },
             },
         });
