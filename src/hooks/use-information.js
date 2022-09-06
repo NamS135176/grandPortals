@@ -12,6 +12,30 @@ export const useInformation = (informationId) => {
     const [information, setInformation] = useState();
     const [loading, setLoading] = useState(false);
 
+    const getAllInformationListSendByInformationId = useCallback(
+        async (informationId, list = [], nextToken = null) => {
+            const res = await API.graphql({
+                query: queries.queryInformationListSendByInformationId,
+                variables: {
+                    information_id: informationId,
+                    nextToken,
+                },
+            });
+            list = list.concat(
+                res.data.queryInformationListSendByInformationId.items
+            );
+            if (res.data.nextToken) {
+                return getAllInformationListSendByInformationId(
+                    informationId,
+                    list,
+                    res.data.nextToken
+                );
+            }
+            return list;
+        },
+        []
+    );
+
     const loadData = useCallback(async () => {
         setLoading(true);
         const response = await API.graphql({
@@ -20,8 +44,14 @@ export const useInformation = (informationId) => {
                 id: informationId,
             },
         });
-        setInformation(response.data.getInformation);
+        const information = response.data.getInformation;
 
+        //get all list information send
+        const informaionListSends =
+            await getAllInformationListSendByInformationId(informationId);
+        information.informaionListSends.items = informaionListSends;
+
+        setInformation(information);
         setLoading(false);
     }, [informationId]);
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import {
@@ -13,6 +13,7 @@ import {
     Checkbox,
     FormControlLabel,
     Link,
+	CircularProgress,
 } from "@mui/material";
 import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
 import {gtm} from "../../../../lib/gtm";
@@ -30,13 +31,22 @@ import moment from "moment";
 import {useRouter} from "next/router";
 import {useInformationFile} from "hooks/use-information-file";
 import * as R from "ramda";
+import Papa from "papaparse";
+import {useImportCSVInformation} from "hooks/use-import-csv-information";
+import {LoadingButton} from "@mui/lab";
+import {confirm} from "components/dialog/confirm-dialog";
+import {useDropzone} from "react-dropzone";
 
 const CsInformationDetails = () => {
     const router = useRouter();
     const {id} = router.query;
+    const {updateInformationListSend, loading: importCSVLoading} =
+        useImportCSVInformation();
     const {loading, information, updateInformation} = useInformation(id);
     const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
         useInformationFile();
+
+    const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
@@ -49,6 +59,7 @@ const CsInformationDetails = () => {
             importantInfoFlag: information.important_info_flag,
             submit: null,
         });
+        setListInformationSend(information.informaionListSends?.items ?? []);
     }, [information]);
 
     useEffect(async () => {
@@ -83,6 +94,42 @@ const CsInformationDetails = () => {
             await uploadFiles(uploads, id);
         }
     };
+
+    const onDrop = useCallback((acceptedFiles) => {
+        acceptedFiles.forEach((file) => {
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                transformHeader: (header) => {
+                    console.log("transformHeader:", header);
+                    return "email";
+                },
+                error: (errors) => {
+                    console.log("error:", errors);
+                },
+                complete: async (results) => {
+                    console.log("Finished:", results.data);
+                    const accept = await confirm(
+                        "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                    );
+                    if (!accept) return;
+
+                    const items = await updateInformationListSend({
+                        informationId: id,
+                        data: results.data,
+                    });
+                    setListInformationSend(items);
+                },
+            });
+        });
+    }, [id]);
+
+    const {getRootProps, getInputProps} = useDropzone({
+        onDrop,
+        accept: {
+            "text/csv": [".csv"],
+        },
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -257,23 +304,41 @@ const CsInformationDetails = () => {
                                     >
                                         <Typography variant="subtitle1">
                                             送信対象取込
-                                            <Button
+                                            <LoadingButton
+                                                loading={importCSVLoading}
+                                                loadingIndicator={
+                                                    <CircularProgress
+                                                        color="primary"
+                                                        size={30}
+                                                    />
+                                                }
                                                 startIcon={
                                                     <UploadIcon fontSize="small" />
                                                 }
                                                 sx={{m: 1}}
+                                                {...getRootProps()}
                                             >
+                                                <input {...getInputProps()} />
                                                 Import
-                                            </Button>
+                                            </LoadingButton>
                                         </Typography>
-                                        <Typography variant="subtitle1">
-                                            送信先：
-                                            <NextLink href="#" passHref>
-                                                <Link variant="subtitle2">
-                                                    102件
-                                                </Link>
-                                            </NextLink>
-                                        </Typography>
+                                        {listInformationSend &&
+                                            listInformationSend.length > 0 && (
+                                                <Typography variant="subtitle1">
+                                                    送信先：
+                                                    <NextLink
+                                                        href={`/cs/information/${id}`}
+                                                        passHref
+                                                    >
+                                                        <Link variant="subtitle2">
+                                                            {
+                                                                listInformationSend.length
+                                                            }
+                                                            件
+                                                        </Link>
+                                                    </NextLink>
+                                                </Typography>
+                                            )}
                                     </Box>
                                 </Box>
                             </CardContent>
