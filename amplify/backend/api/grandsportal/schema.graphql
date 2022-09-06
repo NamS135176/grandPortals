@@ -75,7 +75,7 @@ type User
         ]
     ) {
     id: ID! @primaryKey
-    email: String
+    email: String @index(name: "GSI-email", queryField: "queryUserByEmail")
     name: String
     name_kana: String
     receive_notification_email_flag: Boolean!
@@ -252,7 +252,7 @@ type Information
         ]
     ) {
     id: ID! @primaryKey
-    subject: String!
+    subject: String
     content: String
     scheduled_delivery_date: AWSDateTime
     important_info_flag: Int

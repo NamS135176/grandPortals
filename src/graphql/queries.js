@@ -48,6 +48,37 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const queryUserByEmail = /* GraphQL */ `
+  query QueryUserByEmail(
+    $email: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryUserByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        name
+        name_kana
+        receive_notification_email_flag
+        delete_flag
+        last_login_date
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const queryUserBySort = /* GraphQL */ `
   query QueryUserBySort(
     $sort: Int!
