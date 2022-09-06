@@ -9,12 +9,14 @@ import {useMounted} from "./use-mounted";
 import * as R from "ramda";
 import {getBukkenCoverImageUrlByBukken} from "../utils/bukken";
 import {UserGroup} from "../utils/global-data";
+import moment from "moment";
 import { listInformation, queryInformationListSendByUserId } from "graphql/queries";
 
 export const useInformationList = () => {
     const {user} = useAuth();
     const isMounted = useMounted();
     const [informationList, setInformationList] = useState([]);
+    const [informationListFirst, setInformationListFirst] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const getListInformationSendList = useCallback(async (list = [], nextToken = null) => {
@@ -57,6 +59,59 @@ export const useInformationList = () => {
         []
     );
 
+    const filterInformationSendList = useCallback(
+         (filter) => {
+          if(filter == "全て"){
+            setInformationList(informationListFirst)
+          }
+          else{
+            const newList = informationListFirst.filter(item => {
+                return item.status == filter
+            })
+            console.log("newList", newList);
+            setInformationList(newList)
+          }
+        },
+        []
+    )
+
+    let filterDateInformationSendList =  (start, end, filter) => {
+            if(filter == "全て" ){
+                if(!start || !end){
+                    console.log("ok");
+                    setInformationList(informationListFirst)
+                }
+                else{
+                    const newList = informationListFirst.filter(item => {
+                        return moment(item.createdAt).valueOf()
+                         < end.getTime() && moment(item.createdAt).valueOf()
+                         > start.getTime()
+                    })
+                    console.log("newList", newList);
+                    setInformationList(newList)
+                }
+            }
+            else{
+                if(!start || !end){
+                    const newList = informationListFirst.filter(item => {
+                        return item.status == filter
+                    })
+                    console.log("newList", newList);
+                    setInformationList(newList)
+                }
+                else{
+                    const newList = informationListFirst.filter(item => {
+                        return moment(item.createdAt).valueOf()
+                         < end.getTime() && moment(item.createdAt).valueOf()
+                         > start.getTime() && item.status == filter
+                    })
+                    console.log("newList", newList);
+                    setInformationList(newList)
+                }
+            }
+          
+       }
+
     useEffect(() => {
         async function loadData() {
             setLoading(true);
@@ -65,10 +120,31 @@ export const useInformationList = () => {
             if (user.group === UserGroup.agentGrands) {
                 informationList = await getListInformationSendList();
             } else {
-                informationList = await getListCSInformationSendList();
+               let list  = await getListCSInformationSendList();
+               informationList = list.map(item => {
+                if(item.draft_flag == 1){
+                    item.status = "下書き"
+                    return item
+                }
+                else if(!item.scheduled_delivery_date){
+                    item.status = "未送信"
+                    return item
+                }
+                else if(moment(item.scheduled_delivery_date).valueOf() < new Date().getTime()){
+                    console.log(moment(item.scheduled_delivery_date).valueOf());
+                    console.log(new Date().getTime());
+                    item.status = "送信済"
+                    return item
+                }
+                else{
+                    item.status = "送信予定"
+                    return item
+                }
+               })
             }
-            console.log(informationList);
+            console.log("DSJHFKJDSFH",informationList);
             setInformationList(informationList);
+            setInformationListFirst(informationList)
             //end load list bukken
             setLoading(false);
         }
@@ -76,5 +152,5 @@ export const useInformationList = () => {
         if (isMounted() && user) loadData();
     }, [isMounted, user]);
 
-    return {informationList, loading};
+    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, loading};
 };

@@ -22,6 +22,10 @@ import { useInformationList } from 'hooks/use-information-list';
 
 const sortOptions = [
 	{
+		label: '全て',
+		value: '全て',
+	},
+	{
 		label: '下書き',
 		value: '下書き',
 	},
@@ -37,10 +41,7 @@ const sortOptions = [
 		label: '送信済',
 		value: '送信済',
 	},
-	{
-		label: '全て',
-		value: '',
-	},
+
 ];
 
 const applyFilters = (items, filters) =>
@@ -70,14 +71,14 @@ const applyFilters = (items, filters) =>
 	});
 
 const CsInformationList = () => {
-	const {informationList:list} = useInformationList()
+	const {informationList:list,filterInformationSendList, filterDateInformationSendList} = useInformationList()
 	console.log(list);
 	const [items, setItems] = useState([]);
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
-	const [filteredItems, setFilteredItems] = useState([]);
+	const [filteredItems, setFilteredItems] = useState(list);
 	const [filters, setFilters] = useState({
-		status: '',
+		status: '全て',
 		startDate: null,
 		endDate: null,
 	});
@@ -100,12 +101,12 @@ const CsInformationList = () => {
 			...filters,
 			[event.target.name]: event.target.value,
 		});
+		// filterInformationSendList(event.target.value)
 	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const filteredItems = applyFilters(list, filters);
-		setFilteredItems(filteredItems);
+		filterDateInformationSendList(startDate, endDate, filters.status)
 	};
 
 	return (

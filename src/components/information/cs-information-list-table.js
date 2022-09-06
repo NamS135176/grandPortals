@@ -23,11 +23,11 @@ const applySort = (items, sortDir) =>
 	items.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.createdAt < b.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.createdAt > b.createdAt) {
 			newOrder = 1;
 		}
 
@@ -62,6 +62,8 @@ export const CsInformationListTable = (props) => {
 		});
 	};
 
+	
+
 	const sortedItems = applySort(items, sort);
 	const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
 	console.log('paginatedItems', paginatedItems);
@@ -75,16 +77,9 @@ export const CsInformationListTable = (props) => {
 							<TableCell align="right" />
 							<TableCell>ステータス</TableCell>
 							<TableCell>種別</TableCell>
-							<TableCell align="left" />
 							<TableCell>お知らせ概要</TableCell>
-							<TableCell sortDirection={sort}>
-								<TableSortLabel
-									active
-									direction={sort}
-									onClick={handleSort}
-								>
-									送信（予定）日時
-								</TableSortLabel>
+							<TableCell >
+							送信（予定）日時
 							</TableCell>
 							<TableCell sortDirection={sort}>
 								<TableSortLabel
@@ -123,78 +118,41 @@ export const CsInformationListTable = (props) => {
 											>
 												<SeverityPill
 													color={
-														(item.type ===
-															'お知らせ' &&
+														(item.important_info_flag ===
+															0 &&
 															'info') ||
-														(item.type ===
-															'重要なお知らせ' &&
+														(item.important_info_flag ===
+															1 &&
 															'error') ||
 														'warning'
 													}
 												>
-													{item.type}
+													{item.important_info_flag === 1 ? '重要なお知らせ' : 'お知らせ'}
 												</SeverityPill>
 											</Box>
 										</TableCell>
-										<TableCell align="left">
-											{item.url ? (
-												<Box
-													sx={{
-														alignItems: 'center',
-														backgroundColor:
-															'background.default',
-														backgroundImage: `url(${item.url})`,
-														backgroundPosition:
-															'center',
-														backgroundSize: 'cover',
-														borderRadius: 1,
-														display: 'flex',
-														height: 80,
-														justifyContent:
-															'center',
-														overflow: 'hidden',
-														width: 80,
-													}}
-												/>
-											) : (
-												<Box
-													sx={{
-														alignItems: 'center',
-														backgroundColor:
-															'background.default',
-														borderRadius: 1,
-														display: 'flex',
-														height: 80,
-														justifyContent:
-															'center',
-														width: 80,
-													}}
-												>
-													<ImageIcon fontSize="small" />
-												</Box>
-											)}
-										</TableCell>
-										<TableCell>{item.name}</TableCell>
+							
+										<TableCell>{item.content}</TableCell>
 										<TableCell>
-											{item.sendAt &&
-												moment(item.sendAt).format(
+											{item.scheduled_delivery_date &&
+												moment(item.scheduled_delivery_date).format(
 													'YYYY/MM/DD HH:mm'
 												)}
 										</TableCell>
 										<TableCell>
-											{moment(item.registeredAt).format(
+											{moment(item.createdAt).format(
 												'YYYY/MM/DD HH:mm'
 											)}
 										</TableCell>
 										<TableCell align="left">
-											<NextLink href="/bukken/1" passHref>
+											{/* <NextLink href="/bukken/1" passHref> */}
 												<IconButton
 													component="a"
 													color="error"
 												>
 													<TrashIcon fontSize="small" />
 												</IconButton>
-											</NextLink>
+											{/* </NextLink> */}
 										</TableCell>
 									</TableRow>
 								);
