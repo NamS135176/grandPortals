@@ -104,11 +104,28 @@ export const lightThemeOptions = {
 				},
 			},
 		},
+
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: {
 					'&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-						borderColor: divider,
+						// borderColor: divider,
+						borderColor: '#0000003b',
+					},
+				},
+				input: {
+					'&.Mui-disabled': {
+						'-webkit-text-fill-color': '#65748B',
+					},
+				},
+			},
+		},
+
+		MuiFormLabel: {
+			styleOverrides: {
+				root: {
+					'&.MuiInputLabel-root.Mui-disabled': {
+						color: '#65748B',
 					},
 				},
 			},
