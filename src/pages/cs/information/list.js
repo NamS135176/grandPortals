@@ -141,7 +141,9 @@ const CsInformationList = () => {
 								<Typography variant="h6">
 									お知らせ一覧
 								</Typography>
-								<Button variant="contained">新規登録</Button>
+								<NextLink href="/cs/information/create" passHref>
+									<Button variant="contained">新規登録</Button>
+								</NextLink>
 							</Box>
 							<Box
 								sx={{p: 3}}
