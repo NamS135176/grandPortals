@@ -44,6 +44,8 @@ export const useInformationFile = () => {
         );
         const res = await Throttle.all(queue, {maxInProgress: 5});
         console.log("useInformationFile... uploadFiles res = ", res);
+        //doing zip file
+        await zipInformationFile(informationId)
         return res;
     }, []);
 

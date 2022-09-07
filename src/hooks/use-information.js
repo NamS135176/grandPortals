@@ -48,13 +48,16 @@ export const useInformation = (informationId) => {
             },
         });
         const information = response.data.getInformation;
+        if (!information || information.delete_flag === 1) {
+            router.replace("/404");
+            return;
+        }
         if (user.group == UserGroup.support) {
             //get all list information send
             const informaionListSends =
                 await getAllInformationListSendByInformationId(informationId);
             information.informaionListSends.items = informaionListSends;
         }
-
         setInformation(information);
         setLoading(false);
     }, [informationId]);

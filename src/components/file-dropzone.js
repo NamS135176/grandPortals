@@ -59,6 +59,7 @@ export const FileDropzone = (props) => {
 		maxSize,
 		minSize,
 		onDrop,
+		disabled,
 	});
 
 	return (
@@ -152,6 +153,7 @@ export const FileDropzone = (props) => {
 							onClick={onRemoveAll}
 							size="small"
 							type="button"
+							disabled={disabled}
 						>
 							すべて削除する
 						</Button>

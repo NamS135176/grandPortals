@@ -716,6 +716,7 @@ export const onCreateInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      processed_date
       informaionListSends {
         items {
           id
@@ -728,6 +729,8 @@ export const onCreateInformation = /* GraphQL */ `
           receive_notification_email_flag
           last_user_read
           sort
+          sendgrid_response
+          x_message_id
           createdAt
           updatedAt
         }
@@ -749,6 +752,7 @@ export const onUpdateInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      processed_date
       informaionListSends {
         items {
           id
@@ -761,6 +765,8 @@ export const onUpdateInformation = /* GraphQL */ `
           receive_notification_email_flag
           last_user_read
           sort
+          sendgrid_response
+          x_message_id
           createdAt
           updatedAt
         }
@@ -782,6 +788,7 @@ export const onDeleteInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      processed_date
       informaionListSends {
         items {
           id
@@ -794,6 +801,8 @@ export const onDeleteInformation = /* GraphQL */ `
           receive_notification_email_flag
           last_user_read
           sort
+          sendgrid_response
+          x_message_id
           createdAt
           updatedAt
         }
@@ -818,6 +827,7 @@ export const onCreateInformationListSend = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -833,6 +843,8 @@ export const onCreateInformationListSend = /* GraphQL */ `
       receive_notification_email_flag
       last_user_read
       sort
+      sendgrid_response
+      x_message_id
       createdAt
       updatedAt
     }
@@ -851,6 +863,7 @@ export const onUpdateInformationListSend = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -866,6 +879,8 @@ export const onUpdateInformationListSend = /* GraphQL */ `
       receive_notification_email_flag
       last_user_read
       sort
+      sendgrid_response
+      x_message_id
       createdAt
       updatedAt
     }
@@ -884,6 +899,7 @@ export const onDeleteInformationListSend = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -899,6 +915,8 @@ export const onDeleteInformationListSend = /* GraphQL */ `
       receive_notification_email_flag
       last_user_read
       sort
+      sendgrid_response
+      x_message_id
       createdAt
       updatedAt
     }

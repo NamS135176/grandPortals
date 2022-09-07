@@ -264,6 +264,7 @@ type Information
     important_info_flag: Int
     draft_flag: Int
     delete_flag: Int!
+    processed_date: AWSDateTime @index(name: "GSI-processedDate", queryField: "queryInformationByProcessDate")
     informaionListSends: [InformationListSend] @hasMany(indexName: "GSI-informationId", fields: ["id"])
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationBySort")
     createdAt: AWSDateTime!
@@ -289,6 +290,8 @@ type InformationListSend
     receive_notification_email_flag: Boolean!
     last_user_read: AWSDateTime
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationListSendBySort")
+    sendgrid_response: String
+    x_message_id: String
     createdAt: AWSDateTime!
 }
 

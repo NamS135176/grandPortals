@@ -28,7 +28,7 @@ export const useImportCSVInformation = () => {
         async (informationId, email) => {
             const user = await findUserByEmail(email);
             if (!user)
-                return {isError: true, message: `${email} does not exist.`};
+                return {isError: true, message: `${email}メールアドレスが存在しません。`};
             const id = await getNextInformationListSendId();
             console.log("createInformationListSend...", {user, id});
             // create information table
@@ -102,7 +102,9 @@ export const useImportCSVInformation = () => {
                 });
                 console.log("updateInformation... results: ", results);
                 if (!R.isEmpty(errors)) {
-                    toast.error(errors.map((error) => error.message));
+                    toast.error(
+                        errors.map((error) => error.message).join("\n")
+                    );
                 }
             } catch (e) {
                 toast.error(e.message);
@@ -198,7 +200,9 @@ export const useImportCSVInformation = () => {
                 });
                 console.log("updateInformation... results: ", results);
                 if (!R.isEmpty(errors)) {
-                    toast.error(errors.map((error) => error.message));
+                    toast.error(
+                        errors.map((error) => error.message).join("\n")
+                    );
                 }
             } catch (e) {
                 toast.error(e.message);

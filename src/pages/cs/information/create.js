@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import {
@@ -36,18 +36,39 @@ import {confirm} from "components/dialog/confirm-dialog";
 import {useDropzone} from "react-dropzone";
 import {Upload as UploadIcon} from "icons/upload";
 import {useInformationFile} from "hooks/use-information-file";
+import {useAuth} from "hooks/use-auth";
+import {UserGroup} from "utils/global-data";
+import {isEmailValid} from "utils/validator";
 
 const CsInformationCreate = () => {
+    const {user} = useAuth();
     const router = useRouter();
-    const {createInformation, loading} = useImportCSVInformation();
+    const {createInformation, loading: importingCSV} = useImportCSVInformation();
     const {uploadFiles} = useInformationFile();
 
     const [createdInformationId, setCreatedInformationId] = useState();
     const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
+    const draftFlag = useRef(0);
+
+    useEffect(() => {
+        if (user.group != UserGroup.support) {
+            router.push("/404");
+        }
+    }, [user]);
 
     const handleDrop = (newFiles) => {
-        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        const allFiles = [...files, ...newFiles];
+        //check file size max 30M totally
+        var fileSize = 0;
+        allFiles.forEach((file) => (fileSize += file.size));
+        const mbSize = fileSize / 1024 / 1024;
+        console.log("handleDrop...", {allFiles, fileSize, mbSize});
+        if (mbSize >= 30) {
+            toast.error("添付可能なファイルサイズは合計30M以内までです。");
+            return;
+        }
+        setFiles(allFiles);
     };
 
     const handleRemove = (file) => {
@@ -73,14 +94,19 @@ const CsInformationCreate = () => {
                     console.log("error:", errors);
                 },
                 complete: async (results) => {
-                    console.log("Finished:", results.data);
+                    console.log("Finished:", results);
+                    const csvData = results.data;
+                    if (isCSVFormatError(csvData)) {
+                        return;
+                    }
+
                     const accept = await confirm(
                         "メッセージ：選択された送信先情報でデータを登録または更新します。"
                     );
                     if (!accept) return;
 
                     const {data, information} = await createInformation({
-                        data: results.data,
+                        data: csvData,
                     });
 
                     console.log("CsInformationCreate... createInformation: ", {
@@ -88,10 +114,32 @@ const CsInformationCreate = () => {
                         information,
                     });
                     setListInformationSend(data);
-                    setCreatedInformationId(information.id);
+                    setCreatedInformationId(information?.id);
                 },
             });
         });
+    }, []);
+
+    const isCSVFormatError = useCallback((csvData) => {
+        if (R.isEmpty(csvData)) {
+            //only header
+            toast.error("登録対象のデータが存在しません。");
+            return true;
+        }
+        //check format email
+        var errors = [];
+        csvData.forEach((row, idx) => {
+            if (!isEmailValid(row.email)) {
+                errors.push(
+                    `${idx + 1}行目：メールアドレス形式に誤りがあります。`
+                );
+            }
+        });
+        if (!R.isEmpty(errors)) {
+            toast.error(errors.join("\n"));
+            return true;
+        }
+        return false;
     }, []);
 
     const {getRootProps, getInputProps} = useDropzone({
@@ -119,14 +167,13 @@ const CsInformationCreate = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                // NOTE: Make API request
-                await wait(500);
+                await handleSave(draftFlag.current);
+                toast.success("送信しました！");
                 helpers.setStatus({success: true});
                 helpers.setSubmitting(false);
-                toast.success("送信しました！");
             } catch (err) {
                 console.error(err);
-                toast.error("Something went wrong!");
+                toast.error(err?.message ?? "Something went wrong!");
                 helpers.setStatus({success: false});
                 helpers.setErrors({submit: err.message});
                 helpers.setSubmitting(false);
@@ -138,17 +185,18 @@ const CsInformationCreate = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handleSave = async (draft_flag = 0) => {
+    const handleSave = async (draftFlag = 0) => {
+        console.log("handleSave... ", {draftFlag});
         //update information
         try {
-            const res = await API.graphql({
+            await API.graphql({
                 query: updateInformation,
                 variables: {
                     input: {
                         id: createdInformationId,
                         subject: formik.values.subject,
                         content: formik.values.content,
-                        draft_flag,
+                        draft_flag: draftFlag,
                         important_info_flag: formik.values.importantInfoFlag
                             ? 1
                             : 0,
@@ -305,7 +353,7 @@ const CsInformationCreate = () => {
                                         <Typography variant="subtitle1">
                                             送信対象取込
                                             <LoadingButton
-                                                loading={loading}
+                                                loading={importingCSV}
                                                 loadingIndicator={
                                                     <CircularProgress
                                                         color="primary"
@@ -373,9 +421,13 @@ const CsInformationCreate = () => {
                                         color="success"
                                         disabled={
                                             R.isEmpty(listInformationSend) ||
-                                            R.isNil(createdInformationId)
+                                            R.isNil(createdInformationId) ||
+                                            formik.isSubmitting
                                         }
-                                        onClick={() => handleSave(1)}
+                                        onClick={() => {
+                                            draftFlag.current = 1;
+                                            formik.handleSubmit();
+                                        }}
                                     >
                                         下書き保存
                                     </Button>
@@ -387,9 +439,13 @@ const CsInformationCreate = () => {
                                         type="submit"
                                         disabled={
                                             R.isEmpty(listInformationSend) ||
-                                            R.isNil(createdInformationId)
+                                            R.isNil(createdInformationId) ||
+                                            formik.isSubmitting
                                         }
-                                        onClick={() => handleSave(0)}
+                                        onClick={() => {
+                                            draftFlag.current = 0;
+                                            formik.handleSubmit();
+                                        }}
                                     >
                                         送信
                                     </Button>

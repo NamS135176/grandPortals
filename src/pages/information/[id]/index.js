@@ -24,6 +24,7 @@ import {LoadingButton} from "@mui/lab";
 import toast from "react-hot-toast";
 import {useMounted} from "hooks/use-mounted";
 import * as R from "ramda";
+import moment from "moment";
 
 const InformationDetails = () => {
     const isMounted = useMounted();
@@ -33,13 +34,22 @@ const InformationDetails = () => {
     const {information} = useInformation(id);
     const {getFilesFromS3, zipInformationFile} = useInformationFile();
 
-    const [zipFileUrl, setZipFileUrl] = useState();
     const [zipping, setZipping] = useState(false);
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
+
+    useEffect(() => {
+        if (!information) return;
+        //check scheduled_delivery_date
+        if (moment(information.scheduled_delivery_date).isBefore(moment())) {
+            //not available this time
+            router.push("/404");
+        }
+    }, [information])
+    
 
     useEffect(async () => {
         if (!isMounted()) return;
@@ -55,7 +65,6 @@ const InformationDetails = () => {
             setZipping(true);
             const zipFileUrl = await zipInformationFile(id);
             router.replace(zipFileUrl);
-            setZipFileUrl(zipFileUrl);
         } catch (e) {
             toast.error(e.message);
         }
