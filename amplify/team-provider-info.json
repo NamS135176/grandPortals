@@ -75,6 +75,10 @@
         "getNextInformationListSendId": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/getNextInformationListSendId-353246617a3055726636-build.zip"
+        },
+        "publishInformationZipFile": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/publishInformationZipFile-614b325432666e6f5164-build.zip"
         }
       }
     }

@@ -1,4 +1,4 @@
-import {Storage} from "aws-amplify";
+import {API, Storage} from "aws-amplify";
 import {useCallback} from "react";
 import * as Throttle from "promise-parallel-throttle";
 import moment from "moment";
@@ -7,6 +7,7 @@ import {
     getInformationS3FilePath,
     getUrlPath,
 } from "utils/bukken";
+import {publishInformationZipFile} from "graphql/queries";
 
 export const useInformationFile = () => {
     const uploadFileToS3 = useCallback(async (file, informationId) => {
@@ -54,7 +55,8 @@ export const useInformationFile = () => {
                 uploaded: true,
             };
         });
-        return files;
+        //we will filter to excludes zip file cause we will create archive.zip file at information folder to zip all file for client download
+        return files.filter((file) => !file.name.endsWith(".zip"));
     }, []);
 
     const deleteFileFromS3 = useCallback(async (file) => {
@@ -65,10 +67,47 @@ export const useInformationFile = () => {
         const queue = files.map((file) => () => deleteFileFromS3(file));
         await Throttle.all(queue, {maxInProgress: 5});
     }, []);
+
+    const zipInformationFile = useCallback(async (informationId) => {
+        const zipFileName = "archive.zip";
+        //check zip file exist
+        const zipFilePath = `information/${informationId}/${zipFileName}`;
+        const results = await Storage.list(zipFilePath);
+        const exist = results.length > 0;
+        console.log("downloadZipFile... check zip file exist: ", {
+            results,
+            exist,
+        });
+        if (exist) {
+            //success zip file
+            return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${zipFilePath}`
+        } else {
+            //call api zip folder
+            const res = await API.graphql({
+                query: publishInformationZipFile,
+                variables: {
+                    folder: `public/information/${informationId}/`,
+                    zipFileName,
+                },
+            });
+            const result = JSON.parse(res.data.publishInformationZipFile);
+            console.log("downloadZipFile... publishInformationZipFile res: ", {
+                res,
+                result,
+            });
+            if (result.statusCode == 200) {
+                //success zip file
+                return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${zipFilePath}`
+            }
+        }
+        return null;
+    }, []);
+
     return {
         uploadFiles,
         getFilesFromS3,
         deleteFileFromS3,
         deleteFilesFromS3,
+        zipInformationFile,
     };
 };

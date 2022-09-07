@@ -62,6 +62,11 @@ type Query {
   @auth(rules: [
     { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
   ])
+
+  publishInformationZipFile(folder: String!, zipFileName: String!): AWSJSON @function(name: "publishInformationZipFile-${env}")
+  @auth(rules: [
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 }
 
 type User

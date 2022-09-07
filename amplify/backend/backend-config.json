@@ -283,6 +283,20 @@
           ]
         }
       ]
+    },
+    "publishInformationZipFile": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "grandsPortal",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
     }
   },
   "api": {
