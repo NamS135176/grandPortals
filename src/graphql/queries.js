@@ -1327,6 +1327,7 @@ export const getInformation = /* GraphQL */ `
       important_info_flag
       draft_flag
       delete_flag
+      processed_date
       informaionListSends {
         items {
           id
@@ -1339,6 +1340,8 @@ export const getInformation = /* GraphQL */ `
           receive_notification_email_flag
           last_user_read
           sort
+          sendgrid_response
+          x_message_id
           createdAt
           updatedAt
         }
@@ -1373,6 +1376,42 @@ export const listInformation = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationByProcessDate = /* GraphQL */ `
+  query QueryInformationByProcessDate(
+    $processed_date: AWSDateTime!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationByProcessDate(
+      processed_date: $processed_date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -1409,6 +1448,7 @@ export const queryInformationBySort = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -1433,6 +1473,7 @@ export const getInformationListSend = /* GraphQL */ `
         important_info_flag
         draft_flag
         delete_flag
+        processed_date
         informaionListSends {
           nextToken
         }
@@ -1448,6 +1489,8 @@ export const getInformationListSend = /* GraphQL */ `
       receive_notification_email_flag
       last_user_read
       sort
+      sendgrid_response
+      x_message_id
       createdAt
       updatedAt
     }
@@ -1479,6 +1522,7 @@ export const listInformationListSends = /* GraphQL */ `
           important_info_flag
           draft_flag
           delete_flag
+          processed_date
           sort
           createdAt
           updatedAt
@@ -1491,6 +1535,8 @@ export const listInformationListSends = /* GraphQL */ `
         receive_notification_email_flag
         last_user_read
         sort
+        sendgrid_response
+        x_message_id
         createdAt
         updatedAt
       }
@@ -1524,6 +1570,7 @@ export const queryInformationListSendByInformationId = /* GraphQL */ `
           important_info_flag
           draft_flag
           delete_flag
+          processed_date
           sort
           createdAt
           updatedAt
@@ -1536,6 +1583,8 @@ export const queryInformationListSendByInformationId = /* GraphQL */ `
         receive_notification_email_flag
         last_user_read
         sort
+        sendgrid_response
+        x_message_id
         createdAt
         updatedAt
       }
@@ -1569,6 +1618,7 @@ export const queryInformationListSendByUserId = /* GraphQL */ `
           important_info_flag
           draft_flag
           delete_flag
+          processed_date
           sort
           createdAt
           updatedAt
@@ -1581,6 +1631,8 @@ export const queryInformationListSendByUserId = /* GraphQL */ `
         receive_notification_email_flag
         last_user_read
         sort
+        sendgrid_response
+        x_message_id
         createdAt
         updatedAt
       }
@@ -1616,6 +1668,7 @@ export const queryInformationListSendBySort = /* GraphQL */ `
           important_info_flag
           draft_flag
           delete_flag
+          processed_date
           sort
           createdAt
           updatedAt
@@ -1628,6 +1681,8 @@ export const queryInformationListSendBySort = /* GraphQL */ `
         receive_notification_email_flag
         last_user_read
         sort
+        sendgrid_response
+        x_message_id
         createdAt
         updatedAt
       }

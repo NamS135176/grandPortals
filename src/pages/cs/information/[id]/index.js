@@ -13,7 +13,7 @@ import {
     Checkbox,
     FormControlLabel,
     Link,
-	CircularProgress,
+    CircularProgress,
 } from "@mui/material";
 import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
 import {gtm} from "../../../../lib/gtm";
@@ -36,8 +36,11 @@ import {useImportCSVInformation} from "hooks/use-import-csv-information";
 import {LoadingButton} from "@mui/lab";
 import {confirm} from "components/dialog/confirm-dialog";
 import {useDropzone} from "react-dropzone";
+import {UserGroup} from "utils/global-data";
+import {useAuth} from "hooks/use-auth";
 
 const CsInformationDetails = () => {
+    const {user} = useAuth();
     const router = useRouter();
     const {id} = router.query;
     const {updateInformationListSend, loading: importCSVLoading} =
@@ -48,6 +51,17 @@ const CsInformationDetails = () => {
 
     const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
+    const canEdit = information?.scheduled_delivery_date
+        ? moment(information.scheduled_delivery_date).isAfter(moment())
+        : false;
+
+    // const canEdit = false;
+
+    useEffect(() => {
+        if (user.group != UserGroup.support) {
+            router.push("/404");
+        }
+    }, [user]);
 
     useEffect(() => {
         //update value to formik
@@ -95,34 +109,63 @@ const CsInformationDetails = () => {
         }
     };
 
-    const onDrop = useCallback((acceptedFiles) => {
-        acceptedFiles.forEach((file) => {
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                transformHeader: (header) => {
-                    console.log("transformHeader:", header);
-                    return "email";
-                },
-                error: (errors) => {
-                    console.log("error:", errors);
-                },
-                complete: async (results) => {
-                    console.log("Finished:", results.data);
-                    const accept = await confirm(
-                        "メッセージ：選択された送信先情報でデータを登録または更新します。"
-                    );
-                    if (!accept) return;
+    const onDrop = useCallback(
+        (acceptedFiles) => {
+            acceptedFiles.forEach((file) => {
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    transformHeader: (header) => {
+                        console.log("transformHeader:", header);
+                        return "email";
+                    },
+                    error: (errors) => {
+                        console.log("error:", errors);
+                    },
+                    complete: async (results) => {
+                        console.log("Finished:", results.data);
+                        const csvData = results.data;
+                        if (isCSVFormatError(csvData)) {
+                            return;
+                        }
+                        const accept = await confirm(
+                            "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                        );
+                        if (!accept) return;
 
-                    const items = await updateInformationListSend({
-                        informationId: id,
-                        data: results.data,
-                    });
-                    setListInformationSend(items);
-                },
+                        const items = await updateInformationListSend({
+                            informationId: id,
+                            data: csvData,
+                        });
+                        setListInformationSend(items);
+                    },
+                });
             });
+        },
+        [id]
+    );
+
+    const isCSVFormatError = useCallback((csvData) => {
+        if (R.isEmpty(csvData)) {
+            //only header
+            toast.error("登録対象のデータが存在しません。");
+            return true;
+        }
+        //check format email
+        var errors = [];
+        csvData.forEach((row, idx) => {
+            if (!isEmailValid(row.email)) {
+                errors.push(
+                    `${idx + 1}行目：メールアドレス形式に誤りがあります。`
+                );
+            }
         });
-    }, [id]);
+        if (!R.isEmpty(errors)) {
+            toast.error(errors.join("\n"));
+            return true;
+        }
+        return false;
+    }, []);
 
     const {getRootProps, getInputProps} = useDropzone({
         onDrop,
@@ -206,6 +249,7 @@ const CsInformationDetails = () => {
                                                     formik.errors.subject
                                                 }
                                                 value={formik.values.subject}
+                                                disabled={!canEdit}
                                             />
                                         </Grid>
                                         <Grid item md={8} xs={12}>
@@ -227,6 +271,7 @@ const CsInformationDetails = () => {
                                                     formik.errors.content
                                                 }
                                                 value={formik.values.content}
+                                                disabled={!canEdit}
                                             />
                                         </Grid>
                                         <Grid item md={8} xs={12}>
@@ -247,6 +292,7 @@ const CsInformationDetails = () => {
                                                 onDrop={handleDrop}
                                                 onRemove={handleRemove}
                                                 onRemoveAll={handleRemoveAll}
+                                                disabled={!canEdit}
                                             />
                                         </Grid>
                                         <Grid item md={8} xs={12}>
@@ -265,6 +311,7 @@ const CsInformationDetails = () => {
                                                         {...inputProps}
                                                     />
                                                 )}
+                                                disabled={!canEdit}
                                             />
                                         </Grid>
                                     </Grid>
@@ -284,6 +331,7 @@ const CsInformationDetails = () => {
                                                                 .importantInfoFlag
                                                         )
                                                     }
+                                                    disabled={!canEdit}
                                                 />
                                             }
                                             label="重要なお知らせのため停止したユーザーにもメール送信"
@@ -317,6 +365,7 @@ const CsInformationDetails = () => {
                                                 }
                                                 sx={{m: 1}}
                                                 {...getRootProps()}
+                                                disabled={!canEdit}
                                             >
                                                 <input {...getInputProps()} />
                                                 Import
@@ -372,6 +421,7 @@ const CsInformationDetails = () => {
                                         variant="contained"
                                         color="success"
                                         onClick={() => handleSave(1)}
+                                        disabled={!canEdit}
                                     >
                                         下書き保存
                                     </Button>
@@ -382,6 +432,7 @@ const CsInformationDetails = () => {
                                         variant="contained"
                                         type="submit"
                                         onClick={() => handleSave(0)}
+                                        disabled={!canEdit}
                                     >
                                         送信
                                     </Button>
