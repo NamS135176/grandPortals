@@ -21,33 +21,7 @@ import { useDestinationList } from 'hooks/use-destination-list';
 import { useRouter } from 'next/router';
 
 
-const applyFilters = (items, filters) =>
-	items.filter((item) => {
-		if (filters.email) {
-			const nameMatched = item.email
-				.toLowerCase()
-				.includes(filters.email.toLowerCase());
 
-			if (!nameMatched) {
-				return false;
-			}
-		}
-
-		// It is possible to select multiple category options
-		if (filters.name) {
-			const statusMatched = item.name
-				.toLowerCase()
-				.includes(
-					filters.name.toLowerCase() || filters.nameKana.toLowerCase()
-				);
-
-			if (!statusMatched) {
-				return false;
-			}
-		}
-
-		return true;
-	});
 
 const CsDestinationList = () => {
 	const router = useRouter()
@@ -58,16 +32,7 @@ const CsDestinationList = () => {
 		name: '',
 	});
 	const {id} = router.query
-	const {destinations:list, loading} = useDestinationList(id)
-	// useEffect(async () => {
-	// 	try {
-	// 		const data = await bukkenApi.getCsDestinationList();
-	// 		setItems(data);
-	// 		setFilteredItems(data);
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, []);
+	const {destinations:list, filterDestination, loading} = useDestinationList(id)
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -82,8 +47,9 @@ const CsDestinationList = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const filteredItems = applyFilters(items, filters);
-		setFilteredItems(filteredItems);
+		filterDestination(filters)
+		// const filteredItems = applyFilters(items, filters);
+		// setFilteredItems(filteredItems);
 	};
 
 	return (

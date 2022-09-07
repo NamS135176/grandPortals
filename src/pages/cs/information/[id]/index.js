@@ -327,7 +327,7 @@ const CsInformationDetails = () => {
                                                 <Typography variant="subtitle1">
                                                     送信先：
                                                     <NextLink
-                                                        href={`/cs/information/${id}`}
+                                                        href={`/cs/destination/${id}`}
                                                         passHref
                                                     >
                                                         <Link variant="subtitle2">

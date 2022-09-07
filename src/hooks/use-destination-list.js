@@ -12,6 +12,7 @@ import {queryInformationListSendByInformationId} from "graphql/queries";
 export const useDestinationList = (informationId) => {
     const isMounted = useMounted();
     const [destinations, setDestinations] = useState([]);
+    const [destinationsFirst, setDestinationsFirst] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const getListDestination = useCallback(
@@ -37,6 +38,44 @@ export const useDestinationList = (informationId) => {
         [informationId]
     );
 
+    const applyFilters = (items, filters) =>
+	items.filter((item) => {
+		if (filters.email) {
+			const nameMatched = item.email
+				.toLowerCase()
+				.includes(filters.email.toLowerCase());
+
+			if (!nameMatched) {
+				return false;
+			}
+		}
+
+		// It is possible to select multiple category options
+		if (filters.name) {
+			const statusMatched = item.name
+				.toLowerCase()
+				.includes(
+					filters.name.toLowerCase()
+				) || item.name_kana
+				.toLowerCase()
+				.includes(
+					filters.name.toLowerCase()
+				)
+
+
+			if (!statusMatched) {
+				return false;
+			}
+		}
+
+		return true;
+	});
+
+    const filterDestination = (filter) =>  {
+        const newList = applyFilters(destinationsFirst, filter)
+        setDestinations(newList)
+    }
+
     useEffect(() => {
         async function loadData() {
             setLoading(true);
@@ -44,11 +83,12 @@ export const useDestinationList = (informationId) => {
             const listDestination = await getListDestination([], null, informationId);
             setDestinations(listDestination);
             //end load list bukken
+            setDestinationsFirst(listDestination)
             setLoading(false);
         }
 
         if (isMounted() && informationId) loadData();
     }, [isMounted, informationId]);
 
-    return {destinations, loading};
+    return {destinations, filterDestination, loading};
 };
