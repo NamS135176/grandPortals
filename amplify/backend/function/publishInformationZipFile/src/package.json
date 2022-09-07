@@ -8,8 +8,6 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
-    "aws-sdk": "^2.1209.0",
-    "s3-zip": "^3.2.1",
-    "xml-stream": "^0.4.5"
+    "s3-zip": "^3.2.1"
   }
 }

@@ -1690,3 +1690,8 @@ export const withdrawalRequest = /* GraphQL */ `
     withdrawalRequest(name: $name)
   }
 `;
+export const publishInformationZipFile = /* GraphQL */ `
+  query PublishInformationZipFile($folder: String!, $zipFileName: String!) {
+    publishInformationZipFile(folder: $folder, zipFileName: $zipFileName)
+  }
+`;

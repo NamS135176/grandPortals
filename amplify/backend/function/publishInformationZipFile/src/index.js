@@ -13,7 +13,6 @@ const s3Zip = require("s3-zip");
 
 const region = process.env.REGION;
 const bucket = process.env.STORAGE_GRANDSPORTAL_BUCKETNAME;
-// const zipFileName = "archive.zip";
 
 const s3 = new AWS.S3({region: region});
 
@@ -47,6 +46,7 @@ exports.handler = async (event) => {
 };
 
 async function deleteZipFile(zipFilePath) {
+    console.log("deleteZipFile... start: ", zipFilePath)
     const params = {
         Bucket: bucket,
         Key: zipFilePath,
@@ -56,6 +56,7 @@ async function deleteZipFile(zipFilePath) {
 }
 
 async function listObjects(folder) {
+    console.log("listObjects... start: ", folder);
     const params = {
         Bucket: bucket,
         Prefix: folder,
