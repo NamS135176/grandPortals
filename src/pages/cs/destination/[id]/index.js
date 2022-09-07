@@ -16,6 +16,10 @@ import {CsDestinationListTable} from '../../../../components/information/cs-dest
 import {gtm} from '../../../../lib/gtm';
 import {AuthGuard} from '../../../../components/authentication/auth-guard';
 import {bukkenApi} from '__fake-api__/bukken-api';
+import { useAuth } from 'hooks/use-auth';
+import { useDestinationList } from 'hooks/use-destination-list';
+import { useRouter } from 'next/router';
+
 
 const applyFilters = (items, filters) =>
 	items.filter((item) => {
@@ -46,22 +50,24 @@ const applyFilters = (items, filters) =>
 	});
 
 const CsDestinationList = () => {
+	const router = useRouter()
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [filters, setFilters] = useState({
 		email: '',
 		name: '',
 	});
-
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getCsDestinationList();
-			setItems(data);
-			setFilteredItems(data);
-		} catch (err) {
-			console.error(err);
-		}
-	}, []);
+	const {id} = router.query
+	const {destinations:list, loading} = useDestinationList(id)
+	// useEffect(async () => {
+	// 	try {
+	// 		const data = await bukkenApi.getCsDestinationList();
+	// 		setItems(data);
+	// 		setFilteredItems(data);
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, []);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -155,8 +161,8 @@ const CsDestinationList = () => {
 								</Button>
 							</Box>
 							<Divider />
-							{items.length > 0 && (
-								<CsDestinationListTable items={filteredItems} />
+							{list?.length > 0 && (
+								<CsDestinationListTable items={list} />
 							)}
 						</CardContent>
 					</Card>

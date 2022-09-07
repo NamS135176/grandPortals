@@ -11,6 +11,7 @@ import {getBukkenCoverImageUrlByBukken} from "../utils/bukken";
 import {UserGroup} from "../utils/global-data";
 import moment from "moment";
 import { listInformation, queryInformationListSendByUserId } from "graphql/queries";
+import * as mutations from "../graphql/mutations";
 
 export const useInformationList = () => {
     const {user} = useAuth();
@@ -25,6 +26,11 @@ export const useInformationList = () => {
             variables: {
                 user_id: user.id,
                 nextToken,
+                filter: {
+                    delete_flag: {
+                        eq: 0,
+                    },
+                },
             },
         });
         var informationSendList = response.data.queryInformationListSendByUserId.items;
@@ -44,6 +50,11 @@ export const useInformationList = () => {
                 query: listInformation,
                 variables: {
                     nextToken,
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                    },
                 },
             });
             var informationList = response.data.listInformation.items;
@@ -112,6 +123,34 @@ export const useInformationList = () => {
           
        }
 
+       const deleteInformation = useCallback(
+        async (item) => {
+            try {
+                await API.graphql({
+                    query: mutations.updateInformation,
+                    variables: {
+                        input: {
+                            id: item.id,
+                            delete_flag: 1,
+                        },
+                    },
+                });
+                const newInformationList = R.reject(R.propEq("id", item.id))(
+                    informationList
+                );
+                setInformationList(newInformationList);
+                const newInformationListFirst = R.reject(R.propEq("id", item.id))(
+                    informationListFirst
+                );
+                setInformationListFirst(newInformationListFirst);
+                //update all documents + history related with this interior
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        [informationList, informationListFirst]
+    );
+
     useEffect(() => {
         async function loadData() {
             setLoading(true);
@@ -152,5 +191,5 @@ export const useInformationList = () => {
         if (isMounted() && user) loadData();
     }, [isMounted, user]);
 
-    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, loading};
+    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, deleteInformation, loading};
 };

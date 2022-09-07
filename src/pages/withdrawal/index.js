@@ -17,7 +17,8 @@ import {alpha} from '@mui/material/styles';
 import WarningIcon from '@mui/icons-material/Warning';
 import { useAuth } from 'hooks/use-auth';
 import Amplify,{ API, graphqlOperation } from 'aws-amplify';
-import { withdrawalRequest } from 'graphql/queries';
+import { withdrawalRequest, queryInformationListSendByUserId } from 'graphql/queries';
+import {updateInformationListSend} from 'graphql/mutations'
 import toast from 'react-hot-toast';
 import { transpileModule } from 'typescript';
 // import awsmobile from 'aws-exports';
@@ -49,6 +50,27 @@ const Withdrawal = () => {
 		);
 		const response = JSON.parse(res_gq.data.withdrawalRequest);
 		if (response.statusCode !== 200) {
+			const res = await API.graphql({
+				query: queryInformationListSendByUserId,
+				variables: {
+					user_id: user.id,
+				},
+			});
+			const listSend =
+				res.data.queryInformationListSendByUserId.items;
+			const response = await Promise.all(
+				listSend.map((item) => {
+					return API.graphql({
+						query: updateInformationListSend,
+						variables: {
+							input: {
+								id: item.id,
+								withdrawal_flag: true
+							},
+						},
+					});
+				})
+			);	
 			setLoading(false)
 			console.error(response.body);
 			toast.error(response.body)

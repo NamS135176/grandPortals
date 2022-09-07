@@ -81,7 +81,7 @@ export const CsDestinationListTable = (props) => {
 										</TableCell>
 										<TableCell>{item.email}</TableCell>
 										<TableCell>{item.name}</TableCell>
-										<TableCell>{item.nameKana}</TableCell>
+										<TableCell>{item.name_kana}</TableCell>
 									</TableRow>
 								);
 							})}
