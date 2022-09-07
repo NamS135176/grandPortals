@@ -2,38 +2,6 @@ import {useCallback, useEffect, useState} from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import {
-<<<<<<< HEAD
-	Box,
-	Button,
-	Card,
-	CardContent,
-	Container,
-	TextField,
-	Grid,
-	Typography,
-	Checkbox,
-	FormControlLabel,
-	Link,
-} from '@mui/material';
-import {DashboardLayout} from '../../../../components/dashboard/dashboard-layout';
-import {gtm} from '../../../../lib/gtm';
-import {ArrowLeft as ArrowLeftIcon} from '../../../../icons/arrow-left';
-import {AuthGuard} from '../../../../components/authentication/auth-guard';
-import {Upload as UploadIcon} from '../../../../icons/upload';
-import {FileDropzone} from '../../../../components/file-dropzone';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import * as Yup from 'yup';
-import {useFormik} from 'formik';
-import {wait} from '../../../../utils/wait';
-import toast from 'react-hot-toast';
-import { useInformationList } from 'hooks/use-information-list';
-const CsInformationDetails = () => {
-	const [files, setFiles] = useState([]);
-
-	const handleDrop = (newFiles) => {
-		setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-	};
-=======
     Box,
     Button,
     Card,
@@ -77,7 +45,6 @@ const CsInformationDetails = () => {
     const {loading, information, updateInformation} = useInformation(id);
     const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
         useInformationFile();
->>>>>>> 3cc3509a8d5695bdd307e279aafd92c070f2317b
 
     const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
