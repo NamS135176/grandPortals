@@ -33,6 +33,12 @@ export const useInformationFile = () => {
     }, []);
 
     const uploadFiles = useCallback(async (files, informationId) => {
+        //first delete archive.zip file cause when user download list file, it will check exist archive.zip file to avoid duplidate zip
+        const zipFileName = "archive.zip";
+        //check zip file exist
+        const zipFilePath = `information/${informationId}/${zipFileName}`;
+        await Storage.remove(zipFilePath);
+        //doing upload file process
         const queue = files.map(
             (file) => () => uploadFileToS3(file, informationId)
         );
@@ -77,6 +83,7 @@ export const useInformationFile = () => {
         console.log("downloadZipFile... check zip file exist: ", {
             results,
             exist,
+            zipFilePath,
         });
         if (exist) {
             //success zip file

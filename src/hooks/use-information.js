@@ -5,8 +5,11 @@ import * as mutations from "graphql/mutations";
 import {useMounted} from "./use-mounted";
 import {useRouter} from "next/router";
 import toast from "react-hot-toast";
+import {useAuth} from "./use-auth";
+import {UserGroup} from "utils/global-data";
 
 export const useInformation = (informationId) => {
+    const {user} = useAuth();
     const router = useRouter();
     const isMounted = useMounted();
     const [information, setInformation] = useState();
@@ -45,11 +48,12 @@ export const useInformation = (informationId) => {
             },
         });
         const information = response.data.getInformation;
-
-        //get all list information send
-        const informaionListSends =
-            await getAllInformationListSendByInformationId(informationId);
-        information.informaionListSends.items = informaionListSends;
+        if (user.group == UserGroup.support) {
+            //get all list information send
+            const informaionListSends =
+                await getAllInformationListSendByInformationId(informationId);
+            information.informaionListSends.items = informaionListSends;
+        }
 
         setInformation(information);
         setLoading(false);
