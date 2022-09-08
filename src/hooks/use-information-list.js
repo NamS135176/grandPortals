@@ -157,7 +157,10 @@ export const useInformationList = () => {
 
             let informationList = null;
             if (user.group === UserGroup.agentGrands) {
-                informationList = await getListInformationSendList();
+                const list = await getListInformationSendList();
+                informationList = list.filter(item => {
+                    return (moment(item.information.scheduled_delivery_date).isBefore(moment()))
+                })
             } else {
                let list  = await getListCSInformationSendList();
                informationList = list.map(item => {

@@ -87,15 +87,6 @@ const CsInformationList = () => {
         endDate: null,
     });
 
-    // useEffect(async () => {
-    // 	try {
-    // 		const data = await bukkenApi.getCsInformationList();
-    // 		setItems(data);
-    // 	} catch (err) {
-    // 		console.error(err);
-    // 	}
-    // }, []);
-
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);

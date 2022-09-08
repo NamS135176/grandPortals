@@ -75,9 +75,9 @@ export const CsDestinationListTable = (props) => {
 							paginatedItems.map((item) => {
 								return (
 									<TableRow hover key={item.id}>
-										<TableCell>{item.status}</TableCell>
+										<TableCell>{item.withdrawal_flag ? "退会済" : ""}</TableCell>
 										<TableCell>
-											{item.delivery && 'ON'}
+											{item.receive_notification_email_flag ? '' : "停止"}
 										</TableCell>
 										<TableCell>{item.email}</TableCell>
 										<TableCell>{item.name}</TableCell>
