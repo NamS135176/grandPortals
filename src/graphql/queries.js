@@ -1378,6 +1378,22 @@ export const listInformation = /* GraphQL */ `
         delete_flag
         processed_date
         informaionListSends {
+          items {
+            id
+            information_id
+            user_id
+            email
+            name
+            name_kana
+            withdrawal_flag
+            receive_notification_email_flag
+            last_user_read
+            sort
+            sendgrid_response
+            x_message_id
+            createdAt
+            updatedAt
+           }
           nextToken
         }
         sort

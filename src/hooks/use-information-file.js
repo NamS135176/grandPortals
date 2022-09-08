@@ -8,6 +8,7 @@ import {
     getUrlPath,
 } from "utils/bukken";
 import {publishInformationZipFile} from "graphql/queries";
+import * as R from "ramda";
 
 export const useInformationFile = () => {
     const uploadFileToS3 = useCallback(async (file, informationId) => {
@@ -33,19 +34,12 @@ export const useInformationFile = () => {
     }, []);
 
     const uploadFiles = useCallback(async (files, informationId) => {
-        //first delete archive.zip file cause when user download list file, it will check exist archive.zip file to avoid duplidate zip
-        const zipFileName = "archive.zip";
-        //check zip file exist
-        const zipFilePath = `information/${informationId}/${zipFileName}`;
-        await Storage.remove(zipFilePath);
         //doing upload file process
         const queue = files.map(
             (file) => () => uploadFileToS3(file, informationId)
         );
         const res = await Throttle.all(queue, {maxInProgress: 5});
         console.log("useInformationFile... uploadFiles res = ", res);
-        //doing zip file
-        await zipInformationFile(informationId)
         return res;
     }, []);
 
@@ -77,20 +71,27 @@ export const useInformationFile = () => {
     }, []);
 
     const zipInformationFile = useCallback(async (informationId) => {
-        const zipFileName = "archive.zip";
-        //check zip file exist
-        const zipFilePath = `information/${informationId}/${zipFileName}`;
-        const results = await Storage.list(zipFilePath);
-        const exist = results.length > 0;
+        const diffFile = function(a, b) { return moment(b.lastModified).diff(moment(a.lastModified)) };
+
+        const informationS3Path = getInformationS3FilePath(informationId);
+        const allInformationFiles = await Storage.list(informationS3Path);
+        const zipFiles = allInformationFiles.filter((file) => file.key.endsWith(".zip"))
+        
+        const zipFilesSorted =  R.sort(diffFile, zipFiles)
+        const lastZipFile = R.last(zipFilesSorted);
+        // const lastZipFile = null;
+
         console.log("downloadZipFile... check zip file exist: ", {
-            results,
-            exist,
-            zipFilePath,
+            lastZipFile,
+            zipFiles,
+            zipFilesSorted,
         });
-        if (exist) {
+        if (lastZipFile) {
             //success zip file
-            return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${zipFilePath}`
+            return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${lastZipFile.key}`;
         } else {
+            const zipFileName = `${moment().format("YYYYMMDD_HHmmss")}_archive.zip`;
+            const zipFilePath = `information/${informationId}/${zipFileName}`;
             //call api zip folder
             const res = await API.graphql({
                 query: publishInformationZipFile,
@@ -106,7 +107,7 @@ export const useInformationFile = () => {
             });
             if (result.statusCode == 200) {
                 //success zip file
-                return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${zipFilePath}`
+                return `${process.env.NEXT_PUBLIC_CDN_RESOURCE}/${zipFilePath}`;
             }
         }
         return null;
