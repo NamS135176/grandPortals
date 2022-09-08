@@ -79,11 +79,11 @@ export const useInformation = (informationId) => {
                         },
                     },
                 });
-                router.push("/cs/information/list");
             } catch (e) {
+                setLoading(false);
                 toast.error(e.message);
+                throw e;
             }
-
             setLoading(false);
         },
         []

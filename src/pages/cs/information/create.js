@@ -31,7 +31,7 @@ import {updateInformation} from "graphql/mutations";
 import {useRouter} from "next/router";
 import Papa from "papaparse";
 import {useImportCSVInformation} from "hooks/use-import-csv-information";
-import {LoadingButton} from "@mui/lab";
+import {LoadingButton, MobileDateTimePicker} from "@mui/lab";
 import {confirm} from "components/dialog/confirm-dialog";
 import {useDropzone} from "react-dropzone";
 import {Upload as UploadIcon} from "icons/upload";
@@ -39,11 +39,13 @@ import {useInformationFile} from "hooks/use-information-file";
 import {useAuth} from "hooks/use-auth";
 import {UserGroup} from "utils/global-data";
 import {isEmailValid} from "utils/validator";
+import moment from "moment";
 
 const CsInformationCreate = () => {
     const {user} = useAuth();
     const router = useRouter();
-    const {createInformation, loading: importingCSV} = useImportCSVInformation();
+    const {createInformation, loading: importingCSV} =
+        useImportCSVInformation();
     const {uploadFiles} = useInformationFile();
 
     const [createdInformationId, setCreatedInformationId] = useState();
@@ -58,6 +60,7 @@ const CsInformationCreate = () => {
     }, [user]);
 
     const handleDrop = (newFiles) => {
+        // setFiles((prevFiles) => [...prevFiles, ...newFiles]);
         const allFiles = [...files, ...newFiles];
         //check file size max 30M totally
         var fileSize = 0;
@@ -79,6 +82,18 @@ const CsInformationCreate = () => {
 
     const handleRemoveAll = () => {
         setFiles([]);
+    };
+
+    const checkMaxSizeFiles = () => {
+        //check file size max 30M totally
+        var fileSize = 0;
+        files.forEach((file) => (fileSize += file.size));
+        const mbSize = fileSize / 1024 / 1024;
+        if (mbSize >= 30) {
+            toast.error("添付可能なファイルサイズは合計30M以内までです。");
+            return false;
+        }
+        return true;
     };
 
     const onDrop = useCallback((acceptedFiles) => {
@@ -115,6 +130,11 @@ const CsInformationCreate = () => {
                     });
                     setListInformationSend(data);
                     setCreatedInformationId(information?.id);
+                    if (information) {
+                        toast.success(
+                            "お知らせ詳細画面の、画面ヘッダー部分に「お知らせ情報を登録しました。」を表示する。"
+                        );
+                    }
                 },
             });
         });
@@ -154,7 +174,7 @@ const CsInformationCreate = () => {
             subject: "",
             content: "",
             files: files,
-            date: new Date(),
+            date: null,
             importantInfoFlag: false,
             submit: null,
         },
@@ -167,8 +187,7 @@ const CsInformationCreate = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                await handleSave(draftFlag.current);
-                toast.success("送信しました！");
+                await saveData(draftFlag.current);
                 helpers.setStatus({success: true});
                 helpers.setSubmitting(false);
             } catch (err) {
@@ -185,34 +204,89 @@ const CsInformationCreate = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handleSave = async (draftFlag = 0) => {
-        console.log("handleSave... ", {draftFlag});
-        //update information
+    const saveData = async (draftFlag = 0) => {
+        console.log("saveData... ", {draftFlag, values: formik.values});
+        if (draftFlag == 1 && formik.values.importantInfoFlag) {
+            //show confirm
+            const accept = await confirm(
+                "下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）"
+            );
+            if (!accept) return;
+        }
         try {
-            await API.graphql({
-                query: updateInformation,
-                variables: {
-                    input: {
-                        id: createdInformationId,
-                        subject: formik.values.subject,
-                        content: formik.values.content,
-                        draft_flag: draftFlag,
-                        important_info_flag: formik.values.importantInfoFlag
-                            ? 1
-                            : 0,
-                        scheduled_delivery_date: formik.values.date,
-                        sort: 1, //always 1
+            var informationId = createdInformationId;
+
+            if (!informationId) {
+                //create new information
+                const {information} = await createInformation({
+                    subject: formik.values.subject,
+                    content: formik.values.content,
+                    draft_flag: draftFlag,
+                    important_info_flag: formik.values.importantInfoFlag
+                        ? 1
+                        : 0,
+                    scheduled_delivery_date: formik.values.date,
+                });
+                setCreatedInformationId(information?.id);
+            } else {
+                //update exist
+                await API.graphql({
+                    query: updateInformation,
+                    variables: {
+                        input: {
+                            id: informationId,
+                            subject: formik.values.subject,
+                            content: formik.values.content,
+                            draft_flag: draftFlag,
+                            important_info_flag: formik.values.importantInfoFlag
+                                ? 1
+                                : 0,
+                            scheduled_delivery_date: formik.values.date,
+                            sort: 1, //always 1
+                        },
                     },
-                },
-            });
+                });
+            }
 
             //upload s3 file
             if (!R.isEmpty(files)) {
-                await uploadFiles(files, createdInformationId);
+                await uploadFiles(files, informationId);
             }
+            toast.success("送信しました！");
             router.push("/cs/information/list");
         } catch (e) {
             toast.error(e.message);
+        }
+    };
+
+    const handleClickSaveDraft = () => {
+        var validate = true;
+        if (!checkMaxSizeFiles()) {
+            validate = false;
+        }
+        if (validate) {
+            draftFlag.current = 1;
+            formik.handleSubmit();
+        }
+    };
+
+    const handleClickSave = () => {
+        console.log("formik", formik);
+        var validate = true;
+        if (R.isEmpty(listInformationSend) || R.isNil(createdInformationId)) {
+            toast.error("送信対象取込を実施してください");
+            validate = false;
+        }
+        if (moment(formik.values.date).isBefore(moment())) {
+            toast.error("配信予定日時には現在より後の日時を指定してください");
+            validate = false;
+        }
+        if (!checkMaxSizeFiles()) {
+            validate = false;
+        }
+        if (validate) {
+            draftFlag.current = 0;
+            formik.handleSubmit();
         }
     };
 
@@ -229,230 +303,211 @@ const CsInformationCreate = () => {
                 }}
             >
                 <Container maxWidth="xl">
-                    <form noValidate onSubmit={formik.handleSubmit}>
-                        <Card>
-                            <CardContent>
-                                <Box sx={{mb: 4}}>
-                                    <Typography variant="h6" mb={3}>
-                                        お知らせ詳細
-                                    </Typography>
-                                    <Grid container spacing={3} mt={3}>
-                                        <Grid item md={8} xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="件名"
-                                                name="subject"
-                                                required
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                error={Boolean(
-                                                    formik.touched.subject &&
-                                                        formik.errors.subject
-                                                )}
-                                                helperText={
-                                                    formik.touched.subject &&
+                    <Card>
+                        <CardContent>
+                            <Box sx={{mb: 4}}>
+                                <Typography variant="h6" mb={3}>
+                                    お知らせ詳細
+                                </Typography>
+                                <Grid container spacing={3} mt={3}>
+                                    <Grid item md={8} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            label="件名"
+                                            name="subject"
+                                            required
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            error={Boolean(
+                                                formik.touched.subject &&
                                                     formik.errors.subject
-                                                }
-                                                value={formik.values.subject}
-                                            />
-                                        </Grid>
-                                        <Grid item md={8} xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                multiline
-                                                minRows={4}
-                                                label="本文"
-                                                name="content"
-                                                required
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                error={Boolean(
-                                                    formik.touched.content &&
-                                                        formik.errors.content
-                                                )}
-                                                helperText={
-                                                    formik.touched.content &&
+                                            )}
+                                            helperText={
+                                                formik.touched.subject &&
+                                                formik.errors.subject
+                                            }
+                                            value={formik.values.subject}
+                                        />
+                                    </Grid>
+                                    <Grid item md={8} xs={12}>
+                                        <TextField
+                                            fullWidth
+                                            multiline
+                                            minRows={4}
+                                            label="本文"
+                                            name="content"
+                                            required
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            error={Boolean(
+                                                formik.touched.content &&
                                                     formik.errors.content
+                                            )}
+                                            helperText={
+                                                formik.touched.content &&
+                                                formik.errors.content
+                                            }
+                                            value={formik.values.content}
+                                        />
+                                    </Grid>
+                                    <Grid item md={8} xs={12}>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{mb: 1}}
+                                        >
+                                            添付ファイル
+                                        </Typography>
+                                        <FileDropzone
+                                            accept={{
+                                                "application/pdf": [".pdf"],
+                                                "image/png": [".png"],
+                                                "image/png": [".peg"],
+                                                "image/png": [".jpeg"],
+                                            }}
+                                            files={files}
+                                            onDrop={handleDrop}
+                                            onRemove={handleRemove}
+                                            onRemoveAll={handleRemoveAll}
+                                        />
+                                    </Grid>
+                                    <Grid item md={8} xs={12}>
+                                    <MobileDateTimePicker
+                                            label="配達予定日"
+                                            inputFormat="yyyy/MM/dd HH:mm"
+                                            minDate={moment().toDate()}
+                                            minutesStep={5}
+                                            value={formik.values.date}
+                                            onChange={(date) =>
+                                                formik.setFieldValue(
+                                                    "date",
+                                                    date
+                                                )
+                                            }
+                                            renderInput={(inputProps) => (
+                                                <TextField {...inputProps} />
+                                            )}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Box sx={{mt: 2}}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                name="emailAlerts"
+                                                checked={
+                                                    formik.values
+                                                        .importantInfoFlag
                                                 }
-                                                value={formik.values.content}
-                                            />
-                                        </Grid>
-                                        <Grid item md={8} xs={12}>
-                                            <Typography
-                                                variant="body2"
-                                                sx={{mb: 1}}
-                                            >
-                                                添付ファイル
-                                            </Typography>
-                                            <FileDropzone
-                                                accept={{
-                                                    "application/pdf": [".pdf"],
-                                                    "image/png": [".png"],
-                                                    "image/png": [".peg"],
-                                                    "image/png": [".jpeg"],
-                                                }}
-                                                files={files}
-                                                onDrop={handleDrop}
-                                                onRemove={handleRemove}
-                                                onRemoveAll={handleRemoveAll}
-                                            />
-                                        </Grid>
-                                        <Grid item md={8} xs={12}>
-                                            <MobileDatePicker
-                                                label="配達予定日"
-                                                inputFormat="yyyy/MM/dd"
-                                                value={formik.values.date}
-                                                onChange={(date) =>
+                                                onChange={() =>
                                                     formik.setFieldValue(
-                                                        "date",
-                                                        date
+                                                        "importantInfoFlag",
+                                                        !formik.values
+                                                            .importantInfoFlag
                                                     )
                                                 }
-                                                renderInput={(inputProps) => (
-                                                    <TextField
-                                                        {...inputProps}
-                                                    />
-                                                )}
                                             />
-                                        </Grid>
-                                    </Grid>
-                                    <Box sx={{mt: 2}}>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    name="emailAlerts"
-                                                    checked={
-                                                        formik.values
-                                                            .importantInfoFlag
-                                                    }
-                                                    onChange={() =>
-                                                        formik.setFieldValue(
-                                                            "importantInfoFlag",
-                                                            !formik.values
-                                                                .importantInfoFlag
-                                                        )
-                                                    }
+                                        }
+                                        label="重要なお知らせのため停止したユーザーにもメール送信"
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: {
+                                            xs: "column",
+                                            md: "row",
+                                        },
+                                        alignItems: {
+                                            xs: "start",
+                                            md: "center",
+                                        },
+                                    }}
+                                >
+                                    <Typography variant="subtitle1">
+                                        送信対象取込
+                                        <LoadingButton
+                                            loading={importingCSV}
+                                            loadingIndicator={
+                                                <CircularProgress
+                                                    color="primary"
+                                                    size={30}
                                                 />
                                             }
-                                            label="重要なお知らせのため停止したユーザーにもメール送信"
-                                        />
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: {
-                                                xs: "column",
-                                                md: "row",
-                                            },
-                                            alignItems: {
-                                                xs: "start",
-                                                md: "center",
-                                            },
-                                        }}
-                                    >
-                                        <Typography variant="subtitle1">
-                                            送信対象取込
-                                            <LoadingButton
-                                                loading={importingCSV}
-                                                loadingIndicator={
-                                                    <CircularProgress
-                                                        color="primary"
-                                                        size={30}
-                                                    />
-                                                }
-                                                startIcon={
-                                                    <UploadIcon fontSize="small" />
-                                                }
-                                                sx={{m: 1}}
-                                                {...getRootProps()}
-                                            >
-                                                <input {...getInputProps()} />
-                                                Import
-                                            </LoadingButton>
-                                        </Typography>
-                                        {listInformationSend &&
-                                            listInformationSend.length > 0 && (
-                                                <Typography variant="subtitle1">
-                                                    送信先：
-                                                    <NextLink
-                                                        href={`/cs/information/${createdInformationId}`}
-                                                        passHref
-                                                    >
-                                                        <Link variant="subtitle2">
-                                                            {
-                                                                listInformationSend.length
-                                                            }
-                                                            件
-                                                        </Link>
-                                                    </NextLink>
-                                                </Typography>
-                                            )}
-                                    </Box>
-                                </Box>
-                            </CardContent>
-                        </Card>
-                        <Box
-                            sx={{
-                                mx: -1,
-                                mb: -1,
-                                mt: 3,
-                            }}
-                        >
-                            <Grid container spacing={3}>
-                                <Grid item>
-                                    <NextLink
-                                        href="/cs/information/list"
-                                        passHref
-                                    >
-                                        <Button
-                                            endIcon={
-                                                <ArrowLeftIcon fontSize="small" />
+                                            startIcon={
+                                                <UploadIcon fontSize="small" />
                                             }
-                                            variant="outlined"
+                                            sx={{m: 1}}
+                                            {...getRootProps()}
                                         >
-                                            戻る
-                                        </Button>
-                                    </NextLink>
-                                </Grid>
-                                <Grid item sx={{m: -1}}>
+                                            <input {...getInputProps()} />
+                                            Import
+                                        </LoadingButton>
+                                    </Typography>
+                                    {listInformationSend &&
+                                        listInformationSend.length > 0 && (
+                                            <Typography variant="subtitle1">
+                                                送信先：
+                                                <NextLink
+                                                    href={`/cs/information/${createdInformationId}`}
+                                                    passHref
+                                                >
+                                                    <Link variant="subtitle2">
+                                                        {
+                                                            listInformationSend.length
+                                                        }
+                                                        件
+                                                    </Link>
+                                                </NextLink>
+                                            </Typography>
+                                        )}
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                    <Box
+                        sx={{
+                            mx: -1,
+                            mb: -1,
+                            mt: 3,
+                        }}
+                    >
+                        <Grid container spacing={3}>
+                            <Grid item>
+                                <NextLink href="/cs/information/list" passHref>
                                     <Button
-                                        sx={{m: 1}}
-                                        variant="contained"
-                                        color="success"
-                                        disabled={
-                                            R.isEmpty(listInformationSend) ||
-                                            R.isNil(createdInformationId) ||
-                                            formik.isSubmitting
+                                        endIcon={
+                                            <ArrowLeftIcon fontSize="small" />
                                         }
-                                        onClick={() => {
-                                            draftFlag.current = 1;
-                                            formik.handleSubmit();
-                                        }}
+                                        variant="outlined"
                                     >
-                                        下書き保存
+                                        戻る
                                     </Button>
-                                </Grid>
-                                <Grid item sx={{m: -1}}>
-                                    <Button
-                                        sx={{m: 1}}
-                                        variant="contained"
-                                        type="submit"
-                                        disabled={
-                                            R.isEmpty(listInformationSend) ||
-                                            R.isNil(createdInformationId) ||
-                                            formik.isSubmitting
-                                        }
-                                        onClick={() => {
-                                            draftFlag.current = 0;
-                                            formik.handleSubmit();
-                                        }}
-                                    >
-                                        送信
-                                    </Button>
-                                </Grid>
+                                </NextLink>
                             </Grid>
-                        </Box>
-                    </form>
+                            <Grid item sx={{m: -1}}>
+                                <Button
+                                    sx={{m: 1}}
+                                    variant="contained"
+                                    color="success"
+                                    disabled={formik.isSubmitting || importingCSV}
+                                    onClick={handleClickSaveDraft}
+                                >
+                                    下書き保存
+                                </Button>
+                            </Grid>
+                            <Grid item sx={{m: -1}}>
+                                <Button
+                                    sx={{m: 1}}
+                                    variant="contained"
+                                    type="submit"
+                                    disabled={formik.isSubmitting || importingCSV}
+                                    onClick={handleClickSave}
+                                >
+                                    送信
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Container>
             </Box>
         </>
