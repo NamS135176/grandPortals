@@ -11,16 +11,13 @@ import {
     TableSortLabel,
     TableRow,
     Box,
-	Modal,
-	Typography,
-	Button
 } from "@mui/material";
 import {ArrowRight as ArrowRightIcon} from "../../icons/arrow-right";
 import {Scrollbar} from "../scrollbar";
 import moment from "moment";
 import {SeverityPill} from "../severity-pill";
 import {Trash as TrashIcon} from "../../icons/trash";
-import {Image as ImageIcon} from "../../icons/image";
+import {confirm} from "components/dialog/confirm-dialog";
 
 const applySort = (items, sortDir) =>
     items.sort((a, b) => {
@@ -43,10 +40,8 @@ const applyPagination = (items, page, rowsPerPage) =>
 export const CsInformationListTable = (props) => {
     const {items, deleteInformation, ...other} = props;
     const [sort, setSort] = useState("desc");
-	const [openModal, setOpenModal] = useState(false)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [selectedItem,setSelectedItem] = useState(null)
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
@@ -66,11 +61,11 @@ export const CsInformationListTable = (props) => {
         });
     };
 
-	const handleDelete = async () => {
-	   await deleteInformation(selectedItem)
-	   setOpenModal(false)
-	   setSelectedItem(null)
-	}
+    const handleDelete = async (item) => {
+        const accept = await confirm("を削除しますか？");
+        if (!accept) return;
+        await deleteInformation(item);
+    };
 
     const sortedItems = applySort(items, sort);
     const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
@@ -79,41 +74,6 @@ export const CsInformationListTable = (props) => {
     return (
         <div {...other}>
             <Scrollbar>
-                <Modal
-                    open={openModal}
-                    onClose={() => {
-						setOpenModal(false)
-						setSelectedItem(null)
-					}}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={{
-						  position: 'absolute',
-						  top: '50%',
-						  left: '50%',
-						  transform: 'translate(-50%, -50%)',
-						  width: 400,
-						  bgcolor: 'background.paper',
-						  border: '2px solid #000',
-						  boxShadow: 24,
-						  p: 4,
-					}}>
-                        <Typography
-                            id="modal-modal-title"
-                            variant="h6"
-                            component="h2"
-                        >
-                           を削除しますか？
-                        </Typography>
-                        <Button onClick={handleDelete} id="modal-modal-description" sx={{mt: 2}}>
-						OK
-                        </Button>
-						<Button onClick={() => setOpenModal(false)} id="modal-modal-description" sx={{mt: 2}}>
-						Cancel
-                        </Button>
-                    </Box>
-                </Modal>
                 <Table sx={{minWidth: 700}}>
                     <TableHead>
                         <TableRow>
@@ -191,10 +151,9 @@ export const CsInformationListTable = (props) => {
                                         <TableCell align="left">
                                             {/* <NextLink href="/bukken/1" passHref> */}
                                             <IconButton
-											onClick={() => {
-												setOpenModal(true)
-												setSelectedItem(item)
-											}}
+                                                onClick={() => {
+                                                    handleDelete(item);
+                                                }}
                                                 component="a"
                                                 color="error"
                                             >
