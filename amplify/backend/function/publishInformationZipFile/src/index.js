@@ -26,13 +26,16 @@ exports.handler = async (event) => {
         `EVENT: ${JSON.stringify({region, bucket, zipFileName, folder})}`
     );
 
-    await deleteZipFile(folder + zipFileName);
+    const allFileNames = await listObjects(folder);
+    const zipFileNames = allFileNames.filter(file => file.endsWith(".zip"))
+    const docFileNames = allFileNames.filter(file => !file.endsWith(".zip"))
 
-    const files = await listObjects(folder);
-    console.log("listObjects... files = ", files);
+    console.log("listObjects... files = ", {allFileNames, zipFileNames, docFileNames});
+
+    await deleteAllZipFile(folder, zipFileNames);
 
     try {
-        const zipFilePath = await zipFiles(folder, files, zipFileName);
+        const zipFilePath = await zipFiles(folder, docFileNames, zipFileName);
         return {
             statusCode: 200,
             body: {path: zipFilePath},
@@ -40,7 +43,7 @@ exports.handler = async (event) => {
     } catch (e) {
         return {
             statusCode: 500,
-            body: e,
+            body: e.message,
         };
     }
 };
@@ -53,6 +56,11 @@ async function deleteZipFile(zipFilePath) {
     };
     const data = await s3.deleteObject(params).promise();
     console.log("deleteZipFile... data: ", data)
+}
+
+async function deleteAllZipFile(folder, zipFileNames) {
+    console.log("deleteAllZipFile... start: ", {folder, zipFileNames})
+    return Promise.all(zipFileNames.map((zipFileName) => deleteZipFile(folder + zipFileName)))
 }
 
 async function listObjects(folder) {
@@ -68,15 +76,16 @@ async function listObjects(folder) {
             const parsed = key.split("/");
             const fileName = parsed[parsed.length - 1];
             //exclude zip file
-            if (fileName.endsWith(".zip")) return null;
+            // if (fileName.endsWith(".zip")) return null;
             return fileName
         });
         //filter null
-        return fileNames.filter((fileName) => fileName && fileName.length > 0);
+        return fileNames;
     }
 }
 
 function zipFiles(folder, files, zipFileName = "archive.zip") {
+    console.log("zipFiles... ", { folder, files, zipFileName })
     return new Promise((resolve, reject) => {
         // Create body stream
         try {

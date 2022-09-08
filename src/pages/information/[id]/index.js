@@ -6,7 +6,6 @@ import {
     Button,
     Card,
     CardContent,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -20,8 +19,6 @@ import {Download as DownloadIcon} from "../../../icons/download";
 import {useInformationFile} from "hooks/use-information-file";
 import {useInformation} from "hooks/use-information";
 import {useRouter} from "next/router";
-import {LoadingButton} from "@mui/lab";
-import toast from "react-hot-toast";
 import {useMounted} from "hooks/use-mounted";
 import * as R from "ramda";
 import moment from "moment";
@@ -34,21 +31,28 @@ const InformationDetails = () => {
     const {information} = useInformation(id);
     const {getFilesFromS3, zipInformationFile} = useInformationFile();
 
-    const [zipping, setZipping] = useState(false);
     const [files, setFiles] = useState([]);
+    const [zipUrl, setZipUrl] = useState();
 
     useEffect(() => {
         gtm.push({event: "page_view"});
     }, []);
 
-    useEffect(() => {
+    useEffect(async () => {
         if (!information) return;
         //check scheduled_delivery_date
         if (moment(information.scheduled_delivery_date).isBefore(moment())) {
             //not available this time
             router.push("/404");
+            return;
         }
-    }, [information])
+    }, [information]);
+
+    useEffect(async() => {
+      //call api zip file if need
+      const zipUrl = await zipInformationFile(id);
+      setZipUrl(zipUrl);
+    }, [id])
     
 
     useEffect(async () => {
@@ -59,48 +63,40 @@ const InformationDetails = () => {
         }
     }, [isMounted]);
 
-    const handleClickDownloadZipFile = async (e) => {
-        e.preventDefault();
-        try {
-            setZipping(true);
-            const zipFileUrl = await zipInformationFile(id);
-            router.replace(zipFileUrl);
-        } catch (e) {
-            toast.error(e.message);
-        }
-        setZipping(false);
-    };
-
-    console.log("InformationDetails... ", {information, files});
+    // console.log("InformationDetails... ", {information, files});
 
     const renderDownloadDocument = () => {
         if (R.isEmpty(files)) return <></>;
         if (files.length == 1) {
             return (
-                <NextLink href={files[0].path} target="_blank">
+                <NextLink href={files[0].path} passHref target="_blank">
+                    <a target="_blank" rel="noopener noreferrer">
+                        <Button
+                            startIcon={<DownloadIcon fontSize="small" />}
+                            sx={{m: 1}}
+                        >
+                            資料ダウンロード
+                        </Button>
+                    </a>
+                </NextLink>
+            );
+        }
+        return zipUrl ? (
+            <NextLink href={zipUrl} target="_blank" passHref>
+                <a target="_blank" rel="noopener noreferrer">
                     <Button
                         startIcon={<DownloadIcon fontSize="small" />}
                         sx={{m: 1}}
                     >
                         資料ダウンロード
                     </Button>
-                </NextLink>
-            );
-        }
-        return (
-            <LoadingButton
-                onClick={handleClickDownloadZipFile}
-                loading={zipping}
-                loadingIndicator={
-                    <CircularProgress color="primary" size={30} />
-                }
-                startIcon={<DownloadIcon fontSize="small" />}
-                sx={{m: 1}}
-            >
-                資料ダウンロード
-            </LoadingButton>
+                </a>
+            </NextLink>
+        ) : (
+            <></>
         );
     };
+
     return (
         <>
             <Head>
