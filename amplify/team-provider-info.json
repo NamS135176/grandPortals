@@ -78,12 +78,12 @@
         },
         "publishInformationZipFile": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishInformationZipFile-622f62712f69536f6356-build.zip"
+          "s3Key": "amplify-builds/publishInformationZipFile-35483162574444556937-build.zip"
         },
         "scheduleSendMail": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/scheduleSendMail-784c417649776c4d6646-build.zip"
+          "s3Key": "amplify-builds/scheduleSendMail-5a464b3147596e327337-build.zip"
         }
       }
     }
