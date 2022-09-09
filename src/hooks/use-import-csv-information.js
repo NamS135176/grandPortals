@@ -28,7 +28,10 @@ export const useImportCSVInformation = () => {
         async (informationId, email) => {
             const user = await findUserByEmail(email);
             if (!user)
-                return {isError: true, message: `${email}メールアドレスが存在しません。`};
+                return {
+                    isError: true,
+                    message: `${email}メールアドレスが存在しません。`,
+                };
             const id = await getNextInformationListSendId();
             console.log("createInformationListSend...", {user, id});
             // create information table
@@ -62,7 +65,7 @@ export const useImportCSVInformation = () => {
             important_info_flag = 0,
             draft_flag = 0,
             scheduled_delivery_date = null,
-            data,
+            data = null,
         }) => {
             //data is array list of { email: "email" }
             var results = [];
@@ -88,23 +91,27 @@ export const useImportCSVInformation = () => {
                 });
                 information = res.data.createInformation;
 
-                const queue = data.map(
-                    ({email}) =>
-                        () =>
-                            createInformationListSend(information.id, email)
-                );
-                const allRes = await Throttle.all(queue, {maxInProgress: 1});
-                const errors = [];
-                //filter errors
-                allRes.forEach((item) => {
-                    if (item.isError) errors.push(item);
-                    else results.push(item);
-                });
-                console.log("updateInformation... results: ", results);
-                if (!R.isEmpty(errors)) {
-                    toast.error(
-                        errors.map((error) => error.message).join("\n")
+                if (!R.isNil(data) && !R.isEmpty(data)) {
+                    const queue = data.map(
+                        ({email}) =>
+                            () =>
+                                createInformationListSend(information.id, email)
                     );
+                    const allRes = await Throttle.all(queue, {
+                        maxInProgress: 1,
+                    });
+                    const errors = [];
+                    //filter errors
+                    allRes.forEach((item) => {
+                        if (item.isError) errors.push(item);
+                        else results.push(item);
+                    });
+                    console.log("updateInformation... results: ", results);
+                    if (!R.isEmpty(errors)) {
+                        toast.error(
+                            errors.map((error) => error.message).join("\n")
+                        );
+                    }
                 }
             } catch (e) {
                 toast.error(e.message);
