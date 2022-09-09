@@ -292,6 +292,7 @@ type InformationListSend
     sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationListSendBySort")
     sendgrid_response: String
     x_message_id: String
+    delete_flag: Int!
     createdAt: AWSDateTime!
 }
 

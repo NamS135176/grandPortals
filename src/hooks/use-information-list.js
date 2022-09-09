@@ -10,7 +10,7 @@ import * as R from "ramda";
 import {getBukkenCoverImageUrlByBukken} from "../utils/bukken";
 import {UserGroup} from "../utils/global-data";
 import moment from "moment";
-import { listInformation, queryInformationListSendByUserId } from "graphql/queries";
+import { listInformation, queryInformationListSendByUserId , queryInformationListSendByInformationId, updateInf} from "graphql/queries";
 import * as mutations from "../graphql/mutations";
 
 export const useInformationList = () => {
@@ -63,6 +63,29 @@ export const useInformationList = () => {
                 await getListCSInformationSendList(
                     list,
                     response.data.listInformation.nextToken
+                );
+            }
+            return list;
+        },
+        []
+    );
+
+    const getListInformationSendByInformationId = useCallback(
+        async (list = [], nextToken = null, id) => {
+            const response = await API.graphql({
+                query: queryInformationListSendByInformationId,
+                variables: {
+                    nextToken,
+                    information_id:  id
+                },
+            });
+            var informationListSend = response.data.queryInformationListSendByInformationId.items;
+            list = list.concat(informationListSend);
+            if (response.data.queryInformationListSendByInformationId.nextToken) {
+                await getListInformationSendByInformationId(
+                    list,
+                    response.data.queryInformationListSendByInformationId.nextToken,
+                    id
                 );
             }
             return list;
@@ -135,6 +158,18 @@ export const useInformationList = () => {
                         },
                     },
                 });
+                const listDelete = await getListInformationSendByInformationId([],null,item.id)
+                const res = await Promise.all(listDelete.map(item => {
+                    return API.graphql({
+                        query: mutations.updateInformationListSend,
+                        variables: {
+                            input: {
+                                id: item.id,
+                                delete_flag: 1,
+                            },
+                        },
+                    });
+                }))
                 const newInformationList = R.reject(R.propEq("id", item.id))(
                     informationList
                 );
@@ -143,6 +178,7 @@ export const useInformationList = () => {
                     informationListFirst
                 );
                 setInformationListFirst(newInformationListFirst);
+
                 //update all documents + history related with this interior
             } catch (e) {
                 console.error(e);
@@ -150,6 +186,24 @@ export const useInformationList = () => {
         },
         [informationList, informationListFirst]
     );
+
+        const updateReadInformation = useCallback(
+            async (id) => {
+                try {
+                    await API.graphql({
+                        query: mutations.updateInformationListSend,
+                        variables: {
+                            input: {
+                                id: id,
+                                last_user_read: moment().utc(),
+                            },
+                        },
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            ,[])
 
     useEffect(() => {
         async function loadData() {
@@ -194,5 +248,5 @@ export const useInformationList = () => {
         if (isMounted() && user) loadData();
     }, [isMounted, user]);
 
-    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, deleteInformation, loading};
+    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, deleteInformation, updateReadInformation, loading};
 };

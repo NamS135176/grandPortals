@@ -731,6 +731,7 @@ export const onCreateInformation = /* GraphQL */ `
           sort
           sendgrid_response
           x_message_id
+          delete_flag
           createdAt
           updatedAt
         }
@@ -767,6 +768,7 @@ export const onUpdateInformation = /* GraphQL */ `
           sort
           sendgrid_response
           x_message_id
+          delete_flag
           createdAt
           updatedAt
         }
@@ -803,6 +805,7 @@ export const onDeleteInformation = /* GraphQL */ `
           sort
           sendgrid_response
           x_message_id
+          delete_flag
           createdAt
           updatedAt
         }
@@ -845,6 +848,7 @@ export const onCreateInformationListSend = /* GraphQL */ `
       sort
       sendgrid_response
       x_message_id
+      delete_flag
       createdAt
       updatedAt
     }
@@ -881,6 +885,7 @@ export const onUpdateInformationListSend = /* GraphQL */ `
       sort
       sendgrid_response
       x_message_id
+      delete_flag
       createdAt
       updatedAt
     }
@@ -917,6 +922,7 @@ export const onDeleteInformationListSend = /* GraphQL */ `
       sort
       sendgrid_response
       x_message_id
+      delete_flag
       createdAt
       updatedAt
     }

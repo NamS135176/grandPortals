@@ -1342,6 +1342,7 @@ export const getInformation = /* GraphQL */ `
           sort
           sendgrid_response
           x_message_id
+          delete_flag
           createdAt
           updatedAt
         }
@@ -1378,22 +1379,6 @@ export const listInformation = /* GraphQL */ `
         delete_flag
         processed_date
         informaionListSends {
-          items {
-            id
-            information_id
-            user_id
-            email
-            name
-            name_kana
-            withdrawal_flag
-            receive_notification_email_flag
-            last_user_read
-            sort
-            sendgrid_response
-            x_message_id
-            createdAt
-            updatedAt
-           }
           nextToken
         }
         sort
@@ -1507,6 +1492,7 @@ export const getInformationListSend = /* GraphQL */ `
       sort
       sendgrid_response
       x_message_id
+      delete_flag
       createdAt
       updatedAt
     }
@@ -1553,6 +1539,7 @@ export const listInformationListSends = /* GraphQL */ `
         sort
         sendgrid_response
         x_message_id
+        delete_flag
         createdAt
         updatedAt
       }
@@ -1601,6 +1588,7 @@ export const queryInformationListSendByInformationId = /* GraphQL */ `
         sort
         sendgrid_response
         x_message_id
+        delete_flag
         createdAt
         updatedAt
       }
@@ -1649,6 +1637,7 @@ export const queryInformationListSendByUserId = /* GraphQL */ `
         sort
         sendgrid_response
         x_message_id
+        delete_flag
         createdAt
         updatedAt
       }
@@ -1699,6 +1688,7 @@ export const queryInformationListSendBySort = /* GraphQL */ `
         sort
         sendgrid_response
         x_message_id
+        delete_flag
         createdAt
         updatedAt
       }

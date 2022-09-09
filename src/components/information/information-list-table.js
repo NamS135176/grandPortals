@@ -37,7 +37,7 @@ const applyPagination = (items, page, rowsPerPage) =>
 	items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 export const InformationListTable = (props) => {
-	const {items, ...other} = props;
+	const {items, updateRead, ...other} = props;
 	const [sort, setSort] = useState('desc');
 
 	const [page, setPage] = useState(0);
@@ -60,6 +60,10 @@ export const InformationListTable = (props) => {
 			return 'asc';
 		});
 	};
+
+	const handleUpdateRead = async (id) => {
+		await updateRead(id)
+	}
 
 	const sortedItems = applySort(items, sort);
 	const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
@@ -95,7 +99,7 @@ export const InformationListTable = (props) => {
 												href={`/information/${item.id}`}
 												passHref
 											>
-												<IconButton component="a">
+												<IconButton onClick={handleUpdateRead(item.id)} component="a">
 													<ArrowRightIcon fontSize="small" />
 												</IconButton>
 											</NextLink>

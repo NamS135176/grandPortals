@@ -34,13 +34,14 @@ const sgMail = require("@sendgrid/mail");
 const {
     listInformation,
     queryInformationListSendByInformationId,
+    updateInformation,
 } = require("./graphql");
 
 const lambda = new AWS.Lambda({
     region: "ap-northeast-1", //change to your region
 });
 
-const sendResetLink = async (email) => {
+const sendResetLink = async (information) => {
     try {
         const {Parameters} = await new AWS.SSM()
             .getParameters({
@@ -53,13 +54,23 @@ const sendResetLink = async (email) => {
         let sendgridApiKey = Parameters[0].Value;
         sgMail.setApiKey(sendgridApiKey);
         const msg = {
-            to: email,
+            to: "namnt1706@gmail.com",
+            bcc: information.map((item) => item.email),
             from: "no-reply@grands.co.jp",
-            subject: `パスワードリセットのお知らせ`,
-            html: `さん<br /><br />
- ===================================<br /> `,
+            subject: `【マイプレイス】`,
+            html: `${information.content}<br /><br />
+※本メールは送信専用となっております。ご返信いただいても管理者には届きませんのでご注意ください。<br /><br />
+===================================<br /> 
+┏┓<br />
+┗■ 株式会社grands<br /><br />
+〒254-0013 神奈川県平塚市田村7丁目26-17<br />
+TEL：050-5443-5974<br />
+FAX：045-345-5047<br />
+Email：info@grands.co.jp<br />
+===================================<br /> `,
         };
-        await sgMail.send(msg);
+        const dataSendgrid = await sgMail.send(msg);
+        console.log(dataSendgrid);
     } catch (err) {
         console.log(err);
         throw err;
@@ -69,15 +80,10 @@ const sendResetLink = async (email) => {
 const listAllInformation = async (information = [], nextToken = null) => {
     let queryParams = {
         filter: {
-            processed_date: {
-                attributeExists: false,
-            },
+            processed_date: {attributeExists: false},
+            // scheduled_delivery_date: {attributeExists: false},
             or: [
-                {
-                    scheduled_delivery_date: {
-                        attributeExists: false,
-                    },
-                },
+                {scheduled_delivery_date: {attributeExists: false}},
                 {
                     scheduled_delivery_date: {
                         le: moment.utc(new Date()).format("YYYY-MM-DD"),
@@ -147,6 +153,25 @@ const listAllInformationSendListByInformationId = async (
     }
 };
 
+const updateInformationProcessed = async (information) => {
+    try {
+        const input = {
+            input: {
+                id: information.id,
+                processed_date: moment().utc(),
+            },
+        };
+        const res = await appSyncRequest(
+            updateInformation,
+            "UpdateInformation",
+            JSON.stringify(input)
+        );
+        console.log(res);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     // await sendResetLink("namnt@vn-sis.com");
@@ -183,12 +208,23 @@ exports.handler = async (event) => {
             });
             return newIt;
         });
-        console.log(res);
-        console.log(newInformationSendList);
-        // const data = newInformationSendList.map(async (item) => {
-        //     return await Promise.all(item.map((it) => sendResetLink(it.email)));
-        // });
-        // console.log(data);
+        // console.log(res);
+        // console.log(newInformationSendList);
+        // const listBcc = newInformationSendList.map(it => {
+        //   return it.map(item => item.email)
+        // })
+        // console.log(listBcc);
+        const data = await Promise.all(
+            newInformationSendList.map((item) => {
+                return sendResetLink(item);
+            })
+        );
+        const updateDB = await Promise.all(
+          res.map((item) => {
+                return updateInformationProcessed(item);
+            })
+        );
+        console.log(updateDB);
     }
     return {
         statusCode: 200,

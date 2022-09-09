@@ -18,7 +18,7 @@ import {AuthGuard} from '../../components/authentication/auth-guard';
 import { useInformationList } from 'hooks/use-information-list';
 const InformationList = () => {
 	const [items, setItems] = useState([]);
-	const {informationList:list} = useInformationList()
+	const {informationList:list, updateReadInformation} = useInformationList()
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -53,7 +53,7 @@ const InformationList = () => {
 							<Typography variant="h6">お知らせ一覧</Typography>
 						</CardContent>
 						{list.length > 0 && (
-							<InformationListTable items={list} />
+							<InformationListTable updateRead={updateReadInformation} items={list} />
 						)}
 					</Card>
 					<Box
