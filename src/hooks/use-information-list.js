@@ -12,6 +12,7 @@ import {UserGroup} from "../utils/global-data";
 import moment from "moment";
 import { listInformation, queryInformationListSendByUserId , queryInformationListSendByInformationId, updateInf} from "graphql/queries";
 import * as mutations from "../graphql/mutations";
+import toast from "react-hot-toast";
 
 export const useInformationList = () => {
     const {user} = useAuth();
@@ -178,7 +179,7 @@ export const useInformationList = () => {
                     informationListFirst
                 );
                 setInformationListFirst(newInformationListFirst);
-
+                    toast.success('お知らせ情報を削除しました。')
                 //update all documents + history related with this interior
             } catch (e) {
                 console.error(e);

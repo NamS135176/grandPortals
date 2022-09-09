@@ -12,6 +12,13 @@
         "Query",
         "Mutation"
       ]
+    },
+    "storage": {
+      "grandsPortal": [
+        "create",
+        "read",
+        "update"
+      ]
     }
   },
   "lambdaLayers": [],

@@ -30,6 +30,10 @@
     },
     "secretsPathAmplifyAppId": {
       "Type": "String"
+    },
+    "storagegrandsPortalBucketName": {
+      "Type": "String",
+      "Default": "storagegrandsPortalBucketName"
     }
   },
   "Conditions": {
@@ -115,6 +119,9 @@
                   "SENDGRID_API_KEY"
                 ]
               ]
+            },
+            "STORAGE_GRANDSPORTAL_BUCKETNAME": {
+              "Ref": "storagegrandsPortalBucketName"
             }
           }
         },
@@ -302,6 +309,44 @@
                         "Ref": "apigrandsportalGraphQLAPIIdOutput"
                       },
                       "/types/Mutation/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagegrandsPortalBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagegrandsPortalBucketName"
+                      },
+                      "/*"
                     ]
                   ]
                 }

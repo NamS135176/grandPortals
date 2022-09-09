@@ -317,6 +317,13 @@
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
           ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "grandsPortal",
+          "attributes": [
+            "BucketName"
+          ]
         }
       ]
     }

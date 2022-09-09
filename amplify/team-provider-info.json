@@ -83,7 +83,7 @@
         "scheduleSendMail": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/scheduleSendMail-586657724c6e36326156-build.zip"
+          "s3Key": "amplify-builds/scheduleSendMail-45436e75546b31505070-build.zip"
         }
       }
     }

@@ -18,6 +18,7 @@ Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }
 	ENV
 	FUNCTION_PUBLISHINFORMATIONZIPFILE_NAME
 	REGION
+	STORAGE_GRANDSPORTAL_BUCKETNAME
 Amplify Params - DO NOT EDIT */
 
 /**
@@ -31,6 +32,9 @@ const appsyncUrl = process.env.API_GRANDSPORTAL_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 const sgMail = require("@sendgrid/mail");
+const s3 = new AWS.S3();
+var fs = require('fs');
+var path = require('path');
 const {
     listInformation,
     queryInformationListSendByInformationId,
@@ -41,7 +45,7 @@ const lambda = new AWS.Lambda({
     region: "ap-northeast-1", //change to your region
 });
 
-const sendResetLink = async (information) => {
+const sendResetLink = async (information, listBcc, file) => {
     try {
         const {Parameters} = await new AWS.SSM()
             .getParameters({
@@ -55,9 +59,15 @@ const sendResetLink = async (information) => {
         sgMail.setApiKey(sendgridApiKey);
         const msg = {
             to: "namnt1706@gmail.com",
-            bcc: information.map((item) => item.email),
+            bcc: listBcc.map((item) => item.email),
             from: "no-reply@grands.co.jp",
             subject: `【マイプレイス】`,
+            attachments: [
+                {
+                    filename: "abc.zip",
+                    content: file.toString("base64"),
+                },
+            ],
             html: `${information.content}<br /><br />
 ※本メールは送信専用となっております。ご返信いただいても管理者には届きませんのでご注意ください。<br /><br />
 ===================================<br /> 
@@ -177,6 +187,30 @@ exports.handler = async (event) => {
     // await sendResetLink("namnt@vn-sis.com");
     const res = await listAllInformation();
     if (res.length > 0) {
+        const params = {
+            Bucket: "grands-portal-resource152938-develop",
+            Key: "public/information/000008/20220909_031215_archive.zip",
+        };
+        try {
+            // const res = await s3.getObject(params).promise();
+            var fileStream = await s3.getObject(params).createReadStream();
+            let writeStream = fs.createWriteStream(path.join('/tmp', 'test.zip'));
+            fileStream.pipe(writeStream);
+            // console.log("CONTENT TYPE:", res);
+            await sendResetLink(
+                {
+                    content: "ABC",
+                },
+                [
+                    {
+                        email: "namnt@vn-sis.com",
+                    },
+                ],
+                fileStream
+            );
+        } catch (err) {
+            console.log(err);
+        }
         // const response = await Promise.all(res.map(item => {
         //   return  lambda.invoke({
         //       FunctionName: process.env.FUNCTION_PUBLISHINFORMATIONZIPFILE_NAME,
@@ -189,42 +223,36 @@ exports.handler = async (event) => {
         //     }).promise();
         // }))
         // console.log(response);
-        const informationSendList = await Promise.all(
-            res.map((item) => {
-                return listAllInformationSendListByInformationId(
-                    [],
-                    null,
-                    item?.id
-                );
-            })
-        );
-        const newInformationSendList = informationSendList.map((it) => {
-            const newIt = it.filter((item) => {
-                if (item.information.important_info_flag == 0) {
-                    return item.receive_notification_email_flag;
-                } else {
-                    return true;
-                }
-            });
-            return newIt;
-        });
-        // console.log(res);
-        // console.log(newInformationSendList);
-        // const listBcc = newInformationSendList.map(it => {
-        //   return it.map(item => item.email)
-        // })
-        // console.log(listBcc);
-        const data = await Promise.all(
-            newInformationSendList.map((item) => {
-                return sendResetLink(item);
-            })
-        );
-        const updateDB = await Promise.all(
-          res.map((item) => {
-                return updateInformationProcessed(item);
-            })
-        );
-        console.log(updateDB);
+        // const informationSendList = await Promise.all(
+        //     res.map((item) => {
+        //         return listAllInformationSendListByInformationId(
+        //             [],
+        //             null,
+        //             item?.id
+        //         );
+        //     })
+        // );
+        // const newInformationSendList = informationSendList.map((it) => {
+        //     const newIt = it.filter((item) => {
+        //         if (item.information.important_info_flag == 0) {
+        //             return item.receive_notification_email_flag;
+        //         } else {
+        //             return true;
+        //         }
+        //     });
+        //     return newIt;
+        // });
+        // const data = await Promise.all(
+        //     newInformationSendList.map((item) => {
+        //         return sendResetLink(item);
+        //     })
+        // );
+        // const updateDB = await Promise.all(
+        //   res.map((item) => {
+        //         return updateInformationProcessed(item);
+        //     })
+        // );
+        // console.log(updateDB);
     }
     return {
         statusCode: 200,
