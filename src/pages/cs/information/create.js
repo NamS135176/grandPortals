@@ -182,7 +182,7 @@ const CsInformationCreate = () => {
             subject: Yup.string().max(255).required("件名必須です。"),
             content: Yup.string().max(255).required("本文は必須です。"),
             files: Yup.array(),
-            date: Yup.date(),
+            date: Yup.date().nullable().default(null),
             importantInfoFlag: Yup.bool(),
         }),
         onSubmit: async (values, helpers) => {
