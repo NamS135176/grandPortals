@@ -28,7 +28,7 @@ export function ImportCSVInformation(props) {
                 complete: async (results) => {
                     console.log("Finished:", results.data);
                     const accept = await confirm(
-                        "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                        "選択された送信先情報でデータを登録または更新します。"
                     );
                     if (!accept) return;
 

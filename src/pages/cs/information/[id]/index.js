@@ -156,7 +156,7 @@ const CsInformationDetails = () => {
                             return;
                         }
                         const accept = await confirm(
-                            "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                            "選択された送信先情報でデータを登録または更新します。"
                         );
                         if (!accept) return;
 
