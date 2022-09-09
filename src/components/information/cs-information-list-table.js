@@ -88,7 +88,7 @@ export const CsInformationListTable = (props) => {
                                     direction={sort}
                                     onClick={handleSort}
                                 >
-                                    登録日
+                                    登録日時
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell alignt="left">削除</TableCell>

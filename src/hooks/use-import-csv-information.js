@@ -46,6 +46,7 @@ export const useImportCSVInformation = () => {
                         name_kana: user.name_kana,
                         email: user.email,
                         withdrawal_flag: user.delete_flag ?? false,
+                        delete_flag: 0,
                         receive_notification_email_flag:
                             user.receive_notification_email_flag ?? true,
                         sort: 1, //always 1
