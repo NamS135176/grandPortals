@@ -223,11 +223,7 @@ export const useInformationList = () => {
                     item.status = "下書き"
                     return item
                 }
-                else if(!item.scheduled_delivery_date){
-                    item.status = "未送信"
-                    return item
-                }
-                else if(moment(item.scheduled_delivery_date).valueOf() < new Date().getTime()){
+                else if(moment(!item.scheduled_delivery_date || item.scheduled_delivery_date).valueOf() < new Date().getTime()){
                     console.log(moment(item.scheduled_delivery_date).valueOf());
                     console.log(new Date().getTime());
                     item.status = "送信済"

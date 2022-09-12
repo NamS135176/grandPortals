@@ -451,7 +451,7 @@ const CsInformationCreate = () => {
 											<Typography variant="subtitle1">
 												送信先：
 												<NextLink
-													href={`/cs/information/${createdInformationId}`}
+													href={`/cs/destination/${createdInformationId}`}
 													passHref
 												>
 													<Link variant="subtitle2">

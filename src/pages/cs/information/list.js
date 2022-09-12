@@ -29,10 +29,6 @@ const sortOptions = [
 		value: '下書き',
 	},
 	{
-		label: '未送信',
-		value: '未送信',
-	},
-	{
 		label: '送信予定',
 		value: '送信予定',
 	},
