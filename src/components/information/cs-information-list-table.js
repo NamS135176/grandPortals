@@ -150,7 +150,9 @@ export const CsInformationListTable = (props) => {
                                         </TableCell>
                                         <TableCell align="left">
                                             {/* <NextLink href="/bukken/1" passHref> */}
-                                            <IconButton
+											{
+												item.status == "送信済" ? <></> :
+												<IconButton
                                                 onClick={() => {
                                                     handleDelete(item);
                                                 }}
@@ -159,6 +161,8 @@ export const CsInformationListTable = (props) => {
                                             >
                                                 <TrashIcon fontSize="small" />
                                             </IconButton>
+											}
+                                           
                                             {/* </NextLink> */}
                                         </TableCell>
                                     </TableRow>

@@ -165,7 +165,7 @@ const CsInformationDetails = () => {
 						setListInformationSend(items);
 						if (!R.isNil(items) && !R.isEmpty(items)) {
 							toast.success(
-								'お知らせ詳細画面の、画面ヘッダー部分に「お知らせ情報を登録しました。」を表示する。'
+								'「お知らせ情報を登録しました。」'
 							);
 						}
 					},
