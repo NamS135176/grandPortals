@@ -54,7 +54,7 @@ const CsInformationDetails = () => {
     const [files, setFiles] = useState([]);
     const canEdit = information?.scheduled_delivery_date
         ? moment(information.scheduled_delivery_date).isAfter(moment())
-        : false;
+        : true;
     const draftFlag = useRef(0);
 
     // const canEdit = false;
@@ -69,9 +69,9 @@ const CsInformationDetails = () => {
         //update value to formik
         if (!information) return;
         formik.setValues({
-            subject: information.subject,
-            content: information.content,
-            date: moment(information.scheduled_delivery_date).toDate(),
+            subject: information.subject ?? "",
+            content: information.content ?? "",
+            date: information.scheduled_delivery_date ? moment(information.scheduled_delivery_date).toDate(): null,
             importantInfoFlag: information.important_info_flag,
             submit: null,
         });
@@ -156,7 +156,7 @@ const CsInformationDetails = () => {
                             return;
                         }
                         const accept = await confirm(
-                            "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                            "選択された送信先情報でデータを登録または更新します。"
                         );
                         if (!accept) return;
 
@@ -220,7 +220,7 @@ const CsInformationDetails = () => {
             subject: Yup.string().max(255).required("件名必須です。"),
             content: Yup.string().max(255).required("本文は必須です。"),
             files: Yup.array(),
-            date: Yup.date(),
+            date: Yup.date().nullable().default(null),
             importantInfoFlag: Yup.bool(),
         }),
         onSubmit: async (values, helpers) => {
@@ -242,10 +242,15 @@ const CsInformationDetails = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handleClickSaveDraft = () => {
+    const handleClickSaveDraft = async() => {
         var validate = true;
         if (!checkMaxSizeFiles()) {
             validate = false;
+        }
+        if (formik.values.date) {
+            //show confirm 
+            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
+            if (!accept) return;
         }
         if (validate) {
             draftFlag.current = 1;
@@ -272,6 +277,8 @@ const CsInformationDetails = () => {
             formik.handleSubmit();
         }
     };
+
+    console.log("formik", formik)
 
     return (
         <>

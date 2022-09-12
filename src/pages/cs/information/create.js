@@ -116,7 +116,7 @@ const CsInformationCreate = () => {
                     }
 
                     const accept = await confirm(
-                        "メッセージ：選択された送信先情報でデータを登録または更新します。"
+                        "選択された送信先情報でデータを登録または更新します。"
                     );
                     if (!accept) return;
 
@@ -182,7 +182,7 @@ const CsInformationCreate = () => {
             subject: Yup.string().max(255).required("件名必須です。"),
             content: Yup.string().max(255).required("本文は必須です。"),
             files: Yup.array(),
-            date: Yup.date(),
+            date: Yup.date().nullable().default(null),
             importantInfoFlag: Yup.bool(),
         }),
         onSubmit: async (values, helpers) => {
@@ -259,10 +259,15 @@ const CsInformationCreate = () => {
         }
     };
 
-    const handleClickSaveDraft = () => {
+    const handleClickSaveDraft = async() => {
         var validate = true;
         if (!checkMaxSizeFiles()) {
             validate = false;
+        }
+        if (formik.values.date) {
+            //show confirm 
+            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
+            if (!accept) return;
         }
         if (validate) {
             draftFlag.current = 1;

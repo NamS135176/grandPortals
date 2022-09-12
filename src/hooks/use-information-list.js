@@ -179,7 +179,7 @@ export const useInformationList = () => {
                     informationListFirst
                 );
                 setInformationListFirst(newInformationListFirst);
-                    toast.success('お知らせ情報を削除しました。')
+                toast.success('お知らせ情報を削除しました。')
                 //update all documents + history related with this interior
             } catch (e) {
                 console.error(e);
