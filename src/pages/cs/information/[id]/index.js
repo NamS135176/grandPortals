@@ -54,7 +54,7 @@ const CsInformationDetails = () => {
     const [files, setFiles] = useState([]);
     const canEdit = information?.scheduled_delivery_date
         ? moment(information.scheduled_delivery_date).isAfter(moment())
-        : false;
+        : true;
     const draftFlag = useRef(0);
 
     // const canEdit = false;
@@ -71,7 +71,7 @@ const CsInformationDetails = () => {
         formik.setValues({
             subject: information.subject,
             content: information.content,
-            date: moment(information.scheduled_delivery_date).toDate(),
+            date: information.scheduled_delivery_date ? moment(information.scheduled_delivery_date).toDate(): null,
             importantInfoFlag: information.important_info_flag,
             submit: null,
         });
