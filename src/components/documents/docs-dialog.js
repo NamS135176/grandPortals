@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
 	Box,
@@ -10,11 +10,11 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import { X as XIcon } from '../../icons/x';
-import { FileDropzone } from '../file-dropzone';
+import {X as XIcon} from '../../icons/x';
+import {FileDropzone} from '../file-dropzone';
 
 export const DocsDialog = (props) => {
-	const { onClose, open, ...other } = props;
+	const {onClose, open, ...other} = props;
 	const [form, setForm] = useState({
 		outline: 'XXXのファイル',
 		details: 'テキストサンプルテキストサンプルテキストサンプル',
@@ -43,7 +43,13 @@ export const DocsDialog = (props) => {
 	};
 
 	return (
-		<Dialog fullWidth maxWidth="sm" onClose={onClose} open={!!open} {...other}>
+		<Dialog
+			fullWidth
+			maxWidth="sm"
+			onClose={onClose}
+			open={!!open}
+			{...other}
+		>
 			<Box
 				sx={{
 					alignItems: 'center',
@@ -61,12 +67,17 @@ export const DocsDialog = (props) => {
 			<DialogContent>
 				<form>
 					<TextField
+						fullWidth
 						label="資料概要"
 						value={form.outline}
 						onChange={handleChange}
 					/>
-					<Box sx={{ mt: 3 }}>
-						<Typography color="textSecondary" variant="body2" sx={{ mb: 1 }}>
+					<Box sx={{mt: 3}}>
+						<Typography
+							color="textSecondary"
+							variant="body2"
+							sx={{mb: 1}}
+						>
 							資料追加（pdf）
 						</Typography>
 
