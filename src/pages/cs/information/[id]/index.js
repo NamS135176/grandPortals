@@ -69,8 +69,8 @@ const CsInformationDetails = () => {
         //update value to formik
         if (!information) return;
         formik.setValues({
-            subject: information.subject,
-            content: information.content,
+            subject: information.subject ?? "",
+            content: information.content ?? "",
             date: information.scheduled_delivery_date ? moment(information.scheduled_delivery_date).toDate(): null,
             importantInfoFlag: information.important_info_flag,
             submit: null,
@@ -242,10 +242,15 @@ const CsInformationDetails = () => {
         gtm.push({event: "page_view"});
     }, []);
 
-    const handleClickSaveDraft = () => {
+    const handleClickSaveDraft = async() => {
         var validate = true;
         if (!checkMaxSizeFiles()) {
             validate = false;
+        }
+        if (formik.values.date) {
+            //show confirm 
+            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
+            if (!accept) return;
         }
         if (validate) {
             draftFlag.current = 1;
@@ -272,6 +277,8 @@ const CsInformationDetails = () => {
             formik.handleSubmit();
         }
     };
+
+    console.log("formik", formik)
 
     return (
         <>

@@ -259,10 +259,15 @@ const CsInformationCreate = () => {
         }
     };
 
-    const handleClickSaveDraft = () => {
+    const handleClickSaveDraft = async() => {
         var validate = true;
         if (!checkMaxSizeFiles()) {
             validate = false;
+        }
+        if (formik.values.date) {
+            //show confirm 
+            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
+            if (!accept) return;
         }
         if (validate) {
             draftFlag.current = 1;
