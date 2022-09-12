@@ -1,54 +1,52 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import Head from "next/head";
-import NextLink from "next/link";
+import {useCallback, useEffect, useRef, useState} from 'react';
+import Head from 'next/head';
+import NextLink from 'next/link';
 import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Container,
-    TextField,
-    Grid,
-    Typography,
-    Checkbox,
-    FormControlLabel,
-    Link,
-    CircularProgress,
-} from "@mui/material";
-import {DashboardLayout} from "../../../../components/dashboard/dashboard-layout";
-import {gtm} from "../../../../lib/gtm";
-import {ArrowLeft as ArrowLeftIcon} from "../../../../icons/arrow-left";
-import {AuthGuard} from "../../../../components/authentication/auth-guard";
-import {Upload as UploadIcon} from "../../../../icons/upload";
-import {FileDropzone} from "../../../../components/file-dropzone";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import * as Yup from "yup";
-import {useFormik} from "formik";
-import {wait} from "../../../../utils/wait";
-import toast from "react-hot-toast";
-import {useInformation} from "hooks/use-information";
-import moment from "moment";
-import {useRouter} from "next/router";
-import {useInformationFile} from "hooks/use-information-file";
-import * as R from "ramda";
-import Papa from "papaparse";
-import {useImportCSVInformation} from "hooks/use-import-csv-information";
-import {LoadingButton, MobileDateTimePicker} from "@mui/lab";
-import {confirm} from "components/dialog/confirm-dialog";
-import {useDropzone} from "react-dropzone";
-import {UserGroup} from "utils/global-data";
-import {useAuth} from "hooks/use-auth";
-import {isEmailValid} from "utils/validator";
+	Box,
+	Button,
+	Card,
+	CardContent,
+	Container,
+	TextField,
+	Grid,
+	Typography,
+	Checkbox,
+	FormControlLabel,
+	Link,
+	CircularProgress,
+} from '@mui/material';
+import {DashboardLayout} from '../../../../components/dashboard/dashboard-layout';
+import {gtm} from '../../../../lib/gtm';
+import {ArrowLeft as ArrowLeftIcon} from '../../../../icons/arrow-left';
+import {AuthGuard} from '../../../../components/authentication/auth-guard';
+import {Upload as UploadIcon} from '../../../../icons/upload';
+import {FileDropzone} from '../../../../components/file-dropzone';
+import * as Yup from 'yup';
+import {useFormik} from 'formik';
+import toast from 'react-hot-toast';
+import {useInformation} from 'hooks/use-information';
+import moment from 'moment';
+import {useRouter} from 'next/router';
+import {useInformationFile} from 'hooks/use-information-file';
+import * as R from 'ramda';
+import Papa from 'papaparse';
+import {useImportCSVInformation} from 'hooks/use-import-csv-information';
+import {LoadingButton, MobileDateTimePicker} from '@mui/lab';
+import {confirm} from 'components/dialog/confirm-dialog';
+import {useDropzone} from 'react-dropzone';
+import {UserGroup} from 'utils/global-data';
+import {useAuth} from 'hooks/use-auth';
+import {isEmailValid} from 'utils/validator';
 
 const CsInformationDetails = () => {
-    const {user} = useAuth();
-    const router = useRouter();
-    const {id} = router.query;
-    const {updateInformationListSend, loading: importCSVLoading} =
-        useImportCSVInformation();
-    const {loading, information, updateInformation} = useInformation(id);
-    const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
-        useInformationFile();
+	const {user} = useAuth();
+	const router = useRouter();
+	const {id} = router.query;
+	const {updateInformationListSend, loading: importCSVLoading} =
+		useImportCSVInformation();
+	const {loading, information, updateInformation} = useInformation(id);
+	const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
+		useInformationFile();
 
     const [listInformationSend, setListInformationSend] = useState([]);
     const [files, setFiles] = useState([]);
@@ -57,13 +55,13 @@ const CsInformationDetails = () => {
         : true;
     const draftFlag = useRef(0);
 
-    // const canEdit = false;
+	// const canEdit = false;
 
-    useEffect(() => {
-        if (user.group != UserGroup.support) {
-            router.push("/404");
-        }
-    }, [user]);
+	useEffect(() => {
+		if (user.group != UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
 
     useEffect(() => {
         //update value to formik
@@ -78,63 +76,63 @@ const CsInformationDetails = () => {
         setListInformationSend(information.informaionListSends?.items ?? []);
     }, [information]);
 
-    useEffect(async () => {
-        if (!id) return;
-        const files = await getFilesFromS3(id);
-        if (!R.isNil(files) && !R.isEmpty(files)) {
-            setFiles(files);
-        }
-    }, [id]);
+	useEffect(async () => {
+		if (!id) return;
+		const files = await getFilesFromS3(id);
+		if (!R.isNil(files) && !R.isEmpty(files)) {
+			setFiles(files);
+		}
+	}, [id]);
 
-    const handleDrop = (newFiles) => {
-        // setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-        const allFiles = [...files, ...newFiles];
-        //check file size max 30M totally
-        var fileSize = 0;
-        allFiles.forEach((file) => (fileSize += file.size));
-        const mbSize = fileSize / 1024 / 1024;
-        console.log("handleDrop...", {allFiles, fileSize, mbSize});
-        if (mbSize >= 30) {
-            toast.error("添付可能なファイルサイズは合計30M以内までです。");
-            return;
-        }
-        setFiles(allFiles);
-    };
+	const handleDrop = (newFiles) => {
+		// setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+		const allFiles = [...files, ...newFiles];
+		//check file size max 30M totally
+		var fileSize = 0;
+		allFiles.forEach((file) => (fileSize += file.size));
+		const mbSize = fileSize / 1024 / 1024;
+		console.log('handleDrop...', {allFiles, fileSize, mbSize});
+		if (mbSize >= 30) {
+			toast.error('添付可能なファイルサイズは合計30M以内までです。');
+			return;
+		}
+		setFiles(allFiles);
+	};
 
-    const handleRemove = async (file) => {
-        setFiles((prevFiles) =>
-            prevFiles.filter((_file) => _file.path !== file.path)
-        );
-        await deleteFileFromS3(file);
-    };
+	const handleRemove = async (file) => {
+		setFiles((prevFiles) =>
+			prevFiles.filter((_file) => _file.path !== file.path)
+		);
+		await deleteFileFromS3(file);
+	};
 
-    const handleRemoveAll = async () => {
-        setFiles([]);
-        await deleteFilesFromS3(files);
-    };
+	const handleRemoveAll = async () => {
+		setFiles([]);
+		await deleteFilesFromS3(files);
+	};
 
-    const checkMaxSizeFiles = () => {
-        //check file size max 30M totally
-        var fileSize = 0;
-        files.forEach((file) => (fileSize += file.size));
-        const mbSize = fileSize / 1024 / 1024;
-        if (mbSize >= 30) {
-            toast.error("添付可能なファイルサイズは合計30M以内までです。");
-            return false;
-        }
-        return true;
-    };
+	const checkMaxSizeFiles = () => {
+		//check file size max 30M totally
+		var fileSize = 0;
+		files.forEach((file) => (fileSize += file.size));
+		const mbSize = fileSize / 1024 / 1024;
+		if (mbSize >= 30) {
+			toast.error('添付可能なファイルサイズは合計30M以内までです。');
+			return false;
+		}
+		return true;
+	};
 
-    const saveData = async (draftFlag = 0) => {
-        await updateInformation({...formik.values, id, draftFlag});
-        //upload s3 file if
-        const uploads = files.filter((file) => !file.uploaded);
-        if (!R.isEmpty(uploads)) {
-            await uploadFiles(uploads, id);
-        }
-        toast.success("送信しました！");
-        router.push("/cs/information/list");
-    };
+	const saveData = async (draftFlag = 0) => {
+		await updateInformation({...formik.values, id, draftFlag});
+		//upload s3 file if
+		const uploads = files.filter((file) => !file.uploaded);
+		if (!R.isEmpty(uploads)) {
+			await uploadFiles(uploads, id);
+		}
+		toast.success('送信しました！');
+		router.push('/cs/information/list');
+	};
 
     const onDrop = useCallback(
         (acceptedFiles) => {
@@ -160,52 +158,52 @@ const CsInformationDetails = () => {
                         );
                         if (!accept) return;
 
-                        const items = await updateInformationListSend({
-                            informationId: id,
-                            data: csvData,
-                        });
-                        setListInformationSend(items);
-                        if (!R.isNil(items) && !R.isEmpty(items)) {
-                            toast.success(
-                                "お知らせ詳細画面の、画面ヘッダー部分に「お知らせ情報を登録しました。」を表示する。"
-                            );
-                        }
-                    },
-                });
-            });
-        },
-        [id]
-    );
+						const items = await updateInformationListSend({
+							informationId: id,
+							data: csvData,
+						});
+						setListInformationSend(items);
+						if (!R.isNil(items) && !R.isEmpty(items)) {
+							toast.success(
+								'お知らせ詳細画面の、画面ヘッダー部分に「お知らせ情報を登録しました。」を表示する。'
+							);
+						}
+					},
+				});
+			});
+		},
+		[id]
+	);
 
-    const isCSVFormatError = useCallback((csvData) => {
-        if (R.isEmpty(csvData)) {
-            //only header
-            toast.error("登録対象のデータが存在しません。");
-            return true;
-        }
-        //check format email
-        var errors = [];
-        csvData.forEach((row, idx) => {
-            if (!isEmailValid(row.email)) {
-                errors.push(
-                    `${idx + 1}行目：メールアドレス形式に誤りがあります。`
-                );
-                console.log(`${row.email} not valid`)
-            }
-        });
-        if (!R.isEmpty(errors)) {
-            toast.error(errors.join("\n"));
-            return true;
-        }
-        return false;
-    }, []);
+	const isCSVFormatError = useCallback((csvData) => {
+		if (R.isEmpty(csvData)) {
+			//only header
+			toast.error('登録対象のデータが存在しません。');
+			return true;
+		}
+		//check format email
+		var errors = [];
+		csvData.forEach((row, idx) => {
+			if (!isEmailValid(row.email)) {
+				errors.push(
+					`${idx + 1}行目：メールアドレス形式に誤りがあります。`
+				);
+				console.log(`${row.email} not valid`);
+			}
+		});
+		if (!R.isEmpty(errors)) {
+			toast.error(errors.join('\n'));
+			return true;
+		}
+		return false;
+	}, []);
 
-    const {getRootProps, getInputProps} = useDropzone({
-        onDrop,
-        accept: {
-            "text/csv": [".csv"],
-        },
-    });
+	const {getRootProps, getInputProps} = useDropzone({
+		onDrop,
+		accept: {
+			'text/csv': ['.csv'],
+		},
+	});
 
     const formik = useFormik({
         initialValues: {
@@ -238,9 +236,9 @@ const CsInformationDetails = () => {
         },
     });
 
-    useEffect(() => {
-        gtm.push({event: "page_view"});
-    }, []);
+	useEffect(() => {
+		gtm.push({event: 'page_view'});
+	}, []);
 
     const handleClickSaveDraft = async() => {
         var validate = true;
@@ -258,25 +256,25 @@ const CsInformationDetails = () => {
         }
     };
 
-    const handleClickSave = () => {
-        console.log("formik", formik);
-        var validate = true;
-        if (R.isEmpty(listInformationSend)) {
-            toast.error("送信対象取込を実施してください");
-            validate = false;
-        }
-        if (moment(formik.values.date).isBefore(moment())) {
-            toast.error("配信予定日時には現在より後の日時を指定してください");
-            validate = false;
-        }
-        if (!checkMaxSizeFiles()) {
-            validate = false;
-        }
-        if (validate) {
-            draftFlag.current = 0;
-            formik.handleSubmit();
-        }
-    };
+	const handleClickSave = () => {
+		console.log('formik', formik);
+		var validate = true;
+		if (R.isEmpty(listInformationSend)) {
+			toast.error('送信対象取込を実施してください');
+			validate = false;
+		}
+		if (moment(formik.values.date).isBefore(moment())) {
+			toast.error('配信予定日時には現在より後の日時を指定してください');
+			validate = false;
+		}
+		if (!checkMaxSizeFiles()) {
+			validate = false;
+		}
+		if (validate) {
+			draftFlag.current = 0;
+			formik.handleSubmit();
+		}
+	};
 
     console.log("formik", formik)
 
@@ -519,9 +517,9 @@ const CsInformationDetails = () => {
     );
 };
 CsInformationDetails.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+	<AuthGuard>
+		<DashboardLayout>{page}</DashboardLayout>
+	</AuthGuard>
 );
 
 export default CsInformationDetails;

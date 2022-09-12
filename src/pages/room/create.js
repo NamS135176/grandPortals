@@ -30,7 +30,7 @@ import {useBukkenDefault} from '../../hooks/use-bukken-default';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import * as R from 'ramda';
-import {MobileDatePicker} from '@mui/lab';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {useAuth} from '../../hooks/use-auth';
 import {AuthGuard} from '../../components/authentication/auth-guard';
 
@@ -271,9 +271,9 @@ const CreateRoom = () => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/mm/dd"
 											value={
 												formik.values
 													.last_construction_date

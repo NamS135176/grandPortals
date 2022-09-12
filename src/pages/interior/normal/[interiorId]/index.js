@@ -25,7 +25,7 @@ import {gtm} from '../../../../lib/gtm';
 import {ManagementList} from '../../../../components/management-menu';
 import {ArrowLeft as ArrowLeftIcon} from '../../../../icons/arrow-left';
 import {ArrowRight as ArrowRightIcon} from '../../../../icons/arrow-right';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {HistoryDialog} from '../../../../components/history/history-dialog';
 import {useInteriorDetail} from '../../../../hooks/use-interior-detail';
 import {useRouter} from 'next/router';
@@ -391,9 +391,9 @@ const InteriorDetails = () => {
 									</Box>
 								</Grid>
 								<Grid item md={8} xs={12}>
-									<MobileDatePicker
+									<DesktopDatePicker
 										label="購入日"
-										inputFormat="MM/dd/yyyy"
+										inputFormat="yyyy/mm/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
@@ -425,9 +425,9 @@ const InteriorDetails = () => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/mm/dd"
 											value={
 												formik.values
 													.last_construction_date
