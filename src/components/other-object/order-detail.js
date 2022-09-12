@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import Head from 'next/head';
 import {
 	Box,
@@ -7,7 +7,6 @@ import {
 	CardContent,
 	CardActions,
 	Container,
-	Divider,
 	Grid,
 	Typography,
 	TextField,
@@ -24,7 +23,7 @@ import {BukkenHistoryListTable} from '../bukken/bukken-history-list-table';
 import {ManagementList} from '../management-menu';
 import {ArrowLeft as ArrowLeftIcon} from '../../icons/arrow-left';
 import {ArrowRight as ArrowRightIcon} from '../../icons/arrow-right';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {HistoryDialog} from '../history/history-dialog';
 import {useRouter} from 'next/router';
 import {FileUpload} from '../widgets/file-upload';
@@ -412,9 +411,9 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
 									</Box>
 								</Grid>
 								<Grid item md={8} xs={12}>
-									<MobileDatePicker
+									<DesktopDatePicker
 										label="購入日（製作日）"
-										inputFormat="MM/dd/yyyy"
+										inputFormat="yyyy/mm/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
@@ -446,9 +445,9 @@ const OtherObjectOrderDetails = ({id, otherObjectKind}) => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/mm/dd"
 											value={
 												formik.values
 													.last_construction_date
