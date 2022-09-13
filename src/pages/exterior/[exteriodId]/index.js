@@ -23,6 +23,7 @@ import {ArrowLeft as ArrowLeftIcon} from '../../../icons/arrow-left';
 import {ArrowRight as ArrowRightIcon} from '../../../icons/arrow-right';
 import {HistoryDialog} from '../../../components/history/history-dialog';
 import {DocsDialog} from '../../../components/documents/docs-dialog';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -38,6 +39,7 @@ const ExteriorDetails = () => {
 		type: 'ブロック塀',
 		name: 'ブロック塀A',
 		note: 'テキストサンプルテキストサンプルテキストサンプル',
+		date: new Date(),
 	});
 
 	useEffect(() => {
@@ -49,6 +51,10 @@ const ExteriorDetails = () => {
 			...form,
 			[event.target.name]: event.target.value,
 		});
+	};
+
+	const handleDateChange = (date) => {
+		setForm({...form, date: date});
 	};
 
 	// History dialog
@@ -227,6 +233,20 @@ const ExteriorDetails = () => {
 										name="note"
 										value={form.note}
 										onChange={handleChange}
+									/>
+								</Grid>
+								<Grid item md={8} xs={12}>
+									<DesktopDatePicker
+										label="最終施工日"
+										inputFormat="yyyy/MM/dd"
+										value={form.date}
+										onChange={handleDateChange}
+										renderInput={(inputProps) => (
+											<TextField
+												fullWidth
+												{...inputProps}
+											/>
+										)}
 									/>
 								</Grid>
 							</Grid>
