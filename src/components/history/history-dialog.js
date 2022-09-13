@@ -109,7 +109,7 @@ export const HistoryDialog = (props) => {
 					<DesktopDatePicker
 						disabled={mode === 'reference'}
 						label="履歴"
-						inputFormat="yyyy/mm/dd"
+						inputFormat="yyyy/MM/dd"
 						value={form.date}
 						onChange={handleDateChange}
 						renderInput={(inputProps) => (

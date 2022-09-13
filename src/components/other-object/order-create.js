@@ -323,7 +323,7 @@ const CreateOrderOtherObject = ({otherObjectKind}) => {
 								<Grid item md={8} xs={12}>
 									<DesktopDatePicker
 										label="購入日（製作日）"
-										inputFormat="yyyy/mm/dd"
+										inputFormat="yyyy/MM/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
@@ -357,7 +357,7 @@ const CreateOrderOtherObject = ({otherObjectKind}) => {
 									<Grid item md={8} xs={12}>
 										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="yyyy/mm/dd"
+											inputFormat="yyyy/MM/dd"
 											value={
 												formik.values
 													.last_construction_date

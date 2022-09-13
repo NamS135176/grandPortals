@@ -327,7 +327,7 @@ const CreateNormalOtherObject = ({otherObjectKind}) => {
 								<Grid item md={8} xs={12}>
 									<DesktopDatePicker
 										label="購入日"
-										inputFormat="yyyy/mm/dd"
+										inputFormat="yyyy/MM/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
