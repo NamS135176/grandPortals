@@ -326,6 +326,35 @@
           ]
         }
       ]
+    },
+    "handleSendMailSQS": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "publishInformationZipFile",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "grandsportal",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "grandsPortal",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
     }
   },
   "api": {

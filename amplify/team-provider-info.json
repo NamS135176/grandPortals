@@ -37,7 +37,8 @@
         "publishPasswordResetLink": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/publishPasswordResetLink-5a4374496939654a3959-build.zip",
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
+          "titleHolder": "マイプレイス"
         },
         "checkLinkValidation": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
@@ -61,7 +62,7 @@
         },
         "withdrawalRequest": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-7a306a5a65586a664c4d-build.zip",
+          "s3Key": "amplify-builds/withdrawalRequest-4f7a53494d6872334e55-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         },
         "createForceResetPassword": {
@@ -83,7 +84,13 @@
         "scheduleSendMail": {
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/scheduleSendMail-45436e75546b31505070-build.zip"
+          "s3Key": "amplify-builds/scheduleSendMail-4e584b51576165694253-build.zip",
+          "queueUrl": "https://sqs.ap-northeast-1.amazonaws.com/147662606770/sendEmailToUser-dev"
+        },
+        "handleSendMailSQS": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/handleSendMailSQS-704f4e61356c69506938-build.zip",
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         }
       }
     }

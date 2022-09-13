@@ -24,10 +24,15 @@
       "Type": "String",
       "Default": "apigrandsportalGraphQLAPIEndpointOutput"
     },
-    "secretsPathAmplifyAppId": {
-      "Type": "String"
+    "functionpublishInformationZipFileName": {
+      "Type": "String",
+      "Default": "functionpublishInformationZipFileName"
     },
-    "titleHolder": {
+    "storagegrandsPortalBucketName": {
+      "Type": "String",
+      "Default": "storagegrandsPortalBucketName"
+    },
+    "secretsPathAmplifyAppId": {
       "Type": "String"
     }
   },
@@ -61,12 +66,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "publishPasswordResetLink",
+            "handleSendMailSQS",
             {
               "Fn::Join": [
                 "",
                 [
-                  "publishPasswordResetLink",
+                  "handleSendMailSQS",
                   "-",
                   {
                     "Ref": "env"
@@ -90,6 +95,12 @@
             "API_GRANDSPORTAL_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apigrandsportalGraphQLAPIEndpointOutput"
             },
+            "FUNCTION_PUBLISHINFORMATIONZIPFILE_NAME": {
+              "Ref": "functionpublishInformationZipFileName"
+            },
+            "STORAGE_GRANDSPORTAL_BUCKETNAME": {
+              "Ref": "storagegrandsPortalBucketName"
+            },
             "SENDGRID_API_KEY": {
               "Fn::Join": [
                 "",
@@ -104,16 +115,13 @@
                         "env": {
                           "Ref": "env"
                         },
-                        "functionName": "publishPasswordResetLink"
+                        "functionName": "handleSendMailSQS"
                       }
                     ]
                   },
                   "SENDGRID_API_KEY"
                 ]
               ]
-            },
-            "TITLE_HOLDER": {
-              "Ref": "titleHolder"
             }
           }
         },
@@ -134,12 +142,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "grandsportalLambdaRolef959e686",
+            "grandsportalLambdaRole838431a6",
             {
               "Fn::Join": [
                 "",
                 [
-                  "grandsportalLambdaRolef959e686",
+                  "grandsportalLambdaRole838431a6",
                   "-",
                   {
                     "Ref": "env"
@@ -205,6 +213,32 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:DeleteMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:ReceiveMessage",
+                "sqs:TagQueue",
+                "sqs:UntagQueue",
+                "sqs:PurgeQueue",
+                "sqs:GetQueueAttributes"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:sqs:${region}:${account}:*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
             }
           ]
         }
@@ -225,6 +259,39 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Create*",
+                "lambda:Put*",
+                "lambda:Add*",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*",
+                "lambda:Update*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionpublishInformationZipFileName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Effect": "Allow",
               "Action": [
@@ -268,6 +335,44 @@
                         "Ref": "apigrandsportalGraphQLAPIIdOutput"
                       },
                       "/types/Mutation/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagegrandsPortalBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagegrandsPortalBucketName"
+                      },
+                      "/*"
                     ]
                   ]
                 }
@@ -318,7 +423,7 @@
                           "env": {
                             "Ref": "env"
                           },
-                          "functionName": "publishPasswordResetLink"
+                          "functionName": "handleSendMailSQS"
                         }
                       ]
                     },

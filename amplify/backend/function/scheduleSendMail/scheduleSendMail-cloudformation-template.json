@@ -34,6 +34,9 @@
     "storagegrandsPortalBucketName": {
       "Type": "String",
       "Default": "storagegrandsPortalBucketName"
+    },
+    "queueUrl": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -122,6 +125,9 @@
             },
             "STORAGE_GRANDSPORTAL_BUCKETNAME": {
               "Ref": "storagegrandsPortalBucketName"
+            },
+            "queueUrl": {
+              "Ref": "queueUrl"
             }
           }
         },
@@ -133,7 +139,7 @@
         },
         "Runtime": "nodejs14.x",
         "Layers": [],
-        "Timeout": 25
+        "Timeout": 900
       }
     },
     "LambdaExecutionRole": {
@@ -209,6 +215,25 @@
                     },
                     "lambda": {
                       "Ref": "LambdaFunction"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "sqs:SendMessage"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:sqs:${region}:${account}:*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
                     }
                   }
                 ]

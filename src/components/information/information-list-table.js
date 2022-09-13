@@ -96,7 +96,7 @@ export const InformationListTable = (props) => {
 									<TableRow hover key={item.id}>
 										<TableCell align="right">
 											<NextLink
-												href={`/information/${item.id}`}
+												href={`/information/${item.information_id}`}
 												passHref
 											>
 												<IconButton onClick={handleUpdateRead(item.id)} component="a">
@@ -140,7 +140,7 @@ export const InformationListTable = (props) => {
 										</TableCell>
 										<TableCell>
 											<NextLink
-												href={`/information/${item.id}`}
+												href={`/information/${item.information_id}`}
 												passHref
 											>
 												<Link

@@ -24,11 +24,5 @@
   "lambdaLayers": [],
   "secretNames": [
     "SENDGRID_API_KEY"
-  ],
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "queueUrl",
-      "environmentVariableName": "queueUrl"
-    }
   ]
 }
