@@ -62,7 +62,7 @@ export const CsInformationListTable = (props) => {
     };
 
     const handleDelete = async (item) => {
-        const accept = await confirm("を削除しますか？");
+        const accept = await confirm(`${item.subject}を削除しますか？`);
         if (!accept) return;
         await deleteInformation(item);
     };
