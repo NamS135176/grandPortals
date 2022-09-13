@@ -113,10 +113,10 @@ const CsInformationCreate = () => {
 						return;
 					}
 
-                    const accept = await confirm(
-                        "選択された送信先情報でデータを登録または更新します。"
-                    );
-                    if (!accept) return;
+					const accept = await confirm(
+						'選択された送信先情報でデータを登録または更新します。'
+					);
+					if (!accept) return;
 
 					const {data, information} = await createInformation({
 						data: csvData,
@@ -129,9 +129,7 @@ const CsInformationCreate = () => {
 					setListInformationSend(data);
 					setCreatedInformationId(information?.id);
 					if (information) {
-						toast.success(
-							'「お知らせ情報を登録しました。」'
-						);
+						toast.success('「お知らせ情報を登録しました。」');
 					}
 				},
 			});
@@ -167,36 +165,36 @@ const CsInformationCreate = () => {
 		},
 	});
 
-    const formik = useFormik({
-        initialValues: {
-            subject: "",
-            content: "",
-            files: files,
-            date: null,
-            importantInfoFlag: false,
-            submit: null,
-        },
-        validationSchema: Yup.object({
-            subject: Yup.string().max(255).required("件名必須です。"),
-            content: Yup.string().max(255).required("本文は必須です。"),
-            files: Yup.array(),
-            date: Yup.date().nullable().default(null),
-            importantInfoFlag: Yup.bool(),
-        }),
-        onSubmit: async (values, helpers) => {
-            try {
-                await saveData(draftFlag.current);
-                helpers.setStatus({success: true});
-                helpers.setSubmitting(false);
-            } catch (err) {
-                console.error(err);
-                toast.error(err?.message ?? "Something went wrong!");
-                helpers.setStatus({success: false});
-                helpers.setErrors({submit: err.message});
-                helpers.setSubmitting(false);
-            }
-        },
-    });
+	const formik = useFormik({
+		initialValues: {
+			subject: '',
+			content: '',
+			files: files,
+			date: null,
+			importantInfoFlag: false,
+			submit: null,
+		},
+		validationSchema: Yup.object({
+			subject: Yup.string().max(255).required('件名必須です。'),
+			content: Yup.string().max(255).required('本文は必須です。'),
+			files: Yup.array(),
+			date: Yup.date().nullable().default(null),
+			importantInfoFlag: Yup.bool(),
+		}),
+		onSubmit: async (values, helpers) => {
+			try {
+				await saveData(draftFlag.current);
+				helpers.setStatus({success: true});
+				helpers.setSubmitting(false);
+			} catch (err) {
+				console.error(err);
+				toast.error(err?.message ?? 'Something went wrong!');
+				helpers.setStatus({success: false});
+				helpers.setErrors({submit: err.message});
+				helpers.setSubmitting(false);
+			}
+		},
+	});
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -257,21 +255,23 @@ const CsInformationCreate = () => {
 		}
 	};
 
-    const handleClickSaveDraft = async() => {
-        var validate = true;
-        if (!checkMaxSizeFiles()) {
-            validate = false;
-        }
-        if (formik.values.date) {
-            //show confirm 
-            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
-            if (!accept) return;
-        }
-        if (validate) {
-            draftFlag.current = 1;
-            formik.handleSubmit();
-        }
-    };
+	const handleClickSaveDraft = async () => {
+		var validate = true;
+		if (!checkMaxSizeFiles()) {
+			validate = false;
+		}
+		if (formik.values.date) {
+			//show confirm
+			const accept = await confirm(
+				'下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）'
+			);
+			if (!accept) return;
+		}
+		if (validate) {
+			draftFlag.current = 1;
+			formik.handleSubmit();
+		}
+	};
 
 	const handleClickSave = () => {
 		console.log('formik', formik);
@@ -364,8 +364,8 @@ const CsInformationCreate = () => {
 											accept={{
 												'application/pdf': ['.pdf'],
 												'image/png': ['.png'],
-												'image/png': ['.peg'],
-												'image/png': ['.jpeg'],
+												'image/peg': ['.peg'],
+												'image/jpeg': ['.jpeg'],
 											}}
 											files={files}
 											onDrop={handleDrop}

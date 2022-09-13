@@ -48,12 +48,12 @@ const CsInformationDetails = () => {
 	const {getFilesFromS3, deleteFileFromS3, deleteFilesFromS3, uploadFiles} =
 		useInformationFile();
 
-    const [listInformationSend, setListInformationSend] = useState([]);
-    const [files, setFiles] = useState([]);
-    const canEdit = information?.scheduled_delivery_date
-        ? moment(information.scheduled_delivery_date).isAfter(moment())
-        : true;
-    const draftFlag = useRef(0);
+	const [listInformationSend, setListInformationSend] = useState([]);
+	const [files, setFiles] = useState([]);
+	const canEdit = information?.scheduled_delivery_date
+		? moment(information.scheduled_delivery_date).isAfter(moment())
+		: true;
+	const draftFlag = useRef(0);
 
 	// const canEdit = false;
 
@@ -63,18 +63,20 @@ const CsInformationDetails = () => {
 		}
 	}, [user]);
 
-    useEffect(() => {
-        //update value to formik
-        if (!information) return;
-        formik.setValues({
-            subject: information.subject ?? "",
-            content: information.content ?? "",
-            date: information.scheduled_delivery_date ? moment(information.scheduled_delivery_date).toDate(): null,
-            importantInfoFlag: information.important_info_flag,
-            submit: null,
-        });
-        setListInformationSend(information.informaionListSends?.items ?? []);
-    }, [information]);
+	useEffect(() => {
+		//update value to formik
+		if (!information) return;
+		formik.setValues({
+			subject: information.subject ?? '',
+			content: information.content ?? '',
+			date: information.scheduled_delivery_date
+				? moment(information.scheduled_delivery_date).toDate()
+				: null,
+			importantInfoFlag: information.important_info_flag,
+			submit: null,
+		});
+		setListInformationSend(information.informaionListSends?.items ?? []);
+	}, [information]);
 
 	useEffect(async () => {
 		if (!id) return;
@@ -134,29 +136,29 @@ const CsInformationDetails = () => {
 		router.push('/cs/information/list');
 	};
 
-    const onDrop = useCallback(
-        (acceptedFiles) => {
-            acceptedFiles.forEach((file) => {
-                Papa.parse(file, {
-                    header: true,
-                    skipEmptyLines: true,
-                    transformHeader: (header) => {
-                        console.log("transformHeader:", header);
-                        return "email";
-                    },
-                    error: (errors) => {
-                        console.log("error:", errors);
-                    },
-                    complete: async (results) => {
-                        console.log("Finished:", results.data);
-                        const csvData = results.data;
-                        if (isCSVFormatError(csvData)) {
-                            return;
-                        }
-                        const accept = await confirm(
-                            "選択された送信先情報でデータを登録または更新します。"
-                        );
-                        if (!accept) return;
+	const onDrop = useCallback(
+		(acceptedFiles) => {
+			acceptedFiles.forEach((file) => {
+				Papa.parse(file, {
+					header: true,
+					skipEmptyLines: true,
+					transformHeader: (header) => {
+						console.log('transformHeader:', header);
+						return 'email';
+					},
+					error: (errors) => {
+						console.log('error:', errors);
+					},
+					complete: async (results) => {
+						console.log('Finished:', results.data);
+						const csvData = results.data;
+						if (isCSVFormatError(csvData)) {
+							return;
+						}
+						const accept = await confirm(
+							'選択された送信先情報でデータを登録または更新します。'
+						);
+						if (!accept) return;
 
 						const items = await updateInformationListSend({
 							informationId: id,
@@ -164,9 +166,7 @@ const CsInformationDetails = () => {
 						});
 						setListInformationSend(items);
 						if (!R.isNil(items) && !R.isEmpty(items)) {
-							toast.success(
-								'「お知らせ情報を登録しました。」'
-							);
+							toast.success('「お知らせ情報を登録しました。」');
 						}
 					},
 				});
@@ -205,56 +205,58 @@ const CsInformationDetails = () => {
 		},
 	});
 
-    const formik = useFormik({
-        initialValues: {
-            subject: "",
-            content: "",
-            files: files,
-            date: null,
-            importantInfoFlag: false,
-            submit: null,
-        },
-        validationSchema: Yup.object({
-            subject: Yup.string().max(255).required("件名必須です。"),
-            content: Yup.string().max(255).required("本文は必須です。"),
-            files: Yup.array(),
-            date: Yup.date().nullable().default(null),
-            importantInfoFlag: Yup.bool(),
-        }),
-        onSubmit: async (values, helpers) => {
-            try {
-                await saveData(draftFlag.current);
-                helpers.setStatus({success: true});
-                helpers.setSubmitting(false);
-            } catch (err) {
-                console.error(err);
-                toast.error("Something went wrong!");
-                helpers.setStatus({success: false});
-                helpers.setErrors({submit: err.message});
-                helpers.setSubmitting(false);
-            }
-        },
-    });
+	const formik = useFormik({
+		initialValues: {
+			subject: '',
+			content: '',
+			files: files,
+			date: null,
+			importantInfoFlag: false,
+			submit: null,
+		},
+		validationSchema: Yup.object({
+			subject: Yup.string().max(255).required('件名必須です。'),
+			content: Yup.string().max(255).required('本文は必須です。'),
+			files: Yup.array(),
+			date: Yup.date().nullable().default(null),
+			importantInfoFlag: Yup.bool(),
+		}),
+		onSubmit: async (values, helpers) => {
+			try {
+				await saveData(draftFlag.current);
+				helpers.setStatus({success: true});
+				helpers.setSubmitting(false);
+			} catch (err) {
+				console.error(err);
+				toast.error('Something went wrong!');
+				helpers.setStatus({success: false});
+				helpers.setErrors({submit: err.message});
+				helpers.setSubmitting(false);
+			}
+		},
+	});
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
 	}, []);
 
-    const handleClickSaveDraft = async() => {
-        var validate = true;
-        if (!checkMaxSizeFiles()) {
-            validate = false;
-        }
-        if (formik.values.date) {
-            //show confirm 
-            const accept = await confirm("下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）")
-            if (!accept) return;
-        }
-        if (validate) {
-            draftFlag.current = 1;
-            formik.handleSubmit();
-        }
-    };
+	const handleClickSaveDraft = async () => {
+		var validate = true;
+		if (!checkMaxSizeFiles()) {
+			validate = false;
+		}
+		if (formik.values.date) {
+			//show confirm
+			const accept = await confirm(
+				'下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）'
+			);
+			if (!accept) return;
+		}
+		if (validate) {
+			draftFlag.current = 1;
+			formik.handleSubmit();
+		}
+	};
 
 	const handleClickSave = () => {
 		console.log('formik', formik);
@@ -276,245 +278,245 @@ const CsInformationDetails = () => {
 		}
 	};
 
-    console.log("formik", formik)
+	console.log('formik', formik);
 
-    return (
-        <>
-            <Head>
-                <title>grandsポータルサイト｜お知らせ詳細（CS）</title>
-            </Head>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    py: 8,
-                }}
-            >
-                <Container maxWidth="xl">
-                    <Card>
-                        <CardContent>
-                            <Box sx={{mb: 4}}>
-                                <Typography variant="h6" mb={3}>
-                                    お知らせ詳細
-                                </Typography>
-                                <Grid container spacing={3} mt={3}>
-                                    <Grid item md={8} xs={12}>
-                                        <TextField
-                                            fullWidth
-                                            label="件名"
-                                            name="subject"
-                                            required
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            error={Boolean(
-                                                formik.touched.subject &&
-                                                    formik.errors.subject
-                                            )}
-                                            helperText={
-                                                formik.touched.subject &&
-                                                formik.errors.subject
-                                            }
-                                            value={formik.values.subject}
-                                            disabled={!canEdit}
-                                        />
-                                    </Grid>
-                                    <Grid item md={8} xs={12}>
-                                        <TextField
-                                            fullWidth
-                                            multiline
-                                            minRows={4}
-                                            label="本文"
-                                            name="content"
-                                            required
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            error={Boolean(
-                                                formik.touched.content &&
-                                                    formik.errors.content
-                                            )}
-                                            helperText={
-                                                formik.touched.content &&
-                                                formik.errors.content
-                                            }
-                                            value={formik.values.content}
-                                            disabled={!canEdit}
-                                        />
-                                    </Grid>
-                                    <Grid item md={8} xs={12}>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{mb: 1}}
-                                        >
-                                            添付ファイル
-                                        </Typography>
-                                        <FileDropzone
-                                            accept={{
-                                                "application/pdf": [".pdf"],
-                                                "image/png": [".png"],
-                                                "image/png": [".peg"],
-                                                "image/png": [".jpeg"],
-                                            }}
-                                            files={files}
-                                            onDrop={handleDrop}
-                                            onRemove={handleRemove}
-                                            onRemoveAll={handleRemoveAll}
-                                            disabled={!canEdit}
-                                        />
-                                    </Grid>
-                                    <Grid item md={8} xs={12}>
-                                        <MobileDateTimePicker
-                                            label="配達予定日"
-                                            inputFormat="yyyy/MM/dd HH:mm"
-                                            minDate={moment().toDate()}
-                                            minutesStep={5}
-                                            value={formik.values.date}
-                                            onChange={(date) =>
-                                                formik.setFieldValue(
-                                                    "date",
-                                                    date
-                                                )
-                                            }
-                                            renderInput={(inputProps) => (
-                                                <TextField {...inputProps} />
-                                            )}
-                                            disabled={!canEdit}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Box sx={{mt: 2}}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                name="emailAlerts"
-                                                checked={
-                                                    formik.values
-                                                        .importantInfoFlag
-                                                }
-                                                onChange={() =>
-                                                    formik.setFieldValue(
-                                                        "importantInfoFlag",
-                                                        !formik.values
-                                                            .importantInfoFlag
-                                                    )
-                                                }
-                                                disabled={!canEdit}
-                                            />
-                                        }
-                                        label="重要なお知らせのため停止したユーザーにもメール送信"
-                                    />
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: {
-                                            xs: "column",
-                                            md: "row",
-                                        },
-                                        alignItems: {
-                                            xs: "start",
-                                            md: "center",
-                                        },
-                                    }}
-                                >
-                                    <Typography variant="subtitle1">
-                                        送信対象取込
-                                        <LoadingButton
-                                            loading={importCSVLoading}
-                                            loadingIndicator={
-                                                <CircularProgress
-                                                    color="primary"
-                                                    size={30}
-                                                />
-                                            }
-                                            startIcon={
-                                                <UploadIcon fontSize="small" />
-                                            }
-                                            sx={{m: 1}}
-                                            {...getRootProps()}
-                                            disabled={!canEdit}
-                                        >
-                                            <input {...getInputProps()} />
-                                            Import
-                                        </LoadingButton>
-                                    </Typography>
-                                    {!importCSVLoading &&
-                                        listInformationSend &&
-                                        listInformationSend.length > 0 && (
-                                            <Typography variant="subtitle1">
-                                                送信先：
-                                                <NextLink
-                                                    href={`/cs/destination/${id}`}
-                                                    passHref
-                                                >
-                                                    <Link variant="subtitle2">
-                                                        {
-                                                            listInformationSend.length
-                                                        }
-                                                        件
-                                                    </Link>
-                                                </NextLink>
-                                            </Typography>
-                                        )}
-                                </Box>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                    <Box
-                        sx={{
-                            mx: -1,
-                            mb: -1,
-                            mt: 3,
-                        }}
-                    >
-                        <Grid container spacing={3}>
-                            <Grid item>
-                                <NextLink href="/cs/information/list" passHref>
-                                    <Button
-                                        endIcon={
-                                            <ArrowLeftIcon fontSize="small" />
-                                        }
-                                        variant="outlined"
-                                    >
-                                        戻る
-                                    </Button>
-                                </NextLink>
-                            </Grid>
-                            <Grid item sx={{m: -1}}>
-                                <Button
-                                    sx={{m: 1}}
-                                    variant="contained"
-                                    color="success"
-                                    onClick={handleClickSaveDraft}
-                                    disabled={
-                                        !canEdit ||
-                                        formik.isSubmitting ||
-                                        importCSVLoading
-                                    }
-                                >
-                                    下書き保存
-                                </Button>
-                            </Grid>
-                            <Grid item sx={{m: -1}}>
-                                <Button
-                                    sx={{m: 1}}
-                                    variant="contained"
-                                    type="submit"
-                                    onClick={handleClickSave}
-                                    disabled={
-                                        !canEdit ||
-                                        formik.isSubmitting ||
-                                        importCSVLoading
-                                    }
-                                >
-                                    送信
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Container>
-            </Box>
-        </>
-    );
+	return (
+		<>
+			<Head>
+				<title>grandsポータルサイト｜お知らせ詳細（CS）</title>
+			</Head>
+			<Box
+				component="main"
+				sx={{
+					flexGrow: 1,
+					py: 8,
+				}}
+			>
+				<Container maxWidth="xl">
+					<Card>
+						<CardContent>
+							<Box sx={{mb: 4}}>
+								<Typography variant="h6" mb={3}>
+									お知らせ詳細
+								</Typography>
+								<Grid container spacing={3} mt={3}>
+									<Grid item md={8} xs={12}>
+										<TextField
+											fullWidth
+											label="件名"
+											name="subject"
+											required
+											onBlur={formik.handleBlur}
+											onChange={formik.handleChange}
+											error={Boolean(
+												formik.touched.subject &&
+													formik.errors.subject
+											)}
+											helperText={
+												formik.touched.subject &&
+												formik.errors.subject
+											}
+											value={formik.values.subject}
+											disabled={!canEdit}
+										/>
+									</Grid>
+									<Grid item md={8} xs={12}>
+										<TextField
+											fullWidth
+											multiline
+											minRows={4}
+											label="本文"
+											name="content"
+											required
+											onBlur={formik.handleBlur}
+											onChange={formik.handleChange}
+											error={Boolean(
+												formik.touched.content &&
+													formik.errors.content
+											)}
+											helperText={
+												formik.touched.content &&
+												formik.errors.content
+											}
+											value={formik.values.content}
+											disabled={!canEdit}
+										/>
+									</Grid>
+									<Grid item md={8} xs={12}>
+										<Typography
+											variant="body2"
+											sx={{mb: 1}}
+										>
+											添付ファイル
+										</Typography>
+										<FileDropzone
+											accept={{
+												'application/pdf': ['.pdf'],
+												'image/png': ['.png'],
+												'image/peg': ['.peg'],
+												'image/jpeg': ['.jpeg'],
+											}}
+											files={files}
+											onDrop={handleDrop}
+											onRemove={handleRemove}
+											onRemoveAll={handleRemoveAll}
+											disabled={!canEdit}
+										/>
+									</Grid>
+									<Grid item md={8} xs={12}>
+										<MobileDateTimePicker
+											label="配達予定日"
+											inputFormat="yyyy/MM/dd HH:mm"
+											minDate={moment().toDate()}
+											minutesStep={5}
+											value={formik.values.date}
+											onChange={(date) =>
+												formik.setFieldValue(
+													'date',
+													date
+												)
+											}
+											renderInput={(inputProps) => (
+												<TextField {...inputProps} />
+											)}
+											disabled={!canEdit}
+										/>
+									</Grid>
+								</Grid>
+								<Box sx={{mt: 2}}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												name="emailAlerts"
+												checked={
+													formik.values
+														.importantInfoFlag
+												}
+												onChange={() =>
+													formik.setFieldValue(
+														'importantInfoFlag',
+														!formik.values
+															.importantInfoFlag
+													)
+												}
+												disabled={!canEdit}
+											/>
+										}
+										label="重要なお知らせのため停止したユーザーにもメール送信"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: 'flex',
+										flexDirection: {
+											xs: 'column',
+											md: 'row',
+										},
+										alignItems: {
+											xs: 'start',
+											md: 'center',
+										},
+									}}
+								>
+									<Typography variant="subtitle1">
+										送信対象取込
+										<LoadingButton
+											loading={importCSVLoading}
+											loadingIndicator={
+												<CircularProgress
+													color="primary"
+													size={30}
+												/>
+											}
+											startIcon={
+												<UploadIcon fontSize="small" />
+											}
+											sx={{m: 1}}
+											{...getRootProps()}
+											disabled={!canEdit}
+										>
+											<input {...getInputProps()} />
+											Import
+										</LoadingButton>
+									</Typography>
+									{!importCSVLoading &&
+										listInformationSend &&
+										listInformationSend.length > 0 && (
+											<Typography variant="subtitle1">
+												送信先：
+												<NextLink
+													href={`/cs/destination/${id}`}
+													passHref
+												>
+													<Link variant="subtitle2">
+														{
+															listInformationSend.length
+														}
+														件
+													</Link>
+												</NextLink>
+											</Typography>
+										)}
+								</Box>
+							</Box>
+						</CardContent>
+					</Card>
+					<Box
+						sx={{
+							mx: -1,
+							mb: -1,
+							mt: 3,
+						}}
+					>
+						<Grid container spacing={3}>
+							<Grid item>
+								<NextLink href="/cs/information/list" passHref>
+									<Button
+										endIcon={
+											<ArrowLeftIcon fontSize="small" />
+										}
+										variant="outlined"
+									>
+										戻る
+									</Button>
+								</NextLink>
+							</Grid>
+							<Grid item sx={{m: -1}}>
+								<Button
+									sx={{m: 1}}
+									variant="contained"
+									color="success"
+									onClick={handleClickSaveDraft}
+									disabled={
+										!canEdit ||
+										formik.isSubmitting ||
+										importCSVLoading
+									}
+								>
+									下書き保存
+								</Button>
+							</Grid>
+							<Grid item sx={{m: -1}}>
+								<Button
+									sx={{m: 1}}
+									variant="contained"
+									type="submit"
+									onClick={handleClickSave}
+									disabled={
+										!canEdit ||
+										formik.isSubmitting ||
+										importCSVLoading
+									}
+								>
+									送信
+								</Button>
+							</Grid>
+						</Grid>
+					</Box>
+				</Container>
+			</Box>
+		</>
+	);
 };
 CsInformationDetails.getLayout = (page) => (
 	<AuthGuard>
