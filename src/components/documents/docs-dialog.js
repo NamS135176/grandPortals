@@ -78,7 +78,7 @@ export const DocsDialog = (props) => {
 							variant="body2"
 							sx={{mb: 1}}
 						>
-							資料追加（pdf）
+							資料追加
 						</Typography>
 
 						<FileDropzone

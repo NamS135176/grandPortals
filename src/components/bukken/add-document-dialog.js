@@ -161,12 +161,14 @@ export const AddDocumentDialog = (props) => {
 							variant="body2"
 							sx={{mb: 1}}
 						>
-							資料追加（pdf）
+							資料追加
 						</Typography>
 
 						<FileDropzone
 							accept={{
 								'application/pdf': ['.pdf'],
+								'image/jpeg': ['.jpeg'],
+								'image/jpg': ['.jpg'],
 							}}
 							files={files}
 							onDrop={handleDrop}
