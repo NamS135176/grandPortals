@@ -68,9 +68,11 @@ export const DashboardNavbar = (props) => {
                     response.data?.queryInformationListSendByUserId?.items
                         ?.length
                 );
+				const trueList = response.data?.queryInformationListSendByUserId?.items.filter(it => {
+					return it.information.draft_flag == 0
+				})
                 setNumberNotice(
-                    response.data?.queryInformationListSendByUserId?.items
-                        ?.length
+                    trueList.length
                 );
             };
             getListNotice();
