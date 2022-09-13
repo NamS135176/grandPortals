@@ -216,7 +216,7 @@ export const useInformationList = () => {
                 console.log(list);
                 informationList = list.filter(item => {
                     // return ((moment(item.information.scheduled_delivery_date).isBefore(moment().utc(new Date()))) || !item.information.scheduled_delivery_date) && item.information.draft_flag == 0 && item.information.delete_flag == 0
-                    return (item.information.processed_date && item.information.draft_flag == 0 && item.information.delete_flag == 0
+                    return item.information.processed_date && item.information.draft_flag == 0 && item.information.delete_flag == 0
                 })
             } else {
                let list  = await getListCSInformationSendList();
