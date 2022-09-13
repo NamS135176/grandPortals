@@ -71,6 +71,9 @@ export const DashboardNavbar = (props) => {
 				const trueList = response.data?.queryInformationListSendByUserId?.items.filter(it => {
 					return it.information.draft_flag == 0
 				})
+				console.log(
+                  trueList.length
+                );
                 setNumberNotice(
                     trueList.length
                 );

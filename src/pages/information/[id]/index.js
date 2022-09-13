@@ -29,6 +29,7 @@ const InformationDetails = () => {
     const {id} = router.query;
 
     const {information} = useInformation(id);
+    console.log(information);
     const {getFilesFromS3, zipInformationFile} = useInformationFile();
 
     const [files, setFiles] = useState([]);
@@ -144,7 +145,7 @@ const InformationDetails = () => {
                                 />
                                 <Typography
                                     color="textSecondary"
-                                    sx={{mt: 1}}
+                                    sx={{mt: 1, whiteSpace: "pre-wrap"}}
                                     variant="body2"
                                 >
                                     {information?.content}
