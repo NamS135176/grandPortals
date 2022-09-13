@@ -200,7 +200,7 @@ const CsInformationList = () => {
 											}}
 										>
 											<DateTimePicker
-												inputFormat="yyyy/mm/dd"
+												inputFormat="yyyy/MM/dd"
 												onChange={(newDate) =>
 													setStartDate(newDate)
 												}
@@ -216,7 +216,7 @@ const CsInformationList = () => {
 												&nbsp;&nbsp;〜&nbsp;&nbsp;
 											</Box>
 											<DateTimePicker
-												inputFormat="yyyy/mm/dd"
+												inputFormat="yyyy/MM/dd"
 												onChange={(newDate) =>
 													setEndDate(newDate)
 												}

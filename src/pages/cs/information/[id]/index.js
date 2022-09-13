@@ -50,9 +50,9 @@ const CsInformationDetails = () => {
 
 	const [listInformationSend, setListInformationSend] = useState([]);
 	const [files, setFiles] = useState([]);
-	const canEdit = information?.processed_date || moment(information?.scheduled_delivery_date).isAfter(moment().utc(new Date()))
+	const canEdit = information?.processed_date
 		? false
-		: true;
+		: true
 	const draftFlag = useRef(0);
 
 	// const canEdit = false;
@@ -132,7 +132,7 @@ const CsInformationDetails = () => {
 		if (!R.isEmpty(uploads)) {
 			await uploadFiles(uploads, id);
 		}
-		toast.success('送信しました！');
+		toast.success('保存しました。');
 		router.push('/cs/information/list');
 	};
 

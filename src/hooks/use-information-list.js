@@ -118,8 +118,8 @@ export const useInformationList = () => {
                 }
                 else{
                     const newList = informationListFirst.filter(item => {
-                        return moment(item.createdAt).valueOf()
-                         < end.getTime() && moment(item.createdAt).valueOf()
+                        return moment(item.scheduled_delivery_date).valueOf()
+                         < end.getTime() && moment(item.scheduled_delivery_date).valueOf()
                          > start.getTime()
                     })
                     console.log("newList", newList);
@@ -136,8 +136,8 @@ export const useInformationList = () => {
                 }
                 else{
                     const newList = informationListFirst.filter(item => {
-                        return moment(item.createdAt).valueOf()
-                         < end.getTime() && moment(item.createdAt).valueOf()
+                        return moment(item.scheduled_delivery_date).valueOf()
+                         < end.getTime() && moment(item.scheduled_delivery_date).valueOf()
                          > start.getTime() && item.status == filter
                     })
                     console.log("newList", newList);

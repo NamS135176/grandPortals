@@ -48,38 +48,42 @@ export const DashboardNavbar = (props) => {
     };
 
     useEffect(() => {
-        const getListNotice = async () => {
-            const response = await API.graphql({
-                query: queryInformationListSendByUserId,
-                variables: {
-                    user_id: user.id,
-                    filter: {
-                        delete_flag: {
-                            eq: 0,
-                        },
-                        last_user_read: {
-                            attributeExists: false,
+        if (user) {
+            const getListNotice = async () => {
+                const response = await API.graphql({
+                    query: queryInformationListSendByUserId,
+                    variables: {
+                        user_id: user?.id,
+                        filter: {
+                            delete_flag: {
+                                eq: 0,
+                            },
+                            last_user_read: {
+                                attributeExists: false,
+                            },
                         },
                     },
-                },
+                });
+                console.log(
+                    response.data?.queryInformationListSendByUserId?.items
+                        ?.length
+                );
+                setNumberNotice(
+                    response.data?.queryInformationListSendByUserId?.items
+                        ?.length
+                );
+            };
+            getListNotice();
+            const subscription = API.graphql(
+                graphqlOperation(subscriptions.onUpdateInformationListSend, {
+                    user_id: user?.id,
+                })
+            ).subscribe({
+                next: ({provider, value}) => getListNotice(),
+                error: (error) => console.warn(error),
             });
-            console.log(
-                response.data?.queryInformationListSendByUserId?.items?.length
-            );
-            setNumberNotice(
-                response.data?.queryInformationListSendByUserId?.items?.length
-            );
-        };
-        getListNotice();
-        const subscription = API.graphql(
-            graphqlOperation(subscriptions.onUpdateInformationListSend, {
-                user_id: user.id,
-            })
-        ).subscribe({
-            next: ({provider, value}) => getListNotice(),
-            error: (error) => console.warn(error),
-        });
-        return () => subscription.unsubscribe();
+            return () => subscription.unsubscribe();
+        }
     }, [user]);
 
     return (
@@ -111,7 +115,7 @@ export const DashboardNavbar = (props) => {
                     >
                         {user?.name}
                     </Typography>
-                    {user?.group ? (
+                    {user ? (
                         <IconButton
                             onClick={toInformation}
                             sx={{
@@ -120,7 +124,7 @@ export const DashboardNavbar = (props) => {
                             }}
                         >
                             <InfoCircle fontSize="small" />
-                            {user.group == UserGroup.agentGrands ? (
+                            {user?.group == UserGroup.agentGrands ? (
                                 numberNotice > 0 ? (
                                     <Box
                                         sx={{

@@ -61,9 +61,7 @@ export const InformationListTable = (props) => {
 		});
 	};
 
-	const handleUpdateRead = async (id) => {
-		await updateRead(id)
-	}
+
 
 	const sortedItems = applySort(items, sort);
 	const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
@@ -99,7 +97,9 @@ export const InformationListTable = (props) => {
 												href={`/information/${item.information_id}`}
 												passHref
 											>
-												<IconButton onClick={handleUpdateRead(item.id)} component="a">
+												<IconButton onClick={async () =>  {
+													await updateRead(item.id)
+												}} component="a">
 													<ArrowRightIcon fontSize="small" />
 												</IconButton>
 											</NextLink>
@@ -144,6 +144,9 @@ export const InformationListTable = (props) => {
 												passHref
 											>
 												<Link
+												onClick={async () =>  {
+													await updateRead(item.id)
+												}}
 													underline="none"
 													variant="subtitle2"
 												>

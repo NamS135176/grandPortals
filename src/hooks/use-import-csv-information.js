@@ -64,7 +64,7 @@ export const useImportCSVInformation = () => {
             subject = null,
             content = null,
             important_info_flag = 0,
-            draft_flag = 0,
+            draft_flag = 1,
             scheduled_delivery_date = null,
             data = null,
         }) => {

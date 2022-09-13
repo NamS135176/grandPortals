@@ -248,7 +248,7 @@ const CsInformationCreate = () => {
 			if (!R.isEmpty(files)) {
 				await uploadFiles(files, informationId);
 			}
-			toast.success('送信しました！');
+			toast.success('保存しました。');
 			router.push('/cs/information/list');
 		} catch (e) {
 			toast.error(e.message);
