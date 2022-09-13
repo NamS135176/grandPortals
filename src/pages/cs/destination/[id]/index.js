@@ -139,9 +139,9 @@ const CsDestinationList = () => {
 							mt: 3,
 						}}
 					>
-						<NextLink href="/" passHref>
+						<NextLink href={`/cs/information/${id}`} passHref>
 							<Button sx={{m: 1}} variant="contained">
-								TOP
+							戻る
 							</Button>
 						</NextLink>
 					</Box>
