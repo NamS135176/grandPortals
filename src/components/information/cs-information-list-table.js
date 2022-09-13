@@ -19,17 +19,63 @@ import {SeverityPill} from "../severity-pill";
 import {Trash as TrashIcon} from "../../icons/trash";
 import {confirm} from "components/dialog/confirm-dialog";
 
-const applySort = (items, sortDir) =>
+const applySort = (items, sortDir, cateSort) =>
     items.sort((a, b) => {
         let newOrder = 0;
 
-        if (a.createdAt < b.createdAt) {
-            newOrder = -1;
-        }
-
-        if (a.createdAt > b.createdAt) {
-            newOrder = 1;
-        }
+		if(cateSort == "created"){
+			if (a.createdAt < b.createdAt) {
+				newOrder = -1;
+			}
+	
+			if (a.createdAt > b.createdAt) {
+				newOrder = 1;
+			}
+		}
+		else if(cateSort == "schedule"){
+			if (a.scheduled_delivery_date < b.scheduled_delivery_date) {
+				newOrder = -1;
+			}
+			if(a.scheduled_delivery_date == null){
+				return 1
+			}
+			if(b.scheduled_delivery_date == null){
+				return -1
+			}
+			if (a.scheduled_delivery_date > b.scheduled_delivery_date) {
+				newOrder = 1;
+			}
+		}
+		else if(cateSort == "sendStatus"){
+			if (a.important_info_flag < b.important_info_flag) {
+				newOrder = -1;
+			}
+			if (a.important_info_flag > b.important_info_flag) {
+				newOrder = 1;
+			}
+		}
+		else if(cateSort == "status"){
+			if (a.status < b.status) {
+				newOrder = -1;
+			}
+			if (a.status > b.status) {
+				newOrder = 1;
+			}
+		}
+		else if(cateSort == "title"){
+			if (a.subject < b.subject) {
+				newOrder = -1;
+			}
+			if(a.subject == null){
+				return 1
+			}
+			if(b.subject == null){
+				return -1
+			}
+			if (a.subject > b.subject) {
+				newOrder = 1;
+			}
+		}
 
         return sortDir === "asc" ? newOrder : -newOrder;
     });
@@ -40,6 +86,12 @@ const applyPagination = (items, page, rowsPerPage) =>
 export const CsInformationListTable = (props) => {
     const {items, deleteInformation, ...other} = props;
     const [sort, setSort] = useState("desc");
+	const [cateSort, setCateSort] = useState('')
+	const [sortCreate, setSortCreate] = useState("desc")
+	const [sortSchedule, setSortSchedule] = useState("desc");
+	const [sortSendStatus, setSortSendStatus] = useState("desc");
+	const [sortStatus, setSortStatus] = useState("desc");
+	const [sortTitle, setSortTitle] = useState("desc");
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -59,6 +111,66 @@ export const CsInformationListTable = (props) => {
 
             return "asc";
         });
+		setSortCreate((prevOrder) => {
+            if (prevOrder === "asc") {
+                return "desc";
+            }
+
+            return "asc";
+        });
+		setCateSort('created')
+    };
+
+	const handleSortSchedule = () => {
+		
+        setSortSchedule((prevOrder) => {
+            if (prevOrder === "asc") {
+				setSort('desc')
+                return "desc";
+            }
+			setSort('asc')
+            return "asc";
+        });
+		setCateSort('schedule')
+    };
+
+	const handleSortSendStatus = () => {
+		
+        setSortSendStatus((prevOrder) => {
+            if (prevOrder === "asc") {
+				setSort('desc')
+                return "desc";
+            }
+			setSort('asc')
+            return "asc";
+        });
+		setCateSort('sendStatus')
+    };
+
+	const handleSortStatus = () => {
+		
+        setSortStatus((prevOrder) => {
+            if (prevOrder === "asc") {
+				setSort('desc')
+                return "desc";
+            }
+			setSort('asc')
+            return "asc";
+        });
+		setCateSort('status')
+    };
+
+	const handleSortTitle = () => {
+		
+        setSortTitle((prevOrder) => {
+            if (prevOrder === "asc") {
+				setSort('desc')
+                return "desc";
+            }
+			setSort('asc')
+            return "asc";
+        });
+		setCateSort('title')
     };
 
     const handleDelete = async (item) => {
@@ -67,7 +179,7 @@ export const CsInformationListTable = (props) => {
         await deleteInformation(item);
     };
 
-    const sortedItems = applySort(items, sort);
+    const sortedItems = applySort(items, sort, cateSort);
     const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
     console.log("paginatedItems", paginatedItems);
 
@@ -78,14 +190,44 @@ export const CsInformationListTable = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell align="right" />
-                            <TableCell>ステータス</TableCell>
-                            <TableCell>種別</TableCell>
-                            <TableCell>お知らせ概要</TableCell>
-                            <TableCell>送信（予定）日時</TableCell>
-                            <TableCell sortDirection={sort}>
+                            <TableCell sortDirection={sortStatus}>
+							<TableSortLabel
+                                    active
+                                    direction={sortStatus}
+                                    onClick={handleSortStatus}
+                                >
+								ステータス
+								</TableSortLabel>
+								</TableCell>
+                            <TableCell sortDirection={sortSendStatus}>
+							<TableSortLabel
+                                    active
+                                    direction={sortSendStatus}
+                                    onClick={handleSortSendStatus}
+                                >
+								種別
+								</TableSortLabel>
+								</TableCell>
+                            <TableCell sortDirection={sortTitle}>
+							<TableSortLabel
+                                    active
+                                    direction={sortTitle}
+                                    onClick={handleSortTitle}
+                                >
+								お知らせ概要
+								</TableSortLabel>
+								</TableCell>
+                            <TableCell sortDirection={sortSchedule}> <TableSortLabel
+                                    active
+                                    direction={sortSchedule}
+                                    onClick={handleSortSchedule}
+                                >送信（予定）日時
+								</TableSortLabel>
+								</TableCell>
+                            <TableCell sortDirection={sortCreate}>
                                 <TableSortLabel
                                     active
-                                    direction={sort}
+                                    direction={sortCreate}
                                     onClick={handleSort}
                                 >
                                     登録日時
@@ -136,7 +278,7 @@ export const CsInformationListTable = (props) => {
                                             </Box>
                                         </TableCell>
 
-                                        <TableCell>{item.content}</TableCell>
+                                        <TableCell>{item.subject}</TableCell>
                                         <TableCell>
                                             {item.scheduled_delivery_date &&
                                                 moment(

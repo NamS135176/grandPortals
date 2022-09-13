@@ -78,7 +78,7 @@ const CsDestinationList = () => {
 					</Box>
 					<Card>
 						<CardContent>
-							<Typography variant="h6">お知らせ一覧</Typography>
+							<Typography variant="h6">お知らせ送信先一覧</Typography>
 
 							<Box
 								sx={{
