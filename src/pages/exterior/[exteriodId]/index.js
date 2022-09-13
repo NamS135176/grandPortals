@@ -38,6 +38,7 @@ const ExteriorDetails = () => {
 	const [form, setForm] = useState({
 		type: 'ブロック塀',
 		name: 'ブロック塀A',
+		details: 'テキストサンプルテキストサンプルテキストサンプル',
 		note: 'テキストサンプルテキストサンプルテキストサンプル',
 		date: new Date(),
 	});
@@ -221,6 +222,17 @@ const ExteriorDetails = () => {
 										name="name"
 										required
 										value={form.name}
+										onChange={handleChange}
+									/>
+								</Grid>
+								<Grid item md={8} xs={12}>
+									<TextField
+										fullWidth
+										multiline
+										minRows={4}
+										label="施工内容"
+										name="details"
+										value={form.details}
 										onChange={handleChange}
 									/>
 								</Grid>
