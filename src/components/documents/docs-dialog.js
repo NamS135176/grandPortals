@@ -71,6 +71,7 @@ export const DocsDialog = (props) => {
 						label="資料概要"
 						value={form.outline}
 						onChange={handleChange}
+						required
 					/>
 					<Box sx={{mt: 3}}>
 						<Typography
@@ -78,7 +79,7 @@ export const DocsDialog = (props) => {
 							variant="body2"
 							sx={{mb: 1}}
 						>
-							資料追加
+							資料追加 *
 						</Typography>
 
 						<FileDropzone

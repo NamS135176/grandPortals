@@ -113,7 +113,7 @@ export const HistoryDialog = (props) => {
 						value={form.date}
 						onChange={handleDateChange}
 						renderInput={(inputProps) => (
-							<TextField {...inputProps} />
+							<TextField {...inputProps} required />
 						)}
 					/>
 					<TextField
@@ -124,6 +124,7 @@ export const HistoryDialog = (props) => {
 						name="overview"
 						onChange={handleChange}
 						value={form.overview}
+						required
 					/>
 					<TextField
 						disabled={mode === 'reference'}

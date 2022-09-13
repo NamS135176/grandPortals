@@ -154,6 +154,7 @@ export const AddDocumentDialog = (props) => {
 						name="overview"
 						value={form.overview}
 						onChange={handleChange}
+						required
 					/>
 					<Box sx={{mt: 3}}>
 						<Typography
@@ -161,7 +162,7 @@ export const AddDocumentDialog = (props) => {
 							variant="body2"
 							sx={{mb: 1}}
 						>
-							資料追加
+							資料追加 *
 						</Typography>
 
 						<FileDropzone
