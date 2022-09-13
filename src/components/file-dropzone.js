@@ -131,7 +131,9 @@ export const FileDropzone = (props) => {
 									}}
 									secondary={bytesToSize(file.size)}
 								/>
-								<Tooltip title="Remove">
+								{
+									disabled ? <></> : 
+									<Tooltip title="Remove">
 									<IconButton
 										edge="end"
 										onClick={() => onRemove?.(file)}
@@ -139,6 +141,7 @@ export const FileDropzone = (props) => {
 										<XIcon fontSize="small" />
 									</IconButton>
 								</Tooltip>
+								}
 							</ListItem>
 						))}
 					</List>

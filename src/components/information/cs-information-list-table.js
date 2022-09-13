@@ -27,7 +27,6 @@ const applySort = (items, sortDir, cateSort) =>
 			if (a.createdAt < b.createdAt) {
 				newOrder = -1;
 			}
-	
 			if (a.createdAt > b.createdAt) {
 				newOrder = 1;
 			}
@@ -86,7 +85,7 @@ const applyPagination = (items, page, rowsPerPage) =>
 export const CsInformationListTable = (props) => {
     const {items, deleteInformation, ...other} = props;
     const [sort, setSort] = useState("desc");
-	const [cateSort, setCateSort] = useState('')
+	const [cateSort, setCateSort] = useState('created')
 	const [sortCreate, setSortCreate] = useState("desc")
 	const [sortSchedule, setSortSchedule] = useState("desc");
 	const [sortSendStatus, setSortSendStatus] = useState("desc");
@@ -104,18 +103,12 @@ export const CsInformationListTable = (props) => {
     };
 
     const handleSort = () => {
-        setSort((prevOrder) => {
-            if (prevOrder === "asc") {
-                return "desc";
-            }
-
-            return "asc";
-        });
 		setSortCreate((prevOrder) => {
             if (prevOrder === "asc") {
-                return "desc";
+				setSort('desc')
+                return "desc";		
             }
-
+			setSort('asc')
             return "asc";
         });
 		setCateSort('created')

@@ -58,7 +58,7 @@ const CsInformationDetails = () => {
 	// const canEdit = false;
 
 	useEffect(() => {
-		if (user.group != UserGroup.support) {
+		if (user?.group != UserGroup.support) {
 			router.push('/404');
 		}
 	}, [user]);
@@ -215,8 +215,8 @@ const CsInformationDetails = () => {
 			submit: null,
 		},
 		validationSchema: Yup.object({
-			subject: Yup.string().max(255).required('件名必須です。'),
-			content: Yup.string().max(255).required('本文は必須です。'),
+			subject: Yup.string(),
+			content: Yup.string(),
 			files: Yup.array(),
 			date: Yup.date().nullable().default(null),
 			importantInfoFlag: Yup.bool(),

@@ -36,7 +36,7 @@
         },
         "publishPasswordResetLink": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-5a4374496939654a3959-build.zip",
+          "s3Key": "amplify-builds/publishPasswordResetLink-32792b344a41544e4969-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
           "titleHolder": "マイプレイス"
         },
@@ -62,7 +62,7 @@
         },
         "withdrawalRequest": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-4f7a53494d6872334e55-build.zip",
+          "s3Key": "amplify-builds/withdrawalRequest-585a4939386f536c4544-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         },
         "createForceResetPassword": {
@@ -89,7 +89,7 @@
         },
         "handleSendMailSQS": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/handleSendMailSQS-704f4e61356c69506938-build.zip",
+          "s3Key": "amplify-builds/handleSendMailSQS-32786974565a6e666a39-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         }
       }

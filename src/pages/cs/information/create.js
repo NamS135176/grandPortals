@@ -175,8 +175,8 @@ const CsInformationCreate = () => {
 			submit: null,
 		},
 		validationSchema: Yup.object({
-			subject: Yup.string().max(255).required('件名必須です。'),
-			content: Yup.string().max(255).required('本文は必須です。'),
+			subject: Yup.string(),
+			content: Yup.string(),
 			files: Yup.array(),
 			date: Yup.date().nullable().default(null),
 			importantInfoFlag: Yup.bool(),
@@ -201,7 +201,7 @@ const CsInformationCreate = () => {
 	}, []);
 
 	const saveData = async (draftFlag = 0) => {
-		console.log('saveData... ', {draftFlag, values: formik.values});
+		console.log('saveData... ', {draftFlag, values: formik.values, createdInformationId});
 		if (draftFlag == 1 && formik.values.importantInfoFlag) {
 			//show confirm
 			const accept = await confirm(
@@ -211,7 +211,7 @@ const CsInformationCreate = () => {
 		}
 		try {
 			var informationId = createdInformationId;
-
+            
 			if (!informationId) {
 				//create new information
 				const {information} = await createInformation({
@@ -224,6 +224,7 @@ const CsInformationCreate = () => {
 					scheduled_delivery_date: formik.values.date,
 				});
 				setCreatedInformationId(information?.id);
+                informationId = information?.id
 			} else {
 				//update exist
 				await API.graphql({
