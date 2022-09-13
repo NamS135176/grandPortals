@@ -150,7 +150,7 @@ export const InformationListTable = (props) => {
 													underline="none"
 													variant="subtitle2"
 												>
-													{item.information.content}
+													{item.information.subject}
 												</Link>
 											</NextLink>
 										</TableCell>
