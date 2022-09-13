@@ -7,6 +7,7 @@ import {
     Typography,
     Link,
 } from "@mui/material";
+import {useState, useEffect} from "react";
 import {styled} from "@mui/material/styles";
 import {Menu as MenuIcon} from "../../icons/menu";
 import {Bell as InfoCircle} from "../../icons/bell";
@@ -14,6 +15,9 @@ import NextLink from "next/link";
 import {useAuth} from "hooks/use-auth";
 import {UserGroup} from "utils/global-data";
 import {useRouter} from "next/router";
+import {queryInformationListSendByUserId} from "graphql/queries";
+import {API, graphqlOperation} from "aws-amplify";
+import * as subscriptions from "graphql/subscriptions";
 
 const DashboardNavbarRoot = styled(AppBar)(({theme}) => ({
     backgroundColor: theme.palette.background.paper,
@@ -31,6 +35,7 @@ const DashboardNavbarRoot = styled(AppBar)(({theme}) => ({
 }));
 
 export const DashboardNavbar = (props) => {
+    const [numberNotice, setNumberNotice] = useState(0);
     const {onOpenSidebar, ...other} = props;
     const {user} = useAuth();
     const router = useRouter();
@@ -41,6 +46,41 @@ export const DashboardNavbar = (props) => {
             router.push("/cs/information/list");
         }
     };
+
+    useEffect(() => {
+        const getListNotice = async () => {
+            const response = await API.graphql({
+                query: queryInformationListSendByUserId,
+                variables: {
+                    user_id: user.id,
+                    filter: {
+                        delete_flag: {
+                            eq: 0,
+                        },
+                        last_user_read: {
+                            attributeExists: false,
+                        },
+                    },
+                },
+            });
+            console.log(
+                response.data?.queryInformationListSendByUserId?.items?.length
+            );
+            setNumberNotice(
+                response.data?.queryInformationListSendByUserId?.items?.length
+            );
+        };
+        getListNotice();
+        const subscription = API.graphql(
+            graphqlOperation(subscriptions.onUpdateInformationListSend, {
+                user_id: user.id,
+            })
+        ).subscribe({
+            next: ({provider, value}) => getListNotice(),
+            error: (error) => console.warn(error),
+        });
+        return () => subscription.unsubscribe();
+    }, [user]);
 
     return (
         <>
@@ -81,17 +121,21 @@ export const DashboardNavbar = (props) => {
                         >
                             <InfoCircle fontSize="small" />
                             {user.group == UserGroup.agentGrands ? (
-                                <Box
-                                    sx={{
-                                        position: "absolute",
-                                        width: 10,
-                                        height: 10,
-                                        borderRadius: 5,
-                                        backgroundColor: "red",
-                                        top: 5,
-                                        left:20
-                                    }}
-                                ></Box>
+                                numberNotice > 0 ? (
+                                    <Box
+                                        sx={{
+                                            position: "absolute",
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            backgroundColor: "red",
+                                            top: 5,
+                                            left: 20,
+                                        }}
+                                    ></Box>
+                                ) : (
+                                    <></>
+                                )
                             ) : (
                                 <></>
                             )}
