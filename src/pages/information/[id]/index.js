@@ -41,7 +41,7 @@ const InformationDetails = () => {
     useEffect(async () => {
         if (!information) return;
         //check scheduled_delivery_date
-        if (moment(information.scheduled_delivery_date).isAfter(moment().utc())) {
+        if (moment(information.scheduled_delivery_date).isAfter(moment().utc(new Date()))) {
             //not available this time
             router.push("/404");
             return;

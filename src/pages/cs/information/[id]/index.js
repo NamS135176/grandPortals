@@ -50,7 +50,7 @@ const CsInformationDetails = () => {
 
 	const [listInformationSend, setListInformationSend] = useState([]);
 	const [files, setFiles] = useState([]);
-	const canEdit = information?.processed_date || moment(information?.scheduled_delivery_date).isAfter(moment())
+	const canEdit = information?.processed_date || moment(information?.scheduled_delivery_date).isAfter(moment().utc(new Date()))
 		? false
 		: true;
 	const draftFlag = useRef(0);
