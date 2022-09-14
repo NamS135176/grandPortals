@@ -33,6 +33,7 @@ import * as R from 'ramda';
 import {useRoomDefault} from '../../../hooks/use-room-default';
 import {useAuth} from '../../../hooks/use-auth';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const CreateInterior = () => {
 	const {user} = useAuth();
@@ -121,9 +122,19 @@ const CreateInterior = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

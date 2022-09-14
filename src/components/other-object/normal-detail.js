@@ -43,6 +43,7 @@ import {useOtherObjectDetail} from '../../hooks/use-other-object-detail';
 import {useBukkenDefault} from '../../hooks/use-bukken-default';
 import {useAuth} from '../../hooks/use-auth';
 import {UserGroup} from '../../utils/global-data';
+import {Friend} from 'react-line-social';
 
 const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
 	const {user} = useAuth();
@@ -209,9 +210,19 @@ const OtherObjectNormalDetails = ({id, otherObjectKind}) => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
