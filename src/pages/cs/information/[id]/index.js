@@ -126,6 +126,7 @@ const CsInformationDetails = () => {
 	};
 
 	const saveData = async (draftFlag = 0) => {
+		console.log(formik.values);
 		await updateInformation({...formik.values, id, draftFlag});
 		//upload s3 file if
 		const uploads = files.filter((file) => !file.uploaded);

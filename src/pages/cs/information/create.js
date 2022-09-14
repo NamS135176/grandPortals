@@ -144,11 +144,13 @@ const CsInformationCreate = () => {
 		}
 		//check format email
 		var errors = [];
+        // console.log(csvData);
 		csvData.forEach((row, idx) => {
 			if (!isEmailValid(row.email)) {
 				errors.push(
 					`${idx + 1}行目：メールアドレス形式に誤りがあります。`
 				);
+                console.log(idx + " . invalid");
 			}
 		});
 		if (!R.isEmpty(errors)) {
@@ -202,7 +204,7 @@ const CsInformationCreate = () => {
 
 	const saveData = async (draftFlag = 0) => {
 		console.log('saveData... ', {draftFlag, values: formik.values, createdInformationId});
-		if (draftFlag == 1 && formik.values.importantInfoFlag) {
+		if (draftFlag == 1 && formik.values.date) {
 			//show confirm
 			const accept = await confirm(
 				'下書き保存しますか？（下書き保存の場合、通知されません。配信予定日時に通知または即時通知する場合は送信ボタンをクリックしてください。）'
@@ -261,6 +263,7 @@ const CsInformationCreate = () => {
 		if (!checkMaxSizeFiles()) {
 			validate = false;
 		}
+        console.log(formik.values.date);
 		if (formik.values.date) {
 			//show confirm
 			const accept = await confirm(

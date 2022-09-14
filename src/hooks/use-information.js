@@ -74,7 +74,7 @@ export const useInformation = (informationId) => {
                             subject,
                             content,
                             draft_flag: draftFlag,
-                            important_info_flag: importantInfoFlag,
+                            important_info_flag: importantInfoFlag ? 1 : 0,
                             scheduled_delivery_date: date,
                         },
                     },
