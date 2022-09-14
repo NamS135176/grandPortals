@@ -28,6 +28,7 @@ import moment from 'moment';
 import {AddDocumentDialog} from '../../../components/bukken/add-document-dialog';
 import {FileUpload} from '../../../components/widgets/file-upload';
 import {AuthGuard} from 'components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const BukkenDetails = () => {
 	const router = useRouter();
@@ -123,9 +124,19 @@ const BukkenDetails = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

@@ -16,23 +16,25 @@ import {CsDestinationListTable} from '../../../../components/information/cs-dest
 import {gtm} from '../../../../lib/gtm';
 import {AuthGuard} from '../../../../components/authentication/auth-guard';
 import {bukkenApi} from '__fake-api__/bukken-api';
-import { useAuth } from 'hooks/use-auth';
-import { useDestinationList } from 'hooks/use-destination-list';
-import { useRouter } from 'next/router';
-
-
-
+import {useAuth} from 'hooks/use-auth';
+import {useDestinationList} from 'hooks/use-destination-list';
+import {useRouter} from 'next/router';
+import {Friend} from 'react-line-social';
 
 const CsDestinationList = () => {
-	const router = useRouter()
+	const router = useRouter();
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [filters, setFilters] = useState({
 		email: '',
 		name: '',
 	});
-	const {id} = router.query
-	const {destinations:list, filterDestination, loading} = useDestinationList(id)
+	const {id} = router.query;
+	const {
+		destinations: list,
+		filterDestination,
+		loading,
+	} = useDestinationList(id);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -47,7 +49,7 @@ const CsDestinationList = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		filterDestination(filters)
+		filterDestination(filters);
 		// const filteredItems = applyFilters(items, filters);
 		// setFilteredItems(filteredItems);
 	};
@@ -72,13 +74,25 @@ const CsDestinationList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
-							<Typography variant="h6">お知らせ送信先一覧</Typography>
+							<Typography variant="h6">
+								お知らせ送信先一覧
+							</Typography>
 
 							<Box
 								sx={{
@@ -141,7 +155,7 @@ const CsDestinationList = () => {
 					>
 						<NextLink href={`/cs/information/${id}`} passHref>
 							<Button sx={{m: 1}} variant="contained">
-							戻る
+								戻る
 							</Button>
 						</NextLink>
 					</Box>

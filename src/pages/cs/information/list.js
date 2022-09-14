@@ -19,6 +19,8 @@ import {AuthGuard} from '../../../components/authentication/auth-guard';
 import {DateTimePicker} from '@mui/lab';
 import {useInformationList} from 'hooks/use-information-list';
 import toast from 'react-hot-toast';
+import {Friend} from 'react-line-social';
+
 const sortOptions = [
 	{
 		label: '全て',
@@ -71,7 +73,7 @@ const CsInformationList = () => {
 		filterDateInformationSendList,
 		deleteInformation,
 		page,
-		setPage
+		setPage,
 	} = useInformationList();
 	console.log(list);
 	const [items, setItems] = useState([]);
@@ -121,9 +123,19 @@ const CsInformationList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
@@ -203,17 +215,18 @@ const CsInformationList = () => {
 										>
 											<DateTimePicker
 												inputFormat="yyyy/MM/dd HH:mm"
-												onChange={(newDate) =>
-													{
-														if(endDate && newDate >  endDate){
-															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
-														}
-														else{
-															setStartDate(newDate)
-														}
+												onChange={(newDate) => {
+													if (
+														endDate &&
+														newDate > endDate
+													) {
+														toast.error(
+															'送信日時（To）には送信日時（From）より後の日付を指定してください。'
+														);
+													} else {
+														setStartDate(newDate);
 													}
-													
-												}
+												}}
 												label="送信日時（From）"
 												renderInput={(inputProps) => (
 													<TextField
@@ -227,17 +240,19 @@ const CsInformationList = () => {
 											</Box>
 											<DateTimePicker
 												inputFormat="yyyy/MM/dd HH:mm"
-												onChange={(newDate) =>
-													{
-														if(startDate && newDate < startDate){
-															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
-														}
-														else{
-															setEndDate(newDate)
-														}
-														// setEndDate(newDate)
+												onChange={(newDate) => {
+													if (
+														startDate &&
+														newDate < startDate
+													) {
+														toast.error(
+															'送信日時（To）には送信日時（From）より後の日付を指定してください。'
+														);
+													} else {
+														setEndDate(newDate);
 													}
-												}
+													// setEndDate(newDate)
+												}}
 												label="送信日時（To）"
 												renderInput={(inputProps) => (
 													<TextField

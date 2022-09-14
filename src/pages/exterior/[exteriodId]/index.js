@@ -24,6 +24,7 @@ import {ArrowRight as ArrowRightIcon} from '../../../icons/arrow-right';
 import {HistoryDialog} from '../../../components/history/history-dialog';
 import {DocsDialog} from '../../../components/documents/docs-dialog';
 import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
+import {Friend} from 'react-line-social';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -153,9 +154,19 @@ const ExteriorDetails = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

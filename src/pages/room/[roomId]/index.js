@@ -39,6 +39,7 @@ import {OtherObjectKind} from '../../../utils/bukken';
 import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {useAuth} from '../../../hooks/use-auth';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const RoomDetails = () => {
 	const {user} = useAuth();
@@ -159,9 +160,19 @@ const RoomDetails = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

@@ -74,6 +74,7 @@
     "react-hot-toast": "^2.2.0",
     "react-i18next": "^11.16.9",
     "react-image-file-resizer": "^0.4.8",
+    "react-line-social": "^0.3.0",
     "react-markdown": "^8.0.3",
     "react-quill": "2.0.0-beta.4",
     "react-redux": "^8.0.2",
