@@ -20,6 +20,7 @@ export const useInformationList = () => {
     const [informationList, setInformationList] = useState([]);
     const [informationListFirst, setInformationListFirst] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(0);
 
     const getListInformationSendList = useCallback(async (list = [], nextToken = null) => {
         const response = await API.graphql({
@@ -111,6 +112,7 @@ export const useInformationList = () => {
     )
 
     let filterDateInformationSendList =  (start, end, filter) => {
+        setPage(0)
             if(filter == "全て" ){
                 if(!start || !end){
                     console.log("ok");
@@ -260,5 +262,5 @@ export const useInformationList = () => {
         if (isMounted() && user) loadData();
     }, [isMounted, user]);
 
-    return {informationList, informationListFirst, filterInformationSendList, filterDateInformationSendList, deleteInformation, updateReadInformation, loading};
+    return {informationList, informationListFirst, page, setPage, filterInformationSendList, filterDateInformationSendList, deleteInformation, updateReadInformation, loading};
 };

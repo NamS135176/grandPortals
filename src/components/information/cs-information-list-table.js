@@ -83,7 +83,7 @@ const applyPagination = (items, page, rowsPerPage) =>
     items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 export const CsInformationListTable = (props) => {
-    const {items, deleteInformation, ...other} = props;
+    const {items, deleteInformation,page,setPage, ...other} = props;
     const [sort, setSort] = useState("desc");
 	const [cateSort, setCateSort] = useState('created')
 	const [sortCreate, setSortCreate] = useState("desc")
@@ -91,7 +91,7 @@ export const CsInformationListTable = (props) => {
 	const [sortSendStatus, setSortSendStatus] = useState("desc");
 	const [sortStatus, setSortStatus] = useState("desc");
 	const [sortTitle, setSortTitle] = useState("desc");
-    const [page, setPage] = useState(0);
+
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handlePageChange = (event, newPage) => {

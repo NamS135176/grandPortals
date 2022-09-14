@@ -70,6 +70,8 @@ const CsInformationList = () => {
 		filterInformationSendList,
 		filterDateInformationSendList,
 		deleteInformation,
+		page,
+		setPage
 	} = useInformationList();
 	console.log(list);
 	const [items, setItems] = useState([]);
@@ -200,10 +202,10 @@ const CsInformationList = () => {
 											}}
 										>
 											<DateTimePicker
-												inputFormat="yyyy/MM/dd"
+												inputFormat="yyyy/MM/dd HH:mm"
 												onChange={(newDate) =>
 													{
-														if(endDate && newDate >=  endDate){
+														if(endDate && newDate >  endDate){
 															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
 														}
 														else{
@@ -224,10 +226,10 @@ const CsInformationList = () => {
 												&nbsp;&nbsp;〜&nbsp;&nbsp;
 											</Box>
 											<DateTimePicker
-												inputFormat="yyyy/MM/dd"
+												inputFormat="yyyy/MM/dd HH:mm"
 												onChange={(newDate) =>
 													{
-														if(newDate && newDate <= startDate){
+														if(startDate && newDate < startDate){
 															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
 														}
 														else{
@@ -258,6 +260,8 @@ const CsInformationList = () => {
 							<Divider />
 							{list.length > 0 && (
 								<CsInformationListTable
+									page={page}
+									setPage={setPage}
 									deleteInformation={deleteInformation}
 									items={list}
 								/>
