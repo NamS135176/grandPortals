@@ -18,7 +18,7 @@ import {gtm} from '../../../lib/gtm';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
 import {DateTimePicker} from '@mui/lab';
 import {useInformationList} from 'hooks/use-information-list';
-
+import toast from 'react-hot-toast';
 const sortOptions = [
 	{
 		label: '全て',
@@ -202,7 +202,15 @@ const CsInformationList = () => {
 											<DateTimePicker
 												inputFormat="yyyy/MM/dd"
 												onChange={(newDate) =>
-													setStartDate(newDate)
+													{
+														if(endDate && newDate >=  endDate){
+															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
+														}
+														else{
+															setStartDate(newDate)
+														}
+													}
+													
 												}
 												label="送信日時（From）"
 												renderInput={(inputProps) => (
@@ -218,7 +226,15 @@ const CsInformationList = () => {
 											<DateTimePicker
 												inputFormat="yyyy/MM/dd"
 												onChange={(newDate) =>
-													setEndDate(newDate)
+													{
+														if(newDate && newDate <= startDate){
+															toast.error("送信日時（To）には送信日時（From）より後の日付を指定してください。")
+														}
+														else{
+															setEndDate(newDate)
+														}
+														// setEndDate(newDate)
+													}
 												}
 												label="送信日時（To）"
 												renderInput={(inputProps) => (

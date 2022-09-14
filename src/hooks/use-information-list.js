@@ -10,7 +10,7 @@ import * as R from "ramda";
 import {getBukkenCoverImageUrlByBukken} from "../utils/bukken";
 import {UserGroup} from "../utils/global-data";
 import moment from "moment";
-import { listInformation, queryInformationListSendByUserId , queryInformationListSendByInformationId, updateInf} from "graphql/queries";
+import { listInformation, queryInformationListSendByUserId , queryInformationListSendByInformationId, getInformation} from "graphql/queries";
 import * as mutations from "../graphql/mutations";
 import toast from "react-hot-toast";
 
@@ -150,6 +150,14 @@ export const useInformationList = () => {
        const deleteInformation = useCallback(
         async (item) => {
             try {
+                const info =  await API.graphql({
+                    query: getInformation,
+                    variables: {
+                      id: item.id
+                    },
+                });
+                // console.log(info);
+                if(info.data?.getInformation?.delete_flag == 0){
                 await API.graphql({
                     query: mutations.updateInformation,
                     variables: {
@@ -180,6 +188,11 @@ export const useInformationList = () => {
                 );
                 setInformationListFirst(newInformationListFirst);
                 toast.success('お知らせ情報を削除しました。')
+                }
+                else{
+                    toast.error("該当のお知らせは削除されています。")
+                }
+
                 //update all documents + history related with this interior
             } catch (e) {
                 console.error(e);
