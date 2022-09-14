@@ -52,7 +52,7 @@ const CsInformationCreate = () => {
 	const draftFlag = useRef(0);
 
 	useEffect(() => {
-		if (user.group != UserGroup.support) {
+		if (user?.group != UserGroup.support) {
 			router.push('/404');
 		}
 	}, [user]);
