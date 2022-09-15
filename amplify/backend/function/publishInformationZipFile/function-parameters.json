@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "storage": {
+      "grandsPortal": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

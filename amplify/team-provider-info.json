@@ -32,12 +32,13 @@
         },
         "settingCognitoPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/settingCognitoPassword-58526b5674534e763831-build.zip"
+          "s3Key": "amplify-builds/settingCognitoPassword-5030304e64335167686c-build.zip"
         },
         "publishPasswordResetLink": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/publishPasswordResetLink-5a4374496939654a3959-build.zip",
-          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
+          "s3Key": "amplify-builds/publishPasswordResetLink-32792b344a41544e4969-build.zip",
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
+          "titleHolder": "マイプレイス"
         },
         "checkLinkValidation": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
@@ -61,12 +62,35 @@
         },
         "withdrawalRequest": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
-          "s3Key": "amplify-builds/withdrawalRequest-7a306a5a65586a664c4d-build.zip",
+          "s3Key": "amplify-builds/withdrawalRequest-585a4939386f536c4544-build.zip",
           "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         },
         "createForceResetPassword": {
           "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
           "s3Key": "amplify-builds/createForceResetPassword-6c793859613175512f35-build.zip"
+        },
+        "getNextInformationId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextInformationId-6831747945453668325a-build.zip"
+        },
+        "getNextInformationListSendId": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/getNextInformationListSendId-353246617a3055726636-build.zip"
+        },
+        "publishInformationZipFile": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/publishInformationZipFile-35483162574444556937-build.zip"
+        },
+        "scheduleSendMail": {
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6",
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/scheduleSendMail-4e584b51576165694253-build.zip",
+          "queueUrl": "https://sqs.ap-northeast-1.amazonaws.com/147662606770/sendEmailToUser-dev"
+        },
+        "handleSendMailSQS": {
+          "deploymentBucketName": "amplify-grandsportal-develop-152938-deployment",
+          "s3Key": "amplify-builds/handleSendMailSQS-32786974565a6e666a39-build.zip",
+          "secretsPathAmplifyAppId": "d3i7r774ih5bz6"
         }
       }
     }

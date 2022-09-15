@@ -59,6 +59,7 @@ export const FileDropzone = (props) => {
 		maxSize,
 		minSize,
 		onDrop,
+		disabled,
 	});
 
 	return (
@@ -130,7 +131,9 @@ export const FileDropzone = (props) => {
 									}}
 									secondary={bytesToSize(file.size)}
 								/>
-								<Tooltip title="Remove">
+								{
+									disabled ? <></> : 
+									<Tooltip title="Remove">
 									<IconButton
 										edge="end"
 										onClick={() => onRemove?.(file)}
@@ -138,6 +141,7 @@ export const FileDropzone = (props) => {
 										<XIcon fontSize="small" />
 									</IconButton>
 								</Tooltip>
+								}
 							</ListItem>
 						))}
 					</List>
@@ -152,6 +156,7 @@ export const FileDropzone = (props) => {
 							onClick={onRemoveAll}
 							size="small"
 							type="button"
+							disabled={disabled}
 						>
 							すべて削除する
 						</Button>

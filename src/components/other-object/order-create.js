@@ -18,7 +18,7 @@ import {
 import {DashboardLayout} from '../dashboard/dashboard-layout';
 import {ManagementList} from '../management-menu';
 import {ArrowLeft as ArrowLeftIcon} from '../../icons/arrow-left';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {FileUpload} from '../widgets/file-upload';
 import {useRouter} from 'next/router';
 import {useFormik} from 'formik';
@@ -37,6 +37,7 @@ import {
 import {useCreateOtherObject} from '../../hooks/use-create-other-object';
 import {useAuth} from '../../hooks/use-auth';
 import {UserGroup} from '../../utils/global-data';
+import {Friend} from 'react-line-social';
 
 const CreateOrderOtherObject = ({otherObjectKind}) => {
 	const {user} = useAuth();
@@ -130,9 +131,19 @@ const CreateOrderOtherObject = ({otherObjectKind}) => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
@@ -321,9 +332,9 @@ const CreateOrderOtherObject = ({otherObjectKind}) => {
 									</Box>
 								</Grid>
 								<Grid item md={8} xs={12}>
-									<MobileDatePicker
+									<DesktopDatePicker
 										label="購入日（製作日）"
-										inputFormat="MM/dd/yyyy"
+										inputFormat="yyyy/MM/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
@@ -355,9 +366,9 @@ const CreateOrderOtherObject = ({otherObjectKind}) => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/MM/dd"
 											value={
 												formik.values
 													.last_construction_date

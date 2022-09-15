@@ -19,7 +19,7 @@ import {DashboardLayout} from '../../../components/dashboard/dashboard-layout';
 import {gtm} from '../../../lib/gtm';
 import {ManagementList} from '../../../components/management-menu';
 import {ArrowLeft as ArrowLeftIcon} from '../../../icons/arrow-left';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {OtherObjectFieldKind} from '../../../utils/bukken';
 import {InteriorKind, UserGroup} from '../../../utils/global-data';
 import {useCreateInterior} from '../../../hooks/use-create-interior';
@@ -32,6 +32,7 @@ import * as R from 'ramda';
 import {useRoomDefault} from '../../../hooks/use-room-default';
 import {useAuth} from '../../../hooks/use-auth';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const CreateInterior = () => {
 	const {user} = useAuth();
@@ -120,9 +121,19 @@ const CreateInterior = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
@@ -308,9 +319,9 @@ const CreateInterior = () => {
 									</Box>
 								</Grid>
 								<Grid item md={8} xs={12}>
-									<MobileDatePicker
+									<DesktopDatePicker
 										label="購入日"
-										inputFormat="MM/dd/yyyy"
+										inputFormat="yyyy/MM/dd"
 										value={formik.values.date}
 										onChange={handleDateChange}
 										renderInput={(inputProps) => (
@@ -342,9 +353,9 @@ const CreateInterior = () => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/MM/dd"
 											value={
 												formik.values
 													.last_construction_date

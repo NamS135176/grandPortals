@@ -16,17 +16,22 @@ import {DashboardLayout} from '../../../components/dashboard/dashboard-layout';
 import {CsInformationListTable} from '../../../components/information/cs-information-list-table';
 import {gtm} from '../../../lib/gtm';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
-import {bukkenApi} from '__fake-api__/bukken-api';
 import {DateTimePicker} from '@mui/lab';
+import {useInformationList} from 'hooks/use-information-list';
+import toast from 'react-hot-toast';
+import {Friend} from 'react-line-social';
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
+import { useRouter } from 'next/router';
 
 const sortOptions = [
 	{
-		label: '下書き',
-		value: '下書き',
+		label: '全て',
+		value: '全て',
 	},
 	{
-		label: '未送信',
-		value: '未送信',
+		label: '下書き',
+		value: '下書き',
 	},
 	{
 		label: '送信予定',
@@ -35,10 +40,6 @@ const sortOptions = [
 	{
 		label: '送信済',
 		value: '送信済',
-	},
-	{
-		label: '全て',
-		value: '',
 	},
 ];
 
@@ -68,25 +69,35 @@ const applyFilters = (items, filters) =>
 		return true;
 	});
 
+
 const CsInformationList = () => {
+	const {user} = useAuth()
+	const router = useRouter()
+	const {
+		informationList: list,
+		filterInformationSendList,
+		filterDateInformationSendList,
+		deleteInformation,
+		page,
+		setPage,
+	} = useInformationList();
+	console.log(list);
 	const [items, setItems] = useState([]);
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
-	const [filteredItems, setFilteredItems] = useState([]);
+	const [filteredItems, setFilteredItems] = useState(list);
 	const [filters, setFilters] = useState({
-		status: '',
+		status: '全て',
 		startDate: null,
 		endDate: null,
 	});
 
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getCsInformationList();
-			setItems(data);
-		} catch (err) {
-			console.error(err);
+
+	useEffect(() => {
+		if (user?.group != UserGroup.support) {
+			router.push('/404');
 		}
-	}, []);
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -97,12 +108,12 @@ const CsInformationList = () => {
 			...filters,
 			[event.target.name]: event.target.value,
 		});
+		// filterInformationSendList(event.target.value)
 	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const filteredItems = applyFilters(items, filters);
-		setFilteredItems(filteredItems);
+		filterDateInformationSendList(startDate, endDate, filters.status);
 	};
 
 	return (
@@ -125,9 +136,19 @@ const CsInformationList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
@@ -141,7 +162,14 @@ const CsInformationList = () => {
 								<Typography variant="h6">
 									お知らせ一覧
 								</Typography>
-								<Button variant="contained">新規登録</Button>
+								<NextLink
+									href="/cs/information/create"
+									passHref
+								>
+									<Button variant="contained">
+										新規登録
+									</Button>
+								</NextLink>
 							</Box>
 							<Box
 								sx={{p: 3}}
@@ -199,10 +227,19 @@ const CsInformationList = () => {
 											}}
 										>
 											<DateTimePicker
-												inputFormat="dd/MM/yyyy"
-												onChange={(newDate) =>
-													setStartDate(newDate)
-												}
+												inputFormat="yyyy/MM/dd HH:mm"
+												onChange={(newDate) => {
+													if (
+														endDate &&
+														newDate > endDate
+													) {
+														toast.error(
+															'送信日時（To）には送信日時（From）より後の日付を指定してください。'
+														);
+													} else {
+														setStartDate(newDate);
+													}
+												}}
 												label="送信日時（From）"
 												renderInput={(inputProps) => (
 													<TextField
@@ -215,10 +252,20 @@ const CsInformationList = () => {
 												&nbsp;&nbsp;〜&nbsp;&nbsp;
 											</Box>
 											<DateTimePicker
-												inputFormat="dd/MM/yyyy"
-												onChange={(newDate) =>
-													setEndDate(newDate)
-												}
+												inputFormat="yyyy/MM/dd HH:mm"
+												onChange={(newDate) => {
+													if (
+														startDate &&
+														newDate < startDate
+													) {
+														toast.error(
+															'送信日時（To）には送信日時（From）より後の日付を指定してください。'
+														);
+													} else {
+														setEndDate(newDate);
+													}
+													// setEndDate(newDate)
+												}}
 												label="送信日時（To）"
 												renderInput={(inputProps) => (
 													<TextField
@@ -239,8 +286,13 @@ const CsInformationList = () => {
 								</Grid>
 							</Box>
 							<Divider />
-							{items.length > 0 && (
-								<CsInformationListTable items={filteredItems} />
+							{list.length > 0 && (
+								<CsInformationListTable
+									page={page}
+									setPage={setPage}
+									deleteInformation={deleteInformation}
+									items={list}
+								/>
 							)}
 						</CardContent>
 					</Card>

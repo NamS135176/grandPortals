@@ -46,7 +46,7 @@ Amplify Params - DO NOT EDIT */
          const url = `${process.env.PREFIX_DOMAIN}/passwordresetting/${id}`;
          const msg = {
              to: email,
-             from: "no-reply@grands.co.jp",
+             from: "マイプレイス<no-reply@grands.co.jp>",
              subject: `【${process.env.TITLE_HOLDER}】パスワードリセットのお知らせ`,
              html: `${name} さん<br /><br />
     [${process.env.TITLE_HOLDER}】のパスワードをリセットするには、次のリンクをクリックしてください。<br /><br />
@@ -55,9 +55,12 @@ Amplify Params - DO NOT EDIT */
     リクエストした覚えがない場合は、何も行わずにこのメールを破棄してください。<br /><br />
     ※本メールは送信専用となっております。ご返信いただいても管理者には届きませんのでご注意ください。<br /><br />
     ===================================<br />
-    ${process.env.TITLE_HOLDER}<br /><br />
-    0463-79-5564<br />
-    株式会社grands<br />
+    ┏┓<br />
+    ┗■ 株式会社grands<br /><br />
+    〒254-0013 神奈川県平塚市田村7丁目26-17<br />
+    TEL：050-5443-5974<br />
+    FAX：045-345-5047<br />
+    Email：info@grands.co.jp<br />
     ===================================<br /> `,
          };
          await sgMail.send(msg);

@@ -21,8 +21,9 @@ import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {API} from 'aws-amplify';
 import {parseUserName} from 'utils/user';
-import {updateUser} from 'graphql/mutations';
+import {updateUser, updateInformationListSend} from 'graphql/mutations';
 import {useAuth} from 'hooks/use-auth';
+import {queryInformationListSendByUserId} from 'graphql/queries';
 
 export const ProfileForm = (props) => {
 	const {reloadUserInfo} = useAuth();
@@ -30,15 +31,16 @@ export const ProfileForm = (props) => {
 	console.log('ProfileForm... ', {user});
 	const router = useRouter();
 	const parsedName = parseUserName(user.name);
+	console.log('parsedName:', parsedName);
 	const parsedNameKana = parseUserName(user.nameKana);
 	const formik = useFormik({
 		initialValues: {
-			surname: parsedName[0],
-			name: parsedName[1],
-			surnameKana: parsedNameKana[0],
-			nameKana: parsedNameKana[1],
+			surname: parsedName[1],
+			name: parsedName[0],
+			surnameKana: parsedNameKana[1],
+			nameKana: parsedNameKana[0],
 			email: user.email || '',
-			// emailAlerts: true,
+			emailAlerts: user.receiveNotificationEmailFlag,
 			submit: null,
 		},
 		validationSchema: Yup.object({
@@ -47,10 +49,12 @@ export const ProfileForm = (props) => {
 			surnameKana: Yup.string()
 				.max(255)
 				.required('姓（カナ）は必須です。'),
-			// emailAlerts: Yup.boolean(),
+			emailAlerts: Yup.boolean(),
 			nameKana: Yup.string().max(255).required('名（カナ）は必須です。'),
 		}),
 		onSubmit: async (values, helpers) => {
+			// console.log(values.emailAlerts);
+
 			try {
 				// NOTE: Make API request
 				await API.graphql({
@@ -58,11 +62,36 @@ export const ProfileForm = (props) => {
 					variables: {
 						input: {
 							id: user.id,
-							name: `${values.name} ${values.surname}`,
-							name_kana: `${values.nameKana} ${values.surnameKana}`,
+							name: `${values.surname} ${values.name}`,
+							name_kana: `${values.surnameKana} ${values.nameKana}`,
+							receive_notification_email_flag: values.emailAlerts,
 						},
 					},
 				});
+				const res = await API.graphql({
+					query: queryInformationListSendByUserId,
+					variables: {
+						user_id: user.id,
+					},
+				});
+				const listSend =
+					res.data.queryInformationListSendByUserId.items;
+				const response = await Promise.all(
+					listSend.map((item) => {
+						return API.graphql({
+							query: updateInformationListSend,
+							variables: {
+								input: {
+									id: item.id,
+									name: `${values.surname} ${values.name}`,
+									name_kana: `${values.surnameKana} ${values.nameKana}`,
+									receive_notification_email_flag:
+										values.emailAlerts,
+								},
+							},
+						});
+					})
+				);
 				await reloadUserInfo();
 				helpers.setStatus({success: true});
 				helpers.setSubmitting(false);
@@ -173,7 +202,7 @@ export const ProfileForm = (props) => {
 							/>
 						</Grid>
 					</Grid>
-					{/* <Box sx={{mt: 2}}>
+					<Box sx={{mt: 2}}>
 						<FormControlLabel
 							control={
 								<Checkbox
@@ -189,7 +218,7 @@ export const ProfileForm = (props) => {
 							}
 							label="お知らせメールを受け取る"
 						/>
-					</Box> */}
+					</Box>
 				</CardContent>
 				<CardActions>
 					<NextLink href="/" passHref>

@@ -30,9 +30,10 @@ import {useBukkenDefault} from '../../hooks/use-bukken-default';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import * as R from 'ramda';
-import {MobileDatePicker} from '@mui/lab';
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {useAuth} from '../../hooks/use-auth';
 import {AuthGuard} from '../../components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const CreateRoom = () => {
 	const {user} = useAuth();
@@ -110,9 +111,19 @@ const CreateRoom = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
@@ -271,9 +282,9 @@ const CreateRoom = () => {
 								</Grid>
 								{user.group === UserGroup.support && (
 									<Grid item md={8} xs={12}>
-										<MobileDatePicker
+										<DesktopDatePicker
 											label="最終施工日"
-											inputFormat="MM/dd/yyyy"
+											inputFormat="yyyy/MM/dd"
 											value={
 												formik.values
 													.last_construction_date

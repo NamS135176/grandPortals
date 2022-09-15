@@ -16,6 +16,7 @@ import {ExteriorListTable} from '../../components/exterior/exterior-list-table';
 import {useMounted} from '../../hooks/use-mounted';
 import {gtm} from '../../lib/gtm';
 import {ManagementList} from '../../components/management-menu';
+import {Friend} from 'react-line-social';
 
 const applyPagination = (bukken, page, rowsPerPage) =>
 	bukken.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -81,9 +82,19 @@ const ExteriorList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

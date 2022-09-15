@@ -10,5 +10,11 @@
   "lambdaLayers": [],
   "secretNames": [
     "SENDGRID_API_KEY"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "titleHolder",
+      "environmentVariableName": "TITLE_HOLDER"
+    }
   ]
 }

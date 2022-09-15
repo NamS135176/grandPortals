@@ -8,6 +8,7 @@ export const getUser = /* GraphQL */ `
       email
       name
       name_kana
+      receive_notification_email_flag
       delete_flag
       last_login_date
       sort
@@ -36,6 +37,38 @@ export const listUsers = /* GraphQL */ `
         email
         name
         name_kana
+        receive_notification_email_flag
+        delete_flag
+        last_login_date
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryUserByEmail = /* GraphQL */ `
+  query QueryUserByEmail(
+    $email: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryUserByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        email
+        name
+        name_kana
+        receive_notification_email_flag
         delete_flag
         last_login_date
         sort
@@ -68,6 +101,7 @@ export const queryUserBySort = /* GraphQL */ `
         email
         name
         name_kana
+        receive_notification_email_flag
         delete_flag
         last_login_date
         sort
@@ -1283,6 +1317,385 @@ export const querHistoryCreatedAt = /* GraphQL */ `
     }
   }
 `;
+export const getInformation = /* GraphQL */ `
+  query GetInformation($id: ID!) {
+    getInformation(id: $id) {
+      id
+      subject
+      content
+      scheduled_delivery_date
+      important_info_flag
+      draft_flag
+      delete_flag
+      processed_date
+      informaionListSends {
+        items {
+          id
+          information_id
+          user_id
+          email
+          name
+          name_kana
+          withdrawal_flag
+          receive_notification_email_flag
+          last_user_read
+          sort
+          sendgrid_response
+          x_message_id
+          delete_flag
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      sort
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInformation = /* GraphQL */ `
+  query ListInformation(
+    $id: ID
+    $filter: ModelInformationFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listInformation(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        processed_date
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationByProcessDate = /* GraphQL */ `
+  query QueryInformationByProcessDate(
+    $processed_date: AWSDateTime!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationByProcessDate(
+      processed_date: $processed_date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        processed_date
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationBySort = /* GraphQL */ `
+  query QueryInformationBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        processed_date
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getInformationListSend = /* GraphQL */ `
+  query GetInformationListSend($id: ID!) {
+    getInformationListSend(id: $id) {
+      id
+      information_id
+      information {
+        id
+        subject
+        content
+        scheduled_delivery_date
+        important_info_flag
+        draft_flag
+        delete_flag
+        processed_date
+        informaionListSends {
+          nextToken
+        }
+        sort
+        createdAt
+        updatedAt
+      }
+      user_id
+      email
+      name
+      name_kana
+      withdrawal_flag
+      receive_notification_email_flag
+      last_user_read
+      sort
+      sendgrid_response
+      x_message_id
+      delete_flag
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInformationListSends = /* GraphQL */ `
+  query ListInformationListSends(
+    $id: ID
+    $filter: ModelInformationListSendFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listInformationListSends(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          processed_date
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        email
+        name
+        name_kana
+        withdrawal_flag
+        receive_notification_email_flag
+        last_user_read
+        sort
+        sendgrid_response
+        x_message_id
+        delete_flag
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationListSendByInformationId = /* GraphQL */ `
+  query QueryInformationListSendByInformationId(
+    $information_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationListSendFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationListSendByInformationId(
+      information_id: $information_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          processed_date
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        email
+        name
+        name_kana
+        withdrawal_flag
+        receive_notification_email_flag
+        last_user_read
+        sort
+        sendgrid_response
+        x_message_id
+        delete_flag
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationListSendByUserId = /* GraphQL */ `
+  query QueryInformationListSendByUserId(
+    $user_id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationListSendFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationListSendByUserId(
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          processed_date
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        email
+        name
+        name_kana
+        withdrawal_flag
+        receive_notification_email_flag
+        last_user_read
+        sort
+        sendgrid_response
+        x_message_id
+        delete_flag
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const queryInformationListSendBySort = /* GraphQL */ `
+  query QueryInformationListSendBySort(
+    $sort: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelInformationListSendFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    queryInformationListSendBySort(
+      sort: $sort
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        information_id
+        information {
+          id
+          subject
+          content
+          scheduled_delivery_date
+          important_info_flag
+          draft_flag
+          delete_flag
+          processed_date
+          sort
+          createdAt
+          updatedAt
+        }
+        user_id
+        email
+        name
+        name_kana
+        withdrawal_flag
+        receive_notification_email_flag
+        last_user_read
+        sort
+        sendgrid_response
+        x_message_id
+        delete_flag
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const settingCognitoPassword = /* GraphQL */ `
   query SettingCognitoPassword($input: settingCognitoPasswordInput!) {
     settingCognitoPassword(input: $input)
@@ -1323,8 +1736,23 @@ export const getNextOtherObjectId = /* GraphQL */ `
     getNextOtherObjectId
   }
 `;
+export const getNextInformationId = /* GraphQL */ `
+  query GetNextInformationId {
+    getNextInformationId
+  }
+`;
+export const getNextInformationListSendId = /* GraphQL */ `
+  query GetNextInformationListSendId {
+    getNextInformationListSendId
+  }
+`;
 export const withdrawalRequest = /* GraphQL */ `
   query WithdrawalRequest($name: String!) {
     withdrawalRequest(name: $name)
+  }
+`;
+export const publishInformationZipFile = /* GraphQL */ `
+  query PublishInformationZipFile($folder: String!, $zipFileName: String!) {
+    publishInformationZipFile(folder: $folder, zipFileName: $zipFileName)
   }
 `;

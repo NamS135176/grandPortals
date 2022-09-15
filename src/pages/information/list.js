@@ -15,19 +15,22 @@ import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
 import {InformationListTable} from '../../components/information/information-list-table';
 import {gtm} from '../../lib/gtm';
 import {AuthGuard} from '../../components/authentication/auth-guard';
-import {bukkenApi} from '__fake-api__/bukken-api';
-
+import {useInformationList} from 'hooks/use-information-list';
+import {Friend} from 'react-line-social';
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
+import { useRouter } from 'next/router';
 const InformationList = () => {
+	const {user} = useAuth()
+	const router = useRouter()
 	const [items, setItems] = useState([]);
+	const {informationList: list, updateReadInformation} = useInformationList();
 
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getInformationList();
-			setItems(data);
-		} catch (err) {
-			console.error(err);
+	useEffect(() => {
+		if (user?.group == UserGroup.support) {
+			router.push('/404');
 		}
-	}, []);
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -53,16 +56,29 @@ const InformationList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
 							<Typography variant="h6">お知らせ一覧</Typography>
 						</CardContent>
-						{items.length > 0 && (
-							<InformationListTable items={items} />
+						{list.length > 0 && (
+							<InformationListTable
+								updateRead={updateReadInformation}
+								items={list}
+							/>
 						)}
 					</Card>
 					<Box

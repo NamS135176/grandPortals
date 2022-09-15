@@ -51,7 +51,7 @@ const Leave = () => {
 									sx={{mt: 1, textAlign: 'center'}}
 									variant="body2"
 								>
-									「XXXX」を利用いただき誠にありがとうございました。
+									「マイプレイス」を利用いただき誠にありがとうございました。
 									<br />
 									またのご利用を、心よりお待ちしております。
 								</Typography>

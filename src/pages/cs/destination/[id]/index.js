@@ -16,52 +16,33 @@ import {CsDestinationListTable} from '../../../../components/information/cs-dest
 import {gtm} from '../../../../lib/gtm';
 import {AuthGuard} from '../../../../components/authentication/auth-guard';
 import {bukkenApi} from '__fake-api__/bukken-api';
-
-const applyFilters = (items, filters) =>
-	items.filter((item) => {
-		if (filters.email) {
-			const nameMatched = item.email
-				.toLowerCase()
-				.includes(filters.email.toLowerCase());
-
-			if (!nameMatched) {
-				return false;
-			}
-		}
-
-		// It is possible to select multiple category options
-		if (filters.name) {
-			const statusMatched = item.name
-				.toLowerCase()
-				.includes(
-					filters.name.toLowerCase() || filters.nameKana.toLowerCase()
-				);
-
-			if (!statusMatched) {
-				return false;
-			}
-		}
-
-		return true;
-	});
+import {useAuth} from 'hooks/use-auth';
+import {useDestinationList} from 'hooks/use-destination-list';
+import {useRouter} from 'next/router';
+import { UserGroup } from 'utils/global-data';
+import {Friend} from 'react-line-social';
 
 const CsDestinationList = () => {
+	const {user} = useAuth()
+	const router = useRouter()
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [filters, setFilters] = useState({
 		email: '',
 		name: '',
 	});
+	const {id} = router.query;
+	const {
+		destinations: list,
+		filterDestination,
+		loading,
+	} = useDestinationList(id);
 
-	useEffect(async () => {
-		try {
-			const data = await bukkenApi.getCsDestinationList();
-			setItems(data);
-			setFilteredItems(data);
-		} catch (err) {
-			console.error(err);
+	useEffect(() => {
+		if (user?.group != UserGroup.support) {
+			router.push('/404');
 		}
-	}, []);
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
@@ -76,8 +57,9 @@ const CsDestinationList = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const filteredItems = applyFilters(items, filters);
-		setFilteredItems(filteredItems);
+		filterDestination(filters);
+		// const filteredItems = applyFilters(items, filters);
+		// setFilteredItems(filteredItems);
 	};
 
 	return (
@@ -100,13 +82,25 @@ const CsDestinationList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>
-							<Typography variant="h6">お知らせ一覧</Typography>
+							<Typography variant="h6">
+								お知らせ送信先一覧
+							</Typography>
 
 							<Box
 								sx={{
@@ -155,8 +149,8 @@ const CsDestinationList = () => {
 								</Button>
 							</Box>
 							<Divider />
-							{items.length > 0 && (
-								<CsDestinationListTable items={filteredItems} />
+							{list?.length > 0 && (
+								<CsDestinationListTable items={list} />
 							)}
 						</CardContent>
 					</Card>
@@ -167,9 +161,9 @@ const CsDestinationList = () => {
 							mt: 3,
 						}}
 					>
-						<NextLink href="/" passHref>
+						<NextLink href={`/cs/information/${id}`} passHref>
 							<Button sx={{m: 1}} variant="contained">
-								TOP
+								戻る
 							</Button>
 						</NextLink>
 					</Box>

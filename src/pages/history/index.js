@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState, useRef} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -7,11 +7,9 @@ import {
 	Card,
 	CardContent,
 	Container,
-	Divider,
 	Grid,
 	Typography,
 	TextField,
-	InputAdornment,
 } from '@mui/material';
 import {bukkenApi} from '../../__fake-api__/bukken-api';
 import {DashboardLayout} from '../../components/dashboard/dashboard-layout';
@@ -19,9 +17,13 @@ import {HistoryListTable} from '../../components/history/history-list-table';
 import {useMounted} from '../../hooks/use-mounted';
 import {gtm} from '../../lib/gtm';
 import {ManagementList} from '../../components/management-menu';
-import {Search as SearchIcon} from '../../icons/search';
+import {Friend} from 'react-line-social';
 
 const sortOptions = [
+	{
+		label: '全て',
+		value: '',
+	},
 	{
 		label: '外装',
 		value: '外装',
@@ -41,10 +43,6 @@ const sortOptions = [
 	{
 		label: '物件',
 		value: '物件',
-	},
-	{
-		label: '全て',
-		value: '',
 	},
 ];
 
@@ -161,9 +159,19 @@ const HistoryList = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

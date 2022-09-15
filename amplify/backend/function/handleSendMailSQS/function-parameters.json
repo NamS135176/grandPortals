@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "function": {
+      "publishInformationZipFile": [
+        "create",
+        "read",
+        "update"
+      ]
+    },
+    "api": {
+      "grandsportal": [
+        "Query",
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "grandsPortal": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "SENDGRID_API_KEY"
+  ]
+}

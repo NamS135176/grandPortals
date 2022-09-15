@@ -500,7 +500,7 @@ class BukkenApi {
 				id: '528651571N1',
 				type: 'お知らせ',
 				name: 'XXキャンペインのお知らせ',
-				registeredAt: '2022/08/29 15:09',
+				registeredAt: '2022/08/29 15:08',
 			},
 			{
 				id: '311658671J2',

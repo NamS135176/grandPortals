@@ -22,11 +22,11 @@ const applySort = (items, sortDir) =>
 	items.sort((a, b) => {
 		let newOrder = 0;
 
-		if (a.registeredAt < b.registeredAt) {
+		if (a.information.createdAt < b.information.createdAt) {
 			newOrder = -1;
 		}
 
-		if (a.registeredAt > b.registeredAt) {
+		if (a.information.createdAt > b.information.createdAt) {
 			newOrder = 1;
 		}
 
@@ -37,7 +37,7 @@ const applyPagination = (items, page, rowsPerPage) =>
 	items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 export const InformationListTable = (props) => {
-	const {items, ...other} = props;
+	const {items, updateRead, ...other} = props;
 	const [sort, setSort] = useState('desc');
 
 	const [page, setPage] = useState(0);
@@ -60,6 +60,8 @@ export const InformationListTable = (props) => {
 			return 'asc';
 		});
 	};
+
+
 
 	const sortedItems = applySort(items, sort);
 	const paginatedItems = applyPagination(sortedItems, page, rowsPerPage);
@@ -92,10 +94,12 @@ export const InformationListTable = (props) => {
 									<TableRow hover key={item.id}>
 										<TableCell align="right">
 											<NextLink
-												href={`/information/${item.id}`}
+												href={`/information/${item.information_id}`}
 												passHref
 											>
-												<IconButton component="a">
+												<IconButton onClick={async () =>  {
+													await updateRead(item.id)
+												}} component="a">
 													<ArrowRightIcon fontSize="small" />
 												</IconButton>
 											</NextLink>
@@ -109,18 +113,18 @@ export const InformationListTable = (props) => {
 											>
 												<SeverityPill
 													color={
-														(item.type ===
-															'お知らせ' &&
+														(item.information.important_info_flag ===
+															0 &&
 															'info') ||
-														(item.type ===
-															'重要なお知らせ' &&
+														(item.information.important_info_flag ===
+															1 &&
 															'error') ||
 														'warning'
 													}
 												>
-													{item.type}
+													{item.information.important_info_flag === 1 ? "重要なお知らせ" : "お知らせ"}
 												</SeverityPill>
-												{item.type === 'お知らせ' && (
+												{item.last_user_read == null && (
 													<Box
 														sx={{
 															backgroundColor:
@@ -136,19 +140,22 @@ export const InformationListTable = (props) => {
 										</TableCell>
 										<TableCell>
 											<NextLink
-												href={`/information/${item.id}`}
+												href={`/information/${item.information_id}`}
 												passHref
 											>
 												<Link
+												onClick={async () =>  {
+													await updateRead(item.id)
+												}}
 													underline="none"
 													variant="subtitle2"
 												>
-													{item.name}
+													{item.information.subject}
 												</Link>
 											</NextLink>
 										</TableCell>
 										<TableCell>
-											{moment(item.createdAt).format(
+											{moment(item.information.createdAt).format(
 												'YYYY/MM/DD HH:mm'
 											)}
 										</TableCell>

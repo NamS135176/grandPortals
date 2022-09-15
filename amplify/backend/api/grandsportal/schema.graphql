@@ -2,80 +2,71 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
 type Query {
-    settingCognitoPassword(input: settingCognitoPasswordInput!): AWSJSON
-        @function(name: "settingCognitoPassword-${env}")
-        @auth(rules: [{allow: public, provider: iam}])
+  settingCognitoPassword(input: settingCognitoPasswordInput!): AWSJSON @function(name: "settingCognitoPassword-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
 
-    publishPasswordResetLink(email: String!): AWSJSON
-        @function(name: "publishPasswordResetLink-${env}")
-        @auth(rules: [{allow: public, provider: iam}])
+  publishPasswordResetLink(email: String!): AWSJSON @function(name: "publishPasswordResetLink-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
 
-    createForceResetPassword(email: String!): AWSJSON
-        @function(name: "createForceResetPassword-${env}")
-        @auth(rules: [{allow: public, provider: iam}])
+  createForceResetPassword(email: String!): AWSJSON @function(name: "createForceResetPassword-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
 
-    checkLinkValidation(id: ID!): AWSJSON
-        @function(name: "checkLinkValidation-${env}")
-        @auth(rules: [{allow: public, provider: iam}])
+  checkLinkValidation(id: ID!): AWSJSON @function(name: "checkLinkValidation-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+  ])
 
-    getNextDocumentId: AWSJSON
-        @function(name: "getNextDocumentId-${env}")
-        @auth(
-            rules: [
-                {allow: public, provider: iam}
-                {
-                    allow: groups
-                    groups: ["support", "agentNormal", "agentGrands"]
-                }
-            ]
-        )
+  getNextDocumentId: AWSJSON @function(name: "getNextDocumentId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 
-    getNextHistoryId: AWSJSON
-        @function(name: "getNextHistoryId-${env}")
-        @auth(
-            rules: [
-                {allow: public, provider: iam}
-                {
-                    allow: groups
-                    groups: ["support", "agentNormal", "agentGrands"]
-                }
-            ]
-        )
+  getNextHistoryId: AWSJSON @function(name: "getNextHistoryId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 
-    getNextBukkenId: AWSJSON
-        @function(name: "getNextBukkenId-${env}")
-        @auth(
-            rules: [
-                {allow: public, provider: iam}
-                {
-                    allow: groups
-                    groups: ["support", "agentNormal", "agentGrands"]
-                }
-            ]
-        )
+  getNextBukkenId: AWSJSON @function(name: "getNextBukkenId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 
-    getNextOtherObjectId: AWSJSON
-        @function(name: "getNextOtherObjectId-${env}")
-        @auth(
-            rules: [
-                {allow: public, provider: iam}
-                {
-                    allow: groups
-                    groups: ["support", "agentNormal", "agentGrands"]
-                }
-            ]
-        )
+  getNextOtherObjectId: AWSJSON @function(name: "getNextOtherObjectId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 
-    withdrawalRequest(name: String!): AWSJSON
-        @function(name: "withdrawalRequest-${env}")
-        @auth(
-            rules: [
-                {
-                    allow: groups
-                    groups: ["support", "agentNormal", "agentGrands"]
-                }
-            ]
-        )
+  getNextInformationId: AWSJSON @function(name: "getNextInformationId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  getNextInformationListSendId: AWSJSON @function(name: "getNextInformationListSendId-${env}")
+  @auth(rules: [
+    { allow: public, provider: iam }
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  withdrawalRequest(name: String!): AWSJSON @function(name: "withdrawalRequest-${env}")
+  @auth(rules: [
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
+
+  publishInformationZipFile(folder: String!, zipFileName: String!): AWSJSON @function(name: "publishInformationZipFile-${env}")
+  @auth(rules: [
+    { allow: groups, groups: ["support", "agentNormal", "agentGrands"] }
+  ])
 }
 
 type User
@@ -93,9 +84,10 @@ type User
         ]
     ) {
     id: ID! @primaryKey
-    email: String
+    email: String @index(name: "GSI-email", queryField: "queryUserByEmail")
     name: String
     name_kana: String
+    receive_notification_email_flag: Boolean!
     delete_flag: Boolean!
     last_login_date: AWSDateTime!
     receive_notification_email_flag: Boolean!
@@ -352,6 +344,54 @@ type InformationListSend
             sortKeyFields: ["object_kind", "bukken_id"]
             queryField: "queryListSendCreatedAt"
         )
+}
+
+type Information
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: groups, groups: ["agentNormal", "agentGrands"], operations: [read] }
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    subject: String
+    content: String
+    scheduled_delivery_date: AWSDateTime
+    important_info_flag: Int
+    draft_flag: Int
+    delete_flag: Int!
+    processed_date: AWSDateTime @index(name: "GSI-processedDate", queryField: "queryInformationByProcessDate")
+    informaionListSends: [InformationListSend] @hasMany(indexName: "GSI-informationId", fields: ["id"])
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationBySort")
+    createdAt: AWSDateTime!
+}
+
+type InformationListSend
+    @model
+    @auth(
+        rules: [
+            {allow: groups, groups: ["support"]}
+            {allow: owner, ownerField: "user_id"}
+            {allow: private, provider: iam, operations: [create, update, read]}
+        ]
+    ) {
+    id: ID! @primaryKey
+    information_id: ID!  @index(name: "GSI-informationId", queryField: "queryInformationListSendByInformationId")
+    information: Information @belongsTo(fields: ["information_id"])
+    user_id: ID! @index(name: "GSI-userId", queryField: "queryInformationListSendByUserId")
+    email: String
+    name: String!
+    name_kana: String!
+    withdrawal_flag: Boolean!
+    receive_notification_email_flag: Boolean!
+    last_user_read: AWSDateTime
+    sort: Int! @index(name: "GSI-sort", sortKeyFields: ["createdAt"], queryField: "queryInformationListSendBySort")
+    sendgrid_response: String
+    x_message_id: String
+    delete_flag: Int!
+    createdAt: AWSDateTime!
 }
 
 input settingCognitoPasswordInput {

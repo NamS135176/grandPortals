@@ -22,6 +22,7 @@ import {
 	getOtherObjectRouteUrl,
 	OtherObjectKind,
 } from '../../utils/bukken';
+import {Friend} from 'react-line-social';
 
 const OtherObjectList = ({otherObjectKind}) => {
 	const {bukken} = useBukkenDefault();
@@ -62,9 +63,19 @@ const OtherObjectList = ({otherObjectKind}) => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：0463-79-5564
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card>
 						<CardContent>

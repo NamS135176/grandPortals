@@ -60,6 +60,7 @@
     "next": "^12.1.6",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
+    "papaparse": "^5.3.2",
     "promise-parallel-throttle": "^3.3.0",
     "prop-types": "^15.8.1",
     "ramda": "^0.28.0",
@@ -73,6 +74,7 @@
     "react-hot-toast": "^2.2.0",
     "react-i18next": "^11.16.9",
     "react-image-file-resizer": "^0.4.8",
+    "react-line-social": "^0.3.0",
     "react-markdown": "^8.0.3",
     "react-quill": "2.0.0-beta.4",
     "react-redux": "^8.0.2",
@@ -89,6 +91,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.8.0",
     "eslint-config-next": "^12.0.10",
     "next-transpile-modules": "^9.0.0"

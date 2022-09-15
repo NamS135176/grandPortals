@@ -15,6 +15,7 @@ import {BukkenListTable} from '../../components/bukken/bukken-list-table';
 import {gtm} from '../../lib/gtm';
 import {useBukkenList} from '../../hooks/use-bukken-list';
 import {AuthGuard} from '../../components/authentication/auth-guard';
+import {Friend} from 'react-line-social';
 
 const BukkenList = () => {
 	const {bukkenList: bukken} = useBukkenList();
@@ -46,9 +47,22 @@ const BukkenList = () => {
 								<Typography variant="h4">物件一覧</Typography>
 							</Grid>
 							<Grid item>
-								<Typography variant="subtitle2">
-									お問い合わせ：050-5443-5974
-								</Typography>
+								<Box>
+									<Box
+										sx={{
+											display: 'flex',
+											justifyContent: 'flex-end',
+										}}
+									>
+										<Friend
+											lineid="@487rrtrg"
+											locale="ja"
+										/>
+									</Box>
+									<Typography variant="subtitle2">
+										お問い合わせ：050-5443-5974
+									</Typography>
+								</Box>
 							</Grid>
 						</Grid>
 					</Box>

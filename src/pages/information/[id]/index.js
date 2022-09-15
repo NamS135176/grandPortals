@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -16,11 +16,99 @@ import {gtm} from '../../../lib/gtm';
 import {ArrowLeft as ArrowLeftIcon} from '../../../icons/arrow-left';
 import {AuthGuard} from '../../../components/authentication/auth-guard';
 import {Download as DownloadIcon} from '../../../icons/download';
-
+import {useInformationFile} from 'hooks/use-information-file';
+import {useInformation} from 'hooks/use-information';
+import {useRouter} from 'next/router';
+import {useMounted} from 'hooks/use-mounted';
+import * as R from 'ramda';
+import moment from 'moment';
+import {Friend} from 'react-line-social';
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
 const InformationDetails = () => {
+	const isMounted = useMounted();
+    const {user} = useAuth()
+	const router = useRouter()
+	const {id} = router.query;
+
+	const {information} = useInformation(id);
+	console.log(information);
+	const {getFilesFromS3, zipInformationFile} = useInformationFile();
+
+	const [files, setFiles] = useState([]);
+	const [zipUrl, setZipUrl] = useState();
+
+	useEffect(() => {
+		if (user?.group == UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
+
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
 	}, []);
+
+	useEffect(async () => {
+		if (!information) return;
+		//check scheduled_delivery_date
+		if (
+			moment(information.scheduled_delivery_date).isAfter(
+				moment().utc(new Date())
+			)
+		) {
+			//not available this time
+			router.push('/404');
+			return;
+		}
+	}, [information]);
+
+	useEffect(async () => {
+		//call api zip file if need
+		const zipUrl = await zipInformationFile(id);
+		setZipUrl(zipUrl);
+	}, [id]);
+
+	useEffect(async () => {
+		if (!isMounted()) return;
+		const files = await getFilesFromS3(id);
+		if (!R.isNil(files) && !R.isEmpty(files)) {
+			setFiles(files);
+		}
+	}, [isMounted]);
+
+	// console.log("InformationDetails... ", {information, files});
+
+	const renderDownloadDocument = () => {
+		if (R.isEmpty(files)) return <></>;
+		if (files.length == 1) {
+			return (
+				<NextLink href={files[0].path} passHref target="_blank">
+					<a target="_blank" rel="noopener noreferrer">
+						<Button
+							startIcon={<DownloadIcon fontSize="small" />}
+							sx={{m: 1}}
+						>
+							資料ダウンロード
+						</Button>
+					</a>
+				</NextLink>
+			);
+		}
+		return zipUrl ? (
+			<NextLink href={zipUrl} target="_blank" passHref>
+				<a target="_blank" rel="noopener noreferrer">
+					<Button
+						startIcon={<DownloadIcon fontSize="small" />}
+						sx={{m: 1}}
+					>
+						資料ダウンロード
+					</Button>
+				</a>
+			</NextLink>
+		) : (
+			<></>
+		);
+	};
 
 	return (
 		<>
@@ -42,9 +130,19 @@ const InformationDetails = () => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Typography variant="subtitle2">
-							お問い合わせ：050-5443-5974
-						</Typography>
+						<Box>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Friend lineid="@487rrtrg" locale="ja" />
+							</Box>
+							<Typography variant="subtitle2">
+								お問い合わせ：050-5443-5974
+							</Typography>
+						</Box>
 					</Box>
 					<Card sx={{mt: 4}}>
 						<CardContent>
@@ -60,9 +158,7 @@ const InformationDetails = () => {
 										</Typography>
 									</Grid>
 								</Grid>
-								<Typography>
-									XXのキャンペーンのお知らせ
-								</Typography>
+								<Typography>{information?.subject}</Typography>
 								<Divider
 									sx={{
 										mb: 3,
@@ -71,35 +167,14 @@ const InformationDetails = () => {
 								/>
 								<Typography
 									color="textSecondary"
-									sx={{mt: 1}}
+									sx={{mt: 1, whiteSpace: 'pre-wrap'}}
 									variant="body2"
 								>
-									サンプルテキストサンプルテキスト
-									サンプルテキストサンプルテキスト
-									サンプルテキストサンプルテキスト
-									サンプルテキストサンプルテキスト
-									サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト
+									{information?.content}
 								</Typography>
 
-								<Button
-									startIcon={
-										<DownloadIcon fontSize="small" />
-									}
-									sx={{m: 1}}
-								>
-									資料ダウンロード
-								</Button>
+								{renderDownloadDocument()}
 							</Box>
-							<Box
-								sx={{
-									backgroundImage: `url(/images/contact/contact.jpeg)`,
-									backgroundPosition: 'center',
-									backgroundSize: 'cover',
-									borderRadius: 1,
-									height: 380,
-									mt: 3,
-								}}
-							/>
 						</CardContent>
 					</Card>
 					<Box
