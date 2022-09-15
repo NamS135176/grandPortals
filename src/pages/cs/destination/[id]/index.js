@@ -19,10 +19,12 @@ import {bukkenApi} from '__fake-api__/bukken-api';
 import {useAuth} from 'hooks/use-auth';
 import {useDestinationList} from 'hooks/use-destination-list';
 import {useRouter} from 'next/router';
+import { UserGroup } from 'utils/global-data';
 import {Friend} from 'react-line-social';
 
 const CsDestinationList = () => {
-	const router = useRouter();
+	const {user} = useAuth()
+	const router = useRouter()
 	const [items, setItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
 	const [filters, setFilters] = useState({
@@ -35,6 +37,12 @@ const CsDestinationList = () => {
 		filterDestination,
 		loading,
 	} = useDestinationList(id);
+
+	useEffect(() => {
+		if (user?.group != UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});

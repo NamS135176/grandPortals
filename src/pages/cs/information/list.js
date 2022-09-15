@@ -20,6 +20,9 @@ import {DateTimePicker} from '@mui/lab';
 import {useInformationList} from 'hooks/use-information-list';
 import toast from 'react-hot-toast';
 import {Friend} from 'react-line-social';
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
+import { useRouter } from 'next/router';
 
 const sortOptions = [
 	{
@@ -66,7 +69,10 @@ const applyFilters = (items, filters) =>
 		return true;
 	});
 
+
 const CsInformationList = () => {
+	const {user} = useAuth()
+	const router = useRouter()
 	const {
 		informationList: list,
 		filterInformationSendList,
@@ -85,6 +91,13 @@ const CsInformationList = () => {
 		startDate: null,
 		endDate: null,
 	});
+
+
+	useEffect(() => {
+		if (user?.group != UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});

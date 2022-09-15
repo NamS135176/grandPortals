@@ -17,10 +17,20 @@ import {gtm} from '../../lib/gtm';
 import {AuthGuard} from '../../components/authentication/auth-guard';
 import {useInformationList} from 'hooks/use-information-list';
 import {Friend} from 'react-line-social';
-
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
+import { useRouter } from 'next/router';
 const InformationList = () => {
+	const {user} = useAuth()
+	const router = useRouter()
 	const [items, setItems] = useState([]);
 	const {informationList: list, updateReadInformation} = useInformationList();
+
+	useEffect(() => {
+		if (user?.group == UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});

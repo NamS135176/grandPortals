@@ -23,10 +23,12 @@ import {useMounted} from 'hooks/use-mounted';
 import * as R from 'ramda';
 import moment from 'moment';
 import {Friend} from 'react-line-social';
-
+import { useAuth } from 'hooks/use-auth';
+import { UserGroup } from 'utils/global-data';
 const InformationDetails = () => {
 	const isMounted = useMounted();
-	const router = useRouter();
+    const {user} = useAuth()
+	const router = useRouter()
 	const {id} = router.query;
 
 	const {information} = useInformation(id);
@@ -35,6 +37,12 @@ const InformationDetails = () => {
 
 	const [files, setFiles] = useState([]);
 	const [zipUrl, setZipUrl] = useState();
+
+	useEffect(() => {
+		if (user?.group == UserGroup.support) {
+			router.push('/404');
+		}
+	}, [user]);
 
 	useEffect(() => {
 		gtm.push({event: 'page_view'});
